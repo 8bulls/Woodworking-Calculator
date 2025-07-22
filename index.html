@@ -1,4 +1,10 @@
-<!DOCTYPE html>
+.calc-btn.operation.active {
+            background: #654321;
+            transform: scale(0.95);
+        }        function clearAll() {
+            // This function is no longer used but kept for compatibility
+            clearCalculator();
+        }<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -173,6 +179,220 @@
             font-size: 18px;
             font-weight: bold;
             border: 2px solid #8B4513;
+        }
+        
+        /* Calculator display styles */
+        .calc-display {
+            background: #2F1B14;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .calc-equation {
+            font-size: 16px;
+            color: #D2B48C;
+            min-height: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .calc-result {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: right;
+            min-height: 40px;
+            word-break: break-all;
+        }
+        
+        .calc-result.has-value {
+            color: #4CAF50;
+        }
+        
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .calc-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #D2B48C;
+            color: #2F1B14;
+        }
+        
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .calc-btn:active {
+            transform: translateY(0);
+        }
+        
+        .calc-btn.operation {
+            background: #8B4513;
+            color: white;
+        }
+        
+        .calc-btn.equals {
+            background: #4CAF50;
+            color: white;
+            grid-column: span 2;
+        }
+        
+        .calc-btn.save {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .calc-btn.clear {
+            background: #f44336;
+            color: white;
+        }
+        
+        .calc-btn.memory {
+            background: #607D8B;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .memory-display {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 12px;
+            color: #D2B48C;
+        }
+        
+        .conversion-section {
+            margin-bottom: 20px;
+        }
+        
+        .conversion-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .preset-section {
+            background: #f9f9f9;
+            border: 2px solid #D2B48C;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .preset-section h4 {
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+        
+        .preset-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .history-clickable {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .history-clickable:hover {
+            background: #e8f5e8;
+        }
+        
+        .history-timestamp {
+            font-size: 10px;
+            color: #999;
+            float: right;
+        }
+        
+        .history-result {
+            background: #e8f5e8;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 4px solid #4CAF50;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .history-conversion {
+            background: #e3f2fd;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 4px solid #2196F3;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .history-preset {
+            background: #fff3e0;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 4px solid #ff9800;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .history-equation {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            font-weight: bold;
+            color: #2F1B14;
+        }
+        
+        .history-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        
+        /* Modal for calculations */
+        .calc-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .calc-modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .calc-modal h3 {
+            margin-bottom: 15px;
+            color: #8B4513;
+        }
+        
+        .calc-modal .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .calc-modal .btn {
+            margin-right: 10px;
         }
         
         .button-grid {
@@ -519,54 +739,72 @@
                 </select>
             </div>
             
+            <div class="calc-display">
+                <div class="memory-display" id="memoryIndicator"></div>
+                <div class="calc-equation" id="calcEquation">&nbsp;</div>
+                <div class="calc-result" id="calcResult">0"</div>
+            </div>
+            
             <div class="input-group">
-                <label>Input:</label>
-                <input type="number" id="feet" placeholder="0" min="0" class="wide-input">
+                <label>Input 1:</label>
+                <input type="number" id="feet1" placeholder="0" min="0" class="wide-input" onchange="updateCalculation()">
                 <span>ft</span>
-                <input type="number" id="inches" placeholder="0" min="0" max="11" class="wide-input">
+                <input type="number" id="inches1" placeholder="0" min="0" max="11" class="wide-input" onchange="updateCalculation()">
                 <span>in</span>
-                <select id="fraction" style="width: 120px;">
-                    <option value="0">0</option>
-                </select>
-                <button class="btn btn-secondary" onclick="setCurrentValue()">Set</button>
-            </div>
-            
-            <div class="current-value" id="currentValue">
-                Enter measurement above
-            </div>
-            
-            <div class="input-mode-toggle">
-                <label>Operation Value:</label>
-                <button class="btn btn-secondary" id="modeToggle" onclick="toggleInputMode()">Fraction Mode</button>
-            </div>
-            
-            <div class="input-group" id="fractionInputs">
-                <input type="number" id="opFeet" placeholder="0" min="0" class="wide-input">
-                <span>ft</span>
-                <input type="number" id="opInches" placeholder="0" min="0" max="11" class="wide-input">
-                <span>in</span>
-                <select id="opFraction" style="width: 120px;">
+                <select id="fraction1" style="width: 120px;" onchange="updateCalculation()">
                     <option value="0">0</option>
                 </select>
             </div>
             
-            <div class="input-group" id="decimalInputs" style="display: none;">
-                <input type="number" id="operationValue" placeholder="2.5" step="0.001" class="wide-input">
-                <span>inches</span>
+            <div class="calc-grid">
+                <button class="calc-btn operation" onclick="setOperation('+')" id="addBtn">+</button>
+                <button class="calc-btn operation" onclick="setOperation('-')" id="subBtn">−</button>
+                <button class="calc-btn operation" onclick="setOperation('*')" id="mulBtn">×</button>
+                <button class="calc-btn operation" onclick="setOperation('/')" id="divBtn">÷</button>
             </div>
             
-            <div class="manual-calc">
-                <button class="btn btn-operation" onclick="operation('+')" style="font-size: 20px;">+</button>
-                <button class="btn btn-operation" onclick="operation('-')" style="font-size: 20px;">-</button>
-                <button class="btn btn-operation" onclick="operation('*')" style="font-size: 20px;">×</button>
-                <button class="btn btn-operation" onclick="operation('/')" style="font-size: 20px;">÷</button>
+            <div class="input-group" id="input2Group" style="display: none;">
+                <label>Input 2:</label>
+                <input type="number" id="feet2" placeholder="0" min="0" class="wide-input" onchange="updateCalculation()">
+                <span>ft</span>
+                <input type="number" id="inches2" placeholder="0" min="0" max="11" class="wide-input" onchange="updateCalculation()">
+                <span>in</span>
+                <select id="fraction2" style="width: 120px;" onchange="updateCalculation()">
+                    <option value="0">0</option>
+                </select>
             </div>
             
-            <button class="btn btn-primary" onclick="executeOperation()" style="width: 100%; margin-bottom: 15px;">Calculate</button>
-            <button class="btn btn-secondary" onclick="clearAll()" style="width: 100%; margin-bottom: 15px;">Clear All</button>
+            <div class="calc-grid" style="margin-top: 15px;">
+                <button class="calc-btn memory" onclick="memoryOperation('MC')">MC</button>
+                <button class="calc-btn memory" onclick="memoryOperation('MR')">MR</button>
+                <button class="calc-btn memory" onclick="memoryOperation('M+')">M+</button>
+                <button class="calc-btn memory" onclick="memoryOperation('M-')">M−</button>
+                <button class="calc-btn clear" onclick="clearCalculator()">Clear</button>
+                <button class="calc-btn save" onclick="saveToHistory()">Save</button>
+            </div>
+            
+            <div class="conversion-section">
+                <h4 style="color: #8B4513; margin-bottom: 10px;">Quick Conversions</h4>
+                <div class="conversion-grid">
+                    <button class="btn btn-secondary" onclick="convertToDecimal()">→ Decimal</button>
+                    <button class="btn btn-secondary" onclick="convertToFraction()">→ Fraction</button>
+                    <button class="btn btn-secondary" onclick="convertToFeet()">→ Feet</button>
+                    <button class="btn btn-secondary" onclick="convertToInches()">→ Inches</button>
+                </div>
+            </div>
+            
+            <div class="preset-section">
+                <h4>Woodworking Calculations</h4>
+                <div class="preset-grid">
+                    <button class="btn btn-secondary" onclick="showBoardFootCalc()">Board Foot Calculator</button>
+                    <button class="btn btn-secondary" onclick="calculateGoldenRatio()">Golden Ratio (1.618)</button>
+                    <button class="btn btn-secondary" onclick="showSpacingCalc()">Equal Spacing Calculator</button>
+                    <button class="btn btn-secondary" onclick="showAngleCalc()">Miter Angle Calculator</button>
+                </div>
+            </div>
             
             <div class="history" id="history">
-                <div class="history-item">History will appear here...</div>
+                <!-- History will appear here -->
             </div>
         </div>
         
@@ -787,6 +1025,21 @@
             </div>
         </div>
         
+        <!-- Calculation Modal -->
+        <div id="calcModal" class="calc-modal">
+            <div class="calc-modal-content">
+                <span class="close" onclick="closeCalcModal()">&times;</span>
+                <h3 id="calcModalTitle">Calculation</h3>
+                <div id="calcModalInputs">
+                    <!-- Dynamic content will be inserted here -->
+                </div>
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="executeModalCalc()">Calculate</button>
+                    <button class="btn btn-secondary" onclick="closeCalcModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+        
         <!-- Notification element -->
         <div id="notification" class="notification"></div>
     </div>
@@ -803,6 +1056,9 @@
         let inputMode = 'fraction';
         let editingItem = null; // Track what we're editing
         let cutIdCounter = 0; // For unique cut IDs
+        let memoryValue = 0; // Calculator memory
+        let value1 = 0; // First calculator value
+        let value2 = 0; // Second calculator value
         
         // Notification system to replace alerts
         function showNotification(message, type = 'error') {
@@ -824,7 +1080,7 @@
             
             if (tabName === 'calculator' || !tabName) {
                 precision = parseInt(document.getElementById('precision')?.value || 16);
-                fractionSelects = ['fraction', 'opFraction'];
+                fractionSelects = ['fraction1', 'fraction2'];
             } else if (tabName === 'cut') {
                 precision = parseInt(document.getElementById('cutPrecision')?.value || 16);
                 fractionSelects = ['cutFraction'];
@@ -867,6 +1123,34 @@
                     select.value = currentValue;
                 }
             });
+            
+            // Update calculator second input if it exists
+            if (tabName === 'calculator') {
+                const fraction2 = document.getElementById('fraction2');
+                if (fraction2) {
+                    const currentValue = fraction2.value;
+                    fraction2.innerHTML = '<option value="0">0</option>';
+                    for (let i = 1; i < precision; i++) {
+                        const decimal = i / precision;
+                        const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+                        const divisor = gcd(i, precision);
+                        const simplifiedNumerator = i / divisor;
+                        const simplifiedDenominator = precision / divisor;
+                        
+                        let displayText;
+                        if (simplifiedDenominator === precision) {
+                            displayText = `${i}/${precision}`;
+                        } else {
+                            displayText = `${simplifiedNumerator}/${simplifiedDenominator} (${i}/${precision})`;
+                        }
+                        
+                        fraction2.innerHTML += `<option value="${decimal}">${displayText}</option>`;
+                    }
+                    if (currentValue && Array.from(fraction2.options).some(opt => opt.value === currentValue)) {
+                        fraction2.value = currentValue;
+                    }
+                }
+            }
         }
         
         // Convert inches to feet/inches/fraction display
@@ -943,6 +1227,555 @@
         function setCurrentValue() {
             currentValueInches = getInputInches('feet', 'inches', 'fraction');
             document.getElementById('currentValue').textContent = inchesToDisplay(currentValueInches);
+        }
+        
+        // New calculator functions
+        function setOperation(op) {
+            currentOperation = op;
+            document.getElementById('input2Group').style.display = 'flex';
+            
+            // Update button highlighting
+            document.querySelectorAll('.calc-btn.operation').forEach(btn => btn.classList.remove('active'));
+            const btnMap = {'+': 'addBtn', '-': 'subBtn', '*': 'mulBtn', '/': 'divBtn'};
+            const activeBtn = document.getElementById(btnMap[op]);
+            if (activeBtn) activeBtn.classList.add('active');
+            
+            updateCalculation();
+        }
+        
+        function updateCalculation() {
+            value1 = getInputInches('feet1', 'inches1', 'fraction1');
+            value2 = getInputInches('feet2', 'inches2', 'fraction2');
+            
+            const equation = document.getElementById('calcEquation');
+            const result = document.getElementById('calcResult');
+            
+            if (value1 > 0) {
+                let equationText = inchesToDisplay(value1);
+                
+                if (currentOperation) {
+                    equationText += ` ${currentOperation} `;
+                    if (value2 > 0) {
+                        equationText += inchesToDisplay(value2);
+                        
+                        // Auto-calculate if we have both values
+                        let calcResult = 0;
+                        switch (currentOperation) {
+                            case '+': calcResult = value1 + value2; break;
+                            case '-': calcResult = value1 - value2; break;
+                            case '*': calcResult = value1 * value2; break;
+                            case '/': calcResult = value2 !== 0 ? value1 / value2 : 0; break;
+                        }
+                        
+                        if (calcResult !== 0) {
+                            result.textContent = inchesToDisplay(calcResult);
+                            result.classList.add('has-value');
+                        }
+                    }
+                }
+                equation.textContent = equationText;
+            } else {
+                equation.innerHTML = '&nbsp;';
+                result.textContent = '0"';
+                result.classList.remove('has-value');
+            }
+        }
+        
+        function calculateResult() {
+            // No longer needed - replaced by saveToHistory
+        }
+        
+        function saveToHistory() {
+            if (!currentOperation || value1 === 0) {
+                if (value1 > 0) {
+                    // Just save the current value
+                    addToCalcHistory({
+                        equation: inchesToDisplay(value1),
+                        result: value1,
+                        timestamp: new Date().toLocaleTimeString(),
+                        type: 'value'
+                    });
+                }
+                return;
+            }
+            
+            let result = 0;
+            switch (currentOperation) {
+                case '+': result = value1 + value2; break;
+                case '-': result = value1 - value2; break;
+                case '*': result = value1 * value2; break;
+                case '/': 
+                    if (value2 === 0) {
+                        showNotification('Cannot divide by zero');
+                        return;
+                    }
+                    result = value1 / value2;
+                    break;
+            }
+            
+            const timestamp = new Date().toLocaleTimeString();
+            const historyEntry = {
+                equation: `${inchesToDisplay(value1)} ${currentOperation} ${inchesToDisplay(value2)} = ${inchesToDisplay(result)}`,
+                result: result,
+                timestamp: timestamp,
+                type: 'calculation'
+            };
+            
+            addToCalcHistory(historyEntry);
+            
+            // Set result as new value1 for chaining calculations
+            const parts = inchesToParts(result);
+            document.getElementById('feet1').value = parts.feet || '';
+            document.getElementById('inches1').value = parts.inches || '';
+            document.getElementById('fraction1').value = parts.fraction || 0;
+            
+            // Clear second input
+            clearInput2();
+            currentOperation = null;
+            document.getElementById('input2Group').style.display = 'none';
+            document.querySelectorAll('.calc-btn.operation').forEach(btn => btn.classList.remove('active'));
+            
+            updateCalculation();
+        }
+        
+        function clearCalculator() {
+            document.getElementById('feet1').value = '';
+            document.getElementById('inches1').value = '';
+            document.getElementById('fraction1').value = '0';
+            clearInput2();
+            currentOperation = null;
+            value1 = 0;
+            value2 = 0;
+            document.getElementById('input2Group').style.display = 'none';
+            document.querySelectorAll('.calc-btn.operation').forEach(btn => btn.classList.remove('active'));
+            updateCalculation();
+        }
+        
+        function clearInput2() {
+            document.getElementById('feet2').value = '';
+            document.getElementById('inches2').value = '';
+            document.getElementById('fraction2').value = '0';
+        }
+        
+        function memoryOperation(op) {
+            const currentResult = value1 || 0;
+            
+            switch(op) {
+                case 'MC': // Memory Clear
+                    memoryValue = 0;
+                    break;
+                case 'MR': // Memory Recall
+                    if (memoryValue !== 0) {
+                        const parts = inchesToParts(memoryValue);
+                        document.getElementById('feet1').value = parts.feet || '';
+                        document.getElementById('inches1').value = parts.inches || '';
+                        document.getElementById('fraction1').value = parts.fraction || 0;
+                        updateCalculation();
+                    }
+                    break;
+                case 'M+': // Memory Add
+                    memoryValue += currentResult;
+                    break;
+                case 'M-': // Memory Subtract
+                    memoryValue -= currentResult;
+                    break;
+            }
+            
+            // Update memory indicator
+            const indicator = document.getElementById('memoryIndicator');
+            if (memoryValue !== 0) {
+                indicator.textContent = `M: ${inchesToDisplay(memoryValue)}`;
+            } else {
+                indicator.textContent = '';
+            }
+        }
+        
+        function addToCalcHistory(entry) {
+            const historyDiv = document.getElementById('history');
+            if (!historyDiv) return;
+            
+            const historyItem = document.createElement('div');
+            
+            // Style based on type
+            if (entry.type === 'conversion') {
+                historyItem.className = 'history-conversion history-clickable';
+                historyItem.innerHTML = `
+                    <div class="history-label">Conversion</div>
+                    <div class="history-equation">${entry.equation}</div>
+                    <span class="history-timestamp">${entry.timestamp}</span>
+                `;
+            } else if (entry.type === 'preset') {
+                historyItem.className = 'history-preset';
+                historyItem.innerHTML = `
+                    <div class="history-label">${entry.label || 'Calculation'}</div>
+                    <div class="history-equation">${entry.equation}</div>
+                    <span class="history-timestamp">${entry.timestamp}</span>
+                `;
+            } else {
+                historyItem.className = 'history-result history-clickable';
+                historyItem.innerHTML = `
+                    <div class="history-equation">${entry.equation}</div>
+                    <span class="history-timestamp">${entry.timestamp}</span>
+                `;
+            }
+            
+            // Make clickable if it has a result
+            if (entry.result !== undefined) {
+                historyItem.onclick = () => {
+                    const parts = inchesToParts(entry.result);
+                    document.getElementById('feet1').value = parts.feet || '';
+                    document.getElementById('inches1').value = parts.inches || '';
+                    document.getElementById('fraction1').value = parts.fraction || 0;
+                    updateCalculation();
+                };
+            }
+            
+            historyDiv.insertBefore(historyItem, historyDiv.firstChild);
+            
+            // Keep only last 15 entries
+            while (historyDiv.children.length > 15) {
+                historyDiv.removeChild(historyDiv.lastChild);
+            }
+        }
+        
+        // Conversion functions
+        function convertToDecimal() {
+            const inches = value1 || 0;
+            if (inches === 0) {
+                showNotification('Enter a value first');
+                return;
+            }
+            addToCalcHistory({
+                equation: `${inchesToDisplay(inches)} = ${inches.toFixed(4)}"`,
+                result: inches,
+                timestamp: new Date().toLocaleTimeString(),
+                type: 'conversion'
+            });
+        }
+        
+        function convertToFraction() {
+            const inches = value1 || 0;
+            if (inches === 0) {
+                showNotification('Enter a value first');
+                return;
+            }
+            addToCalcHistory({
+                equation: `${inches.toFixed(4)}" = ${inchesToDisplay(inches)}`,
+                result: inches,
+                timestamp: new Date().toLocaleTimeString(),
+                type: 'conversion'
+            });
+        }
+        
+        function convertToFeet() {
+            const inches = value1 || 0;
+            if (inches === 0) {
+                showNotification('Enter a value first');
+                return;
+            }
+            const feet = inches / 12;
+            addToCalcHistory({
+                equation: `${inchesToDisplay(inches)} = ${feet.toFixed(4)} feet`,
+                result: inches,
+                timestamp: new Date().toLocaleTimeString(),
+                type: 'conversion'
+            });
+        }
+        
+        function convertToInches() {
+            const inches = value1 || 0;
+            if (inches === 0) {
+                showNotification('Enter a value first');
+                return;
+            }
+            addToCalcHistory({
+                equation: `${inchesToDisplay(inches)} = ${inches.toFixed(4)} inches`,
+                result: inches,
+                timestamp: new Date().toLocaleTimeString(),
+                type: 'conversion'
+            });
+        }
+        
+        // Preset calculations with modal
+        let currentModalCalc = null;
+        
+        function showBoardFootCalc() {
+            currentModalCalc = 'boardfoot';
+            const modal = document.getElementById('calcModal');
+            const title = document.getElementById('calcModalTitle');
+            const inputs = document.getElementById('calcModalInputs');
+            
+            title.textContent = 'Board Foot Calculator';
+            inputs.innerHTML = `
+                <div class="input-group">
+                    <label>Thickness (inches):</label>
+                    <input type="number" id="modalThickness" step="0.25" class="wide-input" placeholder="1">
+                </div>
+                <div class="input-group">
+                    <label>Width (inches):</label>
+                    <input type="number" id="modalWidth" step="0.25" class="wide-input" placeholder="6">
+                </div>
+                <div class="input-group">
+                    <label>Length (feet):</label>
+                    <input type="number" id="modalLength" step="0.5" class="wide-input" placeholder="8">
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+        
+        function calculateGoldenRatio() {
+            const inches = value1 || 0;
+            if (inches === 0) {
+                showNotification('Enter a value first');
+                return;
+            }
+            
+            const golden = 1.618033988749895;
+            const result = inches * golden;
+            
+            addToCalcHistory({
+                equation: `${inchesToDisplay(inches)} × φ (1.618) = ${inchesToDisplay(result)}`,
+                result: result,
+                timestamp: new Date().toLocaleTimeString(),
+                type: 'preset',
+                label: 'Golden Ratio'
+            });
+            
+            // Set result as new value1
+            const parts = inchesToParts(result);
+            document.getElementById('feet1').value = parts.feet || '';
+            document.getElementById('inches1').value = parts.inches || '';
+            document.getElementById('fraction1').value = parts.fraction || 0;
+            updateCalculation();
+        }
+        
+        function showSpacingCalc() {
+            const totalLength = value1 || 0;
+            if (totalLength === 0) {
+                showNotification('Enter total length first');
+                return;
+            }
+            
+            currentModalCalc = 'spacing';
+            const modal = document.getElementById('calcModal');
+            const title = document.getElementById('calcModalTitle');
+            const inputs = document.getElementById('calcModalInputs');
+            
+            title.textContent = 'Equal Spacing Calculator';
+            inputs.innerHTML = `
+                <div style="margin-bottom: 10px;">Total length: <strong>${inchesToDisplay(totalLength)}</strong></div>
+                <div class="input-group">
+                    <label>Number of spaces:</label>
+                    <input type="number" id="modalSpaces" min="2" class="wide-input" placeholder="4">
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+        
+        function showAngleCalc() {
+            currentModalCalc = 'angle';
+            const modal = document.getElementById('calcModal');
+            const title = document.getElementById('calcModalTitle');
+            const inputs = document.getElementById('calcModalInputs');
+            
+            title.textContent = 'Miter & Angle Calculator';
+            inputs.innerHTML = `
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: bold;">Calculator Type:</label>
+                    <div style="margin-top: 10px;">
+                        <label style="display: block; margin-bottom: 8px;">
+                            <input type="radio" name="calcType" value="polygon" checked onchange="updateAngleCalcType()">
+                            Polygon (equal-sided shape)
+                        </label>
+                        <label style="display: block;">
+                            <input type="radio" name="calcType" value="single" onchange="updateAngleCalcType()">
+                            Single angle cut
+                        </label>
+                    </div>
+                </div>
+                
+                <div id="polygonInputs">
+                    <div class="input-group">
+                        <label>Number of sides:</label>
+                        <input type="number" id="modalSides" min="3" class="wide-input" placeholder="8">
+                    </div>
+                    <p style="font-size: 12px; color: #666;">Examples: 4 = square, 6 = hexagon, 8 = octagon</p>
+                </div>
+                
+                <div id="singleAngleInputs" style="display: none;">
+                    <div class="input-group">
+                        <label>Miter angle (degrees):</label>
+                        <input type="number" id="modalAngle" step="0.5" class="wide-input" placeholder="45">
+                    </div>
+                    <div class="input-group">
+                        <label>Board width:</label>
+                        <input type="number" id="modalBoardWidth" step="0.0625" class="wide-input" placeholder="3.5">
+                        <span>inches</span>
+                    </div>
+                    <div class="input-group">
+                        <label>Known side:</label>
+                        <select id="modalKnownSide" onchange="updateAngleLabels()">
+                            <option value="long">Long side (back)</option>
+                            <option value="short">Short side (front)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label id="knownLengthLabel">Long side length:</label>
+                        <input type="number" id="modalKnownLength" step="0.0625" class="wide-input" placeholder="12">
+                        <span>inches</span>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <svg width="250" height="120" viewBox="0 0 250 120">
+                            <!-- Board outline -->
+                            <rect x="30" y="30" width="180" height="50" fill="#D2691E" stroke="#8B4513" stroke-width="2"/>
+                            <!-- Miter cut line -->
+                            <line x1="150" y1="30" x2="210" y2="80" stroke="#FFD700" stroke-width="3"/>
+                            <line x1="152" y1="30" x2="212" y2="80" stroke="#000" stroke-width="1" stroke-dasharray="3,3"/>
+                            <!-- Dimension lines -->
+                            <line x1="30" y1="20" x2="150" y2="20" stroke="#333" stroke-width="1"/>
+                            <line x1="30" y1="20" x2="30" y2="25" stroke="#333" stroke-width="1"/>
+                            <line x1="150" y1="20" x2="150" y2="25" stroke="#333" stroke-width="1"/>
+                            <line x1="30" y1="90" x2="210" y2="90" stroke="#333" stroke-width="1"/>
+                            <line x1="30" y1="85" x2="30" y2="90" stroke="#333" stroke-width="1"/>
+                            <line x1="210" y1="85" x2="210" y2="90" stroke="#333" stroke-width="1"/>
+                            <!-- Width indicator -->
+                            <line x1="220" y1="30" x2="220" y2="80" stroke="#666" stroke-width="1"/>
+                            <line x1="215" y1="30" x2="220" y2="30" stroke="#666" stroke-width="1"/>
+                            <line x1="215" y1="80" x2="220" y2="80" stroke="#666" stroke-width="1"/>
+                            <!-- Labels -->
+                            <text x="90" y="15" text-anchor="middle" font-size="11" fill="#333">Short (front)</text>
+                            <text x="120" y="105" text-anchor="middle" font-size="11" fill="#333">Long (back)</text>
+                            <text x="180" y="60" text-anchor="middle" font-size="10" fill="#000">Cut</text>
+                            <text x="235" y="58" text-anchor="middle" font-size="9" fill="#666">Width</text>
+                        </svg>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+        
+        function updateAngleCalcType() {
+            const calcType = document.querySelector('input[name="calcType"]:checked').value;
+            document.getElementById('polygonInputs').style.display = calcType === 'polygon' ? 'block' : 'none';
+            document.getElementById('singleAngleInputs').style.display = calcType === 'single' ? 'block' : 'none';
+        }
+        
+        function updateAngleLabels() {
+            const knownSide = document.getElementById('modalKnownSide').value;
+            const label = document.getElementById('knownLengthLabel');
+            label.textContent = knownSide === 'long' ? 'Long side length:' : 'Short side length:';
+        }
+        
+        function closeCalcModal() {
+            document.getElementById('calcModal').style.display = 'none';
+            currentModalCalc = null;
+        }
+        
+        function executeModalCalc() {
+            if (currentModalCalc === 'boardfoot') {
+                const thickness = parseFloat(document.getElementById('modalThickness')?.value) || 0;
+                const width = parseFloat(document.getElementById('modalWidth')?.value) || 0;
+                const length = parseFloat(document.getElementById('modalLength')?.value) || 0;
+                
+                if (thickness && width && length) {
+                    const boardFeet = (thickness * width * length) / 12;
+                    addToCalcHistory({
+                        equation: `Board Feet: ${thickness}" × ${width}" × ${length}' = ${boardFeet.toFixed(2)} BF`,
+                        result: boardFeet * 12, // Convert to inches for consistency
+                        timestamp: new Date().toLocaleTimeString(),
+                        type: 'preset',
+                        label: 'Board Feet'
+                    });
+                    closeCalcModal();
+                } else {
+                    showNotification('Please fill in all fields');
+                }
+            } else if (currentModalCalc === 'spacing') {
+                const spaces = parseInt(document.getElementById('modalSpaces')?.value) || 0;
+                if (spaces > 0) {
+                    const spacing = value1 / spaces;
+                    addToCalcHistory({
+                        equation: `${inchesToDisplay(value1)} ÷ ${spaces} spaces = ${inchesToDisplay(spacing)} each`,
+                        result: spacing,
+                        timestamp: new Date().toLocaleTimeString(),
+                        type: 'preset',
+                        label: 'Equal Spacing'
+                    });
+                    closeCalcModal();
+                } else {
+                    showNotification('Please enter number of spaces');
+                }
+            } else if (currentModalCalc === 'angle') {
+                const calcType = document.querySelector('input[name="calcType"]:checked').value;
+                
+                if (calcType === 'polygon') {
+                    const sides = parseInt(document.getElementById('modalSides')?.value) || 0;
+                    if (sides > 2) {
+                        const miterAngle = 180 / sides;
+                        const sawAngle = 90 - miterAngle;
+                        addToCalcHistory({
+                            equation: `${sides}-sided: Miter ${miterAngle}°, Saw ${sawAngle}°`,
+                            result: miterAngle,
+                            timestamp: new Date().toLocaleTimeString(),
+                            type: 'preset',
+                            label: 'Polygon Angles'
+                        });
+                        closeCalcModal();
+                    } else {
+                        showNotification('Please enter valid number of sides');
+                    }
+                } else {
+                    // Single angle calculation
+                    const angle = parseFloat(document.getElementById('modalAngle')?.value) || 0;
+                    const boardWidth = parseFloat(document.getElementById('modalBoardWidth')?.value) || 0;
+                    const knownSide = document.getElementById('modalKnownSide').value;
+                    const knownLength = parseFloat(document.getElementById('modalKnownLength')?.value) || 0;
+                    
+                    if (angle > 0 && angle < 90 && boardWidth > 0 && knownLength > 0) {
+                        const angleRad = (angle * Math.PI) / 180;
+                        let longSide, shortSide;
+                        
+                        // For a miter cut across a board:
+                        // The difference between long and short sides = board width / tan(angle)
+                        const difference = boardWidth / Math.tan(angleRad);
+                        
+                        if (knownSide === 'long') {
+                            longSide = knownLength;
+                            shortSide = longSide - difference;
+                            
+                            if (shortSide <= 0) {
+                                showNotification('This cut would result in no material on the short side');
+                                return;
+                            }
+                        } else {
+                            shortSide = knownLength;
+                            longSide = shortSide + difference;
+                        }
+                        
+                        addToCalcHistory({
+                            equation: `${angle}° miter on ${boardWidth}" board: Long ${inchesToDisplay(longSide)}, Short ${inchesToDisplay(shortSide)} (Δ ${inchesToDisplay(difference)})`,
+                            result: knownSide === 'long' ? shortSide : longSide,
+                            timestamp: new Date().toLocaleTimeString(),
+                            type: 'preset',
+                            label: 'Miter Cut'
+                        });
+                        
+                        // Set the calculated value as new input
+                        const parts = inchesToParts(knownSide === 'long' ? shortSide : longSide);
+                        document.getElementById('feet1').value = parts.feet || '';
+                        document.getElementById('inches1').value = parts.inches || '';
+                        document.getElementById('fraction1').value = parts.fraction || 0;
+                        updateCalculation();
+                        
+                        closeCalcModal();
+                    } else {
+                        showNotification('Please enter valid angle (0-90°), board width, and length');
+                    }
+                }
+            }
         }
         
         function setCutValue() {
@@ -1537,12 +2370,17 @@
         window.onclick = function(event) {
             const helpModal = document.getElementById('helpModal');
             const editModal = document.getElementById('editModal');
+            const calcModal = document.getElementById('calcModal');
             if (event.target === helpModal) {
                 helpModal.style.display = 'none';
             }
             if (event.target === editModal) {
                 editModal.style.display = 'none';
                 editingItem = null;
+            }
+            if (event.target === calcModal) {
+                calcModal.style.display = 'none';
+                currentModalCalc = null;
             }
         }
         
