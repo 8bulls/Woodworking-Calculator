@@ -300,6 +300,323 @@
             color: #8B4513;
         }
         
+        /* Woodworking Calculators Styles */
+        .woodworking-calcs-section {
+            margin-bottom: 20px;
+        }
+        
+        .calc-card {
+            border: 2px solid #D2B48C;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: white;
+            overflow: visible;
+        }
+        
+        .calc-card-header {
+            background: linear-gradient(135deg, #D2B48C, #F5DEB3);
+            padding: 12px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            user-select: none;
+            transition: background 0.3s;
+        }
+        
+        .calc-card-header:hover {
+            background: linear-gradient(135deg, #C8A882, #F0D0A0);
+        }
+        
+        .calc-icon {
+            font-size: 18px;
+        }
+        
+        .calc-title {
+            flex: 1;
+            font-weight: bold;
+            color: #8B4513;
+        }
+        
+        .calc-arrow {
+            transition: transform 0.3s;
+            color: #8B4513;
+        }
+        
+        .calc-card.expanded .calc-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .calc-card-content {
+            display: none;
+            padding: 20px;
+            background: #fefefe;
+        }
+        
+        .calc-card.expanded .calc-card-content {
+            display: block;
+        }
+        
+        .calc-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .calc-visual {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            overflow: visible;
+        }
+        
+        .calc-inputs {
+            margin-bottom: 20px;
+        }
+        
+        .input-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        
+        .input-row label {
+            min-width: 120px;
+            font-weight: bold;
+            color: #8B4513;
+        }
+        
+        .input-row input {
+            flex: 1;
+            max-width: 150px;
+            padding: 8px;
+            border: 2px solid #D2B48C;
+            border-radius: 4px;
+        }
+        
+        .input-row .unit {
+            font-size: 12px;
+            color: #666;
+            min-width: 50px;
+        }
+        
+        .calc-result {
+            background: #f8f9fa;
+            border: 1px solid #D2B48C;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .result-display {
+            font-size: 16px;
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+        
+        /* Board Foot Calculator Visuals */
+        .lumber-diagram {
+            width: 200px;
+            height: 120px;
+            position: relative;
+            background: #f0f0f0;
+            border: 2px solid #8B4513;
+            border-radius: 4px;
+        }
+        
+        .lumber-piece {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #DEB887, #D2B48C);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .lumber-piece::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px dashed #8B4513;
+            border-radius: 2px;
+        }
+        
+        .dimension-label {
+            position: absolute;
+            background: rgba(255,255,255,0.9);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #8B4513;
+        }
+        
+        .dimension-label.top {
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .dimension-label.left {
+            left: -35px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+        }
+        
+        .dimension-label.right {
+            right: -35px;
+            top: 50%;
+            transform: translateY(-50%) rotate(90deg);
+        }
+        
+        /* Golden Ratio Calculator Visuals */
+        .golden-diagram {
+            width: 200px;
+            height: 120px;
+        }
+        
+        .golden-rectangle {
+            width: 100%;
+            height: 100%;
+            border: 2px solid #8B4513;
+            border-radius: 4px;
+            display: flex;
+            position: relative;
+        }
+        
+        .golden-small {
+            flex: 1;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border-right: 1px solid #8B4513;
+        }
+        
+        .golden-large {
+            flex: 1.618;
+            background: linear-gradient(135deg, #F0E68C, #DDD700);
+        }
+        
+        .ratio-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            color: #8B4513;
+            font-size: 14px;
+        }
+        
+        .calc-mode-selector {
+            display: flex;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 2px solid #D2B48C;
+        }
+        
+        .mode-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            background: #f8f9fa;
+            color: #8B4513;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .mode-btn.active {
+            background: #8B4513;
+            color: white;
+        }
+        
+        /* Spacing Calculator Visuals */
+        .spacing-diagram {
+            width: 250px;
+            height: 60px;
+            position: relative;
+        }
+        
+        .spacing-line {
+            width: 100%;
+            height: 20px;
+            background: #DEB887;
+            border: 2px solid #8B4513;
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+        }
+        
+        .spacing-marker {
+            width: 3px;
+            height: 40px;
+            background: #8B4513;
+            border-radius: 1px;
+            position: relative;
+        }
+        
+        .spacing-marker::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -2px;
+            width: 7px;
+            height: 10px;
+            background: #654321;
+            border-radius: 2px;
+        }
+        
+        /* Angle Calculator Visuals */
+        .angle-diagram {
+            width: 120px;
+            height: 120px;
+        }
+        
+        .polygon-shape {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            border: 2px solid #8B4513;
+            border-radius: 4px;
+            background: linear-gradient(45deg, #F5DEB3, #D2B48C);
+        }
+        
+        .angle-line {
+            position: absolute;
+            width: 2px;
+            height: 40px;
+            background: #8B4513;
+            transform-origin: bottom center;
+        }
+        
+        .preset-buttons {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .preset-btn {
+            padding: 6px 12px;
+            border: 1px solid #D2B48C;
+            background: #f8f9fa;
+            color: #8B4513;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        
+        .preset-btn:hover {
+            background: #8B4513;
+            color: white;
+        }
+        
         .preset-section {
             background: #f9f9f9;
             border: 2px solid #D2B48C;
@@ -489,6 +806,129 @@
         }
         
         /* Removed old project management bar styles - now using cleaner status indicators */
+        
+        /* Enhanced Spacing Calculator Results */
+        .result-summary {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+        
+        .summary-label {
+            font-weight: bold;
+            color: #495057;
+            font-size: 12px;
+        }
+        
+        .summary-value {
+            color: #212529;
+            font-family: monospace;
+            font-size: 13px;
+        }
+        
+        .divider-marks {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .marks-header {
+            font-weight: bold;
+            color: #856404;
+            font-size: 13px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        .divider-mark-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(133, 100, 4, 0.2);
+        }
+        
+        .divider-mark-row:last-child {
+            border-bottom: none;
+        }
+        
+        .divider-label {
+            font-weight: bold;
+            color: #856404;
+            font-size: 12px;
+            flex: 1;
+        }
+        
+        .mark-left, .mark-right {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #856404;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-family: monospace;
+            font-size: 11px;
+            font-weight: bold;
+            margin: 0 2px;
+        }
+        
+        .mark-left {
+            color: #d73502;
+        }
+        
+        .mark-right {
+            color: #0f5132;
+        }
+        
+        .mark-center {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #6c757d;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-family: monospace;
+            font-size: 11px;
+            font-weight: bold;
+            color: #495057;
+            margin: 0 2px;
+        }
+        
+        /* Force scrollbar visibility */
+        .spacing-diagram-container {
+            scrollbar-width: auto !important;
+            scrollbar-color: #007bff #f8f9fa !important;
+        }
+        
+        .spacing-diagram-container::-webkit-scrollbar {
+            height: 12px !important;
+        }
+        
+        .spacing-diagram-container::-webkit-scrollbar-track {
+            background: #f8f9fa !important;
+            border-radius: 6px !important;
+        }
+        
+        .spacing-diagram-container::-webkit-scrollbar-thumb {
+            background: #007bff !important;
+            border-radius: 6px !important;
+        }
+        
+        .spacing-diagram-container::-webkit-scrollbar-thumb:hover {
+            background: #0056b3 !important;
+        }
         
         /* Visual Layout Styles */
         .board-visualization {
@@ -1179,13 +1619,199 @@
                 </div>
             </div>
             
-            <div class="preset-section">
-                <h4>Woodworking Calculations</h4>
-                <div class="preset-grid">
-                    <button class="btn btn-secondary" onclick="showBoardFootCalc()">Board Foot Calculator</button>
-                    <button class="btn btn-secondary" onclick="calculateGoldenRatio()">Golden Ratio (1.618)</button>
-                    <button class="btn btn-secondary" onclick="showSpacingCalc()">Equal Spacing Calculator</button>
-                    <button class="btn btn-secondary" onclick="showAngleCalc()">Miter Angle Calculator</button>
+            <div class="woodworking-calcs-section">
+                <h4 style="color: #8B4513; margin-bottom: 15px;">🔨 Woodworking Calculators</h4>
+                
+                <!-- Board Foot Calculator -->
+                <div class="calc-card" id="boardFootCard">
+                    <div class="calc-card-header" onclick="toggleCalcCard('boardFoot')">
+                        <span class="calc-icon">📏</span>
+                        <span class="calc-title">Board Foot Calculator</span>
+                        <span class="calc-arrow">▼</span>
+                    </div>
+                    <div class="calc-card-content" id="boardFootContent">
+                        <div class="calc-description">Calculate board feet from lumber dimensions</div>
+                        <div class="calc-visual">
+                            <div class="lumber-diagram" id="boardDiagram">
+                                <div class="lumber-piece">
+                                    <span class="dimension-label top">Length</span>
+                                    <span class="dimension-label left">Width</span>
+                                    <span class="dimension-label right">Thickness</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="calc-inputs">
+                            <div class="input-row">
+                                <label>Thickness:</label>
+                                <input type="number" id="bfThickness" step="0.25" min="0.1" placeholder="1" oninput="calculateBoardFeet()">
+                                <span class="unit">inches</span>
+                            </div>
+                            <div class="input-row">
+                                <label>Width:</label>
+                                <input type="number" id="bfWidth" step="0.25" min="0.1" placeholder="6" oninput="calculateBoardFeet()">
+                                <span class="unit">inches</span>
+                            </div>
+                            <div class="input-row">
+                                <label>Length:</label>
+                                <input type="number" id="bfLength" step="1" min="0.1" placeholder="96" oninput="calculateBoardFeet()">
+                                <span class="unit">inches</span>
+                            </div>
+                            <div class="input-row">
+                                <label>Quantity:</label>
+                                <input type="number" id="bfQuantity" min="1" placeholder="1" value="1" oninput="calculateBoardFeet()">
+                                <span class="unit">pieces</span>
+                            </div>
+                        </div>
+                        <div class="calc-result">
+                            <div class="result-display" id="boardFootResult">Enter dimensions to calculate</div>
+                            <button class="btn btn-primary btn-sm" onclick="saveBoardFeetToHistory()">Save to History</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Golden Ratio Calculator -->
+                <div class="calc-card" id="goldenRatioCard">
+                    <div class="calc-card-header" onclick="toggleCalcCard('goldenRatio')">
+                        <span class="calc-icon">✨</span>
+                        <span class="calc-title">Golden Ratio Calculator</span>
+                        <span class="calc-arrow">▼</span>
+                    </div>
+                    <div class="calc-card-content" id="goldenRatioContent">
+                        <div class="calc-description">Find proportional dimensions using the golden ratio (1.618)</div>
+                        <div class="calc-visual">
+                            <div class="golden-diagram">
+                                <div class="golden-rectangle">
+                                    <div class="golden-small"></div>
+                                    <div class="golden-large"></div>
+                                    <span class="ratio-label">1 : 1.618</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="calc-inputs">
+                            <div class="calc-mode-selector">
+                                <button class="mode-btn active" onclick="setGoldenMode('short')" id="goldenModeShort">Short → Long</button>
+                                <button class="mode-btn" onclick="setGoldenMode('long')" id="goldenModeLong">Long → Short</button>
+                            </div>
+                            <div class="input-row">
+                                <label id="goldenInputLabel">Known dimension:</label>
+                                <input type="number" id="grInput" step="0.1" placeholder="10" oninput="calculateGoldenRatioNew()">
+                                <span class="unit">inches</span>
+                            </div>
+                        </div>
+                        <div class="calc-result">
+                            <div class="result-display" id="grResult">Enter a dimension to calculate</div>
+                            <button class="btn btn-primary btn-sm" onclick="saveGoldenRatioToHistory()">Save to History</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equal Spacing Calculator -->
+                <div class="calc-card" id="spacingCard">
+                    <div class="calc-card-header" onclick="toggleCalcCard('spacing')">
+                        <span class="calc-icon">📐</span>
+                        <span class="calc-title">Equal Spacing Calculator</span>
+                        <span class="calc-arrow">▼</span>
+                    </div>
+                    <div class="calc-card-content" id="spacingContent">
+                        <div class="calc-description">Calculate equal spacing for shelves, slats, or divisions</div>
+                        <div class="calc-inputs">
+                            <div class="input-row">
+                                <label>Total Length:</label>
+                                <input type="number" id="spTotalLength" step="0.25" placeholder="48" oninput="calculateSpacing()">
+                                <span class="unit">inches</span>
+                            </div>
+                            <div class="input-row">
+                                <label>Number of Spaces:</label>
+                                <input type="number" id="spNumSpaces" min="2" placeholder="5" oninput="calculateSpacing()">
+                                <span class="unit">spaces</span>
+                            </div>
+                            <div class="input-row">
+                                <label>Material Thickness:</label>
+                                <input type="number" id="spacingThickness" step="0.25" placeholder="0.75" oninput="calculateSpacing()">
+                                <span class="unit">inches</span>
+                            </div>
+                        </div>
+                        <div class="calc-result">
+                            <div class="result-display" id="spResult">Enter dimensions to calculate</div>
+                            <button class="btn btn-primary btn-sm" onclick="saveSpacingToHistory()">Save to History</button>
+                        </div>
+                        <div class="calc-visual">
+                            <div class="spacing-diagram" id="spacingDiagram">
+                                <div style="text-align: center; color: #666; padding: 20px;">Enter dimensions to see spacing diagram</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Miter Angle Calculator -->
+                <div class="calc-card" id="angleCard">
+                    <div class="calc-card-header" onclick="toggleCalcCard('angle')">
+                        <span class="calc-icon">📐</span>
+                        <span class="calc-title">Miter Angle Calculator</span>
+                        <span class="calc-arrow">▼</span>
+                    </div>
+                    <div class="calc-card-content" id="angleContent">
+                        <div class="calc-description">Calculate miter angles for polygons and frames</div>
+                        <div class="calc-visual">
+                            <div class="angle-diagram" id="angleDiagram">
+                                <div class="polygon-shape" id="polygonShape">
+                                    <div class="angle-line"></div>
+                                    <div class="angle-line"></div>
+                                    <div class="angle-line"></div>
+                                    <div class="angle-line"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="calc-inputs">
+                            <div class="calc-mode-selector">
+                                <button class="mode-btn active" onclick="setMiterMode('polygon')" id="miterModePolygon">Polygon</button>
+                                <button class="mode-btn" onclick="setMiterMode('single')" id="miterModeSingle">Single Cut</button>
+                            </div>
+                            
+                            <div id="polygonMiterInputs">
+                                <div class="input-row">
+                                    <label>Number of Sides:</label>
+                                    <input type="number" id="maSides" min="3" max="20" placeholder="4" value="4" oninput="calculateMiterAngle()">
+                                    <span class="unit">sides</span>
+                                </div>
+                                <div class="preset-buttons">
+                                    <button class="preset-btn" onclick="setAngleSides(3)">Triangle</button>
+                                    <button class="preset-btn" onclick="setAngleSides(4)">Square</button>
+                                    <button class="preset-btn" onclick="setAngleSides(6)">Hexagon</button>
+                                    <button class="preset-btn" onclick="setAngleSides(8)">Octagon</button>
+                                </div>
+                            </div>
+                            
+                            <div id="singleMiterInputs" style="display: none;">
+                                <div class="input-row">
+                                    <label>Miter Angle:</label>
+                                    <input type="number" id="singleMiterAngle" step="0.5" placeholder="45" oninput="calculateSingleMiter()">
+                                    <span class="unit">degrees</span>
+                                </div>
+                                <div class="input-row">
+                                    <label>Board Width:</label>
+                                    <input type="number" id="singleBoardWidth" step="0.0625" placeholder="3.5" oninput="calculateSingleMiter()">
+                                    <span class="unit">inches</span>
+                                </div>
+                                <div class="input-row">
+                                    <label>Known Side:</label>
+                                    <select id="singleKnownSide" onchange="calculateSingleMiter()">
+                                        <option value="long">Long side (back)</option>
+                                        <option value="short">Short side (front)</option>
+                                    </select>
+                                </div>
+                                <div class="input-row">
+                                    <label id="singleInputLabel">Long side length:</label>
+                                    <input type="number" id="singleInputLength" step="0.0625" placeholder="12" oninput="calculateSingleMiter()">
+                                    <span class="unit">inches</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="calc-result">
+                            <div class="result-display" id="maResult">Miter angle: 45°</div>
+                            <button class="btn btn-primary btn-sm" onclick="saveAngleToHistory()">Save to History</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -3895,6 +4521,657 @@
             }
         }
         
+        // New Calculator Card Functions
+        function toggleCalcCard(cardType) {
+            const content = document.getElementById(cardType + 'Content');
+            const arrow = document.querySelector(`#${cardType}Card .calc-arrow`);
+            
+            if (content.style.display === 'none' || content.style.display === '') {
+                content.style.display = 'block';
+                arrow.textContent = '▲';
+            } else {
+                content.style.display = 'none';
+                arrow.textContent = '▼';
+            }
+        }
+
+        function calculateBoardFeet() {
+            const thickness = parseFloat(document.getElementById('bfThickness').value) || 0;
+            const width = parseFloat(document.getElementById('bfWidth').value) || 0;
+            const length = parseFloat(document.getElementById('bfLength').value) || 0;
+            const quantity = parseFloat(document.getElementById('bfQuantity').value) || 1;
+            const resultDiv = document.getElementById('boardFootResult');
+            
+            // Validate inputs - prevent negative numbers
+            if (thickness < 0 || width < 0 || length < 0 || quantity < 0) {
+                resultDiv.innerHTML = '<div class="result-placeholder">Please enter positive numbers only</div>';
+                updateBoardDiagram(0, 0, 0, 0);
+                return;
+            }
+            
+            if (thickness === 0 || width === 0 || length === 0) {
+                resultDiv.innerHTML = '<div class="result-placeholder">Enter dimensions above</div>';
+                updateBoardDiagram(0, 0, 0, 0);
+                return;
+            }
+            
+            const boardFeet = (thickness * width * length * quantity) / 144;
+            const totalCubicInches = thickness * width * length * quantity;
+            
+            resultDiv.innerHTML = `
+                <div class="result-value">${boardFeet.toFixed(3)} board feet</div>
+                <div class="result-details">
+                    ${quantity} piece${quantity !== 1 ? 's' : ''} × ${thickness}" × ${width}" × ${length}"<br>
+                    Total volume: ${totalCubicInches.toLocaleString()} cubic inches
+                </div>
+            `;
+            
+            // Update visual diagram
+            updateBoardDiagram(thickness, width, length, quantity);
+        }
+
+        function updateBoardDiagram(thickness, width, length, quantity) {
+            const diagram = document.getElementById('boardDiagram');
+            if (!diagram) return;
+            
+            if (thickness === 0 || width === 0 || length === 0 || quantity === 0) {
+                diagram.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">Enter dimensions to see board visualization</div>';
+                return;
+            }
+            
+            // Constrain diagram size to prevent layout issues
+            const maxWidth = 250;
+            const maxHeight = 60;
+            
+            // Calculate proper aspect ratio and scale
+            const aspectRatio = length / width;
+            let diagramWidth, diagramHeight;
+            
+            if (aspectRatio >= 1) {
+                // Length is longer - use full width, scale height
+                diagramWidth = Math.min(maxWidth, length * 2);
+                diagramHeight = Math.min(maxHeight, diagramWidth / aspectRatio);
+            } else {
+                // Width is longer - use full height, scale width  
+                diagramHeight = Math.min(maxHeight, width * 2);
+                diagramWidth = Math.min(maxWidth, diagramHeight * aspectRatio);
+            }
+            
+            // Ensure minimum sizes for visibility
+            diagramWidth = Math.max(diagramWidth, 60);
+            diagramHeight = Math.max(diagramHeight, 20);
+            
+            diagram.innerHTML = `
+                <div style="text-align: center; margin: 15px 0;">
+                    <div class="lumber-piece" style="width: ${diagramWidth}px; height: ${diagramHeight}px; position: relative; margin: 0 auto; background: linear-gradient(45deg, #D2B48C, #F5DEB3); border: 2px solid #8B4513; border-radius: 4px; display: inline-block;">
+                        <div style="font-size: 10px; position: absolute; top: -15px; left: 0; color: #8B4513; white-space: nowrap;">L: ${length}"</div>
+                        <div style="font-size: 10px; position: absolute; left: -40px; top: 50%; transform: translateY(-50%); color: #8B4513; white-space: nowrap;">W: ${width}"</div>
+                        <div style="font-size: 10px; position: absolute; right: -40px; top: 50%; transform: translateY(-50%); color: #8B4513; white-space: nowrap;">T: ${thickness}"</div>
+                        ${quantity > 1 ? `<div style="font-size: 10px; position: absolute; bottom: -15px; right: 0; color: #8B4513; white-space: nowrap;">×${quantity}</div>` : ''}
+                    </div>
+                    <div style="font-size: 11px; color: #666; margin-top: 10px;">
+                        ${thickness}" × ${width}" × ${length}" ${quantity > 1 ? `(${quantity} pieces)` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        let currentGoldenMode = 'short'; // Default mode: short to long
+        
+        function setGoldenMode(mode) {
+            currentGoldenMode = mode;
+            document.getElementById('goldenModeShort').classList.toggle('active', mode === 'short');
+            document.getElementById('goldenModeLong').classList.toggle('active', mode === 'long');
+            
+            const label = document.getElementById('goldenInputLabel');
+            label.textContent = mode === 'short' ? 'Short dimension:' : 'Long dimension:';
+            
+            calculateGoldenRatioNew(); // Recalculate with new mode
+        }
+
+        function calculateGoldenRatioNew() {
+            const input = parseFloat(document.getElementById('grInput').value) || 0;
+            const resultDiv = document.getElementById('grResult');
+            
+            if (input === 0) {
+                resultDiv.innerHTML = '<div class="result-placeholder">Enter a dimension above</div>';
+                updateGoldenRectangle(0, 0);
+                return;
+            }
+            
+            const phi = 1.618033988749895;
+            let result, description;
+            
+            if (currentGoldenMode === 'short') {
+                result = input * phi;
+                description = `If short side is ${input}", long side should be ${result.toFixed(3)}"`;
+                updateGoldenRectangle(input, result);
+            } else {
+                result = input / phi;
+                description = `If long side is ${input}", short side should be ${result.toFixed(3)}"`;
+                updateGoldenRectangle(result, input);
+            }
+            
+            resultDiv.innerHTML = `
+                <div class="result-value">${result.toFixed(3)}"</div>
+                <div class="result-details">${description}<br>Ratio: 1:1.618 (φ)</div>
+            `;
+        }
+
+        function updateGoldenRectangle(short, long) {
+            const diagram = document.getElementById('goldenDiagram');
+            if (!diagram) return;
+            
+            if (short === 0 || long === 0) {
+                diagram.innerHTML = '<div class="golden-rectangle-placeholder">Enter a dimension to see visual</div>';
+                return;
+            }
+            
+            const maxSize = 200;
+            const scale = Math.min(maxSize / long, maxSize / short);
+            const shortScaled = Math.max(short * scale, 30);
+            const longScaled = Math.max(long * scale, 30);
+            
+            diagram.innerHTML = `
+                <div class="golden-rectangle" style="width: ${longScaled}px; height: ${shortScaled}px; position: relative; margin: 10px auto;">
+                    <div style="font-size: 10px; position: absolute; top: -15px; left: 0; color: #8B4513;">${long.toFixed(1)}"</div>
+                    <div style="font-size: 10px; position: absolute; left: -30px; top: 50%; transform: translateY(-50%); color: #8B4513;">${short.toFixed(1)}"</div>
+                    <div class="golden-square" style="width: ${shortScaled}px; height: ${shortScaled}px;"></div>
+                </div>
+            `;
+        }
+
+        function calculateSpacing() {
+            const totalLength = parseFloat(document.getElementById('spTotalLength').value) || 0;
+            const numSpaces = parseInt(document.getElementById('spNumSpaces').value) || 0;
+            const thickness = parseFloat(document.getElementById('spacingThickness').value) || 0;
+            const resultDiv = document.getElementById('spResult');
+            
+            if (totalLength === 0 || numSpaces === 0) {
+                resultDiv.innerHTML = '<div class="result-placeholder">Enter values above</div>';
+                updateSpacingDiagram(0, 0, 0, 0);
+                return;
+            }
+            
+            let spacing, dividerInfo, description;
+            
+            if (thickness === 0) {
+                // Simple equal spacing without thickness
+                spacing = totalLength / numSpaces;
+                const centerMarks = Array.from({length: numSpaces - 1}, (_, i) => ((i + 1) * spacing).toFixed(3));
+                
+                resultDiv.innerHTML = `
+                    <div class="result-value">${spacing.toFixed(3)}" per space</div>
+                    <div class="result-summary">
+                        <div class="summary-row">
+                            <span class="summary-label">Total Length:</span>
+                            <span class="summary-value">${totalLength}"</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Spaces:</span>
+                            <span class="summary-value">${numSpaces} equal spaces</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Material:</span>
+                            <span class="summary-value">No thickness (center marks)</span>
+                        </div>
+                    </div>
+                    ${centerMarks.length > 0 ? `
+                    <div class="divider-marks">
+                        <div class="marks-header">📐 Center Marking Guide:</div>
+                        ${centerMarks.map((mark, i) => `
+                            <div class="divider-mark-row">
+                                <span class="divider-label">Mark ${i + 1}:</span>
+                                <span class="mark-center">Center ${mark}"</span>
+                            </div>
+                        `).join('')}
+                    </div>` : ''}
+                `;
+            } else {
+                // Account for material thickness
+                const numDividers = numSpaces - 1;
+                const totalThickness = numDividers * thickness;
+                const availableSpace = totalLength - totalThickness;
+                
+                if (availableSpace <= 0) {
+                    resultDiv.innerHTML = '<div class="result-placeholder">Material too thick for this spacing</div>';
+                    updateSpacingDiagram(0, 0, 0, 0);
+                    return;
+                }
+                
+                spacing = availableSpace / numSpaces;
+                
+                // Calculate divider positions (left and right edges)
+                dividerInfo = [];
+                let currentPos = 0;
+                
+                for (let i = 0; i < numDividers; i++) {
+                    currentPos += spacing; // Move to end of space
+                    const leftEdge = currentPos;
+                    const rightEdge = currentPos + thickness;
+                    dividerInfo.push({
+                        number: i + 1,
+                        leftEdge: leftEdge.toFixed(3),
+                        rightEdge: rightEdge.toFixed(3)
+                    });
+                    currentPos += thickness; // Move past divider
+                }
+                
+                resultDiv.innerHTML = `
+                    <div class="result-value">${spacing.toFixed(3)}" per space</div>
+                    <div class="result-summary">
+                        <div class="summary-row">
+                            <span class="summary-label">Total Length:</span>
+                            <span class="summary-value">${totalLength}"</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Spaces:</span>
+                            <span class="summary-value">${numSpaces} @ ${spacing.toFixed(3)}" each</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Dividers:</span>
+                            <span class="summary-value">${numDividers} @ ${thickness}" thick</span>
+                        </div>
+                    </div>
+                    <div class="divider-marks">
+                        <div class="marks-header">📏 Divider Marking Guide:</div>
+                        ${dividerInfo.map(div => `
+                            <div class="divider-mark-row">
+                                <span class="divider-label">Divider ${div.number}:</span>
+                                <span class="mark-left">Left ${div.leftEdge}"</span>
+                                <span class="mark-right">Right ${div.rightEdge}"</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            // Update visual spacing diagram
+            updateSpacingDiagram(totalLength, numSpaces, spacing, thickness);
+        }
+
+        function updateSpacingDiagram(total, spaces, spacing, thickness = 0) {
+            const diagram = document.getElementById('spacingDiagram');
+            if (!diagram) return;
+            
+            if (total === 0 || spaces === 0) {
+                diagram.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">Enter dimensions to see spacing diagram</div>';
+                return;
+            }
+            
+            // Force wider diagrams to test scrolling
+            const containerMaxWidth = 400; // Reduced to force scrolling sooner
+            const minDiagramWidth = 300; 
+            const maxDiagramWidth = 1000; // Allow much wider for scrolling
+            
+            // Calculate diagram width - be more aggressive about making it wide
+            let diagramWidth = Math.max(minDiagramWidth, total * 8); // Increased multiplier
+            if (diagramWidth > maxDiagramWidth) diagramWidth = maxDiagramWidth;
+            
+            const diagramHeight = 100;
+            const scale = diagramWidth / total;
+            
+            // Determine if we need horizontal scrolling
+            const needsScroll = diagramWidth > containerMaxWidth;
+            
+            console.log(`Spacing diagram: total=${total}", spaces=${spaces}, diagramWidth=${diagramWidth}px, containerMax=${containerMaxWidth}px, needsScroll=${needsScroll}`);
+            
+            let html;
+            if (needsScroll) {
+                // Force scrollbar with explicit styles and CSS class
+                html = `<div class="spacing-diagram-container" style="width: 100%; max-width: ${containerMaxWidth}px; overflow-x: scroll; overflow-y: hidden; padding: 15px 10px 25px 10px; border: 2px solid #007bff; border-radius: 8px; margin: 15px auto; background: #f8f9fa;">
+                    <div style="text-align: center; font-size: 12px; color: #007bff; font-weight: bold; margin-bottom: 10px;">← Scroll horizontally to see full diagram (${diagramWidth}px wide) →</div>
+                    <div style="width: ${diagramWidth}px; height: ${diagramHeight}px; position: relative; border: 2px solid #8B4513; background: #fff; border-radius: 4px; margin: 0;">`;
+            } else {
+                html = `<div style="padding: 10px; margin: 10px auto; text-align: center;">
+                    <div style="position: relative; width: ${diagramWidth}px; height: ${diagramHeight}px; border: 2px solid #8B4513; margin: 0 auto; background: #f8f9fa; display: inline-block;">`;
+            }
+            
+            // Add measurement line at top with better spacing
+            html += `<div style="position: absolute; top: -20px; left: 0; font-size: 11px; color: #8B4513; font-weight: bold;">0"</div>`;
+            html += `<div style="position: absolute; top: -20px; right: 0; font-size: 11px; color: #8B4513; font-weight: bold;">${total}"</div>`;
+            
+            if (thickness === 0) {
+                // Simple spacing without material thickness - clean center marks
+                const fontSize = Math.max(10, Math.min(14, diagramWidth / (spaces * 6)));
+                
+                // Draw center marks with proper spacing
+                for (let i = 1; i < spaces; i++) {
+                    const position = (i * spacing) * scale;
+                    
+                    // Vertical mark line
+                    html += `<div style="position: absolute; left: ${position - 1}px; top: 10px; width: 2px; height: 80px; background: #dc3545; border-radius: 1px;"></div>`;
+                    
+                    // Mark measurement with clean background
+                    html += `<div style="position: absolute; left: ${position - 25}px; bottom: -35px; width: 50px; text-align: center; font-size: 11px; color: #dc3545; font-weight: bold; background: rgba(255,255,255,0.9); border: 1px solid #dc3545; border-radius: 3px; padding: 2px;">${(i * spacing).toFixed(1)}"</div>`;
+                }
+                
+                // Add space labels with better positioning
+                for (let i = 0; i < spaces; i++) {
+                    const centerPos = (i * spacing + spacing / 2) * scale;
+                    const spaceWidth = spacing * scale;
+                    
+                    // Clean space indicators
+                    html += `<div style="position: absolute; left: ${centerPos - 20}px; top: 30px; width: 40px; text-align: center; font-size: ${fontSize}px; color: #28a745; font-weight: bold; background: rgba(40, 167, 69, 0.1); border: 1px solid #28a745; border-radius: 15px; padding: 3px;">S${i + 1}</div>`;
+                }
+            } else {
+                // Spacing with material thickness - clean professional version
+                const numDividers = spaces - 1;
+                let currentPos = 0;
+                const fontSize = Math.max(10, Math.min(13, diagramWidth / (spaces * 8)));
+                
+                for (let i = 0; i < spaces; i++) {
+                    // Draw space with clean styling
+                    const spaceStart = currentPos * scale;
+                    const spaceEnd = (currentPos + spacing) * scale;
+                    const spaceWidth = spaceEnd - spaceStart;
+                    
+                    // Clean space visualization
+                    html += `<div style="position: absolute; left: ${spaceStart}px; top: 25px; width: ${spaceWidth}px; height: 50px; background: linear-gradient(135deg, rgba(40, 167, 69, 0.3), rgba(40, 167, 69, 0.1)); border: 2px solid #28a745; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></div>`;
+                    
+                    // Space label with better positioning
+                    const labelLeft = spaceStart + spaceWidth/2 - 15;
+                    html += `<div style="position: absolute; left: ${labelLeft}px; top: 45px; width: 30px; text-align: center; font-size: ${fontSize}px; color: #28a745; font-weight: bold; background: rgba(255,255,255,0.9); border-radius: 10px; padding: 2px;">S${i + 1}</div>`;
+                    
+                    currentPos += spacing;
+                    
+                    // Draw divider if not last space
+                    if (i < numDividers) {
+                        const dividerStart = currentPos * scale;
+                        const dividerEnd = (currentPos + thickness) * scale;
+                        const dividerWidth = dividerEnd - dividerStart;
+                        
+                        // Clean divider visualization
+                        html += `<div style="position: absolute; left: ${dividerStart}px; top: 20px; width: ${dividerWidth}px; height: 60px; background: linear-gradient(135deg, #8B4513, #A0522D); border: 2px solid #654321; border-radius: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div>`;
+                        
+                        // Clean left edge mark - no rotation, proper spacing
+                        html += `<div style="position: absolute; left: ${dividerStart - 20}px; bottom: -40px; width: 40px; text-align: center; font-size: 10px; color: #8B4513; font-weight: bold; background: rgba(255,255,255,0.9); border: 1px solid #8B4513; border-radius: 3px; padding: 2px;">L${currentPos.toFixed(1)}"</div>`;
+                        
+                        // Clean right edge mark - no rotation, proper spacing
+                        html += `<div style="position: absolute; left: ${dividerEnd - 20}px; bottom: -40px; width: 40px; text-align: center; font-size: 10px; color: #654321; font-weight: bold; background: rgba(255,255,255,0.9); border: 1px solid #654321; border-radius: 3px; padding: 2px;">R${(currentPos + thickness).toFixed(1)}"</div>`;
+                        
+                        // Divider number label
+                        html += `<div style="position: absolute; left: ${dividerStart + dividerWidth/2 - 8}px; top: 45px; width: 16px; text-align: center; font-size: 10px; color: white; font-weight: bold; background: rgba(139, 69, 19, 0.8); border-radius: 8px; padding: 1px;">D${i + 1}</div>`;
+                        
+                        currentPos += thickness;
+                    }
+                }
+            }
+            
+            html += '</div></div>';
+            diagram.innerHTML = html;
+        }
+
+        function calculateMiterAngle() {
+            const sides = parseInt(document.getElementById('maSides').value) || 0;
+            const resultDiv = document.getElementById('maResult');
+            
+            if (sides < 3) {
+                resultDiv.innerHTML = '<div class="result-placeholder">Enter number of sides (minimum 3)</div>';
+                return;
+            }
+            
+            const interiorAngle = ((sides - 2) * 180) / sides;
+            const miterAngle = (180 - interiorAngle) / 2;
+            const tableAngle = 90 - miterAngle;
+            
+            resultDiv.innerHTML = `
+                <div class="result-value">${miterAngle.toFixed(2)}° miter cut</div>
+                <div class="result-details">
+                    Interior angle: ${interiorAngle.toFixed(1)}°<br>
+                    Table saw angle: ${tableAngle.toFixed(2)}°<br>
+                    Each piece needs ${miterAngle.toFixed(2)}° cut on both ends
+                </div>
+            `;
+            
+            // Update visual polygon
+            updatePolygonDiagram(sides, miterAngle);
+        }
+
+        function updatePolygonDiagram(sides, miterAngle) {
+            const diagram = document.getElementById('polygonDiagram');
+            const radius = 40;
+            const centerX = 60;
+            const centerY = 60;
+            
+            let points = '';
+            for (let i = 0; i < sides; i++) {
+                const angle = (i * 2 * Math.PI) / sides - Math.PI / 2;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                points += `${x},${y} `;
+            }
+            
+            diagram.innerHTML = `
+                <svg width="120" height="120" style="display: block; margin: 0 auto;">
+                    <polygon points="${points}" stroke="#8B4513" stroke-width="2" fill="none"/>
+                    <text x="${centerX}" y="${centerY + 5}" text-anchor="middle" font-size="10" fill="#8B4513">
+                        ${sides} sides
+                    </text>
+                </svg>
+            `;
+        }
+
+        function saveBoardFeetToHistory() {
+            const thickness = parseFloat(document.getElementById('bfThickness').value) || 0;
+            const width = parseFloat(document.getElementById('bfWidth').value) || 0;
+            const length = parseFloat(document.getElementById('bfLength').value) || 0;
+            const quantity = parseFloat(document.getElementById('bfQuantity').value) || 1;
+            
+            if (thickness === 0 || width === 0 || length === 0) {
+                showNotification('Enter dimensions first');
+                return;
+            }
+            
+            const boardFeet = (thickness * width * length * quantity) / 144;
+            
+            addToCalcHistory({
+                equation: `${quantity}pc × ${thickness}" × ${width}" × ${length}" ÷ 144 = ${boardFeet.toFixed(3)} bf`,
+                result: boardFeet,
+                timestamp: new Date().toLocaleTimeString(),
+                type: 'preset',
+                label: 'Board Feet'
+            });
+            
+            showNotification('Added to calculator history');
+        }
+
+        function saveGoldenRatioToHistory() {
+            const input = parseFloat(document.getElementById('grInput').value) || 0;
+            
+            if (input === 0) {
+                showNotification('Enter a dimension first');
+                return;
+            }
+            
+            const phi = 1.618033988749895;
+            let shortSide, longSide, equation;
+            
+            if (currentGoldenMode === 'short') {
+                shortSide = input;
+                longSide = input * phi;
+                equation = `Golden Ratio: Short ${shortSide}" → Long ${longSide.toFixed(3)}"`;
+            } else {
+                longSide = input;
+                shortSide = input / phi;
+                equation = `Golden Ratio: Long ${longSide}" → Short ${shortSide.toFixed(3)}"`;
+            }
+            
+            addToCalcHistory({
+                equation: equation,
+                result: currentGoldenMode === 'short' ? longSide : shortSide,
+                timestamp: new Date().toLocaleTimeString(),
+                type: 'preset',
+                label: 'Golden Ratio'
+            });
+            
+            showNotification('Added to calculator history');
+        }
+
+        function setAngleSides(sides) {
+            document.getElementById('maSides').value = sides;
+            calculateMiterAngle();
+        }
+
+        let currentMiterMode = 'polygon'; // Default mode: polygon
+        
+        function setMiterMode(mode) {
+            currentMiterMode = mode;
+            document.getElementById('miterModePolygon').classList.toggle('active', mode === 'polygon');
+            document.getElementById('miterModeSingle').classList.toggle('active', mode === 'single');
+            
+            const polygonInputs = document.getElementById('polygonMiterInputs');
+            const singleInputs = document.getElementById('singleMiterInputs');
+            
+            if (mode === 'polygon') {
+                polygonInputs.style.display = 'block';
+                singleInputs.style.display = 'none';
+                calculateMiterAngle();
+            } else {
+                polygonInputs.style.display = 'none';
+                singleInputs.style.display = 'block';
+                calculateSingleMiter();
+            }
+        }
+
+        function calculateSingleMiter() {
+            const angle = parseFloat(document.getElementById('singleMiterAngle').value) || 0;
+            const boardWidth = parseFloat(document.getElementById('singleBoardWidth').value) || 0;
+            const knownSide = document.getElementById('singleKnownSide').value;
+            const inputLength = parseFloat(document.getElementById('singleInputLength').value) || 0;
+            const resultDiv = document.getElementById('maResult');
+            
+            if (angle === 0 || boardWidth === 0 || inputLength === 0) {
+                resultDiv.innerHTML = '<div class="result-placeholder">Enter all values above</div>';
+                return;
+            }
+            
+            const angleRad = (angle * Math.PI) / 180;
+            const offset = boardWidth * Math.tan(angleRad);
+            
+            let shortSide, longSide;
+            if (knownSide === 'long') {
+                longSide = inputLength;
+                shortSide = longSide - offset;
+            } else {
+                shortSide = inputLength;
+                longSide = shortSide + offset;
+            }
+            
+            resultDiv.innerHTML = `
+                <div class="result-value">${angle}° miter cut</div>
+                <div class="result-details">
+                    Long side (back): ${longSide.toFixed(3)}"<br>
+                    Short side (front): ${shortSide.toFixed(3)}"<br>
+                    Offset: ${offset.toFixed(3)}"
+                </div>
+            `;
+            
+            // Update label for the input
+            const label = document.getElementById('singleInputLabel');
+            label.textContent = knownSide === 'long' ? 'Long side length:' : 'Short side length:';
+        }
+
+        function saveAngleToHistory() {
+            if (currentMiterMode === 'polygon') {
+                const sides = parseInt(document.getElementById('maSides').value) || 0;
+                
+                if (sides < 3) {
+                    showNotification('Enter number of sides first');
+                    return;
+                }
+                
+                const interiorAngle = ((sides - 2) * 180) / sides;
+                const miterAngle = (180 - interiorAngle) / 2;
+                
+                addToCalcHistory({
+                    equation: `${sides}-sided polygon: ${miterAngle.toFixed(2)}° miter cuts`,
+                    result: miterAngle,
+                    timestamp: new Date().toLocaleTimeString(),
+                    type: 'preset',
+                    label: 'Miter Angle'
+                });
+            } else {
+                const angle = parseFloat(document.getElementById('singleMiterAngle').value) || 0;
+                const boardWidth = parseFloat(document.getElementById('singleBoardWidth').value) || 0;
+                const inputLength = parseFloat(document.getElementById('singleInputLength').value) || 0;
+                
+                if (angle === 0 || boardWidth === 0 || inputLength === 0) {
+                    showNotification('Enter all values first');
+                    return;
+                }
+                
+                const angleRad = (angle * Math.PI) / 180;
+                const offset = boardWidth * Math.tan(angleRad);
+                
+                addToCalcHistory({
+                    equation: `${angle}° miter: ${inputLength}" → offset ${offset.toFixed(3)}"`,
+                    result: offset,
+                    timestamp: new Date().toLocaleTimeString(),
+                    type: 'preset',
+                    label: 'Single Miter'
+                });
+            }
+            
+            showNotification('Added to calculator history');
+        }
+
+        function saveSpacingToHistory() {
+            const totalLength = parseFloat(document.getElementById('spTotalLength').value) || 0;
+            const numSpaces = parseInt(document.getElementById('spNumSpaces').value) || 0;
+            const thickness = parseFloat(document.getElementById('spacingThickness').value) || 0;
+            
+            if (totalLength === 0 || numSpaces === 0) {
+                showNotification('Enter dimensions first');
+                return;
+            }
+            
+            let spacing, equation;
+            
+            if (thickness === 0) {
+                spacing = totalLength / numSpaces;
+                const centerMarks = Array.from({length: numSpaces - 1}, (_, i) => ((i + 1) * spacing).toFixed(2));
+                // Keep history concise to avoid character limits
+                equation = `${totalLength}" ÷ ${numSpaces} spaces = ${spacing.toFixed(3)}" each`;
+                if (centerMarks.length > 0 && centerMarks.length <= 6) {
+                    equation += ` | Marks: ${centerMarks.join('", ')}"`;
+                } else if (centerMarks.length > 6) {
+                    equation += ` | ${centerMarks.length} marks from ${centerMarks[0]}" to ${centerMarks[centerMarks.length-1]}"`;
+                }
+            } else {
+                const numDividers = numSpaces - 1;
+                const totalThickness = numDividers * thickness;
+                const availableSpace = totalLength - totalThickness;
+                spacing = availableSpace / numSpaces;
+                
+                // Calculate left edges for dividers - limit for history
+                const leftEdges = [];
+                let currentPos = 0;
+                for (let i = 0; i < numDividers; i++) {
+                    currentPos += spacing;
+                    leftEdges.push(currentPos.toFixed(2));
+                    currentPos += thickness;
+                }
+                
+                equation = `${totalLength}" - ${numDividers}×${thickness}" = ${spacing.toFixed(3)}" spaces`;
+                if (leftEdges.length > 0 && leftEdges.length <= 5) {
+                    equation += ` | Left edges: ${leftEdges.join('", ')}"`;
+                } else if (leftEdges.length > 5) {
+                    equation += ` | ${leftEdges.length} dividers: ${leftEdges[0]}" to ${leftEdges[leftEdges.length-1]}"`;
+                }
+            }
+            
+            addToCalcHistory({
+                equation: equation,
+                result: spacing,
+                timestamp: new Date().toLocaleTimeString(),
+                type: 'preset',
+                label: 'Equal Spacing'
+            });
+            
+            showNotification('Added to calculator history');
+        }
+
         // Initialize all precisions
         updatePrecision('calculator');
         updatePrecision('cut');
@@ -3915,6 +5192,12 @@
                     setTimeout(autoSave, 1000); // Auto-save 1 second after change
                 });
             });
+            
+            // Initialize calculator cards with default values
+            calculateBoardFeet();
+            calculateGoldenRatioNew();
+            calculateSpacing();
+            calculateMiterAngle();
             
             console.log('Woodworking Calculator with Visual Project Management loaded!');
         });
