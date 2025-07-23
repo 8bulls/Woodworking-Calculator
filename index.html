@@ -473,6 +473,234 @@
             transform: translateY(-50%) rotate(90deg);
         }
         
+        /* Lumber Cart Styles */
+        .cart-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+        
+        .cart-section {
+            margin-top: 20px;
+            border-top: 2px solid #D2B48C;
+            padding-top: 15px;
+        }
+        
+        .cart-display {
+            background: #f8f9fa;
+            border: 1px solid #D2B48C;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #D2B48C;
+        }
+        
+        .cart-header h4 {
+            margin: 0;
+            color: #8B4513;
+        }
+        
+        .cart-items {
+            margin-bottom: 15px;
+        }
+        
+        .cart-item {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .cart-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .cart-item-header strong {
+            color: #8B4513;
+            font-size: 16px;
+        }
+        
+        .btn-remove {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+        
+        .btn-remove:hover {
+            background: #c82333;
+        }
+        
+        .cart-item-details {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .cart-item-pricing {
+            font-size: 14px;
+            color: #495057;
+        }
+        
+        .cart-summary {
+            background: #e9f7ef;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        
+        .cart-bottom-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .cart-bottom-actions button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        /* Shopping History Styles */
+        .shopping-history-section {
+            margin-top: 15px;
+            border-top: 1px solid #D2B48C;
+            padding-top: 15px;
+        }
+        
+        .shopping-history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .shopping-history-header h4 {
+            margin: 0;
+            color: #8B4513;
+        }
+        
+        .shopping-history-display {
+            background: #f8f9fa;
+            border: 1px solid #D2B48C;
+            border-radius: 6px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .shopping-history-item {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .shopping-history-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .shopping-history-header-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .shopping-history-date {
+            font-weight: bold;
+            color: #8B4513;
+        }
+        
+        .shopping-history-summary {
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .shopping-history-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .btn-xs {
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+        
+        .shopping-history-details {
+            background: #f8f9fa;
+            border-radius: 4px;
+            padding: 8px;
+            margin-top: 8px;
+            font-size: 13px;
+            font-family: monospace;
+            white-space: pre-line;
+            display: none;
+        }
+        
+        .shopping-history-details.expanded {
+            display: block;
+        }
+        
+        /* Frame Builder Cut List Styles */
+        .cut-list {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border: 1px solid #D2B48C;
+            border-radius: 4px;
+        }
+        
+        .cut-list h4 {
+            margin: 0 0 8px 0;
+            color: #8B4513;
+            font-size: 14px;
+        }
+        
+        .cut-item {
+            padding: 4px 0;
+            color: #2F1B14;
+            font-weight: bold;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .cut-item:last-child {
+            border-bottom: none;
+        }
+        
+        .cut-item small {
+            color: #6c757d;
+            font-weight: normal;
+            font-size: 12px;
+        }
+        
         /* Golden Ratio Calculator Visuals */
         .golden-diagram {
             width: 200px;
@@ -534,9 +762,11 @@
         
         /* Spacing Calculator Visuals */
         .spacing-diagram {
-            width: 250px;
-            height: 60px;
+            width: 100%;
+            height: 240px;
             position: relative;
+            overflow-y: auto;
+            overflow-x: auto;
         }
         
         .spacing-line {
@@ -1626,11 +1856,11 @@
                 <div class="calc-card" id="boardFootCard">
                     <div class="calc-card-header" onclick="toggleCalcCard('boardFoot')">
                         <span class="calc-icon">📏</span>
-                        <span class="calc-title">Board Foot Calculator</span>
+                        <span class="calc-title">Lumber Shopping Cart</span>
                         <span class="calc-arrow">▼</span>
                     </div>
                     <div class="calc-card-content" id="boardFootContent">
-                        <div class="calc-description">Calculate board feet from lumber dimensions</div>
+                        <div class="calc-description">Calculate lumber costs by species and build a shopping cart</div>
                         <div class="calc-visual">
                             <div class="lumber-diagram" id="boardDiagram">
                                 <div class="lumber-piece">
@@ -1641,6 +1871,33 @@
                             </div>
                         </div>
                         <div class="calc-inputs">
+                            <div class="input-row">
+                                <label>Wood Species:</label>
+                                <select id="bfSpecies" onchange="handleSpeciesChange()">
+                                    <option value="">Select species...</option>
+                                    <option value="White Oak">White Oak</option>
+                                    <option value="Red Oak">Red Oak</option>
+                                    <option value="Maple">Maple</option>
+                                    <option value="Cherry">Cherry</option>
+                                    <option value="Walnut">Walnut</option>
+                                    <option value="Poplar">Poplar</option>
+                                    <option value="Pine">Pine</option>
+                                    <option value="Cedar">Cedar</option>
+                                    <option value="Mahogany">Mahogany</option>
+                                    <option value="Ash">Ash</option>
+                                    <option value="Birch">Birch</option>
+                                    <option value="Custom">Custom Species</option>
+                                </select>
+                            </div>
+                            <div class="input-row" id="customSpeciesRow" style="display: none;">
+                                <label>Custom Species:</label>
+                                <input type="text" id="bfCustomSpecies" placeholder="Enter species name" oninput="calculateBoardFeet()">
+                            </div>
+                            <div class="input-row">
+                                <label>Price per Board Foot:</label>
+                                <input type="number" id="bfPrice" step="0.01" min="0" placeholder="8.99" oninput="calculateBoardFeet()">
+                                <span class="unit">$/BF</span>
+                            </div>
                             <div class="input-row">
                                 <label>Thickness:</label>
                                 <input type="number" id="bfThickness" step="0.25" min="0.1" placeholder="1" oninput="calculateBoardFeet()">
@@ -1663,8 +1920,33 @@
                             </div>
                         </div>
                         <div class="calc-result">
-                            <div class="result-display" id="boardFootResult">Enter dimensions to calculate</div>
-                            <button class="btn btn-primary btn-sm" onclick="saveBoardFeetToHistory()">Save to History</button>
+                            <div class="result-display" id="boardFootResult">Enter item details above</div>
+                            <div class="cart-actions">
+                                <button class="btn btn-primary btn-sm" onclick="addToLumberCart()">Add to Cart</button>
+                                <button class="btn btn-secondary btn-sm" onclick="clearBoardFootForm()">Clear Form</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Cart Display Section -->
+                        <div class="cart-section">
+                            <div id="lumberCartDisplay" class="cart-display">
+                                <div class="result-placeholder">No items in cart</div>
+                            </div>
+                            <div class="cart-bottom-actions">
+                                <button class="btn btn-success btn-sm" onclick="saveLumberCartToHistory()" id="saveCartBtn" disabled>Save Cart to History</button>
+                                <button class="btn btn-secondary btn-sm" onclick="toggleShoppingHistory()" id="toggleHistoryBtn">Show Shopping History</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Shopping History Section -->
+                        <div class="shopping-history-section" id="shoppingHistorySection" style="display: none;">
+                            <div class="shopping-history-header">
+                                <h4>Shopping History</h4>
+                                <button class="btn btn-secondary btn-sm" onclick="clearShoppingHistory()">Clear History</button>
+                            </div>
+                            <div id="shoppingHistoryDisplay" class="shopping-history-display">
+                                <div class="result-placeholder">No shopping history</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1694,8 +1976,28 @@
                             </div>
                             <div class="input-row">
                                 <label id="goldenInputLabel">Known dimension:</label>
-                                <input type="number" id="grInput" step="0.1" placeholder="10" oninput="calculateGoldenRatioNew()">
-                                <span class="unit">inches</span>
+                                <input type="number" id="grFeet" placeholder="0" min="0" class="wide-input" onchange="calculateGoldenRatioNew()">
+                                <span>ft</span>
+                                <input type="number" id="grInches" placeholder="0" min="0" max="11" class="wide-input" onchange="calculateGoldenRatioNew()">
+                                <span>in</span>
+                                <select id="grFraction" style="width: 120px;" onchange="calculateGoldenRatioNew()">
+                                    <option value="0">0</option>
+                                    <option value="0.0625">1/16"</option>
+                                    <option value="0.125">1/8"</option>
+                                    <option value="0.1875">3/16"</option>
+                                    <option value="0.25">1/4"</option>
+                                    <option value="0.3125">5/16"</option>
+                                    <option value="0.375">3/8"</option>
+                                    <option value="0.4375">7/16"</option>
+                                    <option value="0.5">1/2"</option>
+                                    <option value="0.5625">9/16"</option>
+                                    <option value="0.625">5/8"</option>
+                                    <option value="0.6875">11/16"</option>
+                                    <option value="0.75">3/4"</option>
+                                    <option value="0.8125">13/16"</option>
+                                    <option value="0.875">7/8"</option>
+                                    <option value="0.9375">15/16"</option>
+                                </select>
                             </div>
                         </div>
                         <div class="calc-result">
@@ -1705,15 +2007,15 @@
                     </div>
                 </div>
 
-                <!-- Equal Spacing Calculator -->
+                <!-- Shelf & Division Calculator -->
                 <div class="calc-card" id="spacingCard">
                     <div class="calc-card-header" onclick="toggleCalcCard('spacing')">
                         <span class="calc-icon">📐</span>
-                        <span class="calc-title">Equal Spacing Calculator</span>
+                        <span class="calc-title">Shelf & Division Calculator</span>
                         <span class="calc-arrow">▼</span>
                     </div>
                     <div class="calc-card-content" id="spacingContent">
-                        <div class="calc-description">Calculate equal spacing for shelves, slats, or divisions</div>
+                        <div class="calc-description">Calculate shelf spacing and divisions for woodworking projects</div>
                         <div class="calc-inputs">
                             <div class="input-row">
                                 <label>Total Length:</label>
@@ -1765,6 +2067,7 @@
                         <div class="calc-inputs">
                             <div class="calc-mode-selector">
                                 <button class="mode-btn active" onclick="setMiterMode('polygon')" id="miterModePolygon">Polygon</button>
+                                <button class="mode-btn" onclick="setMiterMode('frame')" id="miterModeFrame">Frame Builder</button>
                                 <button class="mode-btn" onclick="setMiterMode('single')" id="miterModeSingle">Single Cut</button>
                             </div>
                             
@@ -1790,8 +2093,28 @@
                                 </div>
                                 <div class="input-row">
                                     <label>Board Width:</label>
-                                    <input type="number" id="singleBoardWidth" step="0.0625" placeholder="3.5" oninput="calculateSingleMiter()">
-                                    <span class="unit">inches</span>
+                                    <input type="number" id="singleBoardWidthFeet" placeholder="0" min="0" class="wide-input" onchange="calculateSingleMiter()">
+                                    <span>ft</span>
+                                    <input type="number" id="singleBoardWidthInches" placeholder="3" min="0" max="11" class="wide-input" onchange="calculateSingleMiter()">
+                                    <span>in</span>
+                                    <select id="singleBoardWidthFraction" style="width: 120px;" onchange="calculateSingleMiter()">
+                                        <option value="0">0</option>
+                                        <option value="0.0625">1/16"</option>
+                                        <option value="0.125">1/8"</option>
+                                        <option value="0.1875">3/16"</option>
+                                        <option value="0.25">1/4"</option>
+                                        <option value="0.3125">5/16"</option>
+                                        <option value="0.375">3/8"</option>
+                                        <option value="0.4375">7/16"</option>
+                                        <option value="0.5" selected>1/2"</option>
+                                        <option value="0.5625">9/16"</option>
+                                        <option value="0.625">5/8"</option>
+                                        <option value="0.6875">11/16"</option>
+                                        <option value="0.75">3/4"</option>
+                                        <option value="0.8125">13/16"</option>
+                                        <option value="0.875">7/8"</option>
+                                        <option value="0.9375">15/16"</option>
+                                    </select>
                                 </div>
                                 <div class="input-row">
                                     <label>Known Side:</label>
@@ -1802,8 +2125,160 @@
                                 </div>
                                 <div class="input-row">
                                     <label id="singleInputLabel">Long side length:</label>
-                                    <input type="number" id="singleInputLength" step="0.0625" placeholder="12" oninput="calculateSingleMiter()">
-                                    <span class="unit">inches</span>
+                                    <input type="number" id="singleInputLengthFeet" placeholder="1" min="0" class="wide-input" onchange="calculateSingleMiter()">
+                                    <span>ft</span>
+                                    <input type="number" id="singleInputLengthInches" placeholder="0" min="0" max="11" class="wide-input" onchange="calculateSingleMiter()">
+                                    <span>in</span>
+                                    <select id="singleInputLengthFraction" style="width: 120px;" onchange="calculateSingleMiter()">
+                                        <option value="0" selected>0</option>
+                                        <option value="0.0625">1/16"</option>
+                                        <option value="0.125">1/8"</option>
+                                        <option value="0.1875">3/16"</option>
+                                        <option value="0.25">1/4"</option>
+                                        <option value="0.3125">5/16"</option>
+                                        <option value="0.375">3/8"</option>
+                                        <option value="0.4375">7/16"</option>
+                                        <option value="0.5">1/2"</option>
+                                        <option value="0.5625">9/16"</option>
+                                        <option value="0.625">5/8"</option>
+                                        <option value="0.6875">11/16"</option>
+                                        <option value="0.75">3/4"</option>
+                                        <option value="0.8125">13/16"</option>
+                                        <option value="0.875">7/8"</option>
+                                        <option value="0.9375">15/16"</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Frame Builder Inputs -->
+                            <div id="frameMiterInputs" style="display: none;">
+                                <div class="input-row">
+                                    <label>Frame Shape:</label>
+                                    <select id="frameShapeSides" onchange="updateFrameDimensionLabels(); calculateFrameBuilder()">
+                                        <option value="4" selected>Rectangle/Square</option>
+                                        <option value="3">Triangle</option>
+                                        <option value="6">Hexagon</option>
+                                        <option value="8">Octagon</option>
+                                        <option value="5">Pentagon</option>
+                                        <option value="7">Heptagon</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="input-row">
+                                    <label>Material Width:</label>
+                                    <input type="number" id="frameMaterialWidthFeet" placeholder="0" min="0" class="wide-input" onchange="calculateFrameBuilder()">
+                                    <span>ft</span>
+                                    <input type="number" id="frameMaterialWidthInches" placeholder="2" min="0" max="11" class="wide-input" onchange="calculateFrameBuilder()">
+                                    <span>in</span>
+                                    <select id="frameMaterialWidthFraction" style="width: 120px;" onchange="calculateFrameBuilder()">
+                                        <option value="0">0</option>
+                                        <option value="0.0625">1/16"</option>
+                                        <option value="0.125">1/8"</option>
+                                        <option value="0.1875">3/16"</option>
+                                        <option value="0.25" selected>1/4"</option>
+                                        <option value="0.3125">5/16"</option>
+                                        <option value="0.375">3/8"</option>
+                                        <option value="0.4375">7/16"</option>
+                                        <option value="0.5">1/2"</option>
+                                        <option value="0.5625">9/16"</option>
+                                        <option value="0.625">5/8"</option>
+                                        <option value="0.6875">11/16"</option>
+                                        <option value="0.75">3/4"</option>
+                                        <option value="0.8125">13/16"</option>
+                                        <option value="0.875">7/8"</option>
+                                        <option value="0.9375">15/16"</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="input-row">
+                                    <label>Target Dimensions:</label>
+                                    <select id="frameDimensionType" onchange="updateFrameDimensionLabels(); calculateFrameBuilder()">
+                                        <option value="inside" selected>Inside Dimensions (opening size)</option>
+                                        <option value="outside">Outside Dimensions (frame outer edge)</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Rectangle/Square Dimensions -->
+                                <div id="frameRectangleDimensions">
+                                    <div class="input-row">
+                                        <label id="frameWidthLabel">Inside Width:</label>
+                                        <input type="number" id="frameWidthFeet" placeholder="0" min="0" class="wide-input" onchange="calculateFrameBuilder()">
+                                        <span>ft</span>
+                                        <input type="number" id="frameWidthInches" placeholder="8" min="0" max="11" class="wide-input" onchange="calculateFrameBuilder()">
+                                        <span>in</span>
+                                        <select id="frameWidthFraction" style="width: 120px;" onchange="calculateFrameBuilder()">
+                                            <option value="0" selected>0</option>
+                                            <option value="0.0625">1/16"</option>
+                                            <option value="0.125">1/8"</option>
+                                            <option value="0.1875">3/16"</option>
+                                            <option value="0.25">1/4"</option>
+                                            <option value="0.3125">5/16"</option>
+                                            <option value="0.375">3/8"</option>
+                                            <option value="0.4375">7/16"</option>
+                                            <option value="0.5">1/2"</option>
+                                            <option value="0.5625">9/16"</option>
+                                            <option value="0.625">5/8"</option>
+                                            <option value="0.6875">11/16"</option>
+                                            <option value="0.75">3/4"</option>
+                                            <option value="0.8125">13/16"</option>
+                                            <option value="0.875">7/8"</option>
+                                            <option value="0.9375">15/16"</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-row">
+                                        <label id="frameHeightLabel">Inside Height:</label>
+                                        <input type="number" id="frameHeightFeet" placeholder="0" min="0" class="wide-input" onchange="calculateFrameBuilder()">
+                                        <span>ft</span>
+                                        <input type="number" id="frameHeightInches" placeholder="10" min="0" max="11" class="wide-input" onchange="calculateFrameBuilder()">
+                                        <span>in</span>
+                                        <select id="frameHeightFraction" style="width: 120px;" onchange="calculateFrameBuilder()">
+                                            <option value="0" selected>0</option>
+                                            <option value="0.0625">1/16"</option>
+                                            <option value="0.125">1/8"</option>
+                                            <option value="0.1875">3/16"</option>
+                                            <option value="0.25">1/4"</option>
+                                            <option value="0.3125">5/16"</option>
+                                            <option value="0.375">3/8"</option>
+                                            <option value="0.4375">7/16"</option>
+                                            <option value="0.5">1/2"</option>
+                                            <option value="0.5625">9/16"</option>
+                                            <option value="0.625">5/8"</option>
+                                            <option value="0.6875">11/16"</option>
+                                            <option value="0.75">3/4"</option>
+                                            <option value="0.8125">13/16"</option>
+                                            <option value="0.875">7/8"</option>
+                                            <option value="0.9375">15/16"</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Regular Polygon Dimensions (for non-rectangles) -->
+                                <div id="framePolygonDimensions" style="display: none;">
+                                    <div class="input-row">
+                                        <label id="framePolygonLabel">Inside Side Length:</label>
+                                        <input type="number" id="framePolygonFeet" placeholder="0" min="0" class="wide-input" onchange="calculateFrameBuilder()">
+                                        <span>ft</span>
+                                        <input type="number" id="framePolygonInches" placeholder="12" min="0" max="11" class="wide-input" onchange="calculateFrameBuilder()">
+                                        <span>in</span>
+                                        <select id="framePolygonFraction" style="width: 120px;" onchange="calculateFrameBuilder()">
+                                            <option value="0" selected>0</option>
+                                            <option value="0.0625">1/16"</option>
+                                            <option value="0.125">1/8"</option>
+                                            <option value="0.1875">3/16"</option>
+                                            <option value="0.25">1/4"</option>
+                                            <option value="0.3125">5/16"</option>
+                                            <option value="0.375">3/8"</option>
+                                            <option value="0.4375">7/16"</option>
+                                            <option value="0.5">1/2"</option>
+                                            <option value="0.5625">9/16"</option>
+                                            <option value="0.625">5/8"</option>
+                                            <option value="0.6875">11/16"</option>
+                                            <option value="0.75">3/4"</option>
+                                            <option value="0.8125">13/16"</option>
+                                            <option value="0.875">7/8"</option>
+                                            <option value="0.9375">15/16"</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2162,6 +2637,9 @@
         let value2 = 0; // Second calculator value
         let projects = []; // Array to store saved projects
         let currentProject = null; // Currently active project
+        let lumberCart = []; // Array to store lumber shopping cart items
+        let speciesPrices = {}; // Object to remember prices for each species
+        let shoppingHistory = []; // Array to store lumber shopping history
         
         // Data persistence functions
         function saveToLocalStorage() {
@@ -2171,6 +2649,8 @@
                 history: history,
                 cutHistory: cutHistory,
                 memoryValue: memoryValue,
+                speciesPrices: speciesPrices,
+                shoppingHistory: shoppingHistory,
                 settings: {
                     precision: document.getElementById('precision')?.value || 16,
                     cutPrecision: document.getElementById('cutPrecision')?.value || 16,
@@ -2189,6 +2669,8 @@
                     history = data.history || [];
                     cutHistory = data.cutHistory || [];
                     memoryValue = data.memoryValue || 0;
+                    speciesPrices = data.speciesPrices || {};
+                    shoppingHistory = data.shoppingHistory || [];
                     
                     // Restore settings
                     if (data.settings) {
@@ -3482,7 +3964,7 @@
             const title = document.getElementById('calcModalTitle');
             const inputs = document.getElementById('calcModalInputs');
             
-            title.textContent = 'Board Foot Calculator';
+            title.textContent = 'Lumber Shopping Cart';
             inputs.innerHTML = `
                 <div class="input-group">
                     <label>Thickness (inches):</label>
@@ -3539,7 +4021,7 @@
             const title = document.getElementById('calcModalTitle');
             const inputs = document.getElementById('calcModalInputs');
             
-            title.textContent = 'Equal Spacing Calculator';
+            title.textContent = 'Shelf & Division Calculator';
             inputs.innerHTML = `
                 <div style="margin-bottom: 10px;">Total length: <strong>${inchesToDisplay(totalLength)}</strong></div>
                 <div class="input-group">
@@ -3679,7 +4161,7 @@
                         result: spacing,
                         timestamp: new Date().toLocaleTimeString(),
                         type: 'preset',
-                        label: 'Equal Spacing'
+                        label: 'Shelf & Division'
                     });
                     closeCalcModal();
                 } else {
@@ -4536,14 +5018,18 @@
         }
 
         function calculateBoardFeet() {
+            const species = document.getElementById('bfSpecies').value;
+            const customSpecies = document.getElementById('bfCustomSpecies').value;
+            const price = parseFloat(document.getElementById('bfPrice').value) || 0;
             const thickness = parseFloat(document.getElementById('bfThickness').value) || 0;
             const width = parseFloat(document.getElementById('bfWidth').value) || 0;
             const length = parseFloat(document.getElementById('bfLength').value) || 0;
             const quantity = parseFloat(document.getElementById('bfQuantity').value) || 1;
             const resultDiv = document.getElementById('boardFootResult');
             
+            
             // Validate inputs - prevent negative numbers
-            if (thickness < 0 || width < 0 || length < 0 || quantity < 0) {
+            if (thickness < 0 || width < 0 || length < 0 || quantity < 0 || price < 0) {
                 resultDiv.innerHTML = '<div class="result-placeholder">Please enter positive numbers only</div>';
                 updateBoardDiagram(0, 0, 0, 0);
                 return;
@@ -4557,11 +5043,17 @@
             
             const boardFeet = (thickness * width * length * quantity) / 144;
             const totalCubicInches = thickness * width * length * quantity;
+            const lineTotal = boardFeet * price;
+            
+            // Determine display species name
+            const displaySpecies = species === 'Custom' ? customSpecies : species;
+            const speciesDisplay = displaySpecies ? `${displaySpecies} - ` : '';
             
             resultDiv.innerHTML = `
-                <div class="result-value">${boardFeet.toFixed(3)} board feet</div>
+                <div class="result-value">${speciesDisplay}${boardFeet.toFixed(3)} board feet</div>
                 <div class="result-details">
                     ${quantity} piece${quantity !== 1 ? 's' : ''} × ${thickness}" × ${width}" × ${length}"<br>
+                    ${price > 0 ? `Price: $${price.toFixed(2)}/BF × ${boardFeet.toFixed(3)} BF = <strong>$${lineTotal.toFixed(2)}</strong><br>` : ''}
                     Total volume: ${totalCubicInches.toLocaleString()} cubic inches
                 </div>
             `;
@@ -4630,7 +5122,7 @@
         }
 
         function calculateGoldenRatioNew() {
-            const input = parseFloat(document.getElementById('grInput').value) || 0;
+            const input = getInputInches('grFeet', 'grInches', 'grFraction');
             const resultDiv = document.getElementById('grResult');
             
             if (input === 0) {
@@ -4644,16 +5136,16 @@
             
             if (currentGoldenMode === 'short') {
                 result = input * phi;
-                description = `If short side is ${input}", long side should be ${result.toFixed(3)}"`;
+                description = `If short side is ${inchesToDisplay(input)}, long side should be ${inchesToDisplay(result)}`;
                 updateGoldenRectangle(input, result);
             } else {
                 result = input / phi;
-                description = `If long side is ${input}", short side should be ${result.toFixed(3)}"`;
+                description = `If long side is ${inchesToDisplay(input)}, short side should be ${inchesToDisplay(result)}`;
                 updateGoldenRectangle(result, input);
             }
             
             resultDiv.innerHTML = `
-                <div class="result-value">${result.toFixed(3)}"</div>
+                <div class="result-value">${inchesToDisplay(result)}</div>
                 <div class="result-details">${description}<br>Ratio: 1:1.618 (φ)</div>
             `;
         }
@@ -4696,9 +5188,9 @@
             let spacing, dividerInfo, description;
             
             if (thickness === 0) {
-                // Simple equal spacing without thickness
+                // Simple shelf spacing without thickness
                 spacing = totalLength / numSpaces;
-                const centerMarks = Array.from({length: numSpaces - 1}, (_, i) => ((i + 1) * spacing).toFixed(3));
+                const centerMarks = Array.from({length: numSpaces - 1}, (_, i) => inchesToDisplay((i + 1) * spacing, 'calculator'));
                 
                 resultDiv.innerHTML = `
                     <div class="result-value">${spacing.toFixed(3)}" per space</div>
@@ -4722,7 +5214,7 @@
                         ${centerMarks.map((mark, i) => `
                             <div class="divider-mark-row">
                                 <span class="divider-label">Mark ${i + 1}:</span>
-                                <span class="mark-center">Center ${mark}"</span>
+                                <span class="mark-center">Center ${mark}</span>
                             </div>
                         `).join('')}
                     </div>` : ''}
@@ -4751,8 +5243,8 @@
                     const rightEdge = currentPos + thickness;
                     dividerInfo.push({
                         number: i + 1,
-                        leftEdge: leftEdge.toFixed(3),
-                        rightEdge: rightEdge.toFixed(3)
+                        leftEdge: inchesToDisplay(leftEdge, 'calculator'),
+                        rightEdge: inchesToDisplay(rightEdge, 'calculator')
                     });
                     currentPos += thickness; // Move past divider
                 }
@@ -4778,8 +5270,8 @@
                         ${dividerInfo.map(div => `
                             <div class="divider-mark-row">
                                 <span class="divider-label">Divider ${div.number}:</span>
-                                <span class="mark-left">Left ${div.leftEdge}"</span>
-                                <span class="mark-right">Right ${div.rightEdge}"</span>
+                                <span class="mark-left">Left ${div.leftEdge}</span>
+                                <span class="mark-right">Right ${div.rightEdge}</span>
                             </div>
                         `).join('')}
                     </div>
@@ -4799,16 +5291,17 @@
                 return;
             }
             
-            // Force wider diagrams to test scrolling
-            const containerMaxWidth = 400; // Reduced to force scrolling sooner
-            const minDiagramWidth = 300; 
-            const maxDiagramWidth = 1000; // Allow much wider for scrolling
+            // Make diagrams bigger and more legible
+            const containerMaxWidth = 450; // Larger container
+            const minDiagramWidth = 400; // Larger minimum 
+            const maxDiagramWidth = 1200; // Allow even wider for scrolling
             
-            // Calculate diagram width - be more aggressive about making it wide
-            let diagramWidth = Math.max(minDiagramWidth, total * 8); // Increased multiplier
+            // Calculate diagram width - bigger for legibility
+            let diagramWidth = Math.max(minDiagramWidth, total * 12); // Increased multiplier for bigger diagrams
             if (diagramWidth > maxDiagramWidth) diagramWidth = maxDiagramWidth;
             
-            const diagramHeight = 100;
+            const diagramHeight = 120;
+            const containerHeight = diagramHeight + 140; // Increase to accommodate 3 levels of marks (30px top + 110px bottom for 3 levels + mark height)
             const scale = diagramWidth / total;
             
             // Determine if we need horizontal scrolling
@@ -4821,10 +5314,10 @@
                 // Force scrollbar with explicit styles and CSS class
                 html = `<div class="spacing-diagram-container" style="width: 100%; max-width: ${containerMaxWidth}px; overflow-x: scroll; overflow-y: hidden; padding: 15px 10px 25px 10px; border: 2px solid #007bff; border-radius: 8px; margin: 15px auto; background: #f8f9fa;">
                     <div style="text-align: center; font-size: 12px; color: #007bff; font-weight: bold; margin-bottom: 10px;">← Scroll horizontally to see full diagram (${diagramWidth}px wide) →</div>
-                    <div style="width: ${diagramWidth}px; height: ${diagramHeight}px; position: relative; border: 2px solid #8B4513; background: #fff; border-radius: 4px; margin: 0;">`;
+                    <div style="width: ${diagramWidth}px; height: ${containerHeight}px; position: relative; border: 2px solid #8B4513; background: #fff; border-radius: 4px; margin: 0; padding-top: 40px;">`;
             } else {
                 html = `<div style="padding: 10px; margin: 10px auto; text-align: center;">
-                    <div style="position: relative; width: ${diagramWidth}px; height: ${diagramHeight}px; border: 2px solid #8B4513; margin: 0 auto; background: #f8f9fa; display: inline-block;">`;
+                    <div style="position: relative; width: ${diagramWidth}px; height: ${containerHeight}px; border: 2px solid #8B4513; margin: 0 auto; background: #f8f9fa; display: inline-block; padding-top: 40px;">`;
             }
             
             // Add measurement line at top with better spacing
@@ -4832,46 +5325,95 @@
             html += `<div style="position: absolute; top: -20px; right: 0; font-size: 11px; color: #8B4513; font-weight: bold;">${total}"</div>`;
             
             if (thickness === 0) {
-                // Simple spacing without material thickness - clean center marks
-                const fontSize = Math.max(10, Math.min(14, diagramWidth / (spaces * 6)));
+                // Simple spacing without material thickness - leader line system
+                const numMarks = spaces - 1;
+                const spaceFontSize = Math.max(10, Math.min(14, diagramWidth / (spaces * 6)));
                 
-                // Draw center marks with proper spacing
+                // Use full vertical space with leader lines for marks
+                const markBoxWidth = 70; // Larger width for fractions
+                const markBoxHeight = 28; // Taller boxes for fractions
+                const markFontSize = 11; // Larger font for readability
+                
+                // Calculate vertical levels to distribute marks without overlap
+                const availableBottomSpace = 110; // Enough space for 3 levels plus mark height
+                const marksPerRow = Math.max(1, Math.floor(diagramWidth / (markBoxWidth + 10))); // How many marks fit per row with padding
+                const levelsNeeded = Math.ceil(numMarks / marksPerRow); // Actual rows needed
+                const levelHeight = Math.max(40, availableBottomSpace / 3); // Fixed spacing for 3 levels with generous room
+                
+                // Draw center marks with leader lines
                 for (let i = 1; i < spaces; i++) {
                     const position = (i * spacing) * scale;
+                    const markIndex = i - 1;
                     
-                    // Vertical mark line
-                    html += `<div style="position: absolute; left: ${position - 1}px; top: 10px; width: 2px; height: 80px; background: #dc3545; border-radius: 1px;"></div>`;
+                    // Vertical mark line extending down from diagram
+                    html += `<div style="position: absolute; left: ${position - 1}px; top: 5px; width: 2px; height: 110px; background: #dc3545; border-radius: 1px;"></div>`;
                     
-                    // Mark measurement with clean background
-                    html += `<div style="position: absolute; left: ${position - 25}px; bottom: -35px; width: 50px; text-align: center; font-size: 11px; color: #dc3545; font-weight: bold; background: rgba(255,255,255,0.9); border: 1px solid #dc3545; border-radius: 3px; padding: 2px;">${(i * spacing).toFixed(1)}"</div>`;
+                    // Position mark NEAR its actual position on the diagram
+                    const level = markIndex % 3; // Simple 3-level alternating to prevent overlap
+                    const markTop = 140 + (level * levelHeight); // Position from top, below diagram
+                    
+                    // Position horizontally near the actual mark position
+                    let markLeft = position - markBoxWidth/2; // Center the mark under the line
+                    
+                    // Ensure mark doesn't go off screen edges
+                    if (markLeft < 5) markLeft = 5;
+                    if (markLeft + markBoxWidth > diagramWidth - 5) markLeft = diagramWidth - markBoxWidth - 5;
+                    
+                    // Leader line from diagram position to mark box
+                    const leaderStartX = position;
+                    const leaderEndX = markLeft + markBoxWidth/2;
+                    const leaderStartY = 115; // Bottom of diagram
+                    const leaderEndY = markTop - 3; // Top of mark box
+                    
+                    // Always draw leader line for clarity
+                    html += `<div style="position: absolute; left: ${Math.min(leaderStartX, leaderEndX)}px; top: ${leaderStartY}px; width: ${Math.abs(leaderEndX - leaderStartX) + 1}px; height: 2px; background: #dc3545; opacity: 0.8;"></div>`;
+                    html += `<div style="position: absolute; left: ${leaderEndX}px; top: ${leaderStartY}px; width: 2px; height: ${leaderEndY - leaderStartY}px; background: #dc3545; opacity: 0.8;"></div>`;
+                    
+                    // Mark measurement box with leader line system
+                    html += `<div style="position: absolute; left: ${markLeft}px; top: ${markTop}px; width: ${markBoxWidth}px; height: ${markBoxHeight}px; display: flex; align-items: center; justify-content: center; font-size: ${markFontSize}px; color: #dc3545; font-weight: bold; background: rgba(255,255,255,0.98); border: 2px solid #dc3545; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">${inchesToDisplay(i * spacing, 'calculator')}</div>`;
                 }
                 
-                // Add space labels with better positioning
+                // Add space labels with adaptive sizing
                 for (let i = 0; i < spaces; i++) {
                     const centerPos = (i * spacing + spacing / 2) * scale;
-                    const spaceWidth = spacing * scale;
+                    const spaceWidth = Math.max(30, Math.min(45, spacing * scale - 10));
                     
                     // Clean space indicators
-                    html += `<div style="position: absolute; left: ${centerPos - 20}px; top: 30px; width: 40px; text-align: center; font-size: ${fontSize}px; color: #28a745; font-weight: bold; background: rgba(40, 167, 69, 0.1); border: 1px solid #28a745; border-radius: 15px; padding: 3px;">S${i + 1}</div>`;
+                    html += `<div style="position: absolute; left: ${centerPos - spaceWidth/2}px; top: 45px; width: ${spaceWidth}px; text-align: center; font-size: ${spaceFontSize}px; color: #28a745; font-weight: bold; background: rgba(40, 167, 69, 0.1); border: 1px solid #28a745; border-radius: 15px; padding: 3px;">S${i + 1}</div>`;
                 }
             } else {
-                // Spacing with material thickness - clean professional version
+                // Spacing with material thickness - leader line system for left/right marks
                 const numDividers = spaces - 1;
                 let currentPos = 0;
-                const fontSize = Math.max(10, Math.min(13, diagramWidth / (spaces * 8)));
+                const spaceFontSize = Math.max(10, Math.min(13, diagramWidth / (spaces * 8)));
+                
+                // Leader line system parameters
+                const markBoxWidth = 65; // Larger width for fractions
+                const markBoxHeight = 26; // Taller for fractions
+                const markFontSize = 10; // Larger readable font
+                
+                // Calculate spacing distribution for marks
+                const totalMarks = numDividers * 2; // Left + Right marks
+                const availableBottomSpace = 110; // Enough space for 3 levels plus mark height
+                const marksPerRow = Math.max(1, Math.floor(diagramWidth / (markBoxWidth + 15))); // Marks per row with spacing
+                const levelsNeeded = Math.ceil(totalMarks / marksPerRow); // Actual rows needed
+                const levelHeight = Math.max(40, availableBottomSpace / 3); // Fixed spacing for 3 levels with generous room
                 
                 for (let i = 0; i < spaces; i++) {
-                    // Draw space with clean styling
+                    // Draw space with styling
                     const spaceStart = currentPos * scale;
                     const spaceEnd = (currentPos + spacing) * scale;
                     const spaceWidth = spaceEnd - spaceStart;
                     
-                    // Clean space visualization
-                    html += `<div style="position: absolute; left: ${spaceStart}px; top: 25px; width: ${spaceWidth}px; height: 50px; background: linear-gradient(135deg, rgba(40, 167, 69, 0.3), rgba(40, 167, 69, 0.1)); border: 2px solid #28a745; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></div>`;
-                    
-                    // Space label with better positioning
-                    const labelLeft = spaceStart + spaceWidth/2 - 15;
-                    html += `<div style="position: absolute; left: ${labelLeft}px; top: 45px; width: 30px; text-align: center; font-size: ${fontSize}px; color: #28a745; font-weight: bold; background: rgba(255,255,255,0.9); border-radius: 10px; padding: 2px;">S${i + 1}</div>`;
+                    // Clean space visualization - only show if wide enough
+                    if (spaceWidth > 15) {
+                        html += `<div style="position: absolute; left: ${spaceStart}px; top: 25px; width: ${spaceWidth}px; height: 50px; background: linear-gradient(135deg, rgba(40, 167, 69, 0.3), rgba(40, 167, 69, 0.1)); border: 2px solid #28a745; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></div>`;
+                        
+                        // Space label
+                        const labelWidth = Math.max(20, Math.min(35, spaceWidth - 10));
+                        const labelLeft = spaceStart + spaceWidth/2 - labelWidth/2;
+                        html += `<div style="position: absolute; left: ${labelLeft}px; top: 45px; width: ${labelWidth}px; text-align: center; font-size: ${spaceFontSize}px; color: #28a745; font-weight: bold; background: rgba(255,255,255,0.9); border-radius: 10px; padding: 2px;">S${i + 1}</div>`;
+                    }
                     
                     currentPos += spacing;
                     
@@ -4880,18 +5422,64 @@
                         const dividerStart = currentPos * scale;
                         const dividerEnd = (currentPos + thickness) * scale;
                         const dividerWidth = dividerEnd - dividerStart;
+                        const dividerIndex = i;
                         
                         // Clean divider visualization
-                        html += `<div style="position: absolute; left: ${dividerStart}px; top: 20px; width: ${dividerWidth}px; height: 60px; background: linear-gradient(135deg, #8B4513, #A0522D); border: 2px solid #654321; border-radius: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div>`;
+                        html += `<div style="position: absolute; left: ${dividerStart}px; top: 10px; width: ${dividerWidth}px; height: 100px; background: linear-gradient(135deg, #8B4513, #A0522D); border: 2px solid #654321; border-radius: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div>`;
                         
-                        // Clean left edge mark - no rotation, proper spacing
-                        html += `<div style="position: absolute; left: ${dividerStart - 20}px; bottom: -40px; width: 40px; text-align: center; font-size: 10px; color: #8B4513; font-weight: bold; background: rgba(255,255,255,0.9); border: 1px solid #8B4513; border-radius: 3px; padding: 2px;">L${currentPos.toFixed(1)}"</div>`;
+                        // Smart positioning system for left and right marks
+                        const markPairIndex = dividerIndex; // Each divider has a pair of marks
                         
-                        // Clean right edge mark - no rotation, proper spacing
-                        html += `<div style="position: absolute; left: ${dividerEnd - 20}px; bottom: -40px; width: 40px; text-align: center; font-size: 10px; color: #654321; font-weight: bold; background: rgba(255,255,255,0.9); border: 1px solid #654321; border-radius: 3px; padding: 2px;">R${(currentPos + thickness).toFixed(1)}"</div>`;
+                        // Simple alternating levels to prevent vertical overlap
+                        const leftLevel = dividerIndex % 3; // Use up to 3 levels
+                        const rightLevel = (dividerIndex + 1) % 3; // Offset right marks slightly
+                        
+                        // Position left mark NEAR its divider, using levels only for vertical spacing
+                        const leftMarkTop = 140 + (leftLevel * levelHeight);
+                        let leftMarkLeft = dividerStart - markBoxWidth - 15; // Left of the divider
+                        
+                        // If left mark would go off screen, position it above/below the divider instead
+                        if (leftMarkLeft < 5) {
+                            leftMarkLeft = Math.max(5, dividerStart - markBoxWidth/2);
+                        }
+                        
+                        // Position right mark NEAR its divider, using levels only for vertical spacing  
+                        const rightMarkTop = 140 + (rightLevel * levelHeight);
+                        let rightMarkLeft = dividerEnd + 15; // Right of the divider
+                        
+                        // If right mark would go off screen, position it above/below the divider instead
+                        if (rightMarkLeft + markBoxWidth > diagramWidth - 5) {
+                            rightMarkLeft = Math.min(diagramWidth - markBoxWidth - 5, dividerEnd - markBoxWidth/2);
+                        }
+                        
+                        // Draw leader lines for left mark - connect to LEFT edge of divider
+                        const leftLeaderStartX = dividerStart; // Left edge of divider
+                        const leftLeaderEndX = leftMarkLeft + markBoxWidth/2; // Center of mark box
+                        const leftLeaderStartY = 110; // Bottom of diagram
+                        const leftLeaderEndY = leftMarkTop - 3; // Top of mark box
+                        
+                        // Always draw leader line for left marks to show connection
+                        html += `<div style="position: absolute; left: ${Math.min(leftLeaderStartX, leftLeaderEndX)}px; top: ${leftLeaderStartY}px; width: ${Math.abs(leftLeaderEndX - leftLeaderStartX) + 1}px; height: 2px; background: #8B4513; opacity: 0.8;"></div>`;
+                        html += `<div style="position: absolute; left: ${leftLeaderEndX}px; top: ${leftLeaderStartY}px; width: 2px; height: ${leftLeaderEndY - leftLeaderStartY}px; background: #8B4513; opacity: 0.8;"></div>`;
+                        
+                        // Draw leader lines for right mark - connect to RIGHT edge of divider
+                        const rightLeaderStartX = dividerEnd; // Right edge of divider
+                        const rightLeaderEndX = rightMarkLeft + markBoxWidth/2; // Center of mark box
+                        const rightLeaderStartY = 110; // Bottom of diagram
+                        const rightLeaderEndY = rightMarkTop - 3; // Top of mark box
+                        
+                        // Always draw leader line for right marks to show connection
+                        html += `<div style="position: absolute; left: ${Math.min(rightLeaderStartX, rightLeaderEndX)}px; top: ${rightLeaderStartY}px; width: ${Math.abs(rightLeaderEndX - rightLeaderStartX) + 1}px; height: 2px; background: #654321; opacity: 0.8;"></div>`;
+                        html += `<div style="position: absolute; left: ${rightLeaderEndX}px; top: ${rightLeaderStartY}px; width: 2px; height: ${rightLeaderEndY - rightLeaderStartY}px; background: #654321; opacity: 0.8;"></div>`;
+                        
+                        // Left edge mark with leader line
+                        html += `<div style="position: absolute; left: ${leftMarkLeft}px; top: ${leftMarkTop}px; width: ${markBoxWidth}px; height: ${markBoxHeight}px; display: flex; align-items: center; justify-content: center; font-size: ${markFontSize}px; color: #8B4513; font-weight: bold; background: rgba(255,255,255,0.98); border: 2px solid #8B4513; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">L${inchesToDisplay(currentPos, 'calculator')}</div>`;
+                        
+                        // Right edge mark with leader line
+                        html += `<div style="position: absolute; left: ${rightMarkLeft}px; top: ${rightMarkTop}px; width: ${markBoxWidth}px; height: ${markBoxHeight}px; display: flex; align-items: center; justify-content: center; font-size: ${markFontSize}px; color: #654321; font-weight: bold; background: rgba(255,255,255,0.98); border: 2px solid #654321; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">R${inchesToDisplay(currentPos + thickness, 'calculator')}</div>`;
                         
                         // Divider number label
-                        html += `<div style="position: absolute; left: ${dividerStart + dividerWidth/2 - 8}px; top: 45px; width: 16px; text-align: center; font-size: 10px; color: white; font-weight: bold; background: rgba(139, 69, 19, 0.8); border-radius: 8px; padding: 1px;">D${i + 1}</div>`;
+                        html += `<div style="position: absolute; left: ${dividerStart + dividerWidth/2 - 8}px; top: 55px; width: 16px; text-align: center; font-size: 9px; color: white; font-weight: bold; background: rgba(139, 69, 19, 0.8); border-radius: 8px; padding: 1px;">D${i + 1}</div>`;
                         
                         currentPos += thickness;
                     }
@@ -4929,7 +5517,9 @@
         }
 
         function updatePolygonDiagram(sides, miterAngle) {
-            const diagram = document.getElementById('polygonDiagram');
+            const diagram = document.getElementById('angleDiagram');
+            if (!diagram) return;
+            
             const radius = 40;
             const centerX = 60;
             const centerY = 60;
@@ -4950,6 +5540,351 @@
                     </text>
                 </svg>
             `;
+        }
+
+        // Species Price Memory Functions
+        function handleSpeciesChange() {
+            const species = document.getElementById('bfSpecies').value;
+            const customSpeciesRow = document.getElementById('customSpeciesRow');
+            const priceInput = document.getElementById('bfPrice');
+            
+            // Handle custom species dropdown toggle
+            if (species === 'Custom') {
+                customSpeciesRow.style.display = 'block';
+            } else {
+                customSpeciesRow.style.display = 'none';
+            }
+            
+            // Auto-fill remembered price for this specific species, or clear if no price saved
+            if (species && species !== 'Custom') {
+                if (speciesPrices[species]) {
+                    priceInput.value = speciesPrices[species].toFixed(2);
+                    showNotification(`Auto-filled price: $${speciesPrices[species].toFixed(2)}/BF`);
+                } else {
+                    priceInput.value = ''; // Clear price field for species with no saved price
+                    priceInput.placeholder = 'Enter price/BF';
+                }
+            } else if (species === 'Custom') {
+                priceInput.value = ''; // Always clear price for custom species
+                priceInput.placeholder = 'Enter price/BF';
+            }
+            
+            // Recalculate with new species/price
+            calculateBoardFeet();
+        }
+
+        // Lumber Cart Management Functions
+        function addToLumberCart() {
+            const species = document.getElementById('bfSpecies').value;
+            const customSpecies = document.getElementById('bfCustomSpecies').value;
+            const price = parseFloat(document.getElementById('bfPrice').value) || 0;
+            const thickness = parseFloat(document.getElementById('bfThickness').value) || 0;
+            const width = parseFloat(document.getElementById('bfWidth').value) || 0;
+            const length = parseFloat(document.getElementById('bfLength').value) || 0;
+            const quantity = parseFloat(document.getElementById('bfQuantity').value) || 1;
+            
+            // Validate required fields
+            if (!species || (species === 'Custom' && !customSpecies.trim())) {
+                showNotification('Please select a wood species');
+                return;
+            }
+            
+            if (thickness <= 0 || width <= 0 || length <= 0 || quantity <= 0) {
+                showNotification('Please enter valid dimensions and quantity');
+                return;
+            }
+            
+            if (price <= 0) {
+                showNotification('Please enter a valid price per board foot');
+                return;
+            }
+            
+            // Calculate board feet and line total
+            const boardFeet = (thickness * width * length * quantity) / 144;
+            const lineTotal = boardFeet * price;
+            const displaySpecies = species === 'Custom' ? customSpecies.trim() : species;
+            
+            // Create cart item
+            const cartItem = {
+                id: Date.now(), // Simple unique ID
+                species: displaySpecies,
+                thickness,
+                width,
+                length,
+                quantity,
+                pricePerBF: price,
+                boardFeet,
+                lineTotal
+            };
+            
+            // Remember price for this species (for price memory feature)
+            speciesPrices[displaySpecies] = price;
+            
+            // Add to cart
+            lumberCart.push(cartItem);
+            
+            // Update cart display
+            updateCartDisplay();
+            
+            // Clear form for next item
+            clearBoardFootForm();
+            
+            showNotification(`Added ${displaySpecies} to cart`);
+        }
+
+        function removeFromLumberCart(itemId) {
+            lumberCart = lumberCart.filter(item => item.id !== itemId);
+            updateCartDisplay();
+            showNotification('Item removed from cart');
+        }
+
+        function clearLumberCart() {
+            if (lumberCart.length === 0) return;
+            
+            if (confirm('Clear all items from cart?')) {
+                lumberCart = [];
+                updateCartDisplay();
+                showNotification('Cart cleared');
+            }
+        }
+
+        function clearBoardFootForm() {
+            document.getElementById('bfSpecies').value = '';
+            document.getElementById('bfCustomSpecies').value = '';
+            document.getElementById('bfPrice').value = '';
+            document.getElementById('bfThickness').value = '';
+            document.getElementById('bfWidth').value = '';
+            document.getElementById('bfLength').value = '';
+            document.getElementById('bfQuantity').value = '1';
+            document.getElementById('customSpeciesRow').style.display = 'none';
+            
+            // Clear result display
+            document.getElementById('boardFootResult').innerHTML = '<div class="result-placeholder">Enter item details above</div>';
+        }
+
+        function updateCartDisplay() {
+            const cartContainer = document.getElementById('lumberCartDisplay');
+            if (!cartContainer) return;
+            
+            if (lumberCart.length === 0) {
+                cartContainer.innerHTML = '<div class="result-placeholder">No items in cart</div>';
+                return;
+            }
+            
+            let totalBoardFeet = 0;
+            let totalCost = 0;
+            
+            let cartHTML = `
+                <div class="cart-header">
+                    <h4>Shopping Cart (${lumberCart.length} item${lumberCart.length !== 1 ? 's' : ''})</h4>
+                    <button class="btn btn-secondary btn-sm" onclick="clearLumberCart()">Clear Cart</button>
+                </div>
+                <div class="cart-items">
+            `;
+            
+            lumberCart.forEach(item => {
+                totalBoardFeet += item.boardFeet;
+                totalCost += item.lineTotal;
+                
+                cartHTML += `
+                    <div class="cart-item">
+                        <div class="cart-item-header">
+                            <strong>${item.species}</strong>
+                            <button class="btn-remove" onclick="removeFromLumberCart(${item.id})" title="Remove item">×</button>
+                        </div>
+                        <div class="cart-item-details">
+                            ${item.quantity} pc${item.quantity !== 1 ? 's' : ''} × ${item.thickness}" × ${item.width}" × ${item.length}"
+                        </div>
+                        <div class="cart-item-pricing">
+                            ${item.boardFeet.toFixed(3)} BF × $${item.pricePerBF.toFixed(2)}/BF = <strong>$${item.lineTotal.toFixed(2)}</strong>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartHTML += `
+                </div>
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Total Board Feet:</span>
+                        <strong>${totalBoardFeet.toFixed(3)} BF</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Total Cost:</span>
+                        <strong>$${totalCost.toFixed(2)}</strong>
+                    </div>
+                </div>
+            `;
+            
+            cartContainer.innerHTML = cartHTML;
+            
+            // Enable/disable save cart button
+            const saveBtn = document.getElementById('saveCartBtn');
+            if (saveBtn) {
+                saveBtn.disabled = lumberCart.length === 0;
+            }
+        }
+
+        // Shopping History Management Functions
+        function toggleShoppingHistory() {
+            const section = document.getElementById('shoppingHistorySection');
+            const button = document.getElementById('toggleHistoryBtn');
+            
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                button.textContent = 'Hide Shopping History';
+                updateShoppingHistoryDisplay();
+            } else {
+                section.style.display = 'none';
+                button.textContent = 'Show Shopping History';
+            }
+        }
+
+        function updateShoppingHistoryDisplay() {
+            const display = document.getElementById('shoppingHistoryDisplay');
+            if (!display) return;
+            
+            if (shoppingHistory.length === 0) {
+                display.innerHTML = '<div class="result-placeholder">No shopping history</div>';
+                return;
+            }
+            
+            let historyHTML = '';
+            shoppingHistory.forEach((cart, index) => {
+                historyHTML += `
+                    <div class="shopping-history-item">
+                        <div class="shopping-history-header-item">
+                            <div>
+                                <div class="shopping-history-date">${cart.date}</div>
+                                <div class="shopping-history-summary">${cart.itemCount} items - ${cart.totalBoardFeet} BF - $${cart.totalCost}</div>
+                            </div>
+                            <div class="shopping-history-actions">
+                                <button class="btn btn-primary btn-xs" onclick="loadShoppingCart(${index})" title="Load this cart">Load</button>
+                                <button class="btn btn-secondary btn-xs" onclick="toggleHistoryDetails(${index})" title="Show/hide details">Details</button>
+                                <button class="btn btn-warning btn-xs" onclick="removeShoppingHistory(${index})" title="Delete this entry">×</button>
+                            </div>
+                        </div>
+                        <div class="shopping-history-details" id="historyDetails${index}">
+                            ${cart.details}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            display.innerHTML = historyHTML;
+        }
+
+        function toggleHistoryDetails(index) {
+            const details = document.getElementById(`historyDetails${index}`);
+            if (details) {
+                details.classList.toggle('expanded');
+            }
+        }
+
+        function loadShoppingCart(index) {
+            if (index < 0 || index >= shoppingHistory.length) return;
+            
+            const savedCart = shoppingHistory[index];
+            if (!savedCart.items || savedCart.items.length === 0) {
+                showNotification('No items to load from this cart');
+                return;
+            }
+            
+            // Confirm before loading if current cart has items
+            if (lumberCart.length > 0) {
+                if (!confirm('This will replace your current cart. Continue?')) {
+                    return;
+                }
+            }
+            
+            // Clear current cart and load saved items
+            lumberCart = [...savedCart.items];
+            updateCartDisplay();
+            
+            showNotification(`Loaded cart from ${savedCart.date}`);
+        }
+
+        function removeShoppingHistory(index) {
+            if (confirm('Remove this shopping cart from history?')) {
+                shoppingHistory.splice(index, 1);
+                updateShoppingHistoryDisplay();
+                saveToLocalStorage();
+                showNotification('Shopping cart removed from history');
+            }
+        }
+
+        function clearShoppingHistory() {
+            if (shoppingHistory.length === 0) return;
+            
+            if (confirm('Clear all shopping history? This cannot be undone.')) {
+                shoppingHistory = [];
+                updateShoppingHistoryDisplay();
+                saveToLocalStorage();
+                showNotification('Shopping history cleared');
+            }
+        }
+
+        function saveLumberCartToHistory() {
+            if (lumberCart.length === 0) {
+                showNotification('Cart is empty');
+                return;
+            }
+            
+            let totalBoardFeet = 0;
+            let totalCost = 0;
+            let cartSummary = 'LUMBER SHOPPING CART\n\n';
+            
+            lumberCart.forEach((item, index) => {
+                totalBoardFeet += item.boardFeet;
+                totalCost += item.lineTotal;
+                
+                cartSummary += `${index + 1}. ${item.species}\n`;
+                cartSummary += `   ${item.quantity} pc${item.quantity !== 1 ? 's' : ''} × ${item.thickness}" × ${item.width}" × ${item.length}"\n`;
+                cartSummary += `   ${item.boardFeet.toFixed(3)} BF × $${item.pricePerBF.toFixed(2)}/BF = $${item.lineTotal.toFixed(2)}\n\n`;
+            });
+            
+            cartSummary += `TOTAL: ${totalBoardFeet.toFixed(3)} BF - $${totalCost.toFixed(2)}`;
+            
+            // Save to main calculator history
+            addToCalcHistory({
+                equation: cartSummary,
+                result: `${lumberCart.length} items - $${totalCost.toFixed(2)}`,
+                timestamp: new Date().toLocaleTimeString(),
+                type: 'preset',
+                label: 'Lumber Cart'
+            });
+            
+            // Save to dedicated shopping history with more detail
+            const now = new Date();
+            const shoppingCartEntry = {
+                date: now.toLocaleDateString() + ' ' + now.toLocaleTimeString(),
+                itemCount: lumberCart.length,
+                totalBoardFeet: totalBoardFeet.toFixed(3),
+                totalCost: totalCost.toFixed(2),
+                details: cartSummary,
+                items: [...lumberCart] // Deep copy of cart items for reloading
+            };
+            
+            shoppingHistory.unshift(shoppingCartEntry); // Add to beginning of array
+            
+            // Limit shopping history to last 20 entries
+            if (shoppingHistory.length > 20) {
+                shoppingHistory = shoppingHistory.slice(0, 20);
+            }
+            
+            // Update shopping history display if visible
+            const historySection = document.getElementById('shoppingHistorySection');
+            if (historySection && historySection.style.display !== 'none') {
+                updateShoppingHistoryDisplay();
+            }
+            
+            saveToLocalStorage();
+            showNotification('Cart saved to history');
+            
+            // Optionally clear cart after saving
+            if (confirm('Cart saved! Clear cart for next shopping trip?')) {
+                clearLumberCart();
+            }
         }
 
         function saveBoardFeetToHistory() {
@@ -4977,7 +5912,7 @@
         }
 
         function saveGoldenRatioToHistory() {
-            const input = parseFloat(document.getElementById('grInput').value) || 0;
+            const input = getInputInches('grFeet', 'grInches', 'grFraction');
             
             if (input === 0) {
                 showNotification('Enter a dimension first');
@@ -4990,11 +5925,11 @@
             if (currentGoldenMode === 'short') {
                 shortSide = input;
                 longSide = input * phi;
-                equation = `Golden Ratio: Short ${shortSide}" → Long ${longSide.toFixed(3)}"`;
+                equation = `Golden Ratio: Short ${inchesToDisplay(shortSide)} → Long ${inchesToDisplay(longSide)}`;
             } else {
                 longSide = input;
                 shortSide = input / phi;
-                equation = `Golden Ratio: Long ${longSide}" → Short ${shortSide.toFixed(3)}"`;
+                equation = `Golden Ratio: Long ${inchesToDisplay(longSide)} → Short ${inchesToDisplay(shortSide)}`;
             }
             
             addToCalcHistory({
@@ -5018,17 +5953,27 @@
         function setMiterMode(mode) {
             currentMiterMode = mode;
             document.getElementById('miterModePolygon').classList.toggle('active', mode === 'polygon');
+            document.getElementById('miterModeFrame').classList.toggle('active', mode === 'frame');
             document.getElementById('miterModeSingle').classList.toggle('active', mode === 'single');
             
             const polygonInputs = document.getElementById('polygonMiterInputs');
+            const frameInputs = document.getElementById('frameMiterInputs');
             const singleInputs = document.getElementById('singleMiterInputs');
             
             if (mode === 'polygon') {
                 polygonInputs.style.display = 'block';
+                frameInputs.style.display = 'none';
                 singleInputs.style.display = 'none';
                 calculateMiterAngle();
+            } else if (mode === 'frame') {
+                polygonInputs.style.display = 'none';
+                frameInputs.style.display = 'block';
+                singleInputs.style.display = 'none';
+                updateFrameDimensionLabels();
+                calculateFrameBuilder();
             } else {
                 polygonInputs.style.display = 'none';
+                frameInputs.style.display = 'none';
                 singleInputs.style.display = 'block';
                 calculateSingleMiter();
             }
@@ -5036,9 +5981,9 @@
 
         function calculateSingleMiter() {
             const angle = parseFloat(document.getElementById('singleMiterAngle').value) || 0;
-            const boardWidth = parseFloat(document.getElementById('singleBoardWidth').value) || 0;
+            const boardWidth = getInputInches('singleBoardWidthFeet', 'singleBoardWidthInches', 'singleBoardWidthFraction');
             const knownSide = document.getElementById('singleKnownSide').value;
-            const inputLength = parseFloat(document.getElementById('singleInputLength').value) || 0;
+            const inputLength = getInputInches('singleInputLengthFeet', 'singleInputLengthInches', 'singleInputLengthFraction');
             const resultDiv = document.getElementById('maResult');
             
             if (angle === 0 || boardWidth === 0 || inputLength === 0) {
@@ -5061,15 +6006,197 @@
             resultDiv.innerHTML = `
                 <div class="result-value">${angle}° miter cut</div>
                 <div class="result-details">
-                    Long side (back): ${longSide.toFixed(3)}"<br>
-                    Short side (front): ${shortSide.toFixed(3)}"<br>
-                    Offset: ${offset.toFixed(3)}"
+                    Long side (back): ${inchesToDisplay(longSide)}<br>
+                    Short side (front): ${inchesToDisplay(shortSide)}<br>
+                    Offset: ${inchesToDisplay(offset)}
                 </div>
             `;
             
             // Update label for the input
             const label = document.getElementById('singleInputLabel');
             label.textContent = knownSide === 'long' ? 'Long side length:' : 'Short side length:';
+            
+            // Update diagram to show single miter cut visualization
+            updateSingleMiterDiagram(angle, boardWidth, shortSide, longSide);
+        }
+
+        function updateSingleMiterDiagram(angle, boardWidth, shortSide, longSide) {
+            const diagram = document.getElementById('angleDiagram');
+            if (!diagram) return;
+            
+            // Create a simple miter cut visualization
+            diagram.innerHTML = `
+                <svg width="120" height="120" style="display: block; margin: 0 auto;">
+                    <!-- Board outline -->
+                    <rect x="30" y="45" width="60" height="${Math.min(boardWidth * 8, 20)}" fill="none" stroke="#8B4513" stroke-width="2"/>
+                    <!-- Miter cut line -->
+                    <line x1="30" y1="45" x2="45" y2="${45 + Math.min(boardWidth * 8, 20)}" stroke="#dc3545" stroke-width="2"/>
+                    <line x1="90" y1="45" x2="75" y2="${45 + Math.min(boardWidth * 8, 20)}" stroke="#dc3545" stroke-width="2"/>
+                    <!-- Angle label -->
+                    <text x="60" y="35" text-anchor="middle" font-size="12" fill="#8B4513">${angle}°</text>
+                    <!-- Length labels -->
+                    <text x="60" y="100" text-anchor="middle" font-size="10" fill="#8B4513">
+                        L: ${inchesToDisplay(longSide)}
+                    </text>
+                    <text x="60" y="112" text-anchor="middle" font-size="10" fill="#8B4513">
+                        S: ${inchesToDisplay(shortSide)}
+                    </text>
+                </svg>
+            `;
+        }
+
+        // Frame Builder Functions
+        function updateFrameDimensionLabels() {
+            const dimensionType = document.getElementById('frameDimensionType').value;
+            const sides = parseInt(document.getElementById('frameShapeSides').value);
+            
+            // Update labels based on inside/outside selection
+            if (sides === 4) {
+                // Rectangle/Square
+                document.getElementById('frameWidthLabel').textContent = 
+                    dimensionType === 'inside' ? 'Inside Width:' : 'Outside Width:';
+                document.getElementById('frameHeightLabel').textContent = 
+                    dimensionType === 'inside' ? 'Inside Height:' : 'Outside Height:';
+                document.getElementById('frameRectangleDimensions').style.display = 'block';
+                document.getElementById('framePolygonDimensions').style.display = 'none';
+            } else {
+                // Regular polygon
+                document.getElementById('framePolygonLabel').textContent = 
+                    dimensionType === 'inside' ? 'Inside Side Length:' : 'Outside Side Length:';
+                document.getElementById('frameRectangleDimensions').style.display = 'none';
+                document.getElementById('framePolygonDimensions').style.display = 'block';
+            }
+        }
+
+        function calculateFrameBuilder() {
+            const sides = parseInt(document.getElementById('frameShapeSides').value);
+            const materialWidth = getInputInches('frameMaterialWidthFeet', 'frameMaterialWidthInches', 'frameMaterialWidthFraction');
+            const dimensionType = document.getElementById('frameDimensionType').value;
+            const resultDiv = document.getElementById('maResult');
+            
+            if (materialWidth === 0) {
+                resultDiv.innerHTML = '<div class="result-placeholder">Enter material width</div>';
+                return;
+            }
+            
+            // Calculate miter angle for this polygon
+            const interiorAngle = ((sides - 2) * 180) / sides;
+            const miterAngle = (180 - interiorAngle) / 2;
+            const miterRadians = (miterAngle * Math.PI) / 180;
+            
+            let cutList = '';
+            let totalLinearFeet = 0;
+            let insideDimensions = '';
+            let outsideDimensions = '';
+            
+            if (sides === 4) {
+                // Rectangle/Square frame
+                const inputWidth = getInputInches('frameWidthFeet', 'frameWidthInches', 'frameWidthFraction');
+                const inputHeight = getInputInches('frameHeightFeet', 'frameHeightInches', 'frameHeightFraction');
+                
+                if (inputWidth === 0 || inputHeight === 0) {
+                    resultDiv.innerHTML = '<div class="result-placeholder">Enter frame dimensions</div>';
+                    return;
+                }
+                
+                let insideWidth, insideHeight, outsideWidth, outsideHeight;
+                
+                // Calculate offset for miter joints
+                const offset = materialWidth * Math.tan(miterRadians);
+                
+                if (dimensionType === 'inside') {
+                    // User provided inside dimensions
+                    insideWidth = inputWidth;
+                    insideHeight = inputHeight;
+                    outsideWidth = insideWidth + 2 * materialWidth;
+                    outsideHeight = insideHeight + 2 * materialWidth;
+                } else {
+                    // User provided outside dimensions
+                    outsideWidth = inputWidth;
+                    outsideHeight = inputHeight;
+                    insideWidth = outsideWidth - 2 * materialWidth;
+                    insideHeight = outsideHeight - 2 * materialWidth;
+                }
+                
+                // Calculate cut lengths (long side includes the offset on both ends)
+                const horizontalCutLength = insideWidth + 2 * offset;
+                const verticalCutLength = insideHeight + 2 * offset;
+                
+                // Create cut list with both inside and outside measurements for clarity
+                cutList = `
+                    <div class="cut-list">
+                        <h4>Cut List:</h4>
+                        <div class="cut-item">
+                            <strong>2 horizontal pieces:</strong><br>
+                            Cut Length: ${inchesToDisplay(horizontalCutLength)}<br>
+                            <small>(Inside span: ${inchesToDisplay(insideWidth)}, Outside span: ${inchesToDisplay(outsideWidth)})</small>
+                        </div>
+                        <div class="cut-item">
+                            <strong>2 vertical pieces:</strong><br>
+                            Cut Length: ${inchesToDisplay(verticalCutLength)}<br>
+                            <small>(Inside span: ${inchesToDisplay(insideHeight)}, Outside span: ${inchesToDisplay(outsideHeight)})</small>
+                        </div>
+                    </div>
+                `;
+                
+                totalLinearFeet = ((horizontalCutLength * 2) + (verticalCutLength * 2)) / 12;
+                insideDimensions = `${inchesToDisplay(insideWidth)} × ${inchesToDisplay(insideHeight)}`;
+                outsideDimensions = `${inchesToDisplay(outsideWidth)} × ${inchesToDisplay(outsideHeight)}`;
+                
+            } else {
+                // Regular polygon frame
+                const inputSideLength = getInputInches('framePolygonFeet', 'framePolygonInches', 'framePolygonFraction');
+                
+                if (inputSideLength === 0) {
+                    resultDiv.innerHTML = '<div class="result-placeholder">Enter polygon side length</div>';
+                    return;
+                }
+                
+                let insideSideLength, outsideSideLength;
+                
+                if (dimensionType === 'inside') {
+                    insideSideLength = inputSideLength;
+                    // For regular polygon, outside side length = inside + 2 * (material_width / tan((π-interior_angle)/2))
+                    // Simplified: outside = inside + 2 * material_width / tan(miter_angle)
+                    const sideWidthAddition = 2 * materialWidth / Math.tan(miterRadians);
+                    outsideSideLength = insideSideLength + sideWidthAddition;
+                } else {
+                    outsideSideLength = inputSideLength;
+                    const sideWidthAddition = 2 * materialWidth / Math.tan(miterRadians);
+                    insideSideLength = outsideSideLength - sideWidthAddition;
+                }
+                
+                const offset = materialWidth * Math.tan(miterRadians);
+                const cutLength = insideSideLength + 2 * offset;
+                
+                cutList = `
+                    <div class="cut-list">
+                        <h4>Cut List:</h4>
+                        <div class="cut-item">
+                            <strong>${sides} pieces:</strong><br>
+                            Cut Length: ${inchesToDisplay(cutLength)}<br>
+                            <small>(Inside side: ${inchesToDisplay(insideSideLength)}, Outside side: ${inchesToDisplay(outsideSideLength)})</small>
+                        </div>
+                    </div>
+                `;
+                
+                totalLinearFeet = (cutLength * sides) / 12;
+                insideDimensions = `${inchesToDisplay(insideSideLength)} per side`;
+                outsideDimensions = `${inchesToDisplay(outsideSideLength)} per side`;
+            }
+            
+            resultDiv.innerHTML = `
+                <div class="result-value">${miterAngle.toFixed(1)}° miter cut</div>
+                <div class="result-details">
+                    <strong>Inside:</strong> ${insideDimensions}<br>
+                    <strong>Outside:</strong> ${outsideDimensions}<br>
+                    <strong>Material needed:</strong> ${totalLinearFeet.toFixed(1)} linear feet
+                </div>
+                ${cutList}
+            `;
+            
+            // Update diagram to show the frame shape
+            updatePolygonDiagram(sides, miterAngle);
         }
 
         function saveAngleToHistory() {
@@ -5091,10 +6218,48 @@
                     type: 'preset',
                     label: 'Miter Angle'
                 });
+            } else if (currentMiterMode === 'frame') {
+                const sides = parseInt(document.getElementById('frameShapeSides').value);
+                const materialWidth = getInputInches('frameMaterialWidthFeet', 'frameMaterialWidthInches', 'frameMaterialWidthFraction');
+                
+                if (materialWidth === 0) {
+                    showNotification('Enter frame details first');
+                    return;
+                }
+                
+                const interiorAngle = ((sides - 2) * 180) / sides;
+                const miterAngle = (180 - interiorAngle) / 2;
+                
+                let frameName = '';
+                if (sides === 4) frameName = 'Rectangle/Square';
+                else if (sides === 3) frameName = 'Triangle';
+                else if (sides === 6) frameName = 'Hexagon';
+                else if (sides === 8) frameName = 'Octagon';
+                else frameName = `${sides}-sided`;
+                
+                // Get dimensions summary
+                let dimensionsSummary = '';
+                if (sides === 4) {
+                    const width = getInputInches('frameWidthFeet', 'frameWidthInches', 'frameWidthFraction');
+                    const height = getInputInches('frameHeightFeet', 'frameHeightInches', 'frameHeightFraction');
+                    dimensionsSummary = `${inchesToDisplay(width)} × ${inchesToDisplay(height)}`;
+                } else {
+                    const sideLength = getInputInches('framePolygonFeet', 'framePolygonInches', 'framePolygonFraction');
+                    dimensionsSummary = `${inchesToDisplay(sideLength)} side length`;
+                }
+                
+                addToCalcHistory({
+                    equation: `${frameName} Frame: ${dimensionsSummary}, ${inchesToDisplay(materialWidth)} material`,
+                    result: `${miterAngle.toFixed(1)}° cuts`,
+                    timestamp: new Date().toLocaleTimeString(),
+                    type: 'preset',
+                    label: 'Frame Builder'
+                });
             } else {
                 const angle = parseFloat(document.getElementById('singleMiterAngle').value) || 0;
-                const boardWidth = parseFloat(document.getElementById('singleBoardWidth').value) || 0;
-                const inputLength = parseFloat(document.getElementById('singleInputLength').value) || 0;
+                const boardWidth = getInputInches('singleBoardWidthFeet', 'singleBoardWidthInches', 'singleBoardWidthFraction');
+                const inputLength = getInputInches('singleInputLengthFeet', 'singleInputLengthInches', 'singleInputLengthFraction');
+                const knownSide = document.getElementById('singleKnownSide').value;
                 
                 if (angle === 0 || boardWidth === 0 || inputLength === 0) {
                     showNotification('Enter all values first');
@@ -5104,9 +6269,18 @@
                 const angleRad = (angle * Math.PI) / 180;
                 const offset = boardWidth * Math.tan(angleRad);
                 
+                let shortSide, longSide;
+                if (knownSide === 'long') {
+                    longSide = inputLength;
+                    shortSide = longSide - offset;
+                } else {
+                    shortSide = inputLength;
+                    longSide = shortSide + offset;
+                }
+                
                 addToCalcHistory({
-                    equation: `${angle}° miter: ${inputLength}" → offset ${offset.toFixed(3)}"`,
-                    result: offset,
+                    equation: `${angle}° miter cut: ${inchesToDisplay(boardWidth)} board, ${knownSide} side ${inchesToDisplay(inputLength)}`,
+                    result: `Long: ${inchesToDisplay(longSide)}, Short: ${inchesToDisplay(shortSide)}`,
                     timestamp: new Date().toLocaleTimeString(),
                     type: 'preset',
                     label: 'Single Miter'
@@ -5126,47 +6300,88 @@
                 return;
             }
             
-            let spacing, equation;
+            let spacing, detailedEquation;
             
             if (thickness === 0) {
+                // CENTER MARKS MODE - No material thickness
                 spacing = totalLength / numSpaces;
-                const centerMarks = Array.from({length: numSpaces - 1}, (_, i) => ((i + 1) * spacing).toFixed(2));
-                // Keep history concise to avoid character limits
-                equation = `${totalLength}" ÷ ${numSpaces} spaces = ${spacing.toFixed(3)}" each`;
-                if (centerMarks.length > 0 && centerMarks.length <= 6) {
-                    equation += ` | Marks: ${centerMarks.join('", ')}"`;
-                } else if (centerMarks.length > 6) {
-                    equation += ` | ${centerMarks.length} marks from ${centerMarks[0]}" to ${centerMarks[centerMarks.length-1]}"`;
+                const centerMarks = Array.from({length: numSpaces - 1}, (_, i) => inchesToDisplay((i + 1) * spacing, 'calculator'));
+                
+                detailedEquation = `SHELF & DIVISION - Center Marks
+Total Length: ${inchesToDisplay(totalLength, 'calculator')}
+Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
+Material: No thickness (center marks)
+
+📐 Center Marking Guide:`;
+
+                if (centerMarks.length <= 10) {
+                    centerMarks.forEach((mark, i) => {
+                        detailedEquation += `\nMark ${i + 1}: Center ${mark}`;
+                    });
+                } else {
+                    // Show first 5, middle indicator, last 5
+                    for (let i = 0; i < 5; i++) {
+                        detailedEquation += `\nMark ${i + 1}: Center ${centerMarks[i]}`;
+                    }
+                    detailedEquation += `\n... ${centerMarks.length - 10} more marks ...`;
+                    for (let i = centerMarks.length - 5; i < centerMarks.length; i++) {
+                        detailedEquation += `\nMark ${i + 1}: Center ${centerMarks[i]}`;
+                    }
                 }
+                
             } else {
+                // DIVIDER MODE - With material thickness
                 const numDividers = numSpaces - 1;
                 const totalThickness = numDividers * thickness;
                 const availableSpace = totalLength - totalThickness;
                 spacing = availableSpace / numSpaces;
                 
-                // Calculate left edges for dividers - limit for history
-                const leftEdges = [];
+                // Calculate divider positions
+                const dividerInfo = [];
                 let currentPos = 0;
                 for (let i = 0; i < numDividers; i++) {
                     currentPos += spacing;
-                    leftEdges.push(currentPos.toFixed(2));
+                    const leftEdge = currentPos;
+                    const rightEdge = currentPos + thickness;
+                    dividerInfo.push({
+                        number: i + 1,
+                        left: inchesToDisplay(leftEdge, 'calculator'),
+                        right: inchesToDisplay(rightEdge, 'calculator')
+                    });
                     currentPos += thickness;
                 }
                 
-                equation = `${totalLength}" - ${numDividers}×${thickness}" = ${spacing.toFixed(3)}" spaces`;
-                if (leftEdges.length > 0 && leftEdges.length <= 5) {
-                    equation += ` | Left edges: ${leftEdges.join('", ')}"`;
-                } else if (leftEdges.length > 5) {
-                    equation += ` | ${leftEdges.length} dividers: ${leftEdges[0]}" to ${leftEdges[leftEdges.length-1]}"`;
+                detailedEquation = `SHELF & DIVISION - With Dividers
+Total Length: ${inchesToDisplay(totalLength, 'calculator')}
+Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
+Dividers: ${numDividers} @ ${inchesToDisplay(thickness, 'calculator')} thick
+
+📏 Divider Marking Guide:`;
+
+                if (dividerInfo.length <= 8) {
+                    dividerInfo.forEach(div => {
+                        detailedEquation += `\nDivider ${div.number}: Left ${div.left} - Right ${div.right}`;
+                    });
+                } else {
+                    // Show first 4, middle indicator, last 4
+                    for (let i = 0; i < 4; i++) {
+                        const div = dividerInfo[i];
+                        detailedEquation += `\nDivider ${div.number}: Left ${div.left} - Right ${div.right}`;
+                    }
+                    detailedEquation += `\n... ${dividerInfo.length - 8} more dividers ...`;
+                    for (let i = dividerInfo.length - 4; i < dividerInfo.length; i++) {
+                        const div = dividerInfo[i];
+                        detailedEquation += `\nDivider ${div.number}: Left ${div.left} - Right ${div.right}`;
+                    }
                 }
             }
             
             addToCalcHistory({
-                equation: equation,
+                equation: detailedEquation,
                 result: spacing,
                 timestamp: new Date().toLocaleTimeString(),
                 type: 'preset',
-                label: 'Equal Spacing'
+                label: 'Shelf & Division'
             });
             
             showNotification('Added to calculator history');
@@ -5184,6 +6399,9 @@
             updateProjectSelector();
             updateProjectStatusBars();
             updateConversionPreview();
+            
+            // Initialize diagrams
+            calculateMiterAngle(); // Initialize the miter angle diagram
             
             // Add auto-save on input changes
             const inputs = document.querySelectorAll('input, select');
