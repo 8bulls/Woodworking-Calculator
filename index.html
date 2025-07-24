@@ -52,9 +52,48 @@
         
         .tab-buttons {
             display: flex;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-radius: 10px;
             overflow: hidden;
+        }
+        
+        /* Global Project Selector */
+        .global-project-selector {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .project-selector-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .project-label {
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        #globalProjectDropdown {
+            padding: 6px 12px;
+            border: 2px solid #D2B48C;
+            border-radius: 5px;
+            background: white;
+            color: #333;
+            font-size: 14px;
+            min-width: 200px;
+            cursor: pointer;
+        }
+        
+        #globalProjectDropdown:focus {
+            outline: none;
+            border-color: #8B4513;
+            box-shadow: 0 0 5px rgba(139, 69, 19, 0.3);
         }
         
         .tab-btn {
@@ -139,6 +178,36 @@
         
         .close:hover {
             color: #000;
+        }
+        
+        /* Save to Project Modal specific styles */
+        .save-preview-section {
+            margin-bottom: 20px;
+        }
+        
+        .save-preview {
+            background: #f8f9fa;
+            border: 2px solid #D2B48C;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .save-project-selection {
+            margin-bottom: 20px;
+        }
+        
+        .save-notes-section {
+            margin-bottom: 20px;
+        }
+        
+        .save-preview h5 {
+            margin: 0 0 10px 0;
+            color: #8B4513;
+            font-size: 16px;
         }
         
         .input-mode-toggle {
@@ -285,6 +354,20 @@
             margin-bottom: 15px;
         }
         
+        .conversion-input-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .conversion-input-row label {
+            font-weight: bold;
+            color: #8B4513;
+            min-width: 80px;
+        }
+        
         .conversion-preview {
             background: #f8f9fa;
             border: 1px solid #D2B48C;
@@ -368,6 +451,13 @@
             display: flex;
             justify-content: center;
             overflow: visible;
+        }
+        
+        /* Specific styling for miter angle diagram container */
+        #angleCard .calc-visual {
+            min-height: 220px; /* Reserve space for enhanced diagrams */
+            margin-bottom: 30px;
+            position: relative;
         }
         
         .calc-inputs {
@@ -1759,6 +1849,17 @@
             <button class="tab-btn" onclick="switchTab('projects')">📁 Projects</button>
         </div>
         
+        <!-- Global Project Selector -->
+        <div class="global-project-selector" id="globalProjectSelector">
+            <div class="project-selector-content">
+                <span class="project-label">💾 Active Project:</span>
+                <select id="globalProjectDropdown" onchange="switchToProject(this.value)">
+                    <option value="">No Project Selected</option>
+                </select>
+                <button class="btn btn-primary btn-sm" onclick="createNewProject()" style="margin-left: 10px;">+ New</button>
+            </div>
+        </div>
+        
         <!-- Global Help Button -->
         <div style="text-align: right; margin-bottom: 15px;">
             <button class="btn btn-secondary" onclick="showHelp()" style="padding: 8px 12px; font-size: 14px;">❓ Help</button>
@@ -1774,7 +1875,7 @@
             
             <div class="settings-row">
                 <label>Precision:</label>
-                <select id="precision" onchange="updatePrecision('calculator')">
+                <select id="precision" onchange="updatePrecision('calculator'); updateWoodworkingFractions();">
                     <option value="32">1/32"</option>
                     <option value="16" selected>1/16"</option>
                     <option value="8">1/8"</option>
@@ -1833,11 +1934,17 @@
                 <button class="calc-btn memory" onclick="memoryOperation('M+')">M+</button>
                 <button class="calc-btn memory" onclick="memoryOperation('M-')">M−</button>
                 <button class="calc-btn clear" onclick="clearCalculator()">Clear</button>
-                <button class="calc-btn save" onclick="saveToHistory()">Save</button>
+                <button class="calc-btn save" onclick="saveCalculatorToProject()">Save to Project</button>
             </div>
             
             <div class="conversion-section">
                 <h4 style="color: #8B4513; margin-bottom: 10px;">Quick Conversions</h4>
+                <div class="conversion-input-row">
+                    <label>Direct Input:</label>
+                    <input type="number" id="directDecimalInput" placeholder="37.625" step="0.001" class="wide-input" onchange="handleDirectInput()">
+                    <span>inches</span>
+                    <button class="btn btn-primary" onclick="convertDirectInput()">Convert</button>
+                </div>
                 <div id="conversionPreview" class="conversion-preview">
                     Convert: <span id="conversionValue">Enter a value or calculate</span>
                 </div>
@@ -2002,7 +2109,7 @@
                         </div>
                         <div class="calc-result">
                             <div class="result-display" id="grResult">Enter a dimension to calculate</div>
-                            <button class="btn btn-primary btn-sm" onclick="saveGoldenRatioToHistory()">Save to History</button>
+                            <button class="btn btn-primary btn-sm" onclick="saveGoldenRatioToProject()">Save to Project</button>
                         </div>
                     </div>
                 </div>
@@ -2019,23 +2126,33 @@
                         <div class="calc-inputs">
                             <div class="input-row">
                                 <label>Total Length:</label>
-                                <input type="number" id="spTotalLength" step="0.25" placeholder="48" oninput="calculateSpacing()">
-                                <span class="unit">inches</span>
+                                <input type="number" id="spTotalLengthFeet" placeholder="4" min="0" class="wide-input" oninput="calculateSpacing()">
+                                <span>ft</span>
+                                <input type="number" id="spTotalLengthInches" placeholder="0" min="0" max="11" class="wide-input" oninput="calculateSpacing()">
+                                <span>in</span>
+                                <select id="spTotalLengthFraction" style="width: 120px;" oninput="calculateSpacing()">
+                                    <option value="0" selected>0</option>
+                                </select>
                             </div>
                             <div class="input-row">
-                                <label>Number of Spaces:</label>
-                                <input type="number" id="spNumSpaces" min="2" placeholder="5" oninput="calculateSpacing()">
-                                <span class="unit">spaces</span>
+                                <label>Number of Shelves:</label>
+                                <input type="number" id="spNumShelves" min="1" placeholder="5" oninput="calculateSpacing()">
+                                <span class="unit">shelves</span>
                             </div>
                             <div class="input-row">
                                 <label>Material Thickness:</label>
-                                <input type="number" id="spacingThickness" step="0.25" placeholder="0.75" oninput="calculateSpacing()">
-                                <span class="unit">inches</span>
+                                <input type="number" id="spacingThicknessFeet" placeholder="0" min="0" class="wide-input" oninput="calculateSpacing()">
+                                <span>ft</span>
+                                <input type="number" id="spacingThicknessInches" placeholder="0" min="0" max="11" class="wide-input" oninput="calculateSpacing()">
+                                <span>in</span>
+                                <select id="spacingThicknessFraction" style="width: 120px;" oninput="calculateSpacing()">
+                                    <option value="0.75" selected>3/4"</option>
+                                </select>
                             </div>
                         </div>
                         <div class="calc-result">
                             <div class="result-display" id="spResult">Enter dimensions to calculate</div>
-                            <button class="btn btn-primary btn-sm" onclick="saveSpacingToHistory()">Save to History</button>
+                            <button class="btn btn-primary btn-sm" onclick="saveSpacingToProject()">Save to Project</button>
                         </div>
                         <div class="calc-visual">
                             <div class="spacing-diagram" id="spacingDiagram">
@@ -2068,7 +2185,7 @@
                             <div class="calc-mode-selector">
                                 <button class="mode-btn active" onclick="setMiterMode('polygon')" id="miterModePolygon">Polygon</button>
                                 <button class="mode-btn" onclick="setMiterMode('frame')" id="miterModeFrame">Frame Builder</button>
-                                <button class="mode-btn" onclick="setMiterMode('single')" id="miterModeSingle">Single Cut</button>
+                                <button class="mode-btn" onclick="setMiterMode('single')" id="miterModeSingle">Single Board Cut</button>
                             </div>
                             
                             <div id="polygonMiterInputs">
@@ -2098,7 +2215,7 @@
                                     <input type="number" id="singleBoardWidthInches" placeholder="3" min="0" max="11" class="wide-input" onchange="calculateSingleMiter()">
                                     <span>in</span>
                                     <select id="singleBoardWidthFraction" style="width: 120px;" onchange="calculateSingleMiter()">
-                                        <option value="0">0</option>
+                                        <option value="0" selected>0</option>
                                         <option value="0.0625">1/16"</option>
                                         <option value="0.125">1/8"</option>
                                         <option value="0.1875">3/16"</option>
@@ -2106,7 +2223,7 @@
                                         <option value="0.3125">5/16"</option>
                                         <option value="0.375">3/8"</option>
                                         <option value="0.4375">7/16"</option>
-                                        <option value="0.5" selected>1/2"</option>
+                                        <option value="0.5">1/2"</option>
                                         <option value="0.5625">9/16"</option>
                                         <option value="0.625">5/8"</option>
                                         <option value="0.6875">11/16"</option>
@@ -2114,6 +2231,13 @@
                                         <option value="0.8125">13/16"</option>
                                         <option value="0.875">7/8"</option>
                                         <option value="0.9375">15/16"</option>
+                                    </select>
+                                </div>
+                                <div class="input-row">
+                                    <label>Cut Type:</label>
+                                    <select id="singleCutType" onchange="calculateSingleMiter()">
+                                        <option value="one-sided">One-sided (cut one end only)</option>
+                                        <option value="dual-sided">Dual-sided (cut both ends)</option>
                                     </select>
                                 </div>
                                 <div class="input-row">
@@ -2171,11 +2295,11 @@
                                     <input type="number" id="frameMaterialWidthInches" placeholder="2" min="0" max="11" class="wide-input" onchange="calculateFrameBuilder()">
                                     <span>in</span>
                                     <select id="frameMaterialWidthFraction" style="width: 120px;" onchange="calculateFrameBuilder()">
-                                        <option value="0">0</option>
+                                        <option value="0" selected>0</option>
                                         <option value="0.0625">1/16"</option>
                                         <option value="0.125">1/8"</option>
                                         <option value="0.1875">3/16"</option>
-                                        <option value="0.25" selected>1/4"</option>
+                                        <option value="0.25">1/4"</option>
                                         <option value="0.3125">5/16"</option>
                                         <option value="0.375">3/8"</option>
                                         <option value="0.4375">7/16"</option>
@@ -2284,7 +2408,7 @@
                         </div>
                         <div class="calc-result">
                             <div class="result-display" id="maResult">Miter angle: 45°</div>
-                            <button class="btn btn-primary btn-sm" onclick="saveAngleToHistory()">Save to History</button>
+                            <button class="btn btn-primary btn-sm" onclick="saveAngleToProject()">Save to Project</button>
                         </div>
                     </div>
                 </div>
@@ -2540,6 +2664,41 @@
             </div>
         </div>
         
+        <!-- Save to Project Modal -->
+        <div id="saveToProjectModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeSaveToProjectModal()">&times;</span>
+                <h2>💾 Save to Project</h2>
+                <div id="saveToProjectContent">
+                    <div class="save-preview-section">
+                        <h4>What you're saving:</h4>
+                        <div id="savePreviewContent" class="save-preview">
+                            <!-- Preview content will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="save-project-selection">
+                        <label for="saveProjectDropdown"><strong>Save to Project:</strong></label>
+                        <select id="saveProjectDropdown" style="width: 100%; padding: 8px; margin: 5px 0; border: 2px solid #D2B48C; border-radius: 5px;">
+                            <option value="">Select a project...</option>
+                        </select>
+                        <button class="btn btn-primary btn-sm" onclick="createNewProjectFromSaveModal()" style="margin-top: 5px;">+ Create New Project</button>
+                    </div>
+                    
+                    <div class="save-notes-section">
+                        <label for="saveNotesText"><strong>Add Notes (optional):</strong></label>
+                        <textarea id="saveNotesText" placeholder="Add context about this calculation - what you're building, why this measurement matters, etc." 
+                                  style="width: 100%; height: 100px; margin: 5px 0; padding: 10px; border: 2px solid #D2B48C; border-radius: 5px; font-family: Arial, sans-serif; resize: vertical;"></textarea>
+                    </div>
+                    
+                    <div style="text-align: right; margin-top: 15px;">
+                        <button class="btn btn-secondary" onclick="closeSaveToProjectModal()" style="margin-right: 10px;">Cancel</button>
+                        <button class="btn btn-success" onclick="executeSaveToProject()" id="saveToProjectBtn">Save to Project</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Help Modal -->
         <div id="helpModal" class="modal">
             <div class="modal-content">
@@ -2627,6 +2786,9 @@
         let operationValue = 0;
         let history = [];
         let cutHistory = [];
+        let lastConversionSource = 'calculator'; // Track whether last action was 'calculator' or 'direct'
+        let lastCalculatorUpdate = 0; // Timestamp of last calculator calculation
+        let lastDirectInputUpdate = 0; // Timestamp of last direct input
         let boards = []; // Array of {length: number, quantity: number} objects
         let cuts = []; // Array of {length: number, id: unique_id}
         let inputMode = 'fraction';
@@ -2672,12 +2834,23 @@
                     speciesPrices = data.speciesPrices || {};
                     shoppingHistory = data.shoppingHistory || [];
                     
-                    // Restore settings
+                    // Restore settings with 1/16" default
                     if (data.settings) {
-                        if (document.getElementById('precision')) document.getElementById('precision').value = data.settings.precision;
-                        if (document.getElementById('cutPrecision')) document.getElementById('cutPrecision').value = data.settings.cutPrecision;
-                        if (document.getElementById('optPrecision')) document.getElementById('optPrecision').value = data.settings.optPrecision;
+                        if (document.getElementById('precision')) document.getElementById('precision').value = data.settings.precision || 16;
+                        if (document.getElementById('cutPrecision')) document.getElementById('cutPrecision').value = data.settings.cutPrecision || 16;
+                        if (document.getElementById('optPrecision')) document.getElementById('optPrecision').value = data.settings.optPrecision || 16;
+                    } else {
+                        // No saved settings - ensure 1/16" default
+                        if (document.getElementById('precision')) document.getElementById('precision').value = 16;
+                        if (document.getElementById('cutPrecision')) document.getElementById('cutPrecision').value = 16;
+                        if (document.getElementById('optPrecision')) document.getElementById('optPrecision').value = 16;
                     }
+                    
+                    // Refresh precision settings after loading
+                    updatePrecision('calculator');
+                    updatePrecision('cut');
+                    updatePrecision('optimizer');
+                    updateWoodworkingFractions();
                     
                     updateDisplays();
                     showNotification('Data loaded successfully!', 'success');
@@ -2740,6 +2913,7 @@
                     cuts: [...cuts],
                     history: [...history],
                     cutHistory: [...cutHistory],
+                    projectLog: [], // New: stores manually saved calculation items
                     calculatorData: {
                         currentValueInches: currentValueInches,
                         cutValueInches: cutValueInches,
@@ -2804,6 +2978,11 @@
                 history = [...project.history];
                 cutHistory = [...project.cutHistory];
                 
+                // Initialize projectLog if it doesn't exist (for older projects)
+                if (!project.projectLog) {
+                    project.projectLog = [];
+                }
+                
                 // Restore calculator data if available
                 if (project.calculatorData) {
                     currentValueInches = project.calculatorData.currentValueInches || 0;
@@ -2839,9 +3018,42 @@
         }
         
         function updateProjectSelector() {
-            // This function now just updates the visual displays since we removed the global selector
+            updateGlobalProjectSelector();
             renderProjectsTab();
             updateProjectStatusBars();
+        }
+        
+        function updateGlobalProjectSelector() {
+            const dropdown = document.getElementById('globalProjectDropdown');
+            if (!dropdown) return;
+            
+            // Clear existing options
+            dropdown.innerHTML = '<option value="">No Project Selected</option>';
+            
+            // Add each project as an option
+            projects.forEach(project => {
+                const option = document.createElement('option');
+                option.value = project.id;
+                option.textContent = project.name;
+                if (currentProject && currentProject.id === project.id) {
+                    option.selected = true;
+                }
+                dropdown.appendChild(option);
+            });
+        }
+        
+        function switchToProject(projectId) {
+            if (!projectId) {
+                // No project selected
+                currentProject = null;
+                updateProjectSelector();
+                showNotification('No project selected', 'info');
+                return;
+            }
+            
+            const projectIdNum = parseInt(projectId);
+            loadProject(projectIdNum);
+            showNotification(`Switched to project: ${currentProject.name}`, 'success');
         }
         
         function showProjectManager() {
@@ -2997,6 +3209,171 @@
             }
         }
         
+        // Save to Project Modal Functions
+        let currentSaveData = null; // Store the data being saved
+        
+        function showSaveToProjectModal(toolName, data) {
+            currentSaveData = {
+                toolName: toolName,
+                timestamp: new Date().toISOString(),
+                ...data
+            };
+            
+            const modal = document.getElementById('saveToProjectModal');
+            const previewContent = document.getElementById('savePreviewContent');
+            
+            // Generate preview content
+            let previewHtml = `<h5>${toolName}</h5>`;
+            if (data.equation) {
+                previewHtml += `<strong>Calculation:</strong> ${data.equation}<br>`;
+            }
+            if (data.result) {
+                previewHtml += `<strong>Result:</strong> ${data.result}<br>`;
+            }
+            if (data.details) {
+                previewHtml += `<strong>Details:</strong><br>${data.details.replace(/\n/g, '<br>')}`;
+            }
+            
+            previewContent.innerHTML = previewHtml;
+            
+            // Populate project dropdown
+            populateSaveProjectDropdown();
+            
+            // Clear notes text
+            document.getElementById('saveNotesText').value = '';
+            
+            // Show modal
+            modal.style.display = 'block';
+        }
+        
+        function closeSaveToProjectModal() {
+            const modal = document.getElementById('saveToProjectModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+            currentSaveData = null;
+        }
+        
+        function populateSaveProjectDropdown() {
+            const dropdown = document.getElementById('saveProjectDropdown');
+            if (!dropdown) return;
+            
+            // Clear existing options
+            dropdown.innerHTML = '<option value="">Select a project...</option>';
+            
+            // Add current project as default if one exists
+            if (currentProject) {
+                const option = document.createElement('option');
+                option.value = currentProject.id;
+                option.textContent = `${currentProject.name} (Current)`;
+                option.selected = true;
+                dropdown.appendChild(option);
+            }
+            
+            // Add other projects
+            projects.forEach(project => {
+                if (!currentProject || project.id !== currentProject.id) {
+                    const option = document.createElement('option');
+                    option.value = project.id;
+                    option.textContent = project.name;
+                    dropdown.appendChild(option);
+                }
+            });
+        }
+        
+        function createNewProjectFromSaveModal() {
+            const name = prompt('Enter new project name:');
+            if (name && name.trim()) {
+                // Create the project (reuse existing function logic)
+                const project = {
+                    id: Date.now(),
+                    name: name.trim(),
+                    created: new Date().toISOString(),
+                    boards: [],
+                    cuts: [],
+                    history: [],
+                    cutHistory: [],
+                    projectLog: [],
+                    calculatorData: {
+                        currentValueInches: 0,
+                        cutValueInches: 0,
+                        currentOperation: null,
+                        operationValue: 0,
+                        memoryValue: 0,
+                        value1: 0,
+                        value2: 0,
+                        inputMode: 'fraction'
+                    },
+                    notes: '',
+                    tags: []
+                };
+                
+                projects.push(project);
+                currentProject = project;
+                saveToLocalStorage();
+                updateProjectSelector();
+                
+                // Refresh the dropdown
+                populateSaveProjectDropdown();
+                
+                showNotification(`Project "${name}" created!`, 'success');
+            }
+        }
+        
+        function executeSaveToProject() {
+            const projectId = document.getElementById('saveProjectDropdown').value;
+            const notes = document.getElementById('saveNotesText').value.trim();
+            
+            if (!projectId) {
+                showNotification('Please select a project', 'warning');
+                return;
+            }
+            
+            if (!currentSaveData) {
+                showNotification('No data to save', 'error');
+                return;
+            }
+            
+            // Find the target project
+            const targetProject = projects.find(p => p.id == projectId);
+            if (!targetProject) {
+                showNotification('Project not found', 'error');
+                return;
+            }
+            
+            // Create the project log entry
+            const logEntry = {
+                id: Date.now(),
+                timestamp: currentSaveData.timestamp,
+                toolName: currentSaveData.toolName,
+                equation: currentSaveData.equation || '',
+                result: currentSaveData.result || '',
+                details: currentSaveData.details || '',
+                diagram: currentSaveData.diagram || null,
+                userNotes: notes,
+                saved: new Date().toISOString()
+            };
+            
+            // Add to project log
+            if (!targetProject.projectLog) {
+                targetProject.projectLog = [];
+            }
+            targetProject.projectLog.unshift(logEntry); // Add to beginning (most recent first)
+            
+            // Update project modified time
+            targetProject.lastModified = new Date().toISOString();
+            
+            // Save to localStorage
+            saveToLocalStorage();
+            
+            // Close modal and show success
+            closeSaveToProjectModal();
+            showNotification(`Saved to project: ${targetProject.name}`, 'success');
+            
+            // Update displays
+            updateProjectSelector();
+        }
+        
         function saveProjectNotes() {
             if (!currentProject) {
                 showNotification('No active project to save notes to', 'error');
@@ -3123,6 +3500,7 @@
                     cuts: [...cuts],
                     history: [...history],
                     cutHistory: [...cutHistory],
+                    projectLog: [], // New: stores manually saved calculation items
                     calculatorData: {
                         currentValueInches: 0,
                         cutValueInches: 0,
@@ -3327,7 +3705,8 @@
                 id: Date.now(),
                 name: newName.trim(),
                 created: new Date().toISOString(),
-                lastModified: null
+                lastModified: null,
+                projectLog: [] // Reset project log for new duplicate
             };
             
             projects.push(newProject);
@@ -3462,7 +3841,7 @@
             
             if (tabName === 'calculator' || !tabName) {
                 precision = parseInt(document.getElementById('precision')?.value || 16);
-                fractionSelects = ['fraction1', 'fraction2'];
+                fractionSelects = ['fraction1', 'fraction2', 'grFraction', 'singleBoardWidthFraction', 'singleInputLengthFraction', 'frameMaterialWidthFraction', 'frameWidthFraction', 'frameHeightFraction', 'framePolygonFraction', 'spTotalLengthFraction', 'spacingThicknessFraction'];
             } else if (tabName === 'cut') {
                 precision = parseInt(document.getElementById('cutPrecision')?.value || 16);
                 fractionSelects = ['cutFraction'];
@@ -3533,6 +3912,47 @@
                     }
                 }
             }
+        }
+        
+        // Update woodworking calculator fraction dropdowns when main precision changes
+        function updateWoodworkingFractions() {
+            const precision = parseInt(document.getElementById('precision')?.value || 16);
+            const woodworkingFractionSelects = [
+                'grFraction', 'singleBoardWidthFraction', 'singleInputLengthFraction', 
+                'frameMaterialWidthFraction', 'frameWidthFraction', 'frameHeightFraction', 'framePolygonFraction',
+                'spTotalLengthFraction', 'spacingThicknessFraction'
+            ];
+            
+            woodworkingFractionSelects.forEach(id => {
+                const select = document.getElementById(id);
+                if (!select) return;
+                
+                const currentValue = select.value; // Store current value
+                select.innerHTML = '<option value="0">0</option>';
+                
+                for (let i = 1; i < precision; i++) {
+                    const decimal = i / precision;
+                    let displayText;
+                    
+                    const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+                    const divisor = gcd(i, precision);
+                    const simplifiedNumerator = i / divisor;
+                    const simplifiedDenominator = precision / divisor;
+                    
+                    if (simplifiedDenominator === precision) {
+                        displayText = `${i}/${precision}"`;
+                    } else {
+                        displayText = `${simplifiedNumerator}/${simplifiedDenominator}"`;
+                    }
+                    
+                    select.innerHTML += `<option value="${decimal}">${displayText}</option>`;
+                }
+                
+                // Restore value if it still exists
+                if (currentValue && Array.from(select.options).some(opt => opt.value === currentValue)) {
+                    select.value = currentValue;
+                }
+            });
         }
         
         // Convert inches to feet/inches/fraction display
@@ -3684,6 +4104,9 @@
                             result.textContent = inchesToDisplay(calcResult);
                             result.classList.add('has-value');
                             currentValueInches = calcResult; // Update current value
+                            lastCalculatorUpdate = Date.now(); // Mark calculator as most recent
+                            lastConversionSource = 'calculator';
+                            updateConversionPreview(); // Update conversion preview
                         }
                     }
                 }
@@ -3703,6 +4126,7 @@
         }
         
         function saveToHistory() {
+            // Keep original functionality for backward compatibility
             if (!currentOperation || value1 === 0) {
                 if (value1 > 0) {
                     // Just save the current value
@@ -3747,6 +4171,58 @@
             document.getElementById('fraction1').value = parts.fraction || 0;
             
             // Clear second input
+            clearInput2();
+            currentOperation = null;
+            document.getElementById('input2Group').style.display = 'none';
+            document.querySelectorAll('.calc-btn.operation').forEach(btn => btn.classList.remove('active'));
+            
+            updateCalculation();
+        }
+        
+        // New Save to Project functions
+        function saveCalculatorToProject() {
+            if (!currentOperation || value1 === 0) {
+                if (value1 > 0) {
+                    // Save just the current value
+                    const data = {
+                        equation: inchesToDisplay(value1),
+                        result: inchesToDisplay(value1),
+                        details: `Current calculator value: ${inchesToDisplay(value1)}`
+                    };
+                    showSaveToProjectModal('Calculator', data);
+                }
+                return;
+            }
+            
+            let result = 0;
+            switch (currentOperation) {
+                case '+': result = value1 + value2; break;
+                case '-': result = value1 - value2; break;
+                case '*': result = value1 * value2; break;
+                case '/': 
+                    if (value2 === 0) {
+                        showNotification('Cannot divide by zero');
+                        return;
+                    }
+                    result = value1 / value2;
+                    break;
+            }
+            
+            const equation = `${inchesToDisplay(value1)} ${currentOperation} ${inchesToDisplay(value2)} = ${inchesToDisplay(result)}`;
+            const data = {
+                equation: equation,
+                result: inchesToDisplay(result),
+                details: `Calculation: ${inchesToDisplay(value1)} ${currentOperation} ${inchesToDisplay(value2)}\nResult: ${inchesToDisplay(result)}`
+            };
+            
+            showSaveToProjectModal('Calculator', data);
+            
+            // Still perform the calculation locally
+            const parts = inchesToParts(result);
+            document.getElementById('feet1').value = parts.feet || '';
+            document.getElementById('inches1').value = parts.inches || '';
+            document.getElementById('fraction1').value = parts.fraction || 0;
+            
             clearInput2();
             currentOperation = null;
             document.getElementById('input2Group').style.display = 'none';
@@ -3865,77 +4341,148 @@
         function convertToDecimal() {
             const inches = getCurrentCalculatorValue();
             if (inches === 0) {
-                showNotification('No result to convert. Perform a calculation first.', 'warning');
+                showNotification('No value to convert. Enter a decimal value or perform a calculation first.', 'warning');
                 return;
             }
             const decimal = inches.toFixed(4);
+            const source = (lastDirectInputUpdate > lastCalculatorUpdate && document.getElementById('directDecimalInput').value) ? 'direct input' : 'calculator';
             addToCalcHistory({
                 equation: `${inchesToDisplay(inches)} → ${decimal}"`,
                 result: inches,
                 timestamp: new Date().toLocaleTimeString(),
                 type: 'conversion'
             });
-            showNotification(`Decimal: ${decimal}"`, 'success');
+            showNotification(`Decimal: ${decimal}" (from ${source})`, 'success');
         }
         
         function convertToFraction() {
             const inches = getCurrentCalculatorValue();
             if (inches === 0) {
-                showNotification('No result to convert. Perform a calculation first.', 'warning');
+                showNotification('No value to convert. Enter a decimal value or perform a calculation first.', 'warning');
                 return;
             }
             const fraction = inchesToDisplay(inches);
+            const source = (lastDirectInputUpdate > lastCalculatorUpdate && document.getElementById('directDecimalInput').value) ? 'direct input' : 'calculator';
             addToCalcHistory({
                 equation: `${inches.toFixed(4)}" → ${fraction}`,
                 result: inches,
                 timestamp: new Date().toLocaleTimeString(),
                 type: 'conversion'
             });
-            showNotification(`Fraction: ${fraction}`, 'success');
+            showNotification(`Fraction: ${fraction} (from ${source})`, 'success');
         }
         
         function convertToFeet() {
             const inches = getCurrentCalculatorValue();
             if (inches === 0) {
-                showNotification('No result to convert. Perform a calculation first.', 'warning');
+                showNotification('No value to convert. Enter a decimal value or perform a calculation first.', 'warning');
                 return;
             }
             const feet = (inches / 12).toFixed(4);
+            const source = (lastDirectInputUpdate > lastCalculatorUpdate && document.getElementById('directDecimalInput').value) ? 'direct input' : 'calculator';
             addToCalcHistory({
                 equation: `${inchesToDisplay(inches)} → ${feet} ft`,
                 result: inches,
                 timestamp: new Date().toLocaleTimeString(),
                 type: 'conversion'
             });
-            showNotification(`Decimal Feet: ${feet} ft`, 'success');
+            showNotification(`Decimal Feet: ${feet} ft (from ${source})`, 'success');
         }
         
         function convertToInches() {
             const inches = getCurrentCalculatorValue();
             if (inches === 0) {
-                showNotification('No result to convert. Perform a calculation first.', 'warning');
+                showNotification('No value to convert. Enter a decimal value or perform a calculation first.', 'warning');
                 return;
             }
             const totalInches = inches.toFixed(4);
+            const source = (lastDirectInputUpdate > lastCalculatorUpdate && document.getElementById('directDecimalInput').value) ? 'direct input' : 'calculator';
             addToCalcHistory({
                 equation: `${inchesToDisplay(inches)} → ${totalInches}"`,
                 result: inches,
                 timestamp: new Date().toLocaleTimeString(),
                 type: 'conversion'
             });
-            showNotification(`Total Inches: ${totalInches}"`, 'success');
+            showNotification(`Total Inches: ${totalInches}" (from ${source})`, 'success');
         }
         
-        // Helper function to get the current calculator value (result or input)
+        // Direct decimal input conversion functions
+        function handleDirectInput() {
+            const directInput = document.getElementById('directDecimalInput');
+            const conversionValueSpan = document.getElementById('conversionValue');
+            
+            if (directInput.value && !isNaN(directInput.value)) {
+                const inches = parseFloat(directInput.value);
+                conversionValueSpan.textContent = `${inches.toFixed(3)}" (from direct input)`;
+                lastDirectInputUpdate = Date.now(); // Mark direct input as most recent
+                lastConversionSource = 'direct';
+            } else {
+                updateConversionPreview(); // Fall back to calculator value
+            }
+        }
+        
+        function convertDirectInput() {
+            const directInput = document.getElementById('directDecimalInput');
+            const inches = parseFloat(directInput.value);
+            
+            if (!directInput.value || isNaN(inches)) {
+                showNotification('Please enter a valid decimal value in inches', 'warning');
+                return;
+            }
+            
+            // Convert to feet/inches/fraction format at current precision
+            const fraction = inchesToDisplay(inches);
+            
+            // Add to history
+            addToCalcHistory({
+                equation: `${inches}" → ${fraction}`,
+                result: inches,
+                timestamp: new Date().toLocaleTimeString(),
+                type: 'direct_conversion'
+            });
+            
+            showNotification(`${inches}" = ${fraction}`, 'success');
+            
+            // Mark direct input as most recent action
+            lastDirectInputUpdate = Date.now();
+            lastConversionSource = 'direct';
+            
+            // Set this as the current calculator value for further conversions
+            currentValueInches = inches;
+            updateConversionPreview(); // Update conversion preview
+        }
+        
+        // Helper function to get the current calculator value (result, input, or direct input)
         function getCurrentCalculatorValue() {
-            // If there's a calculated result, use that
-            if (currentValueInches > 0) {
+            const directInput = document.getElementById('directDecimalInput');
+            const hasDirectInput = directInput && directInput.value && !isNaN(directInput.value);
+            const hasCalculatorResult = currentValueInches > 0;
+            
+            // If both direct input and calculator result exist, use the most recent one
+            if (hasDirectInput && hasCalculatorResult) {
+                // Use timestamps to determine which was most recent
+                if (lastDirectInputUpdate > lastCalculatorUpdate) {
+                    return parseFloat(directInput.value);
+                } else {
+                    return currentValueInches;
+                }
+            }
+            
+            // If only direct input exists, use it
+            if (hasDirectInput) {
+                return parseFloat(directInput.value);
+            }
+            
+            // If only calculator result exists, use it
+            if (hasCalculatorResult) {
                 return currentValueInches;
             }
+            
             // Otherwise, use input 1 if it has a value
             if (value1 > 0) {
                 return value1;
             }
+            
             // No value available
             return 0;
         }
@@ -3947,7 +4494,11 @@
             
             const inches = getCurrentCalculatorValue();
             if (inches > 0) {
-                conversionValueSpan.textContent = inchesToDisplay(inches);
+                const directInput = document.getElementById('directDecimalInput');
+                const isFromDirect = (lastDirectInputUpdate > lastCalculatorUpdate && directInput.value && !isNaN(directInput.value));
+                const source = isFromDirect ? 'direct input' : 'calculator';
+                
+                conversionValueSpan.textContent = `${inchesToDisplay(inches)} (from ${source})`;
                 conversionValueSpan.parentElement.style.opacity = '1';
             } else {
                 conversionValueSpan.textContent = 'Enter a value or calculate';
@@ -4987,6 +5538,7 @@
             const editModal = document.getElementById('editModal');
             const calcModal = document.getElementById('calcModal');
             const notesModal = document.getElementById('notesModal');
+            const saveToProjectModal = document.getElementById('saveToProjectModal');
             
             if (event.target === helpModal) {
                 helpModal.style.display = 'none';
@@ -5000,6 +5552,9 @@
             }
             if (event.target === notesModal) {
                 notesModal.style.display = 'none';
+            }
+            if (event.target === saveToProjectModal) {
+                closeSaveToProjectModal();
             }
         }
         
@@ -5174,34 +5729,36 @@
         }
 
         function calculateSpacing() {
-            const totalLength = parseFloat(document.getElementById('spTotalLength').value) || 0;
-            const numSpaces = parseInt(document.getElementById('spNumSpaces').value) || 0;
-            const thickness = parseFloat(document.getElementById('spacingThickness').value) || 0;
+            const totalLength = getInputInches('spTotalLengthFeet', 'spTotalLengthInches', 'spTotalLengthFraction');
+            const numShelves = parseInt(document.getElementById('spNumShelves').value) || 0;
+            const thickness = getInputInches('spacingThicknessFeet', 'spacingThicknessInches', 'spacingThicknessFraction');
             const resultDiv = document.getElementById('spResult');
             
-            if (totalLength === 0 || numSpaces === 0) {
+            if (totalLength === 0 || numShelves === 0) {
                 resultDiv.innerHTML = '<div class="result-placeholder">Enter values above</div>';
                 updateSpacingDiagram(0, 0, 0, 0);
                 return;
             }
             
-            let spacing, dividerInfo, description;
+            // Convert shelves to spaces: N shelves = N+1 spaces
+            const numSpaces = numShelves + 1;
+            let spacing, shelfInfo, description;
             
             if (thickness === 0) {
                 // Simple shelf spacing without thickness
                 spacing = totalLength / numSpaces;
-                const centerMarks = Array.from({length: numSpaces - 1}, (_, i) => inchesToDisplay((i + 1) * spacing, 'calculator'));
+                const centerMarks = Array.from({length: numShelves}, (_, i) => inchesToDisplay((i + 1) * spacing, 'calculator'));
                 
                 resultDiv.innerHTML = `
-                    <div class="result-value">${spacing.toFixed(3)}" per space</div>
+                    <div class="result-value">${inchesToDisplay(spacing, 'calculator')} per space</div>
                     <div class="result-summary">
                         <div class="summary-row">
                             <span class="summary-label">Total Length:</span>
-                            <span class="summary-value">${totalLength}"</span>
+                            <span class="summary-value">${inchesToDisplay(totalLength, 'calculator')}</span>
                         </div>
                         <div class="summary-row">
-                            <span class="summary-label">Spaces:</span>
-                            <span class="summary-value">${numSpaces} equal spaces</span>
+                            <span class="summary-label">Shelves:</span>
+                            <span class="summary-value">${numShelves} shelves (${numSpaces} spaces)</span>
                         </div>
                         <div class="summary-row">
                             <span class="summary-label">Material:</span>
@@ -5210,10 +5767,10 @@
                     </div>
                     ${centerMarks.length > 0 ? `
                     <div class="divider-marks">
-                        <div class="marks-header">📐 Center Marking Guide:</div>
+                        <div class="marks-header">📐 Shelf Center Marking Guide:</div>
                         ${centerMarks.map((mark, i) => `
                             <div class="divider-mark-row">
-                                <span class="divider-label">Mark ${i + 1}:</span>
+                                <span class="divider-label">Shelf ${i + 1}:</span>
                                 <span class="mark-center">Center ${mark}</span>
                             </div>
                         `).join('')}
@@ -5221,8 +5778,7 @@
                 `;
             } else {
                 // Account for material thickness
-                const numDividers = numSpaces - 1;
-                const totalThickness = numDividers * thickness;
+                const totalThickness = numShelves * thickness;
                 const availableSpace = totalLength - totalThickness;
                 
                 if (availableSpace <= 0) {
@@ -5233,45 +5789,45 @@
                 
                 spacing = availableSpace / numSpaces;
                 
-                // Calculate divider positions (left and right edges)
-                dividerInfo = [];
+                // Calculate shelf positions (left and right edges)
+                shelfInfo = [];
                 let currentPos = 0;
                 
-                for (let i = 0; i < numDividers; i++) {
+                for (let i = 0; i < numShelves; i++) {
                     currentPos += spacing; // Move to end of space
                     const leftEdge = currentPos;
                     const rightEdge = currentPos + thickness;
-                    dividerInfo.push({
+                    shelfInfo.push({
                         number: i + 1,
-                        leftEdge: inchesToDisplay(leftEdge, 'calculator'),
-                        rightEdge: inchesToDisplay(rightEdge, 'calculator')
+                        bottomEdge: inchesToDisplay(leftEdge, 'calculator'),
+                        topEdge: inchesToDisplay(rightEdge, 'calculator')
                     });
-                    currentPos += thickness; // Move past divider
+                    currentPos += thickness; // Move past shelf
                 }
                 
                 resultDiv.innerHTML = `
-                    <div class="result-value">${spacing.toFixed(3)}" per space</div>
+                    <div class="result-value">${inchesToDisplay(spacing, 'calculator')} per space</div>
                     <div class="result-summary">
                         <div class="summary-row">
                             <span class="summary-label">Total Length:</span>
-                            <span class="summary-value">${totalLength}"</span>
+                            <span class="summary-value">${inchesToDisplay(totalLength, 'calculator')}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Shelves:</span>
+                            <span class="summary-value">${numShelves} @ ${inchesToDisplay(thickness, 'calculator')} thick</span>
                         </div>
                         <div class="summary-row">
                             <span class="summary-label">Spaces:</span>
-                            <span class="summary-value">${numSpaces} @ ${spacing.toFixed(3)}" each</span>
-                        </div>
-                        <div class="summary-row">
-                            <span class="summary-label">Dividers:</span>
-                            <span class="summary-value">${numDividers} @ ${thickness}" thick</span>
+                            <span class="summary-value">${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each</span>
                         </div>
                     </div>
                     <div class="divider-marks">
-                        <div class="marks-header">📏 Divider Marking Guide:</div>
-                        ${dividerInfo.map(div => `
+                        <div class="marks-header">📏 Shelf Marking Guide:</div>
+                        ${shelfInfo.map(shelf => `
                             <div class="divider-mark-row">
-                                <span class="divider-label">Divider ${div.number}:</span>
-                                <span class="mark-left">Left ${div.leftEdge}</span>
-                                <span class="mark-right">Right ${div.rightEdge}</span>
+                                <span class="divider-label">Shelf ${shelf.number}:</span>
+                                <span class="mark-left">Bottom ${shelf.bottomEdge}</span>
+                                <span class="mark-right">Top ${shelf.topEdge}</span>
                             </div>
                         `).join('')}
                     </div>
@@ -5279,207 +5835,172 @@
             }
             
             // Update visual spacing diagram
-            updateSpacingDiagram(totalLength, numSpaces, spacing, thickness);
+            updateSpacingDiagram(totalLength, numSpaces, spacing, thickness, numShelves);
         }
 
-        function updateSpacingDiagram(total, spaces, spacing, thickness = 0) {
+        function updateSpacingDiagram(total, spaces, spacing, thickness = 0, numShelves = 0) {
             const diagram = document.getElementById('spacingDiagram');
             if (!diagram) return;
             
             if (total === 0 || spaces === 0) {
-                diagram.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">Enter dimensions to see spacing diagram</div>';
+                diagram.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">Enter dimensions to see vertical spacing diagram</div>';
                 return;
             }
             
-            // Make diagrams bigger and more legible
-            const containerMaxWidth = 450; // Larger container
-            const minDiagramWidth = 400; // Larger minimum 
-            const maxDiagramWidth = 1200; // Allow even wider for scrolling
+            // VERTICAL CABINET DIAGRAM - Height is the main dimension now
+            const containerMaxHeight = 600; // Max height before scrolling
+            const minDiagramHeight = 300; // Minimum height for visibility
+            const maxDiagramHeight = 1200; // Maximum height with scrolling
             
-            // Calculate diagram width - bigger for legibility
-            let diagramWidth = Math.max(minDiagramWidth, total * 12); // Increased multiplier for bigger diagrams
-            if (diagramWidth > maxDiagramWidth) diagramWidth = maxDiagramWidth;
+            // Calculate diagram height based on total length (vertical cabinet height)
+            let diagramHeight = Math.max(minDiagramHeight, total * 8); // Scale factor for readability
+            if (diagramHeight > maxDiagramHeight) diagramHeight = maxDiagramHeight;
             
-            const diagramHeight = 120;
-            const containerHeight = diagramHeight + 140; // Increase to accommodate 3 levels of marks (30px top + 110px bottom for 3 levels + mark height)
-            const scale = diagramWidth / total;
+            const diagramWidth = 200; // Fixed width for cabinet representation
+            const containerWidth = diagramWidth + 250; // Extra width for side labels
+            const scale = diagramHeight / total;
             
-            // Determine if we need horizontal scrolling
-            const needsScroll = diagramWidth > containerMaxWidth;
+            // Determine if we need vertical scrolling
+            const needsScroll = diagramHeight > containerMaxHeight;
             
-            console.log(`Spacing diagram: total=${total}", spaces=${spaces}, diagramWidth=${diagramWidth}px, containerMax=${containerMaxWidth}px, needsScroll=${needsScroll}`);
+            console.log(`Vertical shelf diagram: total=${total}", spaces=${spaces}, diagramHeight=${diagramHeight}px, containerMax=${containerMaxHeight}px, needsScroll=${needsScroll}`);
             
             let html;
             if (needsScroll) {
-                // Force scrollbar with explicit styles and CSS class
-                html = `<div class="spacing-diagram-container" style="width: 100%; max-width: ${containerMaxWidth}px; overflow-x: scroll; overflow-y: hidden; padding: 15px 10px 25px 10px; border: 2px solid #007bff; border-radius: 8px; margin: 15px auto; background: #f8f9fa;">
-                    <div style="text-align: center; font-size: 12px; color: #007bff; font-weight: bold; margin-bottom: 10px;">← Scroll horizontally to see full diagram (${diagramWidth}px wide) →</div>
-                    <div style="width: ${diagramWidth}px; height: ${containerHeight}px; position: relative; border: 2px solid #8B4513; background: #fff; border-radius: 4px; margin: 0; padding-top: 40px;">`;
+                html = `<div class="spacing-diagram-container" style="width: 100%; max-width: ${containerWidth}px; max-height: ${containerMaxHeight}px; overflow-x: hidden; overflow-y: scroll; padding: 15px; border: 2px solid #007bff; border-radius: 8px; margin: 15px auto; background: #f8f9fa;">
+                    <div style="text-align: center; font-size: 12px; color: #007bff; font-weight: bold; margin-bottom: 10px;">↕ Scroll vertically to see full cabinet (${diagramHeight}px tall) ↕</div>
+                    <div style="width: ${containerWidth}px; height: ${diagramHeight + 60}px; position: relative; margin: 0 auto;">`;
             } else {
                 html = `<div style="padding: 10px; margin: 10px auto; text-align: center;">
-                    <div style="position: relative; width: ${diagramWidth}px; height: ${containerHeight}px; border: 2px solid #8B4513; margin: 0 auto; background: #f8f9fa; display: inline-block; padding-top: 40px;">`;
+                    <div style="position: relative; width: ${containerWidth}px; height: ${diagramHeight + 60}px; margin: 0 auto; display: inline-block;">`;
             }
             
-            // Add measurement line at top with better spacing
-            html += `<div style="position: absolute; top: -20px; left: 0; font-size: 11px; color: #8B4513; font-weight: bold;">0"</div>`;
-            html += `<div style="position: absolute; top: -20px; right: 0; font-size: 11px; color: #8B4513; font-weight: bold;">${total}"</div>`;
+            // Draw main cabinet frame (vertical rectangle)
+            html += `<div style="position: absolute; left: 50px; top: 30px; width: ${diagramWidth}px; height: ${diagramHeight}px; border: 3px solid #8B4513; background: #f8f9fa; border-radius: 4px;"></div>`;
+            
+            // Add measurement indicators on the left side
+            html += `<div style="position: absolute; left: 20px; top: 30px; font-size: 11px; color: #8B4513; font-weight: bold;">0"</div>`;
+            html += `<div style="position: absolute; left: 10px; top: ${30 + diagramHeight - 10}px; font-size: 11px; color: #8B4513; font-weight: bold;">${inchesToDisplay(total, 'calculator')}</div>`;
             
             if (thickness === 0) {
-                // Simple spacing without material thickness - leader line system
-                const numMarks = spaces - 1;
-                const spaceFontSize = Math.max(10, Math.min(14, diagramWidth / (spaces * 6)));
+                // Simple shelf spacing without thickness - center marks
+                const spaceFontSize = Math.max(10, Math.min(14, diagramHeight / (spaces * 8)));
                 
-                // Use full vertical space with leader lines for marks
-                const markBoxWidth = 70; // Larger width for fractions
-                const markBoxHeight = 28; // Taller boxes for fractions
-                const markFontSize = 11; // Larger font for readability
-                
-                // Calculate vertical levels to distribute marks without overlap
-                const availableBottomSpace = 110; // Enough space for 3 levels plus mark height
-                const marksPerRow = Math.max(1, Math.floor(diagramWidth / (markBoxWidth + 10))); // How many marks fit per row with padding
-                const levelsNeeded = Math.ceil(numMarks / marksPerRow); // Actual rows needed
-                const levelHeight = Math.max(40, availableBottomSpace / 3); // Fixed spacing for 3 levels with generous room
-                
-                // Draw center marks with leader lines
+                // Draw center marks for shelves
                 for (let i = 1; i < spaces; i++) {
-                    const position = (i * spacing) * scale;
-                    const markIndex = i - 1;
+                    const position = (i * spacing) * scale + 30; // Add top offset
                     
-                    // Vertical mark line extending down from diagram
-                    html += `<div style="position: absolute; left: ${position - 1}px; top: 5px; width: 2px; height: 110px; background: #dc3545; border-radius: 1px;"></div>`;
+                    // Horizontal mark line across cabinet width
+                    html += `<div style="position: absolute; left: 50px; top: ${position - 1}px; width: ${diagramWidth}px; height: 2px; background: #dc3545; border-radius: 1px;"></div>`;
                     
-                    // Position mark NEAR its actual position on the diagram
-                    const level = markIndex % 3; // Simple 3-level alternating to prevent overlap
-                    const markTop = 140 + (level * levelHeight); // Position from top, below diagram
+                    // Mark measurement on the right side
+                    html += `<div style="position: absolute; left: ${70 + diagramWidth}px; top: ${position - 12}px; width: 80px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #dc3545; font-weight: bold; background: rgba(255,255,255,0.98); border: 2px solid #dc3545; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">Shelf ${i}: ${inchesToDisplay(i * spacing, 'calculator')}</div>`;
                     
-                    // Position horizontally near the actual mark position
-                    let markLeft = position - markBoxWidth/2; // Center the mark under the line
-                    
-                    // Ensure mark doesn't go off screen edges
-                    if (markLeft < 5) markLeft = 5;
-                    if (markLeft + markBoxWidth > diagramWidth - 5) markLeft = diagramWidth - markBoxWidth - 5;
-                    
-                    // Leader line from diagram position to mark box
-                    const leaderStartX = position;
-                    const leaderEndX = markLeft + markBoxWidth/2;
-                    const leaderStartY = 115; // Bottom of diagram
-                    const leaderEndY = markTop - 3; // Top of mark box
-                    
-                    // Always draw leader line for clarity
-                    html += `<div style="position: absolute; left: ${Math.min(leaderStartX, leaderEndX)}px; top: ${leaderStartY}px; width: ${Math.abs(leaderEndX - leaderStartX) + 1}px; height: 2px; background: #dc3545; opacity: 0.8;"></div>`;
-                    html += `<div style="position: absolute; left: ${leaderEndX}px; top: ${leaderStartY}px; width: 2px; height: ${leaderEndY - leaderStartY}px; background: #dc3545; opacity: 0.8;"></div>`;
-                    
-                    // Mark measurement box with leader line system
-                    html += `<div style="position: absolute; left: ${markLeft}px; top: ${markTop}px; width: ${markBoxWidth}px; height: ${markBoxHeight}px; display: flex; align-items: center; justify-content: center; font-size: ${markFontSize}px; color: #dc3545; font-weight: bold; background: rgba(255,255,255,0.98); border: 2px solid #dc3545; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">${inchesToDisplay(i * spacing, 'calculator')}</div>`;
+                    // Leader line from mark to measurement box
+                    html += `<div style="position: absolute; left: ${50 + diagramWidth}px; top: ${position}px; width: 20px; height: 2px; background: #dc3545; opacity: 0.8;"></div>`;
                 }
                 
-                // Add space labels with adaptive sizing
+                // Add space labels inside the cabinet
                 for (let i = 0; i < spaces; i++) {
-                    const centerPos = (i * spacing + spacing / 2) * scale;
-                    const spaceWidth = Math.max(30, Math.min(45, spacing * scale - 10));
+                    const centerPos = (i * spacing + spacing / 2) * scale + 30;
+                    const spaceHeight = Math.max(20, Math.min(30, spacing * scale - 5));
                     
-                    // Clean space indicators
-                    html += `<div style="position: absolute; left: ${centerPos - spaceWidth/2}px; top: 45px; width: ${spaceWidth}px; text-align: center; font-size: ${spaceFontSize}px; color: #28a745; font-weight: bold; background: rgba(40, 167, 69, 0.1); border: 1px solid #28a745; border-radius: 15px; padding: 3px;">S${i + 1}</div>`;
+                    html += `<div style="position: absolute; left: ${50 + diagramWidth/2 - 25}px; top: ${centerPos - spaceHeight/2}px; width: 50px; height: ${spaceHeight}px; display: flex; align-items: center; justify-content: center; font-size: ${spaceFontSize}px; color: #28a745; font-weight: bold; background: rgba(40, 167, 69, 0.15); border: 1px solid #28a745; border-radius: 8px;">S${i + 1}</div>`;
                 }
             } else {
-                // Spacing with material thickness - leader line system for left/right marks
-                const numDividers = spaces - 1;
+                // Vertical cabinet with shelf thickness - show bottom/top positions
+                const spaceFontSize = Math.max(10, Math.min(14, diagramHeight / (spaces * 8)));
                 let currentPos = 0;
-                const spaceFontSize = Math.max(10, Math.min(13, diagramWidth / (spaces * 8)));
                 
-                // Leader line system parameters
-                const markBoxWidth = 65; // Larger width for fractions
-                const markBoxHeight = 26; // Taller for fractions
-                const markFontSize = 10; // Larger readable font
-                
-                // Calculate spacing distribution for marks
-                const totalMarks = numDividers * 2; // Left + Right marks
-                const availableBottomSpace = 110; // Enough space for 3 levels plus mark height
-                const marksPerRow = Math.max(1, Math.floor(diagramWidth / (markBoxWidth + 15))); // Marks per row with spacing
-                const levelsNeeded = Math.ceil(totalMarks / marksPerRow); // Actual rows needed
-                const levelHeight = Math.max(40, availableBottomSpace / 3); // Fixed spacing for 3 levels with generous room
-                
+                // Draw spaces and shelves vertically
                 for (let i = 0; i < spaces; i++) {
-                    // Draw space with styling
-                    const spaceStart = currentPos * scale;
-                    const spaceEnd = (currentPos + spacing) * scale;
-                    const spaceWidth = spaceEnd - spaceStart;
+                    const spaceStart = (currentPos * scale) + 30;
+                    const spaceEnd = ((currentPos + spacing) * scale) + 30;
+                    const spaceHeight = spaceEnd - spaceStart;
                     
-                    // Clean space visualization - only show if wide enough
-                    if (spaceWidth > 15) {
-                        html += `<div style="position: absolute; left: ${spaceStart}px; top: 25px; width: ${spaceWidth}px; height: 50px; background: linear-gradient(135deg, rgba(40, 167, 69, 0.3), rgba(40, 167, 69, 0.1)); border: 2px solid #28a745; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></div>`;
+                    // Draw space inside cabinet
+                    if (spaceHeight > 10) {
+                        html += `<div style="position: absolute; left: 55px; top: ${spaceStart}px; width: ${diagramWidth - 10}px; height: ${spaceHeight}px; background: rgba(40, 167, 69, 0.15); border: 1px solid #28a745; border-radius: 4px;"></div>`;
                         
-                        // Space label
-                        const labelWidth = Math.max(20, Math.min(35, spaceWidth - 10));
-                        const labelLeft = spaceStart + spaceWidth/2 - labelWidth/2;
-                        html += `<div style="position: absolute; left: ${labelLeft}px; top: 45px; width: ${labelWidth}px; text-align: center; font-size: ${spaceFontSize}px; color: #28a745; font-weight: bold; background: rgba(255,255,255,0.9); border-radius: 10px; padding: 2px;">S${i + 1}</div>`;
+                        // Space label inside the space
+                        if (spaceHeight > 20) {
+                            html += `<div style="position: absolute; left: ${50 + diagramWidth/2 - 20}px; top: ${spaceStart + spaceHeight/2 - 10}px; width: 40px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: ${spaceFontSize}px; color: #28a745; font-weight: bold; background: rgba(255,255,255,0.9); border: 1px solid #28a745; border-radius: 8px;">S${i + 1}</div>`;
+                        }
                     }
                     
                     currentPos += spacing;
                     
-                    // Draw divider if not last space
-                    if (i < numDividers) {
-                        const dividerStart = currentPos * scale;
-                        const dividerEnd = (currentPos + thickness) * scale;
-                        const dividerWidth = dividerEnd - dividerStart;
-                        const dividerIndex = i;
+                    // Draw shelf if not last space
+                    if (i < numShelves) {
+                        const shelfStart = (currentPos * scale) + 30;
+                        const shelfEnd = ((currentPos + thickness) * scale) + 30;
+                        const shelfThickness = shelfEnd - shelfStart;
                         
-                        // Clean divider visualization
-                        html += `<div style="position: absolute; left: ${dividerStart}px; top: 10px; width: ${dividerWidth}px; height: 100px; background: linear-gradient(135deg, #8B4513, #A0522D); border: 2px solid #654321; border-radius: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div>`;
+                        // Draw shelf as horizontal bar across cabinet
+                        html += `<div style="position: absolute; left: 50px; top: ${shelfStart}px; width: ${diagramWidth}px; height: ${Math.max(2, shelfThickness)}px; background: linear-gradient(to bottom, #8B4513, #A0522D); border: 1px solid #654321; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>`;
                         
-                        // Smart positioning system for left and right marks
-                        const markPairIndex = dividerIndex; // Each divider has a pair of marks
+                        // Smart positioning to prevent overlap
+                        const labelHeight = 24;
+                        const minGap = 8; // Minimum gap between labels
+                        const defaultBottomOffset = -12;
+                        const defaultTopOffset = 2;
                         
-                        // Simple alternating levels to prevent vertical overlap
-                        const leftLevel = dividerIndex % 3; // Use up to 3 levels
-                        const rightLevel = (dividerIndex + 1) % 3; // Offset right marks slightly
+                        // Calculate if labels would overlap with default positioning
+                        const defaultBottomTop = shelfStart + defaultBottomOffset;
+                        const defaultTopTop = shelfEnd + defaultTopOffset;
+                        const wouldOverlap = (defaultTopTop - (defaultBottomTop + labelHeight)) < minGap;
                         
-                        // Position left mark NEAR its divider, using levels only for vertical spacing
-                        const leftMarkTop = 140 + (leftLevel * levelHeight);
-                        let leftMarkLeft = dividerStart - markBoxWidth - 15; // Left of the divider
+                        let bottomLabelTop, topLabelTop;
                         
-                        // If left mark would go off screen, position it above/below the divider instead
-                        if (leftMarkLeft < 5) {
-                            leftMarkLeft = Math.max(5, dividerStart - markBoxWidth/2);
+                        if (wouldOverlap) {
+                            // Spread labels apart with minimum gap
+                            const availableSpace = shelfEnd - shelfStart;
+                            const totalNeeded = labelHeight * 2 + minGap;
+                            
+                            if (availableSpace >= totalNeeded) {
+                                // Center the labels around the shelf with proper spacing
+                                const centerY = (shelfStart + shelfEnd) / 2;
+                                bottomLabelTop = centerY - labelHeight - minGap/2;
+                                topLabelTop = centerY + minGap/2;
+                            } else {
+                                // Not enough space - stack labels with minimum gap
+                                bottomLabelTop = shelfStart - labelHeight - minGap;
+                                topLabelTop = bottomLabelTop + labelHeight + minGap;
+                            }
+                        } else {
+                            // Use default positioning
+                            bottomLabelTop = defaultBottomTop;
+                            topLabelTop = defaultTopTop;
                         }
                         
-                        // Position right mark NEAR its divider, using levels only for vertical spacing  
-                        const rightMarkTop = 140 + (rightLevel * levelHeight);
-                        let rightMarkLeft = dividerEnd + 15; // Right of the divider
+                        // Bottom edge measurement on right side
+                        html += `<div style="position: absolute; left: ${70 + diagramWidth}px; top: ${bottomLabelTop}px; width: 90px; height: ${labelHeight}px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #8B4513; font-weight: bold; background: rgba(255,255,255,0.98); border: 2px solid #8B4513; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">Shelf ${i + 1} Bottom: ${inchesToDisplay(currentPos, 'calculator')}</div>`;
                         
-                        // If right mark would go off screen, position it above/below the divider instead
-                        if (rightMarkLeft + markBoxWidth > diagramWidth - 5) {
-                            rightMarkLeft = Math.min(diagramWidth - markBoxWidth - 5, dividerEnd - markBoxWidth/2);
+                        // Top edge measurement on right side 
+                        html += `<div style="position: absolute; left: ${70 + diagramWidth}px; top: ${topLabelTop}px; width: 90px; height: ${labelHeight}px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #654321; font-weight: bold; background: rgba(255,255,255,0.98); border: 2px solid #654321; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">Shelf ${i + 1} Top: ${inchesToDisplay(currentPos + thickness, 'calculator')}</div>`;
+                        
+                        // Leader lines from shelf to measurements (connect to label centers)
+                        const bottomLabelCenter = bottomLabelTop + labelHeight/2;
+                        const topLabelCenter = topLabelTop + labelHeight/2;
+                        
+                        // Bottom leader line
+                        html += `<div style="position: absolute; left: ${50 + diagramWidth}px; top: ${shelfStart}px; width: 20px; height: 2px; background: #8B4513; opacity: 0.8;"></div>`;
+                        if (Math.abs(shelfStart - bottomLabelCenter) > 3) {
+                            // Add vertical line if label is not near shelf edge
+                            html += `<div style="position: absolute; left: ${69 + diagramWidth}px; top: ${Math.min(shelfStart, bottomLabelCenter)}px; width: 2px; height: ${Math.abs(shelfStart - bottomLabelCenter)}px; background: #8B4513; opacity: 0.6;"></div>`;
                         }
                         
-                        // Draw leader lines for left mark - connect to LEFT edge of divider
-                        const leftLeaderStartX = dividerStart; // Left edge of divider
-                        const leftLeaderEndX = leftMarkLeft + markBoxWidth/2; // Center of mark box
-                        const leftLeaderStartY = 110; // Bottom of diagram
-                        const leftLeaderEndY = leftMarkTop - 3; // Top of mark box
+                        // Top leader line  
+                        html += `<div style="position: absolute; left: ${50 + diagramWidth}px; top: ${shelfEnd}px; width: 20px; height: 2px; background: #654321; opacity: 0.8;"></div>`;
+                        if (Math.abs(shelfEnd - topLabelCenter) > 3) {
+                            // Add vertical line if label is not near shelf edge
+                            html += `<div style="position: absolute; left: ${69 + diagramWidth}px; top: ${Math.min(shelfEnd, topLabelCenter)}px; width: 2px; height: ${Math.abs(shelfEnd - topLabelCenter)}px; background: #654321; opacity: 0.6;"></div>`;
+                        }
                         
-                        // Always draw leader line for left marks to show connection
-                        html += `<div style="position: absolute; left: ${Math.min(leftLeaderStartX, leftLeaderEndX)}px; top: ${leftLeaderStartY}px; width: ${Math.abs(leftLeaderEndX - leftLeaderStartX) + 1}px; height: 2px; background: #8B4513; opacity: 0.8;"></div>`;
-                        html += `<div style="position: absolute; left: ${leftLeaderEndX}px; top: ${leftLeaderStartY}px; width: 2px; height: ${leftLeaderEndY - leftLeaderStartY}px; background: #8B4513; opacity: 0.8;"></div>`;
-                        
-                        // Draw leader lines for right mark - connect to RIGHT edge of divider
-                        const rightLeaderStartX = dividerEnd; // Right edge of divider
-                        const rightLeaderEndX = rightMarkLeft + markBoxWidth/2; // Center of mark box
-                        const rightLeaderStartY = 110; // Bottom of diagram
-                        const rightLeaderEndY = rightMarkTop - 3; // Top of mark box
-                        
-                        // Always draw leader line for right marks to show connection
-                        html += `<div style="position: absolute; left: ${Math.min(rightLeaderStartX, rightLeaderEndX)}px; top: ${rightLeaderStartY}px; width: ${Math.abs(rightLeaderEndX - rightLeaderStartX) + 1}px; height: 2px; background: #654321; opacity: 0.8;"></div>`;
-                        html += `<div style="position: absolute; left: ${rightLeaderEndX}px; top: ${rightLeaderStartY}px; width: 2px; height: ${rightLeaderEndY - rightLeaderStartY}px; background: #654321; opacity: 0.8;"></div>`;
-                        
-                        // Left edge mark with leader line
-                        html += `<div style="position: absolute; left: ${leftMarkLeft}px; top: ${leftMarkTop}px; width: ${markBoxWidth}px; height: ${markBoxHeight}px; display: flex; align-items: center; justify-content: center; font-size: ${markFontSize}px; color: #8B4513; font-weight: bold; background: rgba(255,255,255,0.98); border: 2px solid #8B4513; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">L${inchesToDisplay(currentPos, 'calculator')}</div>`;
-                        
-                        // Right edge mark with leader line
-                        html += `<div style="position: absolute; left: ${rightMarkLeft}px; top: ${rightMarkTop}px; width: ${markBoxWidth}px; height: ${markBoxHeight}px; display: flex; align-items: center; justify-content: center; font-size: ${markFontSize}px; color: #654321; font-weight: bold; background: rgba(255,255,255,0.98); border: 2px solid #654321; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">R${inchesToDisplay(currentPos + thickness, 'calculator')}</div>`;
-                        
-                        // Divider number label
-                        html += `<div style="position: absolute; left: ${dividerStart + dividerWidth/2 - 8}px; top: 55px; width: 16px; text-align: center; font-size: 9px; color: white; font-weight: bold; background: rgba(139, 69, 19, 0.8); border-radius: 8px; padding: 1px;">D${i + 1}</div>`;
+                        // Shelf number label on left side
+                        if (shelfThickness > 8) {
+                            html += `<div style="position: absolute; left: 25px; top: ${shelfStart + shelfThickness/2 - 8}px; width: 20px; height: 16px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; font-weight: bold; background: rgba(139, 69, 19, 0.9); border-radius: 8px;">S${i + 1}</div>`;
+                        }
                         
                         currentPos += thickness;
                     }
@@ -5520,25 +6041,103 @@
             const diagram = document.getElementById('angleDiagram');
             if (!diagram) return;
             
-            const radius = 40;
-            const centerX = 60;
-            const centerY = 60;
+            const svgWidth = 250;
+            const svgHeight = 200;
+            const radius = 60;
+            const centerX = svgWidth / 2;
+            const centerY = svgHeight / 2 - 20;
             
+            // Calculate polygon points
             let points = '';
+            let vertices = [];
             for (let i = 0; i < sides; i++) {
                 const angle = (i * 2 * Math.PI) / sides - Math.PI / 2;
                 const x = centerX + radius * Math.cos(angle);
                 const y = centerY + radius * Math.sin(angle);
                 points += `${x},${y} `;
+                vertices.push({x, y, angle});
+            }
+            
+            // Generate miter joint details for first few corners
+            let miterJoints = '';
+            let miterLabels = '';
+            
+            for (let i = 0; i < Math.min(sides, 4); i++) {
+                const vertex = vertices[i];
+                const nextVertex = vertices[(i + 1) % sides];
+                
+                // Draw miter cut indication at each corner
+                const miterLength = 15;
+                const angleToNext = Math.atan2(nextVertex.y - vertex.y, nextVertex.x - vertex.x);
+                const angleToPrev = Math.atan2(vertices[(i - 1 + sides) % sides].y - vertex.y, vertices[(i - 1 + sides) % sides].x - vertex.x);
+                
+                const miterX1 = vertex.x + miterLength * Math.cos(angleToNext);
+                const miterY1 = vertex.y + miterLength * Math.sin(angleToNext);
+                const miterX2 = vertex.x + miterLength * Math.cos(angleToPrev);
+                const miterY2 = vertex.y + miterLength * Math.sin(angleToPrev);
+                
+                miterJoints += `<line x1="${vertex.x}" y1="${vertex.y}" x2="${miterX1}" y2="${miterY1}" stroke="#dc3545" stroke-width="3" stroke-dasharray="1,1"/>`;
+                miterJoints += `<line x1="${vertex.x}" y1="${vertex.y}" x2="${miterX2}" y2="${miterY2}" stroke="#dc3545" stroke-width="3" stroke-dasharray="1,1"/>`;
+                
+                // Add corner numbers
+                const labelOffset = 25;
+                const labelX = vertex.x + labelOffset * Math.cos(vertex.angle);
+                const labelY = vertex.y + labelOffset * Math.sin(vertex.angle);
+                miterLabels += `<circle cx="${labelX}" cy="${labelY}" r="12" fill="#007bff" opacity="0.9"/>`;
+                miterLabels += `<text x="${labelX}" y="${labelY + 4}" text-anchor="middle" font-size="11" font-weight="bold" fill="white">${i + 1}</text>`;
             }
             
             diagram.innerHTML = `
-                <svg width="120" height="120" style="display: block; margin: 0 auto;">
-                    <polygon points="${points}" stroke="#8B4513" stroke-width="2" fill="none"/>
-                    <text x="${centerX}" y="${centerY + 5}" text-anchor="middle" font-size="10" fill="#8B4513">
-                        ${sides} sides
-                    </text>
-                </svg>
+                <div style="text-align: center; margin: 0; padding: 10px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%;">
+                    <svg width="${svgWidth}" height="${svgHeight}" style="display: block; margin: 0 auto; border: 1px solid #ddd; border-radius: 8px; background: #fafafa;">
+                        <defs>
+                            <!-- Wood grain pattern for frame pieces -->
+                            <pattern id="frameWoodGrain" patternUnits="userSpaceOnUse" width="15" height="6">
+                                <rect width="15" height="6" fill="#DEB887"/>
+                                <line x1="0" y1="2" x2="15" y2="2" stroke="#CD853F" stroke-width="0.4"/>
+                                <line x1="0" y1="4" x2="15" y2="4" stroke="#CD853F" stroke-width="0.2"/>
+                            </pattern>
+                        </defs>
+                        
+                        <!-- Main polygon outline with enhanced styling -->
+                        <polygon points="${points}" stroke="#8B4513" stroke-width="6" fill="url(#frameWoodGrain)" opacity="0.8"/>
+                        
+                        <!-- Inner polygon for frame effect -->
+                        <polygon points="${points}" stroke="#654321" stroke-width="2" fill="none" stroke-dasharray="3,2"/>
+                        
+                        <!-- Miter joint indicators -->
+                        ${miterJoints}
+                        
+                        <!-- Corner labels -->
+                        ${miterLabels}
+                        
+                        <!-- Center information -->
+                        <circle cx="${centerX}" cy="${centerY}" r="3" fill="#8B4513"/>
+                        <text x="${centerX}" y="${centerY - 10}" text-anchor="middle" font-size="14" font-weight="bold" fill="#8B4513">
+                            ${sides}-Sided Frame
+                        </text>
+                        
+                        <!-- Miter angle information -->
+                        <text x="${centerX}" y="${svgHeight - 40}" text-anchor="middle" font-size="16" font-weight="bold" fill="#dc3545">
+                            ${miterAngle.toFixed(1)}° Miter Cuts
+                        </text>
+                        
+                        <!-- Additional frame info -->
+                        <text x="${centerX}" y="${svgHeight - 20}" text-anchor="middle" font-size="12" fill="#666">
+                            Each corner requires ${miterAngle.toFixed(1)}° cuts on both pieces
+                        </text>
+                        
+                        <!-- Corner angle indicators for first corner -->
+                        ${sides >= 3 ? `
+                            <path d="M ${vertices[0].x - 20} ${vertices[0].y - 10} 
+                                     A 15 15 0 0 1 ${vertices[0].x - 10} ${vertices[0].y - 20}" 
+                                  stroke="#dc3545" stroke-width="2" fill="none"/>
+                            <text x="${vertices[0].x - 30}" y="${vertices[0].y - 25}" font-size="11" fill="#dc3545" font-weight="bold">
+                                ${miterAngle.toFixed(1)}°
+                            </text>
+                        ` : ''}
+                    </svg>
+                </div>
             `;
         }
 
@@ -5942,6 +6541,38 @@
             
             showNotification('Added to calculator history');
         }
+        
+        function saveGoldenRatioToProject() {
+            const input = getInputInches('grFeet', 'grInches', 'grFraction');
+            
+            if (input === 0) {
+                showNotification('Enter a dimension first', 'warning');
+                return;
+            }
+            
+            const phi = 1.618033988749895;
+            let shortSide, longSide, equation, details;
+            
+            if (currentGoldenMode === 'short') {
+                shortSide = input;
+                longSide = input * phi;
+                equation = `Golden Ratio: Short ${inchesToDisplay(shortSide)} → Long ${inchesToDisplay(longSide)}`;
+                details = `Input (short side): ${inchesToDisplay(shortSide)}\nGolden ratio result (long side): ${inchesToDisplay(longSide)}\nRatio: 1:1.618 (φ = golden ratio)`;
+            } else {
+                longSide = input;
+                shortSide = input / phi;
+                equation = `Golden Ratio: Long ${inchesToDisplay(longSide)} → Short ${inchesToDisplay(shortSide)}`;
+                details = `Input (long side): ${inchesToDisplay(longSide)}\nGolden ratio result (short side): ${inchesToDisplay(shortSide)}\nRatio: 1.618:1 (φ = golden ratio)`;
+            }
+            
+            const data = {
+                equation: equation,
+                result: `Long: ${inchesToDisplay(longSide)}, Short: ${inchesToDisplay(shortSide)}`,
+                details: details
+            };
+            
+            showSaveToProjectModal('Golden Ratio Calculator', data);
+        }
 
         function setAngleSides(sides) {
             document.getElementById('maSides').value = sides;
@@ -5983,6 +6614,7 @@
             const angle = parseFloat(document.getElementById('singleMiterAngle').value) || 0;
             const boardWidth = getInputInches('singleBoardWidthFeet', 'singleBoardWidthInches', 'singleBoardWidthFraction');
             const knownSide = document.getElementById('singleKnownSide').value;
+            const cutType = document.getElementById('singleCutType').value;
             const inputLength = getInputInches('singleInputLengthFeet', 'singleInputLengthInches', 'singleInputLengthFraction');
             const resultDiv = document.getElementById('maResult');
             
@@ -5992,23 +6624,29 @@
             }
             
             const angleRad = (angle * Math.PI) / 180;
-            const offset = boardWidth * Math.tan(angleRad);
+            const singleOffset = boardWidth * Math.tan(angleRad);
+            const totalOffset = cutType === 'dual-sided' ? singleOffset * 2 : singleOffset;
             
             let shortSide, longSide;
             if (knownSide === 'long') {
                 longSide = inputLength;
-                shortSide = longSide - offset;
+                shortSide = longSide - totalOffset;
             } else {
                 shortSide = inputLength;
-                longSide = shortSide + offset;
+                longSide = shortSide + totalOffset;
             }
             
+            const cutDescription = cutType === 'one-sided' ? 'Single Board Cut (One End)' : 'Single Board Cut (Both Ends)';
+            const offsetDescription = cutType === 'one-sided' ? 
+                `Offset: ${inchesToDisplay(singleOffset)} (one end)` : 
+                `Total Offset: ${inchesToDisplay(totalOffset)} (${inchesToDisplay(singleOffset)} per end)`;
+            
             resultDiv.innerHTML = `
-                <div class="result-value">${angle}° miter cut</div>
+                <div class="result-value">${angle}° ${cutDescription}</div>
                 <div class="result-details">
-                    Long side (back): ${inchesToDisplay(longSide)}<br>
-                    Short side (front): ${inchesToDisplay(shortSide)}<br>
-                    Offset: ${inchesToDisplay(offset)}
+                    Long side (back): ${inchesToDisplay(longSide, 'calculator')}<br>
+                    Short side (front): ${inchesToDisplay(shortSide, 'calculator')}<br>
+                    ${offsetDescription}
                 </div>
             `;
             
@@ -6017,31 +6655,100 @@
             label.textContent = knownSide === 'long' ? 'Long side length:' : 'Short side length:';
             
             // Update diagram to show single miter cut visualization
-            updateSingleMiterDiagram(angle, boardWidth, shortSide, longSide);
+            updateSingleMiterDiagram(angle, boardWidth, shortSide, longSide, cutType);
         }
 
-        function updateSingleMiterDiagram(angle, boardWidth, shortSide, longSide) {
+        function updateSingleMiterDiagram(angle, boardWidth, shortSide, longSide, cutType = 'one-sided') {
             const diagram = document.getElementById('angleDiagram');
             if (!diagram) return;
             
-            // Create a simple miter cut visualization
+            // Create a detailed, large miter cut visualization
+            const svgWidth = 260;
+            const svgHeight = 180;
+            const boardVisualWidth = 180;
+            const boardVisualHeight = Math.max(30, Math.min(boardWidth * 20, 60)); // Scale board width visually
+            const centerX = svgWidth / 2;
+            const boardY = (svgHeight - boardVisualHeight) / 2 - 10;
+            
+            // Calculate miter cut coordinates
+            const miterLength = 30; // Length of miter cut display
+            const leftCutX1 = centerX - boardVisualWidth/2;
+            const leftCutY1 = boardY;
+            const leftCutX2 = leftCutX1 + miterLength;
+            const leftCutY2 = boardY + boardVisualHeight;
+            
+            const rightCutX1 = centerX + boardVisualWidth/2;
+            const rightCutY1 = boardY;
+            const rightCutX2 = rightCutX1 - miterLength;
+            const rightCutY2 = boardY + boardVisualHeight;
+            
             diagram.innerHTML = `
-                <svg width="120" height="120" style="display: block; margin: 0 auto;">
-                    <!-- Board outline -->
-                    <rect x="30" y="45" width="60" height="${Math.min(boardWidth * 8, 20)}" fill="none" stroke="#8B4513" stroke-width="2"/>
-                    <!-- Miter cut line -->
-                    <line x1="30" y1="45" x2="45" y2="${45 + Math.min(boardWidth * 8, 20)}" stroke="#dc3545" stroke-width="2"/>
-                    <line x1="90" y1="45" x2="75" y2="${45 + Math.min(boardWidth * 8, 20)}" stroke="#dc3545" stroke-width="2"/>
-                    <!-- Angle label -->
-                    <text x="60" y="35" text-anchor="middle" font-size="12" fill="#8B4513">${angle}°</text>
-                    <!-- Length labels -->
-                    <text x="60" y="100" text-anchor="middle" font-size="10" fill="#8B4513">
-                        L: ${inchesToDisplay(longSide)}
-                    </text>
-                    <text x="60" y="112" text-anchor="middle" font-size="10" fill="#8B4513">
-                        S: ${inchesToDisplay(shortSide)}
-                    </text>
-                </svg>
+                <div style="text-align: center; margin: 0; padding: 10px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%;">
+                    <svg width="${svgWidth}" height="${svgHeight}" style="display: block; margin: 0 auto; border: 1px solid #ddd; border-radius: 8px; background: #fafafa;">
+                        <!-- Board outline with wood grain effect -->
+                        <rect x="${centerX - boardVisualWidth/2}" y="${boardY}" width="${boardVisualWidth}" height="${boardVisualHeight}" 
+                              fill="url(#woodGrain)" stroke="#8B4513" stroke-width="3" rx="2"/>
+                        
+                        <!-- Wood grain pattern definition -->
+                        <defs>
+                            <pattern id="woodGrain" patternUnits="userSpaceOnUse" width="20" height="8">
+                                <rect width="20" height="8" fill="#DEB887"/>
+                                <line x1="0" y1="2" x2="20" y2="2" stroke="#CD853F" stroke-width="0.5"/>
+                                <line x1="0" y1="5" x2="20" y2="5" stroke="#CD853F" stroke-width="0.3"/>
+                            </pattern>
+                        </defs>
+                        
+                        <!-- Miter cut lines with enhanced styling -->
+                        ${cutType === 'dual-sided' ? `
+                            <!-- Left cut (always shown for dual-sided) -->
+                            <line x1="${leftCutX1}" y1="${leftCutY1}" x2="${leftCutX2}" y2="${leftCutY2}" 
+                                  stroke="#dc3545" stroke-width="4" stroke-dasharray="2,2"/>
+                            <path d="M ${leftCutX1 + 15} ${leftCutY1 + 5} A 10 10 0 0 1 ${leftCutX1 + 10} ${leftCutY1 + 15}" 
+                                  stroke="#dc3545" stroke-width="2" fill="none"/>
+                            <!-- Right cut -->
+                            <line x1="${rightCutX1}" y1="${rightCutY1}" x2="${rightCutX2}" y2="${rightCutY2}" 
+                                  stroke="#dc3545" stroke-width="4" stroke-dasharray="2,2"/>
+                            <path d="M ${rightCutX1 - 15} ${rightCutY1 + 5} A 10 10 0 0 0 ${rightCutX1 - 10} ${rightCutY1 + 15}" 
+                                  stroke="#dc3545" stroke-width="2" fill="none"/>
+                        ` : `
+                            <!-- Single-sided cut (left side only) -->
+                            <line x1="${leftCutX1}" y1="${leftCutY1}" x2="${leftCutX2}" y2="${leftCutY2}" 
+                                  stroke="#dc3545" stroke-width="4" stroke-dasharray="2,2"/>
+                            <path d="M ${leftCutX1 + 15} ${leftCutY1 + 5} A 10 10 0 0 1 ${leftCutX1 + 10} ${leftCutY1 + 15}" 
+                                  stroke="#dc3545" stroke-width="2" fill="none"/>
+                            <!-- Show straight right edge for one-sided -->
+                            <line x1="${rightCutX1}" y1="${rightCutY1}" x2="${rightCutX1}" y2="${rightCutY2}" 
+                                  stroke="#28a745" stroke-width="3" opacity="0.7"/>
+                            <text x="${rightCutX1 + 15}" y="${(rightCutY1 + rightCutY2)/2}" text-anchor="start" font-size="10" fill="#28a745" font-weight="bold">
+                                Square Cut
+                            </text>
+                        `}
+                        
+                        <!-- Main angle label -->
+                        <text x="${centerX}" y="${boardY - 15}" text-anchor="middle" font-size="16" font-weight="bold" fill="#dc3545">
+                            ${angle}° ${cutType === 'one-sided' ? 'One-End' : 'Both-Ends'} Cut
+                        </text>
+                        
+                        <!-- Dimension labels with leader lines -->
+                        <text x="${centerX}" y="${boardY + boardVisualHeight + 25}" text-anchor="middle" font-size="14" font-weight="bold" fill="#8B4513">
+                            Long Side: ${inchesToDisplay(longSide, 'calculator')}
+                        </text>
+                        <text x="${centerX}" y="${boardY + boardVisualHeight + 40}" text-anchor="middle" font-size="14" font-weight="bold" fill="#654321">
+                            Short Side: ${inchesToDisplay(shortSide, 'calculator')}
+                        </text>
+                        
+                        <!-- Board width indicator -->
+                        <text x="${centerX}" y="${boardY + boardVisualHeight/2 + 5}" text-anchor="middle" font-size="12" font-weight="bold" fill="white">
+                            Board: ${inchesToDisplay(boardWidth, 'calculator')} wide
+                        </text>
+                        
+                        <!-- Cut direction arrows -->
+                        <path d="M ${leftCutX1 + 5} ${leftCutY1 + 10} L ${leftCutX1 + 15} ${leftCutY1 + 5} L ${leftCutX1 + 15} ${leftCutY1 + 15} Z" 
+                              fill="#dc3545" opacity="0.7"/>
+                        <path d="M ${rightCutX1 - 5} ${rightCutY1 + 10} L ${rightCutX1 - 15} ${rightCutY1 + 5} L ${rightCutX1 - 15} ${rightCutY1 + 15} Z" 
+                              fill="#dc3545" opacity="0.7"/>
+                    </svg>
+                </div>
             `;
         }
 
@@ -6289,89 +6996,182 @@
             
             showNotification('Added to calculator history');
         }
+        
+        function saveAngleToProject() {
+            if (currentMiterMode === 'polygon') {
+                const sides = parseInt(document.getElementById('maSides').value) || 0;
+                
+                if (sides < 3) {
+                    showNotification('Enter number of sides first', 'warning');
+                    return;
+                }
+                
+                const interiorAngle = ((sides - 2) * 180) / sides;
+                const miterAngle = (180 - interiorAngle) / 2;
+                const tableAngle = 90 - miterAngle;
+                
+                const data = {
+                    equation: `${sides}-sided polygon: ${miterAngle.toFixed(2)}° miter cuts`,
+                    result: `${miterAngle.toFixed(2)}° miter, ${tableAngle.toFixed(2)}° table saw`,
+                    details: `Polygon: ${sides} sides\nInterior angle: ${interiorAngle.toFixed(1)}°\nMiter cut angle: ${miterAngle.toFixed(2)}°\nTable saw angle: ${tableAngle.toFixed(2)}°\nEach piece needs ${miterAngle.toFixed(2)}° cut on both ends`
+                };
+                
+                showSaveToProjectModal('Miter Angle Calculator - Polygon', data);
+                
+            } else if (currentMiterMode === 'frame') {
+                const sides = parseInt(document.getElementById('frameShapeSides').value);
+                const materialWidth = getInputInches('frameMaterialWidthFeet', 'frameMaterialWidthInches', 'frameMaterialWidthFraction');
+                
+                if (materialWidth === 0) {
+                    showNotification('Enter frame details first', 'warning');
+                    return;
+                }
+                
+                const interiorAngle = ((sides - 2) * 180) / sides;
+                const miterAngle = (180 - interiorAngle) / 2;
+                
+                let frameName = sides === 4 ? 'Rectangle/Square' : `${sides}-sided Polygon`;
+                let dimensionsSummary = '';
+                
+                if (sides === 4) {
+                    const width = getInputInches('frameWidthFeet', 'frameWidthInches', 'frameWidthFraction');
+                    const height = getInputInches('frameHeightFeet', 'frameHeightInches', 'frameHeightFraction');
+                    dimensionsSummary = `${inchesToDisplay(width)} × ${inchesToDisplay(height)}`;
+                } else {
+                    const sideLength = getInputInches('framePolygonFeet', 'framePolygonInches', 'framePolygonFraction');
+                    dimensionsSummary = `${inchesToDisplay(sideLength)} per side`;
+                }
+                
+                const data = {
+                    equation: `${frameName} Frame: ${dimensionsSummary}, ${inchesToDisplay(materialWidth)} material`,
+                    result: `${miterAngle.toFixed(1)}° cuts`,
+                    details: `Frame: ${frameName}\nDimensions: ${dimensionsSummary}\nMaterial width: ${inchesToDisplay(materialWidth)}\nMiter angle: ${miterAngle.toFixed(1)}°\nCut angle for joining frame pieces`
+                };
+                
+                showSaveToProjectModal('Miter Angle Calculator - Frame Builder', data);
+                
+            } else {
+                // Single Board Cut mode
+                const angle = parseFloat(document.getElementById('singleMiterAngle').value) || 0;
+                const boardWidth = getInputInches('singleBoardWidthFeet', 'singleBoardWidthInches', 'singleBoardWidthFraction');
+                const knownSide = document.getElementById('singleKnownSide').value;
+                const cutType = document.getElementById('singleCutType').value;
+                const inputLength = getInputInches('singleInputLengthFeet', 'singleInputLengthInches', 'singleInputLengthFraction');
+                
+                if (angle === 0 || boardWidth === 0 || inputLength === 0) {
+                    showNotification('Enter all values first', 'warning');
+                    return;
+                }
+                
+                const angleRad = (angle * Math.PI) / 180;
+                const singleOffset = boardWidth * Math.tan(angleRad);
+                const totalOffset = cutType === 'dual-sided' ? singleOffset * 2 : singleOffset;
+                
+                let shortSide, longSide;
+                if (knownSide === 'long') {
+                    longSide = inputLength;
+                    shortSide = longSide - totalOffset;
+                } else {
+                    shortSide = inputLength;
+                    longSide = shortSide + totalOffset;
+                }
+                
+                const cutDescription = cutType === 'one-sided' ? 'One End Cut' : 'Both Ends Cut';
+                
+                const data = {
+                    equation: `${angle}° miter cut: ${inchesToDisplay(boardWidth)} board, ${knownSide} side ${inchesToDisplay(inputLength)}`,
+                    result: `Long: ${inchesToDisplay(longSide)}, Short: ${inchesToDisplay(shortSide)}`,
+                    details: `Cut Type: ${cutDescription}\nAngle: ${angle}°\nBoard width: ${inchesToDisplay(boardWidth)}\nKnown side: ${knownSide} (${inchesToDisplay(inputLength)})\nLong side: ${inchesToDisplay(longSide)}\nShort side: ${inchesToDisplay(shortSide)}\nOffset: ${inchesToDisplay(totalOffset)}`
+                };
+                
+                showSaveToProjectModal('Miter Angle Calculator - Single Board Cut', data);
+            }
+        }
 
         function saveSpacingToHistory() {
-            const totalLength = parseFloat(document.getElementById('spTotalLength').value) || 0;
-            const numSpaces = parseInt(document.getElementById('spNumSpaces').value) || 0;
-            const thickness = parseFloat(document.getElementById('spacingThickness').value) || 0;
+            const totalLength = getInputInches('spTotalLengthFeet', 'spTotalLengthInches', 'spTotalLengthFraction');
+            const numShelves = parseInt(document.getElementById('spNumShelves').value) || 0;
+            const thickness = getInputInches('spacingThicknessFeet', 'spacingThicknessInches', 'spacingThicknessFraction');
             
-            if (totalLength === 0 || numSpaces === 0) {
+            if (totalLength === 0 || numShelves === 0) {
                 showNotification('Enter dimensions first');
                 return;
             }
             
+            // Convert shelves to spaces: N shelves = N+1 spaces
+            const numSpaces = numShelves + 1;
             let spacing, detailedEquation;
             
             if (thickness === 0) {
                 // CENTER MARKS MODE - No material thickness
                 spacing = totalLength / numSpaces;
-                const centerMarks = Array.from({length: numSpaces - 1}, (_, i) => inchesToDisplay((i + 1) * spacing, 'calculator'));
+                const centerMarks = Array.from({length: numShelves}, (_, i) => inchesToDisplay((i + 1) * spacing, 'calculator'));
                 
                 detailedEquation = `SHELF & DIVISION - Center Marks
 Total Length: ${inchesToDisplay(totalLength, 'calculator')}
-Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
+Shelves: ${numShelves} shelves (${numSpaces} spaces)
+Space Size: ${inchesToDisplay(spacing, 'calculator')} each
 Material: No thickness (center marks)
 
-📐 Center Marking Guide:`;
+📐 Shelf Center Marking Guide:`;
 
                 if (centerMarks.length <= 10) {
                     centerMarks.forEach((mark, i) => {
-                        detailedEquation += `\nMark ${i + 1}: Center ${mark}`;
+                        detailedEquation += `\nShelf ${i + 1}: Center ${mark}`;
                     });
                 } else {
                     // Show first 5, middle indicator, last 5
                     for (let i = 0; i < 5; i++) {
-                        detailedEquation += `\nMark ${i + 1}: Center ${centerMarks[i]}`;
+                        detailedEquation += `\nShelf ${i + 1}: Center ${centerMarks[i]}`;
                     }
-                    detailedEquation += `\n... ${centerMarks.length - 10} more marks ...`;
+                    detailedEquation += `\n... ${centerMarks.length - 10} more shelves ...`;
                     for (let i = centerMarks.length - 5; i < centerMarks.length; i++) {
-                        detailedEquation += `\nMark ${i + 1}: Center ${centerMarks[i]}`;
+                        detailedEquation += `\nShelf ${i + 1}: Center ${centerMarks[i]}`;
                     }
                 }
                 
             } else {
-                // DIVIDER MODE - With material thickness
-                const numDividers = numSpaces - 1;
-                const totalThickness = numDividers * thickness;
+                // SHELF MODE - With material thickness
+                const totalThickness = numShelves * thickness;
                 const availableSpace = totalLength - totalThickness;
                 spacing = availableSpace / numSpaces;
                 
-                // Calculate divider positions
-                const dividerInfo = [];
+                // Calculate shelf positions
+                const shelfInfo = [];
                 let currentPos = 0;
-                for (let i = 0; i < numDividers; i++) {
+                for (let i = 0; i < numShelves; i++) {
                     currentPos += spacing;
                     const leftEdge = currentPos;
                     const rightEdge = currentPos + thickness;
-                    dividerInfo.push({
+                    shelfInfo.push({
                         number: i + 1,
-                        left: inchesToDisplay(leftEdge, 'calculator'),
-                        right: inchesToDisplay(rightEdge, 'calculator')
+                        bottom: inchesToDisplay(leftEdge, 'calculator'),
+                        top: inchesToDisplay(rightEdge, 'calculator')
                     });
                     currentPos += thickness;
                 }
                 
-                detailedEquation = `SHELF & DIVISION - With Dividers
+                detailedEquation = `SHELF & DIVISION - With Shelves
 Total Length: ${inchesToDisplay(totalLength, 'calculator')}
+Shelves: ${numShelves} @ ${inchesToDisplay(thickness, 'calculator')} thick
 Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
-Dividers: ${numDividers} @ ${inchesToDisplay(thickness, 'calculator')} thick
 
-📏 Divider Marking Guide:`;
+📏 Shelf Marking Guide:`;
 
-                if (dividerInfo.length <= 8) {
-                    dividerInfo.forEach(div => {
-                        detailedEquation += `\nDivider ${div.number}: Left ${div.left} - Right ${div.right}`;
+                if (shelfInfo.length <= 8) {
+                    shelfInfo.forEach(shelf => {
+                        detailedEquation += `\nShelf ${shelf.number}: Bottom ${shelf.bottom} - Top ${shelf.top}`;
                     });
                 } else {
                     // Show first 4, middle indicator, last 4
                     for (let i = 0; i < 4; i++) {
-                        const div = dividerInfo[i];
-                        detailedEquation += `\nDivider ${div.number}: Left ${div.left} - Right ${div.right}`;
+                        const shelf = shelfInfo[i];
+                        detailedEquation += `\nShelf ${shelf.number}: Bottom ${shelf.bottom} - Top ${shelf.top}`;
                     }
-                    detailedEquation += `\n... ${dividerInfo.length - 8} more dividers ...`;
-                    for (let i = dividerInfo.length - 4; i < dividerInfo.length; i++) {
-                        const div = dividerInfo[i];
-                        detailedEquation += `\nDivider ${div.number}: Left ${div.left} - Right ${div.right}`;
+                    detailedEquation += `\n... ${shelfInfo.length - 8} more shelves ...`;
+                    for (let i = shelfInfo.length - 4; i < shelfInfo.length; i++) {
+                        const shelf = shelfInfo[i];
+                        detailedEquation += `\nShelf ${shelf.number}: Bottom ${shelf.bottom} - Top ${shelf.top}`;
                     }
                 }
             }
@@ -6386,15 +7186,76 @@ Dividers: ${numDividers} @ ${inchesToDisplay(thickness, 'calculator')} thick
             
             showNotification('Added to calculator history');
         }
-
-        // Initialize all precisions
-        updatePrecision('calculator');
-        updatePrecision('cut');
-        updatePrecision('optimizer');
-        toggleKerfDisplay();
         
+        function saveSpacingToProject() {
+            const totalLength = getInputInches('spTotalLengthFeet', 'spTotalLengthInches', 'spTotalLengthFraction');
+            const numShelves = parseInt(document.getElementById('spNumShelves').value) || 0;
+            const thickness = getInputInches('spacingThicknessFeet', 'spacingThicknessInches', 'spacingThicknessFraction');
+            
+            if (totalLength === 0 || numShelves === 0) {
+                showNotification('Enter dimensions first', 'warning');
+                return;
+            }
+            
+            // Convert shelves to spaces: N shelves = N+1 spaces
+            const numSpaces = numShelves + 1;
+            let spacing, equation, details;
+            
+            if (thickness === 0) {
+                // CENTER MARKS MODE - No material thickness
+                spacing = totalLength / numSpaces;
+                const centerMarks = Array.from({length: numShelves}, (_, i) => inchesToDisplay((i + 1) * spacing, 'calculator'));
+                
+                equation = `${numShelves} shelves in ${inchesToDisplay(totalLength)} = ${inchesToDisplay(spacing)} spacing`;
+                details = `Total Length: ${inchesToDisplay(totalLength)}\nShelves: ${numShelves} shelves (${numSpaces} spaces)\nSpace Size: ${inchesToDisplay(spacing)} each\nMode: Center marks (no material thickness)`;
+                
+                if (centerMarks.length <= 5) {
+                    details += '\n\nShelf center marks:\n' + centerMarks.map((mark, i) => `Shelf ${i + 1}: ${mark}`).join('\n');
+                }
+                
+            } else {
+                // SHELF MODE - With material thickness
+                const totalThickness = numShelves * thickness;
+                const availableSpace = totalLength - totalThickness;
+                spacing = availableSpace / numSpaces;
+                
+                equation = `${numShelves} shelves (${inchesToDisplay(thickness)} thick) in ${inchesToDisplay(totalLength)} = ${inchesToDisplay(spacing)} spacing`;
+                details = `Total Length: ${inchesToDisplay(totalLength)}\nShelves: ${numShelves} × ${inchesToDisplay(thickness)} thick\nTotal Material: ${inchesToDisplay(totalThickness)}\nAvailable Space: ${inchesToDisplay(availableSpace)}\nSpacing: ${inchesToDisplay(spacing)} each`;
+            }
+            
+            const data = {
+                equation: equation,
+                result: `${inchesToDisplay(spacing)} spacing between ${numShelves} shelves`,
+                details: details
+            };
+            
+            showSaveToProjectModal('Shelf & Division Calculator', data);
+        }
+
         // Initialize app - load saved data and set up project management
         document.addEventListener('DOMContentLoaded', function() {
+            // Ensure precision dropdowns default to 1/16" if not already set
+            const precisionDropdown = document.getElementById('precision');
+            const cutPrecisionDropdown = document.getElementById('cutPrecision');
+            const optPrecisionDropdown = document.getElementById('optPrecision');
+            
+            if (precisionDropdown && !precisionDropdown.value) {
+                precisionDropdown.value = '16'; // Default to 1/16"
+            }
+            if (cutPrecisionDropdown && !cutPrecisionDropdown.value) {
+                cutPrecisionDropdown.value = '16'; // Default to 1/16"
+            }
+            if (optPrecisionDropdown && !optPrecisionDropdown.value) {
+                optPrecisionDropdown.value = '16'; // Default to 1/16"
+            }
+            
+            // Initialize all precisions after DOM is ready
+            updatePrecision('calculator');
+            updatePrecision('cut');
+            updatePrecision('optimizer');
+            updateWoodworkingFractions(); // Ensure woodworking fractions are initialized
+            toggleKerfDisplay();
+            
             loadFromLocalStorage();
             updateProjectSelector();
             updateProjectStatusBars();
@@ -6416,6 +7277,8 @@ Dividers: ${numDividers} @ ${inchesToDisplay(thickness, 'calculator')} thick
             calculateGoldenRatioNew();
             calculateSpacing();
             calculateMiterAngle();
+            calculateFrameBuilder(); // Initialize Frame Builder with default selections
+            calculateSingleMiter(); // Initialize Single Board Cut with default selections
             
             console.log('Woodworking Calculator with Visual Project Management loaded!');
         });
