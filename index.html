@@ -196,6 +196,137 @@
             color: #333;
         }
         
+        .save-preview-lumber .preview-header {
+            font-size: 16px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #D2B48C;
+        }
+        
+        .save-preview-lumber .preview-summary {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #8B4513;
+        }
+        
+        .save-preview-lumber .preview-details {
+            font-size: 12px;
+            line-height: 1.4;
+            color: #666;
+        }
+        
+        .save-preview-cut .preview-header {
+            font-size: 16px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #D2B48C;
+        }
+        
+        .save-preview-cut .preview-equation {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #8B4513;
+        }
+        
+        .save-preview-cut .preview-result {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #28a745;
+        }
+        
+        .save-preview-cut .preview-details {
+            font-size: 12px;
+            line-height: 1.4;
+            color: #666;
+        }
+        
+        .cut-result-actions {
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .save-preview-optimization .preview-header {
+            font-size: 16px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #D2B48C;
+        }
+        
+        .save-preview-optimization .preview-equation {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #8B4513;
+        }
+        
+        .save-preview-optimization .preview-result {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .save-preview-optimization .preview-summary {
+            font-size: 13px;
+            margin-bottom: 10px;
+            color: #6f42c1;
+            font-style: italic;
+        }
+        
+        .save-preview-optimization .preview-details {
+            font-size: 12px;
+            line-height: 1.4;
+            color: #666;
+        }
+        
+        .save-preview-spacing .preview-header {
+            font-size: 16px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #D2B48C;
+        }
+        
+        .save-preview-spacing .preview-equation {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #8B4513;
+        }
+        
+        .save-preview-spacing .preview-result {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .save-preview-spacing .preview-marks {
+            background: #f0f8f0;
+            border: 1px solid #28a745;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        
+        .save-preview-spacing .marks-header {
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        
+        .save-preview-spacing .mark-item {
+            font-size: 12px;
+            color: #333;
+            margin-bottom: 3px;
+            font-family: monospace;
+        }
+        
+        .save-preview-spacing .preview-summary {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+            margin-top: 8px;
+        }
+        
         .save-project-selection {
             margin-bottom: 20px;
         }
@@ -208,6 +339,229 @@
             margin: 0 0 10px 0;
             color: #8B4513;
             font-size: 16px;
+        }
+        
+        /* Project Timeline Styles */
+        .project-timeline-header {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .project-title-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .project-title-section h2 {
+            margin: 0;
+            color: white;
+        }
+        
+        .project-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .project-summary {
+            border-top: 1px solid rgba(255,255,255,0.3);
+            padding-top: 15px;
+        }
+        
+        .summary-stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .summary-stats .stat {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+        }
+        
+        .project-timeline-container {
+            min-height: 400px;
+        }
+        
+        .project-timeline {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .timeline-content {
+            position: relative;
+        }
+        
+        /* Timeline Item Styles */
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 0 0 0 40px;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: -30px;
+            width: 2px;
+            background: #D2B48C;
+        }
+        
+        .timeline-item:last-child:before {
+            bottom: 20px;
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            left: 6px;
+            top: 12px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .timeline-marker.calculator { background: #007bff; }
+        .timeline-marker.golden { background: #ffc107; color: #333; }
+        .timeline-marker.spacing { background: #28a745; }
+        .timeline-marker.miter { background: #dc3545; }
+        .timeline-marker.lumber { background: #6f42c1; }
+        .timeline-marker.cut { background: #fd7e14; }
+        .timeline-marker.optimizer { background: #20c997; }
+        
+        .timeline-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid #D2B48C;
+        }
+        
+        .timeline-card-header {
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-tool-info {
+            flex: 1;
+        }
+        
+        .timeline-tool-name {
+            font-weight: bold;
+            color: #8B4513;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-timestamp {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .timeline-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .timeline-equation {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .timeline-result {
+            font-weight: bold;
+            color: #28a745;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-details {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            white-space: pre-line;
+        }
+        
+        .timeline-notes {
+            background: #fff9c4;
+            border: 1px solid #f0e68c;
+            border-radius: 4px;
+            padding: 10px;
+            font-style: italic;
+            color: #856404;
+            margin-top: 10px;
+        }
+        
+        .timeline-notes:before {
+            content: '💡 ';
+            font-style: normal;
+        }
+        
+        /* All Projects Modal */
+        .projects-modal-content {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .projects-grid-modal {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .project-title-section {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .project-actions {
+                justify-content: center;
+            }
+            
+            .summary-stats {
+                justify-content: center;
+                text-align: center;
+            }
+            
+            .timeline-item {
+                padding-left: 30px;
+            }
+            
+            .timeline-marker {
+                left: 1px;
+                width: 16px;
+                height: 16px;
+                font-size: 10px;
+            }
+            
+            .projects-grid-modal {
+                grid-template-columns: 1fr;
+            }
         }
         
         .input-mode-toggle {
@@ -320,7 +674,7 @@
         }
         
         .calc-btn.save {
-            background: #2196F3;
+            background: #28a745;
             color: white;
         }
         
@@ -676,88 +1030,6 @@
             cursor: not-allowed;
         }
         
-        /* Shopping History Styles */
-        .shopping-history-section {
-            margin-top: 15px;
-            border-top: 1px solid #D2B48C;
-            padding-top: 15px;
-        }
-        
-        .shopping-history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .shopping-history-header h4 {
-            margin: 0;
-            color: #8B4513;
-        }
-        
-        .shopping-history-display {
-            background: #f8f9fa;
-            border: 1px solid #D2B48C;
-            border-radius: 6px;
-            padding: 15px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .shopping-history-item {
-            background: white;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 12px;
-            margin-bottom: 10px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        
-        .shopping-history-item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .shopping-history-header-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        
-        .shopping-history-date {
-            font-weight: bold;
-            color: #8B4513;
-        }
-        
-        .shopping-history-summary {
-            font-size: 14px;
-            color: #6c757d;
-        }
-        
-        .shopping-history-actions {
-            display: flex;
-            gap: 5px;
-        }
-        
-        .btn-xs {
-            padding: 2px 6px;
-            font-size: 12px;
-        }
-        
-        .shopping-history-details {
-            background: #f8f9fa;
-            border-radius: 4px;
-            padding: 8px;
-            margin-top: 8px;
-            font-size: 13px;
-            font-family: monospace;
-            white-space: pre-line;
-            display: none;
-        }
-        
-        .shopping-history-details.expanded {
-            display: block;
-        }
         
         /* Frame Builder Cut List Styles */
         .cut-list {
@@ -1480,44 +1752,6 @@
             grid-column: 1/-1;
         }
         
-        .template-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .template-card {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .template-card:hover {
-            border-color: #8B4513;
-            background: #fff;
-        }
-        
-        .template-card h4 {
-            margin: 0 0 8px 0;
-            color: #8B4513;
-        }
-        
-        .template-card p {
-            margin: 0 0 10px 0;
-            font-size: 13px;
-            color: #666;
-        }
-        
-        .template-stats {
-            display: flex;
-            gap: 10px;
-            font-size: 11px;
-            color: #999;
-        }
         
         /* Project Status Bar */
         .project-status-bar {
@@ -2040,19 +2274,7 @@
                                 <div class="result-placeholder">No items in cart</div>
                             </div>
                             <div class="cart-bottom-actions">
-                                <button class="btn btn-success btn-sm" onclick="saveLumberCartToHistory()" id="saveCartBtn" disabled>Save Cart to History</button>
-                                <button class="btn btn-secondary btn-sm" onclick="toggleShoppingHistory()" id="toggleHistoryBtn">Show Shopping History</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Shopping History Section -->
-                        <div class="shopping-history-section" id="shoppingHistorySection" style="display: none;">
-                            <div class="shopping-history-header">
-                                <h4>Shopping History</h4>
-                                <button class="btn btn-secondary btn-sm" onclick="clearShoppingHistory()">Clear History</button>
-                            </div>
-                            <div id="shoppingHistoryDisplay" class="shopping-history-display">
-                                <div class="result-placeholder">No shopping history</div>
+                                <button class="btn btn-success btn-sm" onclick="saveLumberCartToProject()" id="saveCartBtn" disabled>Save Cart to Project</button>
                             </div>
                         </div>
                     </div>
@@ -2109,7 +2331,7 @@
                         </div>
                         <div class="calc-result">
                             <div class="result-display" id="grResult">Enter a dimension to calculate</div>
-                            <button class="btn btn-primary btn-sm" onclick="saveGoldenRatioToProject()">Save to Project</button>
+                            <button class="btn btn-success btn-sm" onclick="saveGoldenRatioToProject()">Save to Project</button>
                         </div>
                     </div>
                 </div>
@@ -2152,7 +2374,7 @@
                         </div>
                         <div class="calc-result">
                             <div class="result-display" id="spResult">Enter dimensions to calculate</div>
-                            <button class="btn btn-primary btn-sm" onclick="saveSpacingToProject()">Save to Project</button>
+                            <button class="btn btn-success btn-sm" onclick="saveSpacingToProject()">Save to Project</button>
                         </div>
                         <div class="calc-visual">
                             <div class="spacing-diagram" id="spacingDiagram">
@@ -2408,7 +2630,7 @@
                         </div>
                         <div class="calc-result">
                             <div class="result-display" id="maResult">Miter angle: 45°</div>
-                            <button class="btn btn-primary btn-sm" onclick="saveAngleToProject()">Save to Project</button>
+                            <button class="btn btn-success btn-sm" onclick="saveAngleToProject()">Save to Project</button>
                         </div>
                     </div>
                 </div>
@@ -2599,50 +2821,74 @@
         
         <!-- Projects Tab -->
         <div id="projects" class="tab-content">
-            <div class="projects-header">
-                <h2>📁 Project Manager</h2>
-                <div class="projects-actions">
-                    <button class="btn btn-primary" onclick="createNewProject()">+ New Project</button>
-                    <button class="btn btn-secondary" onclick="showProjectTemplates()">📋 Templates</button>
-                    <button class="btn btn-secondary" onclick="importProjects()">📥 Import</button>
-                    <button class="btn btn-secondary" onclick="exportAllProjects()">📤 Export All</button>
+            <div class="project-timeline-header">
+                <div class="project-title-section">
+                    <h2 id="projectTimelineTitle">📁 Select a Project</h2>
+                    <div class="project-actions">
+                        <button class="btn btn-primary btn-sm" onclick="createNewProject()">+ New Project</button>
+                        <button class="btn btn-secondary btn-sm" onclick="showProjectNotes()" id="projectNotesBtn" disabled>📝 Notes</button>
+                        <button class="btn btn-secondary btn-sm" onclick="exportCurrentProject()" id="projectExportBtn" disabled>📤 Export</button>
+                        <button class="btn btn-secondary btn-sm" onclick="showAllProjects()">📋 All Projects</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="current-project-section" id="currentProjectSection">
-                <h3>Current Project</h3>
-                <div id="currentProjectCard" class="project-card current-project">
-                    <div class="project-card-content">
-                        <div class="project-header">
-                            <h4>No Active Project</h4>
-                            <div class="project-actions">
-                                <button class="btn btn-sm btn-secondary" onclick="showProjectNotes()" title="Edit Notes">📝</button>
-                                <button class="btn btn-sm btn-success" onclick="saveCurrentProject()" title="Save Project">💾</button>
-                            </div>
-                        </div>
-                        <div class="project-stats">
-                            <span class="stat">📏 0 boards</span>
-                            <span class="stat">✂️ 0 cuts</span>
-                            <span class="stat">🧮 0 calculations</span>
-                        </div>
-                        <div class="project-preview">
-                            <div class="preview-message">Select or create a project to get started</div>
-                        </div>
+                
+                <div class="project-summary" id="projectSummary" style="display: none;">
+                    <div class="summary-stats">
+                        <span class="stat" id="projectLogCount">📊 0 saved calculations</span>
+                        <span class="stat" id="projectCreated">📅 Created: --</span>
+                        <span class="stat" id="projectModified">🔄 Modified: --</span>
                     </div>
                 </div>
             </div>
             
-            <div class="all-projects-section">
-                <h3>All Projects</h3>
-                <div id="projectsGrid" class="projects-grid">
-                    <!-- Project cards will be dynamically generated here -->
+            <!-- Project Timeline -->
+            <div class="project-timeline-container" id="projectTimelineContainer">
+                <div class="no-project-selected" id="noProjectSelected">
+                    <div style="text-align: center; padding: 60px 20px; color: #666;">
+                        <div style="font-size: 64px; margin-bottom: 20px;">📊</div>
+                        <h3>No Project Selected</h3>
+                        <p>Select a project from the dropdown above or create a new one to view your saved calculations timeline.</p>
+                        <div style="margin-top: 30px;">
+                            <button class="btn btn-primary" onclick="createNewProject()" style="margin-right: 10px;">Create Project</button>
+                            <button class="btn btn-secondary" onclick="showAllProjects()">Browse All Projects</button>
+                        </div>
+                    </div>
                 </div>
-                <div id="noProjectsMessage" class="no-projects" style="text-align: center; padding: 40px; color: #666;">
-                    <div style="font-size: 48px; margin-bottom: 20px;">📁</div>
-                    <h3>No Projects Yet</h3>
-                    <p>Create your first project or choose from a template to get started!</p>
-                    <button class="btn btn-primary" onclick="createNewProject()" style="margin-right: 10px;">Create Project</button>
-                    <button class="btn btn-secondary" onclick="showProjectTemplates()">Browse Templates</button>
+                
+                <div class="project-timeline" id="projectTimeline" style="display: none;">
+                    <div class="timeline-content" id="timelineContent">
+                        <!-- Timeline items will be dynamically generated here -->
+                    </div>
+                    
+                    <div class="empty-timeline" id="emptyTimeline" style="display: none;">
+                        <div style="text-align: center; padding: 40px 20px; color: #666;">
+                            <div style="font-size: 48px; margin-bottom: 20px;">📝</div>
+                            <h3>No Saved Calculations Yet</h3>
+                            <p>Start using the calculators and click "Save to Project" to build your project timeline!</p>
+                            <div style="margin-top: 20px;">
+                                <button class="btn btn-primary" onclick="switchTab('calculator')">Go to Calculator</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- All Projects Modal -->
+        <div id="allProjectsModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeAllProjectsModal()">&times;</span>
+                <h2>📁 All Projects</h2>
+                <div class="projects-modal-content">
+                    <div class="projects-grid-modal" id="projectsGridModal">
+                        <!-- Project cards will be dynamically generated here -->
+                    </div>
+                    <div id="noProjectsModalMessage" class="no-projects" style="text-align: center; padding: 40px; color: #666;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">📁</div>
+                        <h3>No Projects Yet</h3>
+                        <p>Create your first project and start saving calculations!</p>
+                        <button class="btn btn-primary" onclick="createNewProject(); closeAllProjectsModal();">Create Project</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2801,7 +3047,7 @@
         let currentProject = null; // Currently active project
         let lumberCart = []; // Array to store lumber shopping cart items
         let speciesPrices = {}; // Object to remember prices for each species
-        let shoppingHistory = []; // Array to store lumber shopping history
+        let currentCutResults = []; // Array to store cut results for saving
         
         // Data persistence functions
         function saveToLocalStorage() {
@@ -2812,7 +3058,6 @@
                 cutHistory: cutHistory,
                 memoryValue: memoryValue,
                 speciesPrices: speciesPrices,
-                shoppingHistory: shoppingHistory,
                 settings: {
                     precision: document.getElementById('precision')?.value || 16,
                     cutPrecision: document.getElementById('cutPrecision')?.value || 16,
@@ -2832,7 +3077,6 @@
                     cutHistory = data.cutHistory || [];
                     memoryValue = data.memoryValue || 0;
                     speciesPrices = data.speciesPrices || {};
-                    shoppingHistory = data.shoppingHistory || [];
                     
                     // Restore settings with 1/16" default
                     if (data.settings) {
@@ -2853,11 +3097,10 @@
                     updateWoodworkingFractions();
                     
                     updateDisplays();
-                    showNotification('Data loaded successfully!', 'success');
                 }
             } catch (error) {
                 console.error('Error loading data:', error);
-                showNotification('Error loading saved data', 'error');
+                // Silent error handling - no notification needed
             }
         }
         
@@ -2865,9 +3108,7 @@
             updateHistory();
             updateCutHistory();
             updateMemoryIndicator();
-            if (currentProject) {
-                showNotification(`Project "${currentProject.name}" loaded`, 'success');
-            }
+            // Project loading notifications removed - silent loading
         }
         
         function updateCalculatorDisplay() {
@@ -2965,7 +3206,6 @@
             }
             
             saveToLocalStorage();
-            showNotification(`Project "${currentProject.name}" saved!`, 'success');
             renderProjectsTab();
         }
         
@@ -2999,7 +3239,7 @@
                 updateBoardDisplay();
                 updateCutDisplay();
                 updateCalculatorDisplay();
-                showNotification(`Project "${project.name}" loaded!`, 'success');
+                // Project loaded silently
             }
         }
         
@@ -3019,7 +3259,7 @@
         
         function updateProjectSelector() {
             updateGlobalProjectSelector();
-            renderProjectsTab();
+            renderProjectTimeline();
             updateProjectStatusBars();
         }
         
@@ -3053,6 +3293,17 @@
             
             const projectIdNum = parseInt(projectId);
             loadProject(projectIdNum);
+            
+            // Ensure dropdown and display are synchronized
+            setTimeout(() => {
+                updateProjectSelector();
+                // Force sync the dropdown selection
+                const dropdown = document.getElementById('globalProjectDropdown');
+                if (dropdown && currentProject) {
+                    dropdown.value = currentProject.id.toString();
+                }
+            }, 10);
+            
             showNotification(`Switched to project: ${currentProject.name}`, 'success');
         }
         
@@ -3107,67 +3358,97 @@
         }
         
         function exportProjectData(project) {
+            // Create both text and HTML exports
+            createTextExport(project);
+            createHTMLExport(project);
+        }
+        
+        function createTextExport(project) {
             const date = new Date().toLocaleDateString();
+            const time = new Date().toLocaleTimeString();
             
-            let exportText = `${project.name} - Complete Project Data\n`;
-            exportText += `Exported: ${date}\n`;
-            exportText += `Created: ${new Date(project.created).toLocaleDateString()}\n`;
-            exportText += `Last Modified: ${project.lastModified ? new Date(project.lastModified).toLocaleDateString() : 'Never'}\n\n`;
+            let exportText = `📁 ${project.name} - Project Timeline\n`;
+            exportText += `${'='.repeat(60)}\n`;
+            exportText += `📅 Exported: ${date} at ${time}\n`;
+            exportText += `📅 Created: ${new Date(project.created).toLocaleDateString()}\n`;
+            exportText += `🔄 Last Modified: ${project.lastModified ? new Date(project.lastModified).toLocaleDateString() : 'Never'}\n\n`;
             
             // Project Notes
             if (project.notes && project.notes.trim()) {
-                exportText += 'PROJECT NOTES:\n';
-                exportText += '='.repeat(30) + '\n';
+                exportText += '📝 PROJECT NOTES:\n';
+                exportText += '-'.repeat(40) + '\n';
                 exportText += project.notes + '\n\n';
             }
             
-            // Boards Data
+            // Project Timeline - Main Focus
+            if (project.projectLog && project.projectLog.length > 0) {
+                exportText += `📊 SAVED CALCULATIONS (${project.projectLog.length}):\n`;
+                exportText += '='.repeat(50) + '\n\n';
+                
+                // Sort by date (most recent first)
+                const sortedLog = [...project.projectLog].sort((a, b) => 
+                    new Date(b.timestamp) - new Date(a.timestamp)
+                );
+                
+                sortedLog.forEach((logEntry, index) => {
+                    const toolIcon = getToolIcon(logEntry.toolName);
+                    const savedDate = new Date(logEntry.saved).toLocaleDateString();
+                    const savedTime = new Date(logEntry.saved).toLocaleTimeString();
+                    
+                    exportText += `${index + 1}. ${toolIcon} ${logEntry.toolName}\n`;
+                    exportText += `   📅 Saved: ${savedDate} at ${savedTime}\n`;
+                    
+                    if (logEntry.equation) {
+                        exportText += `   🧮 Calculation: ${logEntry.equation}\n`;
+                    }
+                    if (logEntry.result) {
+                        exportText += `   ✅ Result: ${logEntry.result}\n`;
+                    }
+                    if (logEntry.details) {
+                        exportText += `   📋 Details:\n`;
+                        const detailLines = logEntry.details.split('\n');
+                        detailLines.forEach(line => {
+                            if (line.trim()) exportText += `      ${line}\n`;
+                        });
+                    }
+                    if (logEntry.userNotes) {
+                        exportText += `   💡 Notes: ${logEntry.userNotes}\n`;
+                    }
+                    exportText += '\n';
+                });
+            } else {
+                exportText += '📊 SAVED CALCULATIONS:\n';
+                exportText += '-'.repeat(40) + '\n';
+                exportText += 'No calculations saved to this project yet.\n\n';
+            }
+            
+            // Legacy data (if exists)
+            let hasLegacyData = false;
+            
             if (project.boards && project.boards.length > 0) {
-                exportText += 'AVAILABLE BOARDS:\n';
-                exportText += '='.repeat(30) + '\n';
+                hasLegacyData = true;
+                exportText += '📏 AVAILABLE BOARDS:\n';
+                exportText += '-'.repeat(30) + '\n';
                 project.boards.forEach((board, index) => {
-                    exportText += `${index + 1}. Length: ${inchesToDisplay(board.length, 'opt')}, Quantity: ${board.quantity}\n`;
+                    exportText += `${index + 1}. ${inchesToDisplay(board.length, 'opt')} × ${board.quantity}\n`;
                 });
                 exportText += '\n';
             }
             
-            // Cuts Data
             if (project.cuts && project.cuts.length > 0) {
-                exportText += 'NEEDED CUTS:\n';
-                exportText += '='.repeat(30) + '\n';
+                hasLegacyData = true;
+                exportText += '✂️ NEEDED CUTS:\n';
+                exportText += '-'.repeat(30) + '\n';
                 project.cuts.forEach((cut, index) => {
-                    exportText += `${index + 1}. Length: ${inchesToDisplay(cut.length, 'opt')}\n`;
+                    exportText += `${index + 1}. ${inchesToDisplay(cut.length, 'opt')}\n`;
                 });
                 exportText += '\n';
             }
             
-            // Calculator History
-            if (project.history && project.history.length > 0) {
-                exportText += 'CALCULATOR HISTORY:\n';
-                exportText += '='.repeat(30) + '\n';
-                project.history.forEach((entry, index) => {
-                    exportText += `${index + 1}. ${entry}\n`;
-                });
-                exportText += '\n';
-            }
-            
-            // Cut Calculator History
-            if (project.cutHistory && project.cutHistory.length > 0) {
-                exportText += 'CUT CALCULATOR HISTORY:\n';
-                exportText += '='.repeat(30) + '\n';
-                project.cutHistory.forEach((entry, index) => {
-                    exportText += `${index + 1}. ${entry}\n`;
-                });
-                exportText += '\n';
-            }
-            
-            // Calculator State
-            if (project.calculatorData) {
-                exportText += 'CALCULATOR STATE:\n';
-                exportText += '='.repeat(30) + '\n';
-                exportText += `Current Value: ${inchesToDisplay(project.calculatorData.currentValueInches || 0, 'calculator')}\n`;
-                exportText += `Memory Value: ${inchesToDisplay(project.calculatorData.memoryValue || 0, 'calculator')}\n`;
-                exportText += `Input Mode: ${project.calculatorData.inputMode || 'fraction'}\n\n`;
+            if (hasLegacyData) {
+                exportText += '\n' + '-'.repeat(60) + '\n';
+                exportText += 'Generated by Woodworking Calculator\n';
+                exportText += 'This project timeline shows your manually saved calculations.\n';
             }
             
             // Create downloadable file
@@ -3175,13 +3456,122 @@
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${project.name.replace(/[^a-zA-Z0-9]/g, '_')}_complete_data.txt`;
+            a.download = `${project.name.replace(/[^a-zA-Z0-9]/g, '_')}_timeline.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+        
+        function createHTMLExport(project) {
+            const date = new Date().toLocaleDateString();
+            const time = new Date().toLocaleTimeString();
+            
+            let html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${project.name} - Project Timeline</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
+        .header { background: linear-gradient(135deg, #8B4513, #A0522D); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .project-info { margin-top: 10px; font-size: 14px; opacity: 0.9; }
+        .notes { background: #fff9c4; border: 1px solid #f0e68c; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        .timeline { background: #f8f9fa; border-radius: 8px; padding: 20px; }
+        .timeline-item { background: white; border-left: 4px solid #D2B48C; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .tool-header { display: flex; align-items: center; margin-bottom: 15px; }
+        .tool-icon { font-size: 20px; margin-right: 10px; }
+        .tool-name { font-weight: bold; color: #8B4513; font-size: 16px; flex: 1; }
+        .timestamp { font-size: 12px; color: #666; }
+        .equation { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 4px; padding: 10px; margin: 10px 0; font-family: monospace; }
+        .result { font-weight: bold; color: #28a745; font-size: 16px; margin: 10px 0; }
+        .details { color: #666; margin: 10px 0; line-height: 1.4; white-space: pre-line; }
+        .user-notes { background: #fff9c4; border: 1px solid #f0e68c; border-radius: 4px; padding: 10px; margin: 10px 0; font-style: italic; }
+        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 14px; }
+        .empty-state { text-align: center; color: #666; font-style: italic; }
+        @media print { body { max-width: none; margin: 0; padding: 15px; } .header { background: #8B4513 !important; } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📁 ${project.name}</h1>
+        <div class="project-info">
+            📅 Exported: ${date} at ${time}<br>
+            📅 Created: ${new Date(project.created).toLocaleDateString()}<br>
+            🔄 Last Modified: ${project.lastModified ? new Date(project.lastModified).toLocaleDateString() : 'Never'}
+        </div>
+    </div>`;
+            
+            // Project Notes
+            if (project.notes && project.notes.trim()) {
+                html += `<div class="notes">
+                    <h3>📝 Project Notes</h3>
+                    <p>${project.notes.replace(/\n/g, '<br>')}</p>
+                </div>`;
+            }
+            
+            html += '<div class="timeline">';
+            html += `<h2>📊 Saved Calculations (${project.projectLog ? project.projectLog.length : 0})</h2>`;
+            
+            if (project.projectLog && project.projectLog.length > 0) {
+                // Sort by date (most recent first)
+                const sortedLog = [...project.projectLog].sort((a, b) => 
+                    new Date(b.timestamp) - new Date(a.timestamp)
+                );
+                
+                sortedLog.forEach(logEntry => {
+                    const toolIcon = getToolIcon(logEntry.toolName);
+                    const savedDate = new Date(logEntry.saved).toLocaleString();
+                    
+                    html += `<div class="timeline-item">
+                        <div class="tool-header">
+                            <span class="tool-icon">${toolIcon}</span>
+                            <span class="tool-name">${logEntry.toolName}</span>
+                            <span class="timestamp">Saved: ${savedDate}</span>
+                        </div>`;
+                    
+                    if (logEntry.equation) {
+                        html += `<div class="equation">${logEntry.equation}</div>`;
+                    }
+                    if (logEntry.result) {
+                        html += `<div class="result">Result: ${logEntry.result}</div>`;
+                    }
+                    if (logEntry.details) {
+                        html += `<div class="details">${logEntry.details}</div>`;
+                    }
+                    if (logEntry.userNotes) {
+                        html += `<div class="user-notes">💡 ${logEntry.userNotes}</div>`;
+                    }
+                    
+                    html += '</div>';
+                });
+            } else {
+                html += '<div class="empty-state">No calculations saved to this project yet.</div>';
+            }
+            
+            html += '</div>';
+            
+            html += `<div class="footer">
+                Generated by Woodworking Calculator<br>
+                <small>This timeline shows your manually saved calculations for easy reference and printing.</small>
+            </div>
+        </body>
+        </html>`;
+            
+            // Create downloadable HTML file
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${project.name.replace(/[^a-zA-Z0-9]/g, '_')}_timeline.html`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
             
-            showNotification(`Project "${project.name}" data exported!`, 'success');
+            showNotification(`Project "${project.name}" exported as text and HTML files!`, 'success');
         }
         
         function showProjectNotes() {
@@ -3212,29 +3602,63 @@
         // Save to Project Modal Functions
         let currentSaveData = null; // Store the data being saved
         
-        function showSaveToProjectModal(toolName, data) {
-            currentSaveData = {
-                toolName: toolName,
-                timestamp: new Date().toISOString(),
-                ...data
-            };
-            
-            const modal = document.getElementById('saveToProjectModal');
-            const previewContent = document.getElementById('savePreviewContent');
-            
-            // Generate preview content
-            let previewHtml = `<h5>${toolName}</h5>`;
-            if (data.equation) {
-                previewHtml += `<strong>Calculation:</strong> ${data.equation}<br>`;
+        function showSaveToProjectModal(toolNameOrData, data) {
+            // Handle both old format (toolName, data) and new format (saveDataObject)
+            if (typeof toolNameOrData === 'string') {
+                // Old format: showSaveToProjectModal('Tool Name', data)
+                currentSaveData = {
+                    toolName: toolNameOrData,
+                    timestamp: new Date().toISOString(),
+                    ...data
+                };
+                
+                const modal = document.getElementById('saveToProjectModal');
+                const previewContent = document.getElementById('savePreviewContent');
+                
+                // Generate preview content
+                let previewHtml = `<h5>${toolNameOrData}</h5>`;
+                if (data.equation) {
+                    previewHtml += `<strong>Calculation:</strong> ${data.equation}<br>`;
+                }
+                if (data.result) {
+                    previewHtml += `<strong>Result:</strong> ${data.result}<br>`;
+                }
+                if (data.details) {
+                    previewHtml += `<strong>Details:</strong><br>${data.details.replace(/\n/g, '<br>')}`;
+                }
+                
+                previewContent.innerHTML = previewHtml;
+            } else {
+                // New format: showSaveToProjectModal(saveDataObject)
+                const saveData = toolNameOrData;
+                currentSaveData = {
+                    toolName: saveData.toolName || saveData.tool || 'Calculator',
+                    timestamp: new Date().toISOString(),
+                    equation: saveData.equation,
+                    result: saveData.result,
+                    details: saveData.details
+                };
+                
+                const modal = document.getElementById('saveToProjectModal');
+                const previewContent = document.getElementById('savePreviewContent');
+                
+                // Use the custom preview if available, otherwise generate standard preview
+                if (saveData.preview) {
+                    previewContent.innerHTML = saveData.preview;
+                } else {
+                    let previewHtml = `<h5>${saveData.toolName || saveData.tool || 'Calculator'}</h5>`;
+                    if (saveData.equation) {
+                        previewHtml += `<strong>Calculation:</strong> ${saveData.equation}<br>`;
+                    }
+                    if (saveData.result) {
+                        previewHtml += `<strong>Result:</strong> ${saveData.result}<br>`;
+                    }
+                    if (saveData.details) {
+                        previewHtml += `<strong>Details:</strong><br>${saveData.details.replace(/\n/g, '<br>')}`;
+                    }
+                    previewContent.innerHTML = previewHtml;
+                }
             }
-            if (data.result) {
-                previewHtml += `<strong>Result:</strong> ${data.result}<br>`;
-            }
-            if (data.details) {
-                previewHtml += `<strong>Details:</strong><br>${data.details.replace(/\n/g, '<br>')}`;
-            }
-            
-            previewContent.innerHTML = previewHtml;
             
             // Populate project dropdown
             populateSaveProjectDropdown();
@@ -3243,6 +3667,7 @@
             document.getElementById('saveNotesText').value = '';
             
             // Show modal
+            const modal = document.getElementById('saveToProjectModal');
             modal.style.display = 'block';
         }
         
@@ -3389,149 +3814,360 @@
             }
         }
         
-        function showProjectTemplates() {
-            const templates = getProjectTemplates();
-            
-            let templateList = 'Project Templates:\n';
-            templateList += '='.repeat(40) + '\n\n';
-            
-            templates.forEach((template, index) => {
-                templateList += `${index + 1}. ${template.name}\n`;
-                templateList += `   📏 ${template.boards.length} boards, ${template.cuts.length} cuts\n`;
-                templateList += `   📝 ${template.description}\n\n`;
-            });
-            
-            const choice = prompt(templateList + 'Enter template number to create project:');
-            
-            if (choice) {
-                const templateIndex = parseInt(choice) - 1;
-                if (templateIndex >= 0 && templateIndex < templates.length) {
-                    createProjectFromTemplate(templates[templateIndex]);
-                }
-            }
-        }
-        
-        function getProjectTemplates() {
-            return [
-                {
-                    name: "Basic Bookshelf",
-                    description: "5-shelf bookshelf using 1x8 boards",
-                    boards: [
-                        { length: 96, quantity: 3 },  // 8ft 1x8 boards
-                        { length: 48, quantity: 2 }   // 4ft 1x8 boards
-                    ],
-                    cuts: [
-                        { length: 30, id: 1 }, { length: 30, id: 2 }, { length: 30, id: 3 }, 
-                        { length: 30, id: 4 }, { length: 30, id: 5 }, // 5 shelves
-                        { length: 36, id: 6 }, { length: 36, id: 7 }  // 2 sides
-                    ],
-                    notes: "Basic 5-shelf bookshelf:\n- Shelves: 30\" wide\n- Height: 36\"\n- Use 1x8 pine boards\n- Consider adding back panel\n- Sand all pieces before assembly"
-                },
-                {
-                    name: "Coffee Table",
-                    description: "Simple coffee table with lower shelf",
-                    boards: [
-                        { length: 96, quantity: 2 },  // 8ft boards
-                        { length: 48, quantity: 1 }   // 4ft board
-                    ],
-                    cuts: [
-                        { length: 48, id: 1 }, { length: 24, id: 2 }, // Top and shelf
-                        { length: 16, id: 3 }, { length: 16, id: 4 }, 
-                        { length: 16, id: 5 }, { length: 16, id: 6 }  // 4 legs
-                    ],
-                    notes: "Coffee table project:\n- Top: 48\" x 24\"\n- Height: 16\"\n- Add lower shelf for storage\n- Use 2x4 for legs, 1x6 for top\n- Consider staining or painting"
-                },
-                {
-                    name: "Garden Planter Box",
-                    description: "Raised garden bed planter",
-                    boards: [
-                        { length: 96, quantity: 2 },  // 8ft cedar boards
-                        { length: 48, quantity: 2 }   // 4ft cedar boards
-                    ],
-                    cuts: [
-                        { length: 48, id: 1 }, { length: 48, id: 2 }, // Long sides
-                        { length: 24, id: 3 }, { length: 24, id: 4 }, // Short sides
-                        { length: 22.5, id: 5 }, { length: 22.5, id: 6 }, 
-                        { length: 22.5, id: 7 }, { length: 22.5, id: 8 } // Bottom slats
-                    ],
-                    notes: "Garden planter box:\n- Size: 48\" x 24\" x 8\" deep\n- Use cedar for weather resistance\n- Drill drainage holes in bottom\n- Use galvanized screws\n- No treatment needed for cedar"
-                },
-                {
-                    name: "Simple Workbench",
-                    description: "Basic workbench with storage shelf",
-                    boards: [
-                        { length: 96, quantity: 4 },  // 8ft 2x4s
-                        { length: 96, quantity: 2 }   // 8ft 2x8s for top
-                    ],
-                    cuts: [
-                        { length: 60, id: 1 }, { length: 60, id: 2 }, // Top pieces
-                        { length: 30, id: 3 }, { length: 30, id: 4 }, 
-                        { length: 30, id: 5 }, { length: 30, id: 6 }, // 4 legs
-                        { length: 54, id: 7 }, { length: 54, id: 8 }, // Long supports
-                        { length: 18, id: 9 }, { length: 18, id: 10 } // Short supports
-                    ],
-                    notes: "Workbench project:\n- Top: 60\" x 16\"\n- Height: 30\"\n- Laminated 2x8 top for strength\n- Add shelf between legs\n- Use pocket screws for assembly\n- Consider adding vise mount"
-                }
-            ];
-        }
-        
-        function createProjectFromTemplate(template) {
-            const name = prompt(`Create project from "${template.name}" template:\nEnter project name:`, template.name);
-            
-            if (name && name.trim()) {
-                // Clear existing data
-                boards = [...template.boards];
-                cuts = [...template.cuts];
-                history = [];
-                cutHistory = [];
-                currentValueInches = 0;
-                cutValueInches = 0;
-                currentOperation = null;
-                operationValue = 0;
-                memoryValue = 0;
-                value1 = 0;
-                value2 = 0;
-                
-                const project = {
-                    id: Date.now(),
-                    name: name.trim(),
-                    created: new Date().toISOString(),
-                    boards: [...boards],
-                    cuts: [...cuts],
-                    history: [...history],
-                    cutHistory: [...cutHistory],
-                    projectLog: [], // New: stores manually saved calculation items
-                    calculatorData: {
-                        currentValueInches: 0,
-                        cutValueInches: 0,
-                        currentOperation: null,
-                        operationValue: 0,
-                        memoryValue: 0,
-                        value1: 0,
-                        value2: 0,
-                        inputMode: 'fraction'
-                    },
-                    notes: template.notes,
-                    tags: ['template']
-                };
-                
-                projects.push(project);
-                currentProject = project;
-                saveToLocalStorage();
-                
-                // Update displays
-                updateProjectSelector();
-                updateBoardDisplay();
-                updateCutDisplay();
-                
-                showNotification(`Project "${name}" created from template!`, 'success');
-            }
-        }
         
         // Projects Tab Functions
+        function renderProjectTimeline() {
+            // Double-check: if dropdown has a project selected but currentProject is null, try to sync
+            const dropdown = document.getElementById('globalProjectDropdown');
+            if (!currentProject && dropdown && dropdown.value) {
+                const projectId = parseInt(dropdown.value);
+                const project = projects.find(p => p.id === projectId);
+                if (project) {
+                    currentProject = project;
+                }
+            }
+            
+            // Reverse sync: if currentProject exists but dropdown doesn't match, fix the dropdown
+            if (currentProject && dropdown) {
+                if (dropdown.value !== currentProject.id.toString()) {
+                    dropdown.value = currentProject.id.toString();
+                }
+            }
+            
+            if (!currentProject) {
+                showNoProjectSelected();
+                return;
+            }
+            
+            updateProjectTimelineHeader();
+            renderTimelineContent();
+        }
+        
+        function showNoProjectSelected() {
+            document.getElementById('projectTimelineTitle').textContent = '📁 Select a Project';
+            document.getElementById('projectSummary').style.display = 'none';
+            document.getElementById('projectNotesBtn').disabled = true;
+            document.getElementById('projectExportBtn').disabled = true;
+            document.getElementById('noProjectSelected').style.display = 'block';
+            document.getElementById('projectTimeline').style.display = 'none';
+        }
+        
+        function updateProjectTimelineHeader() {
+            const title = document.getElementById('projectTimelineTitle');
+            const summary = document.getElementById('projectSummary');
+            const logCount = document.getElementById('projectLogCount');
+            const created = document.getElementById('projectCreated');
+            const modified = document.getElementById('projectModified');
+            const notesBtn = document.getElementById('projectNotesBtn');
+            const exportBtn = document.getElementById('projectExportBtn');
+            
+            title.textContent = `📁 ${currentProject.name}`;
+            
+            const projectLogLength = currentProject.projectLog ? currentProject.projectLog.length : 0;
+            logCount.textContent = `📊 ${projectLogLength} saved calculation${projectLogLength !== 1 ? 's' : ''}`;
+            created.textContent = `📅 Created: ${new Date(currentProject.created).toLocaleDateString()}`;
+            modified.textContent = `🔄 Modified: ${currentProject.lastModified ? new Date(currentProject.lastModified).toLocaleDateString() : 'Never'}`;
+            
+            summary.style.display = 'block';
+            notesBtn.disabled = false;
+            exportBtn.disabled = false;
+            
+            document.getElementById('noProjectSelected').style.display = 'none';
+            document.getElementById('projectTimeline').style.display = 'block';
+        }
+        
+        function renderTimelineContent() {
+            const timelineContent = document.getElementById('timelineContent');
+            const emptyTimeline = document.getElementById('emptyTimeline');
+            
+            if (!currentProject.projectLog || currentProject.projectLog.length === 0) {
+                timelineContent.innerHTML = '';
+                emptyTimeline.style.display = 'block';
+                return;
+            }
+            
+            emptyTimeline.style.display = 'none';
+            
+            // Sort by timestamp (most recent first)
+            const sortedLog = [...currentProject.projectLog].sort((a, b) => 
+                new Date(b.timestamp) - new Date(a.timestamp)
+            );
+            
+            let timelineHTML = '';
+            sortedLog.forEach(logEntry => {
+                timelineHTML += createTimelineItem(logEntry);
+            });
+            
+            timelineContent.innerHTML = timelineHTML;
+        }
+        
+        function getTimelineDetailsDisplay(logEntry) {
+            const details = logEntry.details;
+            
+            // Handle string format (old format)
+            if (typeof details === 'string') {
+                return details.replace(/\n/g, '<br>');
+            }
+            
+            // Handle object format (new format)
+            if (typeof details === 'object' && details) {
+                // For spacing calculator with marks (center-marks mode)
+                if (details.mode === 'center-marks' && details.marks && details.marks.length > 0) {
+                    let html = `<strong>📍 Center Mark Positions:</strong><br>`;
+                    details.marks.slice(0, 8).forEach(mark => {
+                        html += `Shelf ${mark.shelf}: ${mark.display}<br>`;
+                    });
+                    if (details.marks.length > 8) {
+                        html += `... and ${details.marks.length - 8} more<br>`;
+                    }
+                    return html;
+                }
+                
+                // For spacing calculator in shelf-spacing mode
+                if (details.mode === 'shelf-spacing') {
+                    let html = `<strong>📏 Shelf Spacing Details:</strong><br>`;
+                    if (details.totalLength) {
+                        html += `Total Length: ${inchesToDisplay ? inchesToDisplay(details.totalLength) : details.totalLength + '"'}<br>`;
+                    }
+                    if (details.numShelves && details.thickness) {
+                        const thicknessDisplay = inchesToDisplay ? inchesToDisplay(details.thickness) : details.thickness + '"';
+                        const totalMaterial = details.numShelves * details.thickness;
+                        const totalMaterialDisplay = inchesToDisplay ? inchesToDisplay(totalMaterial) : totalMaterial.toFixed(3) + '"';
+                        const availableSpace = details.totalLength - totalMaterial;
+                        const availableSpaceDisplay = inchesToDisplay ? inchesToDisplay(availableSpace) : availableSpace.toFixed(3) + '"';
+                        
+                        html += `Shelves: ${details.numShelves} × ${thicknessDisplay} thick<br>`;
+                        html += `Total Material: ${totalMaterialDisplay}<br>`;
+                        html += `Available Space: ${availableSpaceDisplay}<br>`;
+                    }
+                    if (details.spacing) {
+                        const spacingDisplay = inchesToDisplay ? inchesToDisplay(details.spacing) : details.spacing.toFixed(3) + '"';
+                        html += `Spacing: ${spacingDisplay} each<br>`;
+                    }
+                    
+                    // Show shelf positions if available
+                    if (details.shelfPositions && details.shelfPositions.length > 0) {
+                        html += `<br><strong>Shelf Positions:</strong><br>`;
+                        details.shelfPositions.slice(0, 6).forEach(pos => {
+                            html += `Shelf ${pos.shelf}: ${pos.startDisplay} to ${pos.endDisplay}<br>`;
+                        });
+                        if (details.shelfPositions.length > 6) {
+                            html += `... and ${details.shelfPositions.length - 6} more<br>`;
+                        }
+                    }
+                    
+                    return html;
+                }
+                
+                // For cut calculator with cut marks
+                if (details.cutMarks && Array.isArray(details.cutMarks)) {
+                    let html = `<strong>✂️ Cut Details:</strong><br>`;
+                    if (details.originalLength) {
+                        html += `Original Length: ${details.originalLength}<br>`;
+                    }
+                    if (details.pieces && details.pieceLength) {
+                        html += `Pieces: ${details.pieces} @ ${details.pieceLength} each<br>`;
+                    }
+                    if (details.kerfNote) {
+                        html += `Kerf: ${details.kerfNote}<br>`;
+                    }
+                    if (details.cutSideNote) {
+                        html += `Cut Side: ${details.cutSideNote}<br>`;
+                    }
+                    
+                    if (details.cutMarks.length > 0) {
+                        html += `<br><strong>Cut Marks:</strong><br>`;
+                        details.cutMarks.slice(0, 8).forEach((mark, i) => {
+                            html += `Mark ${i + 1}: ${mark.display || mark}<br>`;
+                        });
+                        if (details.cutMarks.length > 8) {
+                            html += `... and ${details.cutMarks.length - 8} more marks<br>`;
+                        }
+                    }
+                    
+                    return html;
+                }
+                
+                // For lumber shopping cart with items
+                if (details.items && Array.isArray(details.items)) {
+                    let html = `<strong>🛒 Lumber Cart Details:</strong><br>`;
+                    if (details.totalBoardFeet && details.totalCost) {
+                        html += `Total: ${details.totalBoardFeet} BF - $${details.totalCost}<br><br>`;
+                    }
+                    
+                    if (details.items.length > 0) {
+                        html += `<strong>Items:</strong><br>`;
+                        details.items.slice(0, 8).forEach((item, i) => {
+                            html += `${i + 1}. ${item.species || 'Unknown'} - `;
+                            html += `${item.quantity}pc × ${item.thickness}" × ${item.width}" × ${item.length}" `;
+                            html += `(${item.boardFeet?.toFixed(3) || '0'} BF @ $${item.pricePerBF?.toFixed(2) || '0'}/BF = $${item.lineTotal?.toFixed(2) || '0'})<br>`;
+                        });
+                        if (details.items.length > 8) {
+                            html += `... and ${details.items.length - 8} more items<br>`;
+                        }
+                    }
+                    
+                    return html;
+                }
+                
+                // For other calculators or fallback to fullDetails
+                if (details.fullDetails) {
+                    return details.fullDetails.replace(/\n/g, '<br>');
+                }
+                
+                // Generic object display
+                return JSON.stringify(details, null, 2).replace(/\n/g, '<br>');
+            }
+            
+            return '';
+        }
+        
+        function createTimelineItem(logEntry) {
+            const toolType = getToolTypeFromName(logEntry.toolName);
+            const markerIcon = getToolIcon(logEntry.toolName);
+            const timestamp = new Date(logEntry.timestamp).toLocaleString();
+            const savedTime = new Date(logEntry.saved).toLocaleString();
+            
+            return `
+                <div class="timeline-item">
+                    <div class="timeline-marker ${toolType}">${markerIcon}</div>
+                    <div class="timeline-card">
+                        <div class="timeline-card-header">
+                            <div class="timeline-tool-info">
+                                <div class="timeline-tool-name">${logEntry.toolName}</div>
+                                <div class="timeline-timestamp">Saved: ${savedTime}</div>
+                            </div>
+                            <div class="timeline-actions">
+                                <button class="btn btn-sm btn-secondary" onclick="deleteTimelineItem('${logEntry.id}')" title="Delete">🗑️</button>
+                            </div>
+                        </div>
+                        
+                        ${logEntry.equation ? `<div class="timeline-equation">${logEntry.equation}</div>` : ''}
+                        ${logEntry.result ? `<div class="timeline-result">Result: ${logEntry.result}</div>` : ''}
+                        ${logEntry.details ? `<div class="timeline-details">${getTimelineDetailsDisplay(logEntry)}</div>` : ''}
+                        ${logEntry.userNotes ? `<div class="timeline-notes">${logEntry.userNotes}</div>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function getToolTypeFromName(toolName) {
+            if (toolName.includes('Calculator') && !toolName.includes('Golden') && !toolName.includes('Miter') && !toolName.includes('Shelf')) {
+                return 'calculator';
+            } else if (toolName.includes('Golden Ratio')) {
+                return 'golden';
+            } else if (toolName.includes('Shelf') || toolName.includes('Division')) {
+                return 'spacing';
+            } else if (toolName.includes('Miter') || toolName.includes('Angle')) {
+                return 'miter';
+            } else if (toolName.includes('Lumber') || toolName.includes('Board')) {
+                return 'lumber';
+            }
+            return 'calculator';
+        }
+        
+        function getToolIcon(toolName) {
+            if (toolName.includes('Calculator') && !toolName.includes('Golden') && !toolName.includes('Miter') && !toolName.includes('Shelf')) {
+                return '🧮';
+            } else if (toolName.includes('Golden Ratio')) {
+                return '✨';
+            } else if (toolName.includes('Shelf') || toolName.includes('Division')) {
+                return '📐';
+            } else if (toolName.includes('Miter') || toolName.includes('Angle')) {
+                return '📐';
+            } else if (toolName.includes('Lumber') || toolName.includes('Board')) {
+                return '📏';
+            }
+            return '🧮';
+        }
+        
+        function deleteTimelineItem(itemId) {
+            if (!currentProject || !currentProject.projectLog) return;
+            
+            if (confirm('Delete this saved calculation from your project?')) {
+                currentProject.projectLog = currentProject.projectLog.filter(item => item.id != itemId);
+                currentProject.lastModified = new Date().toISOString();
+                saveToLocalStorage();
+                renderProjectTimeline();
+                updateProjectSelector();
+                showNotification('Calculation removed from project', 'success');
+            }
+        }
+        
+        // All Projects Modal Functions
+        function showAllProjects() {
+            const modal = document.getElementById('allProjectsModal');
+            renderAllProjectsModal();
+            modal.style.display = 'block';
+        }
+        
+        function closeAllProjectsModal() {
+            const modal = document.getElementById('allProjectsModal');
+            modal.style.display = 'none';
+        }
+        
+        function renderAllProjectsModal() {
+            const grid = document.getElementById('projectsGridModal');
+            const noProjectsMsg = document.getElementById('noProjectsModalMessage');
+            
+            if (projects.length === 0) {
+                grid.innerHTML = '';
+                noProjectsMsg.style.display = 'block';
+                return;
+            }
+            
+            noProjectsMsg.style.display = 'none';
+            
+            grid.innerHTML = projects.map(project => {
+                const logCount = project.projectLog ? project.projectLog.length : 0;
+                const isActive = currentProject && currentProject.id === project.id;
+                const created = new Date(project.created).toLocaleDateString();
+                const modified = project.lastModified ? new Date(project.lastModified).toLocaleDateString() : 'Never';
+                
+                return `
+                    <div class="project-card ${isActive ? 'current-project' : ''}" onclick="loadProjectFromModal(${project.id})">
+                        <div class="project-card-content">
+                            <div class="project-header">
+                                <h4>${project.name} ${isActive ? '(Active)' : ''}</h4>
+                                <div class="project-actions" onclick="event.stopPropagation()">
+                                    <button class="btn btn-sm btn-secondary" onclick="duplicateProject(${project.id})" title="Duplicate">📋</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="exportCurrentProject(${project.id})" title="Export">📤</button>
+                                    <button class="btn btn-sm btn-warning" onclick="deleteProject(${project.id})" title="Delete">🗑️</button>
+                                </div>
+                            </div>
+                            <div class="project-stats">
+                                <span class="stat">📊 ${logCount} saved calculations</span>
+                                <span class="stat">📅 ${created}</span>
+                                <span class="stat">🔄 ${modified}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function loadProjectFromModal(projectId) {
+            loadProject(projectId);
+            updateProjectSelector();
+            closeAllProjectsModal();
+            showNotification(`Switched to project: ${currentProject.name}`, 'success');
+        }
+        
+        function exportCurrentProject(projectId = null) {
+            const projectToExport = projectId ? projects.find(p => p.id === projectId) : currentProject;
+            if (!projectToExport) {
+                showNotification('No project to export', 'warning');
+                return;
+            }
+            
+            // Use existing export functionality but update for new timeline structure
+            exportProjectData(projectToExport);
+        }
+        
+        // Legacy functions for backward compatibility
         function renderProjectsTab() {
-            renderCurrentProjectCard();
-            renderProjectsGrid();
+            // Ensure the project state is synced before rendering
+            updateProjectSelector();
         }
         
         function renderCurrentProjectCard() {
@@ -3809,17 +4445,18 @@
             });
         }
         
-        // Auto-save functionality
-        function autoSave() {
-            if (currentProject) {
-                saveCurrentProject();
-            } else {
-                saveToLocalStorage();
-            }
+        // Essential data save (no longer auto-called, used for manual saves and app close)
+        function saveEssentialData() {
+            // Only save essential persistent data, not temporary calculator states
+            saveToLocalStorage();
         }
         
-        // Set up auto-save every 30 seconds
-        setInterval(autoSave, 30000);
+        // Auto-save interval removed - now using manual "Save to Project" workflow
+        
+        // Save essential data when user closes the app
+        window.addEventListener('beforeunload', function() {
+            saveEssentialData();
+        });
         
         // Notification system to replace alerts
         function showNotification(message, type = 'error') {
@@ -4352,7 +4989,6 @@
                 timestamp: new Date().toLocaleTimeString(),
                 type: 'conversion'
             });
-            showNotification(`Decimal: ${decimal}" (from ${source})`, 'success');
         }
         
         function convertToFraction() {
@@ -4369,7 +5005,6 @@
                 timestamp: new Date().toLocaleTimeString(),
                 type: 'conversion'
             });
-            showNotification(`Fraction: ${fraction} (from ${source})`, 'success');
         }
         
         function convertToFeet() {
@@ -4386,7 +5021,6 @@
                 timestamp: new Date().toLocaleTimeString(),
                 type: 'conversion'
             });
-            showNotification(`Decimal Feet: ${feet} ft (from ${source})`, 'success');
         }
         
         function convertToInches() {
@@ -4403,7 +5037,6 @@
                 timestamp: new Date().toLocaleTimeString(),
                 type: 'conversion'
             });
-            showNotification(`Total Inches: ${totalInches}" (from ${source})`, 'success');
         }
         
         // Direct decimal input conversion functions
@@ -4441,7 +5074,6 @@
                 type: 'direct_conversion'
             });
             
-            showNotification(`${inches}" = ${fraction}`, 'success');
             
             // Mark direct input as most recent action
             lastDirectInputUpdate = Date.now();
@@ -4544,13 +5176,6 @@
             const golden = 1.618033988749895;
             const result = inches * golden;
             
-            addToCalcHistory({
-                equation: `${inchesToDisplay(inches)} × φ (1.618) = ${inchesToDisplay(result)}`,
-                result: result,
-                timestamp: new Date().toLocaleTimeString(),
-                type: 'preset',
-                label: 'Golden Ratio'
-            });
             
             // Set result as new value1
             const parts = inchesToParts(result);
@@ -4692,13 +5317,6 @@
                 
                 if (thickness && width && length) {
                     const boardFeet = (thickness * width * length) / 12;
-                    addToCalcHistory({
-                        equation: `Board Feet: ${thickness}" × ${width}" × ${length}' = ${boardFeet.toFixed(2)} BF`,
-                        result: boardFeet * 12, // Convert to inches for consistency
-                        timestamp: new Date().toLocaleTimeString(),
-                        type: 'preset',
-                        label: 'Board Feet'
-                    });
                     closeCalcModal();
                 } else {
                     showNotification('Please fill in all fields');
@@ -4707,13 +5325,6 @@
                 const spaces = parseInt(document.getElementById('modalSpaces')?.value) || 0;
                 if (spaces > 0) {
                     const spacing = value1 / spaces;
-                    addToCalcHistory({
-                        equation: `${inchesToDisplay(value1)} ÷ ${spaces} spaces = ${inchesToDisplay(spacing)} each`,
-                        result: spacing,
-                        timestamp: new Date().toLocaleTimeString(),
-                        type: 'preset',
-                        label: 'Shelf & Division'
-                    });
                     closeCalcModal();
                 } else {
                     showNotification('Please enter number of spaces');
@@ -4726,13 +5337,6 @@
                     if (sides > 2) {
                         const miterAngle = 180 / sides;
                         const sawAngle = 90 - miterAngle;
-                        addToCalcHistory({
-                            equation: `${sides}-sided: Miter ${miterAngle}°, Saw ${sawAngle}°`,
-                            result: miterAngle,
-                            timestamp: new Date().toLocaleTimeString(),
-                            type: 'preset',
-                            label: 'Polygon Angles'
-                        });
                         closeCalcModal();
                     } else {
                         showNotification('Please enter valid number of sides');
@@ -4765,13 +5369,6 @@
                             longSide = shortSide + difference;
                         }
                         
-                        addToCalcHistory({
-                            equation: `${angle}° miter on ${boardWidth}" board: Long ${inchesToDisplay(longSide)}, Short ${inchesToDisplay(shortSide)} (Δ ${inchesToDisplay(difference)})`,
-                            result: knownSide === 'long' ? shortSide : longSide,
-                            timestamp: new Date().toLocaleTimeString(),
-                            type: 'preset',
-                            label: 'Miter Cut'
-                        });
                         
                         // Set the calculated value as new input
                         const parts = inchesToParts(knownSide === 'long' ? shortSide : longSide);
@@ -4858,6 +5455,22 @@
             const kerfNote = kerfEnabled ? ` (${inchesToDisplay(kerf, 'cut')} kerf)` : ' (no kerf)';
             const cutSideNote = kerfEnabled ? `, ${cutSide} side` : '';
             
+            // Store cut result data globally for saving
+            const cutResultData = {
+                originalLength: inchesToDisplay(cutValueInches, 'cut'),
+                pieces: pieces,
+                pieceLength: inchesToDisplay(pieceLength, 'cut'),
+                results: results,
+                kerfNote: kerfNote,
+                cutSideNote: cutSideNote
+            };
+            currentCutResults.unshift(cutResultData);
+            
+            // Keep only last 5 results
+            if (currentCutResults.length > 5) {
+                currentCutResults = currentCutResults.slice(0, 5);
+            }
+            
             cutResults.innerHTML = `
                 <h4>Cut ${inchesToDisplay(cutValueInches, 'cut')} into ${pieces} equal pieces${kerfNote}${cutSideNote}</h4>
                 <div class="mark-list">
@@ -4870,6 +5483,9 @@
                 </div>
                 <div class="piece-info">
                     Result: ${pieces} pieces @ ${inchesToDisplay(pieceLength, 'cut')} each
+                </div>
+                <div class="cut-result-actions">
+                    <button class="btn btn-success btn-sm" onclick="saveCutToProject(0)">Save to Project</button>
                 </div>
             `;
             
@@ -5040,6 +5656,11 @@
             if (event && event.target) event.target.classList.add('active');
             const targetTab = document.getElementById(tab);
             if (targetTab) targetTab.classList.add('active');
+            
+            // When switching to projects tab, ensure timeline is rendered and synced
+            if (tab === 'projects') {
+                renderProjectTimeline();
+            }
         }
         
         function showHelp() {
@@ -5378,7 +5999,8 @@
             if (results.length > 0) {
                 html += '<div style="margin-top: 15px;">';
                 html += '<button class="btn btn-primary" onclick="showVisualLayout()" style="margin-right: 10px;">Show Visual Layout</button>';
-                html += '<button class="btn btn-secondary" onclick="exportCutList()">Export Cut List</button>';
+                html += '<button class="btn btn-secondary" onclick="exportCutList()" style="margin-right: 10px;">Export Cut List</button>';
+                html += '<button class="btn btn-success" onclick="saveOptimizationToProject()">Save to Project</button>';
                 html += '</div>';
             }
             
@@ -5539,6 +6161,7 @@
             const calcModal = document.getElementById('calcModal');
             const notesModal = document.getElementById('notesModal');
             const saveToProjectModal = document.getElementById('saveToProjectModal');
+            const allProjectsModal = document.getElementById('allProjectsModal');
             
             if (event.target === helpModal) {
                 helpModal.style.display = 'none';
@@ -5555,6 +6178,9 @@
             }
             if (event.target === saveToProjectModal) {
                 closeSaveToProjectModal();
+            }
+            if (event.target === allProjectsModal) {
+                closeAllProjectsModal();
             }
         }
         
@@ -6324,106 +6950,8 @@
             }
         }
 
-        // Shopping History Management Functions
-        function toggleShoppingHistory() {
-            const section = document.getElementById('shoppingHistorySection');
-            const button = document.getElementById('toggleHistoryBtn');
-            
-            if (section.style.display === 'none') {
-                section.style.display = 'block';
-                button.textContent = 'Hide Shopping History';
-                updateShoppingHistoryDisplay();
-            } else {
-                section.style.display = 'none';
-                button.textContent = 'Show Shopping History';
-            }
-        }
 
-        function updateShoppingHistoryDisplay() {
-            const display = document.getElementById('shoppingHistoryDisplay');
-            if (!display) return;
-            
-            if (shoppingHistory.length === 0) {
-                display.innerHTML = '<div class="result-placeholder">No shopping history</div>';
-                return;
-            }
-            
-            let historyHTML = '';
-            shoppingHistory.forEach((cart, index) => {
-                historyHTML += `
-                    <div class="shopping-history-item">
-                        <div class="shopping-history-header-item">
-                            <div>
-                                <div class="shopping-history-date">${cart.date}</div>
-                                <div class="shopping-history-summary">${cart.itemCount} items - ${cart.totalBoardFeet} BF - $${cart.totalCost}</div>
-                            </div>
-                            <div class="shopping-history-actions">
-                                <button class="btn btn-primary btn-xs" onclick="loadShoppingCart(${index})" title="Load this cart">Load</button>
-                                <button class="btn btn-secondary btn-xs" onclick="toggleHistoryDetails(${index})" title="Show/hide details">Details</button>
-                                <button class="btn btn-warning btn-xs" onclick="removeShoppingHistory(${index})" title="Delete this entry">×</button>
-                            </div>
-                        </div>
-                        <div class="shopping-history-details" id="historyDetails${index}">
-                            ${cart.details}
-                        </div>
-                    </div>
-                `;
-            });
-            
-            display.innerHTML = historyHTML;
-        }
-
-        function toggleHistoryDetails(index) {
-            const details = document.getElementById(`historyDetails${index}`);
-            if (details) {
-                details.classList.toggle('expanded');
-            }
-        }
-
-        function loadShoppingCart(index) {
-            if (index < 0 || index >= shoppingHistory.length) return;
-            
-            const savedCart = shoppingHistory[index];
-            if (!savedCart.items || savedCart.items.length === 0) {
-                showNotification('No items to load from this cart');
-                return;
-            }
-            
-            // Confirm before loading if current cart has items
-            if (lumberCart.length > 0) {
-                if (!confirm('This will replace your current cart. Continue?')) {
-                    return;
-                }
-            }
-            
-            // Clear current cart and load saved items
-            lumberCart = [...savedCart.items];
-            updateCartDisplay();
-            
-            showNotification(`Loaded cart from ${savedCart.date}`);
-        }
-
-        function removeShoppingHistory(index) {
-            if (confirm('Remove this shopping cart from history?')) {
-                shoppingHistory.splice(index, 1);
-                updateShoppingHistoryDisplay();
-                saveToLocalStorage();
-                showNotification('Shopping cart removed from history');
-            }
-        }
-
-        function clearShoppingHistory() {
-            if (shoppingHistory.length === 0) return;
-            
-            if (confirm('Clear all shopping history? This cannot be undone.')) {
-                shoppingHistory = [];
-                updateShoppingHistoryDisplay();
-                saveToLocalStorage();
-                showNotification('Shopping history cleared');
-            }
-        }
-
-        function saveLumberCartToHistory() {
+        function saveLumberCartToProject() {
             if (lumberCart.length === 0) {
                 showNotification('Cart is empty');
                 return;
@@ -6431,59 +6959,45 @@
             
             let totalBoardFeet = 0;
             let totalCost = 0;
-            let cartSummary = 'LUMBER SHOPPING CART\n\n';
+            let cartSummary = '';
             
             lumberCart.forEach((item, index) => {
                 totalBoardFeet += item.boardFeet;
                 totalCost += item.lineTotal;
                 
-                cartSummary += `${index + 1}. ${item.species}\n`;
-                cartSummary += `   ${item.quantity} pc${item.quantity !== 1 ? 's' : ''} × ${item.thickness}" × ${item.width}" × ${item.length}"\n`;
-                cartSummary += `   ${item.boardFeet.toFixed(3)} BF × $${item.pricePerBF.toFixed(2)}/BF = $${item.lineTotal.toFixed(2)}\n\n`;
+                cartSummary += `${index + 1}. ${item.species} - `;
+                cartSummary += `${item.quantity} pc${item.quantity !== 1 ? 's' : ''} × ${item.thickness}" × ${item.width}" × ${item.length}" `;
+                cartSummary += `(${item.boardFeet.toFixed(3)} BF × $${item.pricePerBF.toFixed(2)}/BF = $${item.lineTotal.toFixed(2)})\n`;
             });
             
-            cartSummary += `TOTAL: ${totalBoardFeet.toFixed(3)} BF - $${totalCost.toFixed(2)}`;
+            const previewContent = `
+                <div class="save-preview-lumber">
+                    <div class="preview-header">
+                        <strong>🛒 Lumber Shopping Cart</strong>
+                    </div>
+                    <div class="preview-summary">
+                        <strong>Total: ${totalBoardFeet.toFixed(3)} BF - $${totalCost.toFixed(2)}</strong>
+                    </div>
+                    <div class="preview-details">
+                        ${cartSummary.replace(/\n/g, '<br>')}
+                    </div>
+                </div>
+            `;
             
-            // Save to main calculator history
-            addToCalcHistory({
-                equation: cartSummary,
-                result: `${lumberCart.length} items - $${totalCost.toFixed(2)}`,
-                timestamp: new Date().toLocaleTimeString(),
-                type: 'preset',
-                label: 'Lumber Cart'
-            });
-            
-            // Save to dedicated shopping history with more detail
-            const now = new Date();
-            const shoppingCartEntry = {
-                date: now.toLocaleDateString() + ' ' + now.toLocaleTimeString(),
-                itemCount: lumberCart.length,
-                totalBoardFeet: totalBoardFeet.toFixed(3),
-                totalCost: totalCost.toFixed(2),
-                details: cartSummary,
-                items: [...lumberCart] // Deep copy of cart items for reloading
+            const saveData = {
+                tool: 'lumber',
+                equation: `Lumber Cart: ${lumberCart.length} items`,
+                result: `${totalBoardFeet.toFixed(3)} BF - $${totalCost.toFixed(2)}`,
+                details: {
+                    items: [...lumberCart],
+                    totalBoardFeet: totalBoardFeet.toFixed(3),
+                    totalCost: totalCost.toFixed(2),
+                    itemCount: lumberCart.length
+                },
+                preview: previewContent
             };
             
-            shoppingHistory.unshift(shoppingCartEntry); // Add to beginning of array
-            
-            // Limit shopping history to last 20 entries
-            if (shoppingHistory.length > 20) {
-                shoppingHistory = shoppingHistory.slice(0, 20);
-            }
-            
-            // Update shopping history display if visible
-            const historySection = document.getElementById('shoppingHistorySection');
-            if (historySection && historySection.style.display !== 'none') {
-                updateShoppingHistoryDisplay();
-            }
-            
-            saveToLocalStorage();
-            showNotification('Cart saved to history');
-            
-            // Optionally clear cart after saving
-            if (confirm('Cart saved! Clear cart for next shopping trip?')) {
-                clearLumberCart();
-            }
+            showSaveToProjectModal(saveData);
         }
 
         function saveBoardFeetToHistory() {
@@ -6499,15 +7013,6 @@
             
             const boardFeet = (thickness * width * length * quantity) / 144;
             
-            addToCalcHistory({
-                equation: `${quantity}pc × ${thickness}" × ${width}" × ${length}" ÷ 144 = ${boardFeet.toFixed(3)} bf`,
-                result: boardFeet,
-                timestamp: new Date().toLocaleTimeString(),
-                type: 'preset',
-                label: 'Board Feet'
-            });
-            
-            showNotification('Added to calculator history');
         }
 
         function saveGoldenRatioToHistory() {
@@ -6531,15 +7036,6 @@
                 equation = `Golden Ratio: Long ${inchesToDisplay(longSide)} → Short ${inchesToDisplay(shortSide)}`;
             }
             
-            addToCalcHistory({
-                equation: equation,
-                result: currentGoldenMode === 'short' ? longSide : shortSide,
-                timestamp: new Date().toLocaleTimeString(),
-                type: 'preset',
-                label: 'Golden Ratio'
-            });
-            
-            showNotification('Added to calculator history');
         }
         
         function saveGoldenRatioToProject() {
@@ -6918,13 +7414,6 @@
                 const interiorAngle = ((sides - 2) * 180) / sides;
                 const miterAngle = (180 - interiorAngle) / 2;
                 
-                addToCalcHistory({
-                    equation: `${sides}-sided polygon: ${miterAngle.toFixed(2)}° miter cuts`,
-                    result: miterAngle,
-                    timestamp: new Date().toLocaleTimeString(),
-                    type: 'preset',
-                    label: 'Miter Angle'
-                });
             } else if (currentMiterMode === 'frame') {
                 const sides = parseInt(document.getElementById('frameShapeSides').value);
                 const materialWidth = getInputInches('frameMaterialWidthFeet', 'frameMaterialWidthInches', 'frameMaterialWidthFraction');
@@ -6955,13 +7444,6 @@
                     dimensionsSummary = `${inchesToDisplay(sideLength)} side length`;
                 }
                 
-                addToCalcHistory({
-                    equation: `${frameName} Frame: ${dimensionsSummary}, ${inchesToDisplay(materialWidth)} material`,
-                    result: `${miterAngle.toFixed(1)}° cuts`,
-                    timestamp: new Date().toLocaleTimeString(),
-                    type: 'preset',
-                    label: 'Frame Builder'
-                });
             } else {
                 const angle = parseFloat(document.getElementById('singleMiterAngle').value) || 0;
                 const boardWidth = getInputInches('singleBoardWidthFeet', 'singleBoardWidthInches', 'singleBoardWidthFraction');
@@ -6985,16 +7467,7 @@
                     longSide = shortSide + offset;
                 }
                 
-                addToCalcHistory({
-                    equation: `${angle}° miter cut: ${inchesToDisplay(boardWidth)} board, ${knownSide} side ${inchesToDisplay(inputLength)}`,
-                    result: `Long: ${inchesToDisplay(longSide)}, Short: ${inchesToDisplay(shortSide)}`,
-                    timestamp: new Date().toLocaleTimeString(),
-                    type: 'preset',
-                    label: 'Single Miter'
-                });
             }
-            
-            showNotification('Added to calculator history');
         }
         
         function saveAngleToProject() {
@@ -7176,15 +7649,6 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 }
             }
             
-            addToCalcHistory({
-                equation: detailedEquation,
-                result: spacing,
-                timestamp: new Date().toLocaleTimeString(),
-                type: 'preset',
-                label: 'Shelf & Division'
-            });
-            
-            showNotification('Added to calculator history');
         }
         
         function saveSpacingToProject() {
@@ -7223,13 +7687,209 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 details = `Total Length: ${inchesToDisplay(totalLength)}\nShelves: ${numShelves} × ${inchesToDisplay(thickness)} thick\nTotal Material: ${inchesToDisplay(totalThickness)}\nAvailable Space: ${inchesToDisplay(availableSpace)}\nSpacing: ${inchesToDisplay(spacing)} each`;
             }
             
-            const data = {
+            // Create enhanced preview for timeline display
+            const previewContent = `
+                <div class="save-preview-spacing">
+                    <div class="preview-header">
+                        <strong>📐 Shelf & Division Calculator</strong>
+                    </div>
+                    <div class="preview-equation">
+                        ${equation}
+                    </div>
+                    <div class="preview-result">
+                        <strong>${inchesToDisplay(spacing)} spacing between ${numShelves} shelves</strong>
+                    </div>
+                    ${thickness === 0 ? 
+                        // Center marks mode - show the marks clearly
+                        `<div class="preview-marks">
+                            <div class="marks-header">📍 Center Mark Positions:</div>
+                            ${Array.from({length: Math.min(numShelves, 8)}, (_, i) => 
+                                `<div class="mark-item">Shelf ${i + 1}: ${inchesToDisplay((i + 1) * spacing, 'calculator')}</div>`
+                            ).join('')}
+                            ${numShelves > 8 ? '<div class="mark-item">... and more</div>' : ''}
+                        </div>` :
+                        // Shelf mode - show detailed spacing info
+                        `<div class="preview-summary">
+                            Total Material: ${inchesToDisplay(numShelves * thickness)} • Available Space: ${inchesToDisplay(totalLength - numShelves * thickness)}
+                        </div>
+                        <div class="preview-spacing-details">
+                            <div class="spacing-header">📏 Spacing Details:</div>
+                            <div class="spacing-item">Space Size: ${inchesToDisplay(spacing)} each</div>
+                            <div class="spacing-item">Number of Spaces: ${numSpaces} (between and around ${numShelves} shelves)</div>
+                            ${numShelves <= 6 ? 
+                                `<div class="spacing-positions">
+                                    <div class="positions-header">Shelf Positions:</div>
+                                    ${Array.from({length: numShelves}, (_, i) => {
+                                        const shelfPosition = spacing + (i * (spacing + thickness));
+                                        return `<div class="position-item">Shelf ${i + 1}: ${inchesToDisplay(shelfPosition)} to ${inchesToDisplay(shelfPosition + thickness)}</div>`;
+                                    }).join('')}
+                                </div>` : 
+                                `<div class="spacing-item">Shelf positions available for ${numShelves} shelves</div>`
+                            }
+                        </div>`
+                    }
+                </div>
+            `;
+            
+            const saveData = {
+                tool: 'spacing',
+                toolName: 'Shelf & Division Calculator',
                 equation: equation,
                 result: `${inchesToDisplay(spacing)} spacing between ${numShelves} shelves`,
-                details: details
+                details: {
+                    totalLength: totalLength,
+                    numShelves: numShelves,
+                    thickness: thickness,
+                    spacing: spacing,
+                    mode: thickness === 0 ? 'center-marks' : 'shelf-spacing',
+                    marks: thickness === 0 ? Array.from({length: numShelves}, (_, i) => ({
+                        shelf: i + 1,
+                        position: (i + 1) * spacing,
+                        display: inchesToDisplay((i + 1) * spacing, 'calculator')
+                    })) : null,
+                    shelfPositions: thickness > 0 ? Array.from({length: numShelves}, (_, i) => {
+                        const startPos = spacing + (i * (spacing + thickness));
+                        const endPos = startPos + thickness;
+                        return {
+                            shelf: i + 1,
+                            startPosition: startPos,
+                            endPosition: endPos,
+                            startDisplay: inchesToDisplay(startPos, 'calculator'),
+                            endDisplay: inchesToDisplay(endPos, 'calculator')
+                        };
+                    }) : null,
+                    fullDetails: details
+                },
+                preview: previewContent
             };
             
-            showSaveToProjectModal('Shelf & Division Calculator', data);
+            showSaveToProjectModal(saveData);
+        }
+
+        function saveCutToProject(index) {
+            if (!currentCutResults || currentCutResults.length === 0 || index >= currentCutResults.length) {
+                showNotification('No cut result to save', 'warning');
+                return;
+            }
+            
+            const cutData = currentCutResults[index];
+            const cutMarks = cutData.results;
+            
+            const equation = `Cut ${cutData.originalLength} into ${cutData.pieces} equal pieces${cutData.kerfNote}${cutData.cutSideNote}`;
+            const result = `${cutData.pieces} pieces @ ${cutData.pieceLength} each`;
+            
+            let details = `Original Length: ${cutData.originalLength}\nPieces: ${cutData.pieces}\nPiece Length: ${cutData.pieceLength}${cutData.kerfNote}${cutData.cutSideNote}`;
+            
+            if (cutMarks.length > 0) {
+                details += '\n\nCut marks:';
+                cutMarks.forEach((mark, i) => {
+                    details += `\nMark ${i + 1}: ${mark.display}`;
+                });
+            }
+            
+            const previewContent = `
+                <div class="save-preview-cut">
+                    <div class="preview-header">
+                        <strong>✂️ Cut Calculator</strong>
+                    </div>
+                    <div class="preview-equation">
+                        ${equation}
+                    </div>
+                    <div class="preview-result">
+                        <strong>${result}</strong>
+                    </div>
+                    <div class="preview-details">
+                        ${details.replace(/\n/g, '<br>')}
+                    </div>
+                </div>
+            `;
+            
+            const saveData = {
+                tool: 'cut',
+                equation: equation,
+                result: result,
+                details: {
+                    originalLength: cutData.originalLength,
+                    pieces: cutData.pieces,
+                    pieceLength: cutData.pieceLength,
+                    cutMarks: cutMarks,
+                    kerfNote: cutData.kerfNote,
+                    cutSideNote: cutData.cutSideNote
+                },
+                preview: previewContent
+            };
+            
+            showSaveToProjectModal(saveData);
+        }
+
+        function saveOptimizationToProject() {
+            if (!window.currentOptimizationResults || window.currentOptimizationResults.length === 0) {
+                showNotification('No optimization results to save', 'warning');
+                return;
+            }
+            
+            const results = window.currentOptimizationResults;
+            const kerfEnabled = window.currentKerfEnabled;
+            const kerfNote = kerfEnabled ? ' (with kerf)' : ' (no kerf)';
+            
+            // Calculate summary data
+            const totalBoards = results.length;
+            const totalWaste = results.reduce((sum, result) => sum + result.waste, 0);
+            const completedCuts = results.reduce((sum, result) => sum + result.cuts.length, 0);
+            
+            const equation = `Waste Optimization: ${totalBoards} boards used${kerfNote}`;
+            const result = `${completedCuts} cuts completed, ${inchesToDisplay(totalWaste, 'optimizer')} total waste`;
+            
+            // Build detailed information
+            let details = `Optimization Results${kerfNote}:\n`;
+            details += `Boards Used: ${totalBoards}\n`;
+            details += `Cuts Completed: ${completedCuts}\n`;
+            details += `Total Waste: ${inchesToDisplay(totalWaste, 'optimizer')}\n\n`;
+            details += `Cutting Plan:\n`;
+            
+            results.forEach((board, index) => {
+                details += `${board.boardDisplay}:\n`;
+                details += `  Cuts: ${board.cuts.map(cut => inchesToDisplay(cut, 'optimizer')).join(', ')}\n`;
+                details += `  Waste: ${inchesToDisplay(board.waste, 'optimizer')}\n`;
+            });
+            
+            // Create preview content
+            const previewContent = `
+                <div class="save-preview-optimization">
+                    <div class="preview-header">
+                        <strong>🔧 Waste Optimizer</strong>
+                    </div>
+                    <div class="preview-equation">
+                        ${equation}
+                    </div>
+                    <div class="preview-result">
+                        <strong>${result}</strong>
+                    </div>
+                    <div class="preview-summary">
+                        ${totalBoards} boards used • ${completedCuts} cuts completed • ${inchesToDisplay(totalWaste, 'optimizer')} waste
+                    </div>
+                    <div class="preview-details">
+                        ${details.replace(/\n/g, '<br>').substring(0, 300)}${details.length > 300 ? '...' : ''}
+                    </div>
+                </div>
+            `;
+            
+            const saveData = {
+                tool: 'optimizer',
+                equation: equation,
+                result: result,
+                details: {
+                    totalBoards: totalBoards,
+                    completedCuts: completedCuts,
+                    totalWaste: totalWaste,
+                    kerfEnabled: kerfEnabled,
+                    cuttingPlan: results,
+                    fullDetails: details
+                },
+                preview: previewContent
+            };
+            
+            showSaveToProjectModal(saveData);
         }
 
         // Initialize app - load saved data and set up project management
@@ -7264,13 +7924,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             // Initialize diagrams
             calculateMiterAngle(); // Initialize the miter angle diagram
             
-            // Add auto-save on input changes
-            const inputs = document.querySelectorAll('input, select');
-            inputs.forEach(input => {
-                input.addEventListener('change', () => {
-                    setTimeout(autoSave, 1000); // Auto-save 1 second after change
-                });
-            });
+            // Auto-save on input changes removed - now using manual "Save to Project" workflow
             
             // Initialize calculator cards with default values
             calculateBoardFeet();
