@@ -1,10 +1,4 @@
-.calc-btn.operation.active {
-            background: #654321;
-            transform: scale(0.95);
-        }        function clearAll() {
-            // This function is no longer used but kept for compatibility
-            clearCalculator();
-        }<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -42,12 +36,40 @@
             position: relative;
         }
         
-        h1 {
-            text-align: center;
-            color: #8B4513;
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #8B4513;
             font-size: 24px;
             font-weight: bold;
+            margin: 0;
+        }
+        
+        .help-btn {
+            background: #D2B48C;
+            border: 2px solid #8B4513;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            color: #8B4513;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .help-btn:hover {
+            background: #8B4513;
+            color: white;
+            transform: scale(1.1);
         }
         
         .tab-buttons {
@@ -372,15 +394,60 @@
             padding-top: 15px;
         }
         
-        .summary-stats {
+        .project-info {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        .project-dates {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
         }
         
-        .summary-stats .stat {
+        .project-date {
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+            font-style: italic;
+        }
+        
+        .project-loader-section {
+            border-top: 1px solid rgba(255,255,255,0.3);
+            padding-top: 15px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .project-loader-label {
             color: rgba(255,255,255,0.9);
+            font-weight: bold;
             font-size: 14px;
+            margin: 0;
+        }
+        
+        .project-loader-dropdown {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            color: white;
+            padding: 8px 12px;
+            font-size: 14px;
+            min-width: 250px;
+            cursor: pointer;
+        }
+        
+        .project-loader-dropdown:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .project-loader-dropdown option {
+            background: #8B4513;
+            color: white;
         }
         
         .project-timeline-container {
@@ -561,6 +628,16 @@
             
             .projects-grid-modal {
                 grid-template-columns: 1fr;
+            }
+            
+            .project-loader-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .project-loader-dropdown {
+                min-width: 100%;
             }
         }
         
@@ -1379,6 +1456,218 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
         }
         
+        /* Mode Toggle Styles */
+        .mode-toggle-section {
+            margin-bottom: 20px;
+        }
+        
+        .mode-toggle {
+            display: flex;
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 4px;
+            gap: 2px;
+        }
+        
+        .mode-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: #666;
+        }
+        
+        .mode-btn:hover {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .mode-btn.active {
+            background: #8B4513;
+            color: white;
+            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        /* Visual Board Representation */
+        .visual-board {
+            margin: 15px 0;
+            padding: 20px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .board-container {
+            position: relative;
+            height: 80px;
+            background: linear-gradient(45deg, #D2B48C 25%, transparent 25%), 
+                        linear-gradient(-45deg, #D2B48C 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #D2B48C 75%), 
+                        linear-gradient(-45deg, transparent 75%, #D2B48C 75%);
+            background-size: 8px 8px;
+            background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+            background-color: #DEB887;
+            border: 2px solid #8B4513;
+            border-radius: 4px;
+        }
+        
+        .cut-mark {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #dc3545;
+            box-shadow: 0 0 4px rgba(220, 53, 69, 0.5);
+            z-index: 3;
+        }
+        
+        .cut-mark::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -3px;
+            width: 8px;
+            height: 8px;
+            background: #dc3545;
+            border-radius: 50%;
+        }
+        
+        .cut-mark::after {
+            content: attr(data-mark);
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            font-weight: bold;
+            color: #dc3545;
+            white-space: nowrap;
+            background: white;
+            padding: 2px 4px;
+            border-radius: 3px;
+            border: 1px solid #dc3545;
+        }
+        
+        .kerf-cutout {
+            position: absolute;
+            top: 10px;
+            bottom: 10px;
+            background: rgba(220, 53, 69, 0.3);
+            border: 1px dashed #dc3545;
+            z-index: 2;
+        }
+        
+        .kerf-cutout.left-side {
+            border-right: 2px solid #dc3545;
+        }
+        
+        .kerf-cutout.right-side {
+            border-left: 2px solid #dc3545;
+        }
+        
+        .board-ends {
+            position: absolute;
+            top: -15px;
+            bottom: -15px;
+            width: 2px;
+            background: #8B4513;
+        }
+        
+        .board-ends.left {
+            left: 0;
+        }
+        
+        .board-ends.right {
+            right: 0;
+        }
+        
+        .board-dimension {
+            text-align: center;
+            margin-top: 15px;
+            color: #8B4513;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .piece-labels {
+            position: relative;
+            height: 20px;
+            margin-top: 40px;
+        }
+        
+        .piece-label {
+            position: absolute;
+            font-size: 11px;
+            color: #666;
+            text-align: center;
+            top: 0;
+        }
+        
+        /* Marking Guide Styles */
+        .marking-guide {
+            margin: 15px 0;
+            padding: 15px;
+            background: #fff9e6;
+            border: 1px solid #856404;
+            border-radius: 8px;
+        }
+        
+        .marking-guide .marks-header {
+            font-weight: bold;
+            color: #856404;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .marks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .marking-guide .mark-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 10px;
+            background: white;
+            border: 1px solid #d4d4aa;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        .marking-guide .mark-number {
+            font-weight: bold;
+            color: #856404;
+        }
+        
+        .marking-guide .mark-value {
+            font-weight: bold;
+            color: #2c5234;
+        }
+        
+        .marking-summary {
+            border-top: 1px solid #d4d4aa;
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .summary-item {
+            font-size: 12px;
+            color: #555;
+            text-align: center;
+        }
+        
         .btn-success {
             background: #28a745;
             color: white;
@@ -2074,12 +2363,14 @@
 </head>
 <body>
     <div class="container">
-        <h1>Woodworking Calculator</h1>
+        <div class="header-section">
+            <h1>Woodworking Calculator</h1>
+            <button class="help-btn" onclick="showHelp()" title="Help">?</button>
+        </div>
         
         <div class="tab-buttons">
             <button class="tab-btn active" onclick="switchTab('calculator')">Calculator</button>
             <button class="tab-btn" onclick="switchTab('cutCalculator')">Cut Calculator</button>
-            <button class="tab-btn" onclick="switchTab('optimizer')">Waste Optimizer</button>
             <button class="tab-btn" onclick="switchTab('projects')">📁 Projects</button>
         </div>
         
@@ -2094,10 +2385,6 @@
             </div>
         </div>
         
-        <!-- Global Help Button -->
-        <div style="text-align: right; margin-bottom: 15px;">
-            <button class="btn btn-secondary" onclick="showHelp()" style="padding: 8px 12px; font-size: 14px;">❓ Help</button>
-        </div>
 
         <!-- Calculator Tab -->
         <div id="calculator" class="tab-content active">
@@ -2649,17 +2936,31 @@
                 <button class="btn btn-sm btn-secondary" onclick="switchTab('projects')" title="Manage Projects">📁</button>
             </div>
             
-            <div class="settings-row">
-                <label>Precision:</label>
-                <select id="cutPrecision" onchange="updatePrecision('cut')">
-                    <option value="32">1/32"</option>
-                    <option value="16" selected>1/16"</option>
-                    <option value="8">1/8"</option>
-                    <option value="4">1/4"</option>
-                    <option value="2">1/2"</option>
-                    <option value="1">1"</option>
-                </select>
+            <!-- Mode Toggle -->
+            <div class="mode-toggle-section">
+                <div class="mode-toggle">
+                    <button class="mode-btn active" id="equalDivisionMode" onclick="switchCutMode('equal')">
+                        📏 Equal Division
+                    </button>
+                    <button class="mode-btn" id="cutOptimizationMode" onclick="switchCutMode('optimization')">
+                        🔧 Cut Optimization
+                    </button>
+                </div>
             </div>
+            
+            <!-- Equal Division Mode Content -->
+            <div id="equalDivisionContent" class="mode-content">
+                <div class="settings-row">
+                    <label>Precision:</label>
+                    <select id="cutPrecision" onchange="updatePrecision('cut')">
+                        <option value="32">1/32"</option>
+                        <option value="16" selected>1/16"</option>
+                        <option value="8">1/8"</option>
+                        <option value="4">1/4"</option>
+                        <option value="2">1/2"</option>
+                        <option value="1">1"</option>
+                    </select>
+                </div>
             
             <div class="settings-row">
                 <label>
@@ -2697,146 +2998,152 @@
             </div>
             
             <div class="input-group">
-                <label>Input:</label>
-                <input type="number" id="cutFeet" placeholder="0" min="0" class="wide-input">
+                <label>Board Length:</label>
+                <input type="number" id="cutFeet" placeholder="0" min="0" class="wide-input" onchange="updateCutValue()">
                 <span>ft</span>
-                <input type="number" id="cutInches" placeholder="0" min="0" max="11" class="wide-input">
+                <input type="number" id="cutInches" placeholder="0" min="0" max="11" class="wide-input" onchange="updateCutValue()">
                 <span>in</span>
-                <select id="cutFraction" style="width: 120px;">
+                <select id="cutFraction" style="width: 120px;" onchange="updateCutValue()">
                     <option value="0">0</option>
                 </select>
-                <button class="btn btn-secondary" onclick="setCutValue()">Set</button>
             </div>
             
             <div class="current-value" id="cutCurrentValue">
                 Enter measurement above
             </div>
             
-            <div class="quick-cuts">
-                <button class="btn btn-primary" onclick="quickCut(2)">Half</button>
-                <button class="btn btn-primary" onclick="quickCut(3)">Thirds</button>
-                <button class="btn btn-primary" onclick="quickCut(4)">Fourths</button>
-                <button class="btn btn-primary" onclick="quickCut(5)">Fifths</button>
-                <button class="btn btn-primary" onclick="quickCut(6)">Sixths</button>
-                <button class="btn btn-primary" onclick="quickCut(8)">Eighths</button>
+            <div class="division-controls">
+                <div class="input-group">
+                    <label>Divide into:</label>
+                    <select id="divisionSelect" class="wide-input" onchange="performDivision()">
+                        <option value="">Select division...</option>
+                        <option value="2">Half (2 pieces)</option>
+                        <option value="3">Thirds (3 pieces)</option>
+                        <option value="4">Fourths (4 pieces)</option>
+                        <option value="5">Fifths (5 pieces)</option>
+                        <option value="6">Sixths (6 pieces)</option>
+                        <option value="8">Eighths (8 pieces)</option>
+                    </select>
+                </div>
+                
+                <div class="input-group" style="margin-top: 10px;">
+                    <label>Custom pieces:</label>
+                    <input type="number" id="customPieces" placeholder="# pieces" min="2" max="20" class="wide-input" onchange="performCustomDivision()">
+                    <button class="btn btn-secondary" onclick="clearCut()">Clear</button>
+                </div>
             </div>
             
-            <div class="input-group" style="margin-bottom: 15px;">
-                <label>Custom:</label>
-                <input type="number" id="customPieces" placeholder="# pieces" min="2" max="20" class="wide-input">
-                <button class="btn btn-primary" onclick="customCut()">Cut</button>
-                <button class="btn btn-secondary" onclick="clearCut()">Clear</button>
+                <div class="history" id="cutHistory">
+                    <!-- Results will appear here -->
+                </div>
             </div>
             
-            <div class="history" id="cutHistory">
-                <!-- Results will appear here -->
+            <!-- Cut Optimization Mode Content -->
+            <div id="cutOptimizationContent" class="mode-content" style="display: none;">
+                <div class="settings-row">
+                    <label>Precision:</label>
+                    <select id="optPrecision" onchange="updatePrecision('optimizer')">
+                        <option value="32">1/32"</option>
+                        <option value="16" selected>1/16"</option>
+                        <option value="8">1/8"</option>
+                        <option value="4">1/4"</option>
+                        <option value="2">1/2"</option>
+                        <option value="1">1"</option>
+                    </select>
+                </div>
+                
+                <div class="settings-row">
+                    <label>
+                        <input type="checkbox" id="optKerfEnabled" checked onchange="toggleKerfDisplay()"> 
+                        Kerf Compensation
+                    </label>
+                </div>
+                
+                <div class="settings-row" id="optKerfRow">
+                    <label>Kerf:</label>
+                    <select id="optKerf">
+                        <option value="0.0625">1/16"</option>
+                        <option value="0.09375">3/32"</option>
+                        <option value="0.125" selected>1/8"</option>
+                        <option value="0.1875">3/16"</option>
+                    </select>
+                </div>
+                
+                <div class="waste-section">
+                    <h3>Available Boards</h3>
+                    <div class="board-input">
+                        <input type="number" id="boardFeet" placeholder="0" min="0" class="wide-input">
+                        <span>ft</span>
+                        <input type="number" id="boardInches" placeholder="0" min="0" max="11" class="wide-input">
+                        <span>in</span>
+                        <select id="boardFraction" style="width: 120px;">
+                            <option value="0">0</option>
+                        </select>
+                        <input type="number" id="boardQuantity" placeholder="1" min="1" class="wide-input">
+                        <span>qty</span>
+                        <button class="btn btn-secondary" onclick="addBoard()">Add</button>
+                    </div>
+                    <div id="boardsList"></div>
+                </div>
+                
+                <div class="waste-section">
+                    <h3>Needed Cuts</h3>
+                    <div class="cut-input">
+                        <input type="number" id="optCutFeet" placeholder="0" min="0" class="wide-input">
+                        <span>ft</span>
+                        <input type="number" id="optCutInches" placeholder="0" min="0" max="11" class="wide-input">
+                        <span>in</span>
+                        <select id="optCutFraction" style="width: 120px;">
+                            <option value="0">0</option>
+                        </select>
+                        <input type="number" id="cutQuantity" placeholder="1" min="1" class="wide-input">
+                        <span>qty</span>
+                        <button class="btn btn-secondary" onclick="addCut()">Add</button>
+                    </div>
+                    <div id="cutsList"></div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="optimizeCuts()" style="width: 100%; margin-bottom: 15px;">Optimize Cuts</button>
+                
+                <div id="optimizationResults"></div>
+                
+                <!-- Visual Cut Layout -->
+                <div id="visualLayout" style="display: none;">
+                    <h3>Visual Cut Layout</h3>
+                    <div class="visual-controls">
+                        <button class="btn btn-secondary" onclick="toggleVisualLayout()">Hide Visual</button>
+                        <button class="btn btn-secondary" onclick="exportCutList()">Export Cut List</button>
+                    </div>
+                    <div id="boardVisualization" class="board-visualization"></div>
+                </div>
             </div>
         </div>
 
-        <!-- Waste Optimizer Tab -->
-        <div id="optimizer" class="tab-content">
-            <!-- Project Status Indicator -->
-            <div class="project-status-bar" id="optProjectStatus">
-                <span class="status-text">No active project</span>
-                <button class="btn btn-sm btn-secondary" onclick="switchTab('projects')" title="Manage Projects">📁</button>
-            </div>
-            
-            <div class="settings-row">
-                <label>Precision:</label>
-                <select id="optPrecision" onchange="updatePrecision('optimizer')">
-                    <option value="32">1/32"</option>
-                    <option value="16" selected>1/16"</option>
-                    <option value="8">1/8"</option>
-                    <option value="4">1/4"</option>
-                    <option value="2">1/2"</option>
-                    <option value="1">1"</option>
-                </select>
-            </div>
-            
-            <div class="settings-row">
-                <label>
-                    <input type="checkbox" id="optKerfEnabled" checked onchange="toggleKerfDisplay()"> 
-                    Kerf Compensation
-                </label>
-            </div>
-            
-            <div class="settings-row" id="optKerfRow">
-                <label>Kerf:</label>
-                <select id="optKerf">
-                    <option value="0.0625">1/16"</option>
-                    <option value="0.09375">3/32"</option>
-                    <option value="0.125" selected>1/8"</option>
-                    <option value="0.1875">3/16"</option>
-                </select>
-            </div>
-            
-            <div class="waste-section">
-                <h3>Available Boards</h3>
-                <div class="board-input">
-                    <input type="number" id="boardFeet" placeholder="0" min="0" class="wide-input">
-                    <span>ft</span>
-                    <input type="number" id="boardInches" placeholder="0" min="0" max="11" class="wide-input">
-                    <span>in</span>
-                    <select id="boardFraction" style="width: 120px;">
-                        <option value="0">0</option>
-                    </select>
-                    <input type="number" id="boardQuantity" placeholder="1" min="1" class="wide-input">
-                    <span>qty</span>
-                    <button class="btn btn-secondary" onclick="addBoard()">Add</button>
-                </div>
-                <div id="boardsList"></div>
-            </div>
-            
-            <div class="waste-section">
-                <h3>Needed Cuts</h3>
-                <div class="cut-input">
-                    <input type="number" id="optCutFeet" placeholder="0" min="0" class="wide-input">
-                    <span>ft</span>
-                    <input type="number" id="optCutInches" placeholder="0" min="0" max="11" class="wide-input">
-                    <span>in</span>
-                    <select id="optCutFraction" style="width: 120px;">
-                        <option value="0">0</option>
-                    </select>
-                    <input type="number" id="cutQuantity" placeholder="1" min="1" class="wide-input">
-                    <span>qty</span>
-                    <button class="btn btn-secondary" onclick="addCut()">Add</button>
-                </div>
-                <div id="cutsList"></div>
-            </div>
-            
-            <button class="btn btn-primary" onclick="optimizeCuts()" style="width: 100%; margin-bottom: 15px;">Optimize Cuts</button>
-            
-            <div id="optimizationResults"></div>
-            
-            <!-- Visual Cut Layout -->
-            <div id="visualLayout" style="display: none;">
-                <h3>Visual Cut Layout</h3>
-                <div class="visual-controls">
-                    <button class="btn btn-secondary" onclick="toggleVisualLayout()">Hide Visual</button>
-                    <button class="btn btn-secondary" onclick="exportCutList()">Export Cut List</button>
-                </div>
-                <div id="boardVisualization" class="board-visualization"></div>
-            </div>
-        </div>
-        
         <!-- Projects Tab -->
         <div id="projects" class="tab-content">
             <div class="project-timeline-header">
                 <div class="project-title-section">
-                    <h2 id="projectTimelineTitle">📁 Select a Project</h2>
+                    <h2 id="projectTimelineTitle">📁 Project Timeline</h2>
                     <div class="project-actions">
-                        <button class="btn btn-primary btn-sm" onclick="createNewProject()">+ New Project</button>
                         <button class="btn btn-secondary btn-sm" onclick="showProjectNotes()" id="projectNotesBtn" disabled>📝 Notes</button>
                         <button class="btn btn-secondary btn-sm" onclick="exportCurrentProject()" id="projectExportBtn" disabled>📤 Export</button>
                         <button class="btn btn-secondary btn-sm" onclick="showAllProjects()">📋 All Projects</button>
                     </div>
                 </div>
                 
-                <div class="project-summary" id="projectSummary" style="display: none;">
-                    <div class="summary-stats">
-                        <span class="stat" id="projectLogCount">📊 0 saved calculations</span>
-                        <span class="stat" id="projectCreated">📅 Created: --</span>
-                        <span class="stat" id="projectModified">🔄 Modified: --</span>
+                <!-- Project Loader Section -->
+                <div class="project-loader-section">
+                    <label for="projectTimelineDropdown" class="project-loader-label">View Project:</label>
+                    <select id="projectTimelineDropdown" class="project-loader-dropdown" onchange="viewProjectTimeline(this.value)">
+                        <option value="">Select a project to view timeline...</option>
+                    </select>
+                </div>
+                
+                <!-- Project Info - Only shown when viewing a project -->
+                <div class="project-info" id="projectInfo" style="display: none;">
+                    <div class="project-dates">
+                        <span class="project-date" id="projectCreated">📅 Created: --</span>
+                        <span class="project-date" id="projectModified">🔄 Modified: --</span>
                     </div>
                 </div>
             </div>
@@ -2847,11 +3154,7 @@
                     <div style="text-align: center; padding: 60px 20px; color: #666;">
                         <div style="font-size: 64px; margin-bottom: 20px;">📊</div>
                         <h3>No Project Selected</h3>
-                        <p>Select a project from the dropdown above or create a new one to view your saved calculations timeline.</p>
-                        <div style="margin-top: 30px;">
-                            <button class="btn btn-primary" onclick="createNewProject()" style="margin-right: 10px;">Create Project</button>
-                            <button class="btn btn-secondary" onclick="showAllProjects()">Browse All Projects</button>
-                        </div>
+                        <p>Select a project from the "Load Project" dropdown above to view your saved calculations timeline.</p>
                     </div>
                 </div>
                 
@@ -2969,13 +3272,13 @@
                 </ul>
                 <p>The app calculates exactly where to mark your cuts so you get identical pieces after accounting for blade kerf.</p>
                 
-                <h3>Waste Optimizer Tab</h3>
-                <p>Minimize lumber waste by optimizing how you cut multiple pieces:</p>
+                <h3>Cut Optimization Mode</h3>
+                <p>The Cut Calculator includes a Cut Optimization mode to minimize lumber waste:</p>
                 <ul>
-                    <li>Add all your available board lengths</li>
-                    <li>Add all the pieces you need to cut (with quantities)</li>
+                    <li>Switch to "Cut Optimization" mode in the Cut Calculator tab</li>
+                    <li>Add your available board lengths and needed cuts</li>
                     <li>Get an optimized cutting plan showing which cuts to make on each board</li>
-                    <li>Includes kerf compensation in the optimization</li>
+                    <li>Includes kerf compensation and visual cut layouts</li>
                 </ul>
                 
                 <h3>Precision Settings</h3>
@@ -3264,28 +3567,48 @@
         }
         
         function updateGlobalProjectSelector() {
-            const dropdown = document.getElementById('globalProjectDropdown');
-            if (!dropdown) return;
+            const globalDropdown = document.getElementById('globalProjectDropdown');
+            const timelineDropdown = document.getElementById('projectTimelineDropdown');
             
-            // Clear existing options
-            dropdown.innerHTML = '<option value="">No Project Selected</option>';
+            if (globalDropdown) {
+                // Clear existing options
+                globalDropdown.innerHTML = '<option value="">No Project Selected</option>';
+                
+                // Add each project as an option
+                projects.forEach(project => {
+                    const option = document.createElement('option');
+                    option.value = project.id;
+                    option.textContent = project.name;
+                    if (currentProject && currentProject.id === project.id) {
+                        option.selected = true;
+                    }
+                    globalDropdown.appendChild(option);
+                });
+            }
             
-            // Add each project as an option
-            projects.forEach(project => {
-                const option = document.createElement('option');
-                option.value = project.id;
-                option.textContent = project.name;
-                if (currentProject && currentProject.id === project.id) {
-                    option.selected = true;
-                }
-                dropdown.appendChild(option);
-            });
+            if (timelineDropdown) {
+                // Clear existing options
+                timelineDropdown.innerHTML = '<option value="">Select a project to view timeline...</option>';
+                
+                // Add each project as an option (don't auto-select based on currentProject)
+                projects.forEach(project => {
+                    const option = document.createElement('option');
+                    option.value = project.id;
+                    option.textContent = project.name;
+                    // Only select if this is the currently viewed project, not the active project
+                    if (viewedProject && viewedProject.id === project.id) {
+                        option.selected = true;
+                    }
+                    timelineDropdown.appendChild(option);
+                });
+            }
         }
         
         function switchToProject(projectId) {
             if (!projectId) {
                 // No project selected
                 currentProject = null;
+                viewedProject = null; // Clear viewed project when clearing active project
                 updateProjectSelector();
                 showNotification('No project selected', 'info');
                 return;
@@ -3294,13 +3617,29 @@
             const projectIdNum = parseInt(projectId);
             loadProject(projectIdNum);
             
+            // If we're switching to a different project, clear the viewed project
+            // so the timeline shows the new active project
+            if (viewedProject && viewedProject.id !== projectIdNum) {
+                viewedProject = null;
+                const timelineDropdown = document.getElementById('projectTimelineDropdown');
+                if (timelineDropdown) {
+                    timelineDropdown.value = '';
+                }
+            }
+            
             // Ensure dropdown and display are synchronized
             setTimeout(() => {
                 updateProjectSelector();
-                // Force sync the dropdown selection
-                const dropdown = document.getElementById('globalProjectDropdown');
-                if (dropdown && currentProject) {
-                    dropdown.value = currentProject.id.toString();
+                // Force sync both dropdown selections
+                const globalDropdown = document.getElementById('globalProjectDropdown');
+                const timelineDropdown = document.getElementById('projectTimelineDropdown');
+                if (currentProject) {
+                    if (globalDropdown) {
+                        globalDropdown.value = currentProject.id.toString();
+                    }
+                    if (timelineDropdown) {
+                        timelineDropdown.value = currentProject.id.toString();
+                    }
                 }
             }, 10);
             
@@ -3817,35 +4156,124 @@
         
         // Projects Tab Functions
         function renderProjectTimeline() {
-            // Double-check: if dropdown has a project selected but currentProject is null, try to sync
-            const dropdown = document.getElementById('globalProjectDropdown');
-            if (!currentProject && dropdown && dropdown.value) {
-                const projectId = parseInt(dropdown.value);
+            const globalDropdown = document.getElementById('globalProjectDropdown');
+            
+            // Only sync with global dropdown for active project, not timeline viewing
+            if (!currentProject && globalDropdown && globalDropdown.value) {
+                const projectId = parseInt(globalDropdown.value);
                 const project = projects.find(p => p.id === projectId);
                 if (project) {
                     currentProject = project;
                 }
             }
             
-            // Reverse sync: if currentProject exists but dropdown doesn't match, fix the dropdown
-            if (currentProject && dropdown) {
-                if (dropdown.value !== currentProject.id.toString()) {
-                    dropdown.value = currentProject.id.toString();
+            // Sync global dropdown with current project
+            if (currentProject && globalDropdown) {
+                if (globalDropdown.value !== currentProject.id.toString()) {
+                    globalDropdown.value = currentProject.id.toString();
                 }
             }
             
-            if (!currentProject) {
+            // If we have a viewed project, show that; otherwise check for active project
+            if (viewedProject) {
+                updateViewedProjectTimelineHeader();
+                renderViewedTimelineContent();
+            } else if (currentProject) {
+                updateProjectTimelineHeader();
+                renderTimelineContent();
+            } else {
+                showNoProjectSelected();
+            }
+        }
+        
+        // View-only timeline browsing (doesn't affect working project state)
+        let viewedProject = null; // Separate from currentProject for timeline viewing
+        
+        function viewProjectTimeline(projectId) {
+            if (!projectId) {
+                viewedProject = null;
                 showNoProjectSelected();
                 return;
             }
             
-            updateProjectTimelineHeader();
-            renderTimelineContent();
+            const projectIdNum = parseInt(projectId);
+            const project = projects.find(p => p.id === projectIdNum);
+            
+            if (project) {
+                // Only set the viewed project, don't overwrite working state
+                viewedProject = project;
+                
+                // Initialize projectLog if it doesn't exist (for older projects)
+                if (!project.projectLog) {
+                    project.projectLog = [];
+                }
+                
+                // Update only the timeline display, not working data
+                updateViewedProjectTimelineHeader();
+                renderViewedTimelineContent();
+                
+                // Update the timeline dropdown but NOT the global dropdown
+                const timelineDropdown = document.getElementById('projectTimelineDropdown');
+                if (timelineDropdown) {
+                    timelineDropdown.value = project.id.toString();
+                }
+            }
+        }
+        
+        function updateViewedProjectTimelineHeader() {
+            const title = document.getElementById('projectTimelineTitle');
+            const projectInfo = document.getElementById('projectInfo');
+            const created = document.getElementById('projectCreated');
+            const modified = document.getElementById('projectModified');
+            const notesBtn = document.getElementById('projectNotesBtn');
+            const exportBtn = document.getElementById('projectExportBtn');
+            
+            // Show that this is a viewed project, not the active working project
+            const isActiveProject = currentProject && currentProject.id === viewedProject.id;
+            const projectLabel = isActiveProject ? '📁 Active:' : '👁️ Viewing:';
+            title.textContent = `${projectLabel} ${viewedProject.name}`;
+            
+            created.textContent = `📅 Created: ${new Date(viewedProject.created).toLocaleDateString()}`;
+            modified.textContent = `🔄 Modified: ${viewedProject.lastModified ? new Date(viewedProject.lastModified).toLocaleDateString() : 'Never'}`;
+            
+            projectInfo.style.display = 'block';
+            
+            // Only enable notes/export for active project, not viewed project
+            notesBtn.disabled = !isActiveProject;
+            exportBtn.disabled = false; // Export can work for any project
+            
+            document.getElementById('noProjectSelected').style.display = 'none';
+            document.getElementById('projectTimeline').style.display = 'block';
+        }
+        
+        function renderViewedTimelineContent() {
+            const timelineContent = document.getElementById('timelineContent');
+            const emptyTimeline = document.getElementById('emptyTimeline');
+            
+            if (!viewedProject.projectLog || viewedProject.projectLog.length === 0) {
+                timelineContent.innerHTML = '';
+                emptyTimeline.style.display = 'block';
+                return;
+            }
+            
+            emptyTimeline.style.display = 'none';
+            
+            // Sort by timestamp (most recent first)
+            const sortedLog = [...viewedProject.projectLog].sort((a, b) => 
+                new Date(b.timestamp) - new Date(a.timestamp)
+            );
+            
+            let timelineHTML = '';
+            sortedLog.forEach(logEntry => {
+                timelineHTML += createTimelineItem(logEntry);
+            });
+            
+            timelineContent.innerHTML = timelineHTML;
         }
         
         function showNoProjectSelected() {
             document.getElementById('projectTimelineTitle').textContent = '📁 Select a Project';
-            document.getElementById('projectSummary').style.display = 'none';
+            document.getElementById('projectInfo').style.display = 'none';
             document.getElementById('projectNotesBtn').disabled = true;
             document.getElementById('projectExportBtn').disabled = true;
             document.getElementById('noProjectSelected').style.display = 'block';
@@ -3854,21 +4282,18 @@
         
         function updateProjectTimelineHeader() {
             const title = document.getElementById('projectTimelineTitle');
-            const summary = document.getElementById('projectSummary');
-            const logCount = document.getElementById('projectLogCount');
+            const projectInfo = document.getElementById('projectInfo');
             const created = document.getElementById('projectCreated');
             const modified = document.getElementById('projectModified');
             const notesBtn = document.getElementById('projectNotesBtn');
             const exportBtn = document.getElementById('projectExportBtn');
             
-            title.textContent = `📁 ${currentProject.name}`;
+            title.textContent = `📁 Active: ${currentProject.name}`;
             
-            const projectLogLength = currentProject.projectLog ? currentProject.projectLog.length : 0;
-            logCount.textContent = `📊 ${projectLogLength} saved calculation${projectLogLength !== 1 ? 's' : ''}`;
             created.textContent = `📅 Created: ${new Date(currentProject.created).toLocaleDateString()}`;
             modified.textContent = `🔄 Modified: ${currentProject.lastModified ? new Date(currentProject.lastModified).toLocaleDateString() : 'Never'}`;
             
-            summary.style.display = 'block';
+            projectInfo.style.display = 'block';
             notesBtn.disabled = false;
             exportBtn.disabled = false;
             
@@ -4154,7 +4579,9 @@
         }
         
         function exportCurrentProject(projectId = null) {
-            const projectToExport = projectId ? projects.find(p => p.id === projectId) : currentProject;
+            // Export the viewed project if we're viewing one, otherwise the active project
+            const projectToExport = projectId ? projects.find(p => p.id === projectId) : 
+                                   viewedProject ? viewedProject : currentProject;
             if (!projectToExport) {
                 showNotification('No project to export', 'warning');
                 return;
@@ -4170,151 +4597,7 @@
             updateProjectSelector();
         }
         
-        function renderCurrentProjectCard() {
-            const card = document.getElementById('currentProjectCard');
-            if (!card) return;
-            
-            if (!currentProject) {
-                card.innerHTML = `
-                    <div class="project-card-content">
-                        <div class="project-header">
-                            <h4>No Active Project</h4>
-                            <div class="project-actions">
-                                <button class="btn btn-sm btn-secondary" onclick="showProjectNotes()" title="Edit Notes" disabled>📝</button>
-                                <button class="btn btn-sm btn-success" onclick="saveCurrentProject()" title="Save Project" disabled>💾</button>
-                            </div>
-                        </div>
-                        <div class="project-stats">
-                            <span class="stat">📏 0 boards</span>
-                            <span class="stat">✂️ 0 cuts</span>
-                            <span class="stat">🧮 0 calculations</span>
-                        </div>
-                        <div class="project-preview">
-                            <div class="preview-message">Select or create a project to get started</div>
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-            
-            const boardCount = currentProject.boards ? currentProject.boards.length : 0;
-            const cutCount = currentProject.cuts ? currentProject.cuts.length : 0;
-            const calcCount = currentProject.history ? currentProject.history.length : 0;
-            const hasNotes = currentProject.notes && currentProject.notes.trim().length > 0;
-            
-            let previewHtml = '';
-            if (boardCount > 0) {
-                previewHtml = '<div class="project-preview-boards">';
-                currentProject.boards.slice(0, 5).forEach(board => {
-                    previewHtml += `<div class="preview-board">${inchesToDisplay(board.length, 'opt')} x${board.quantity}</div>`;
-                });
-                if (boardCount > 5) previewHtml += `<div class="preview-board">+${boardCount - 5} more</div>`;
-                previewHtml += '</div>';
-            }
-            
-            if (hasNotes) {
-                previewHtml += `<div class="project-notes-preview">${currentProject.notes.substring(0, 100)}${currentProject.notes.length > 100 ? '...' : ''}</div>`;
-            }
-            
-            if (!previewHtml) {
-                previewHtml = '<div class="preview-message">Add boards and cuts to see preview</div>';
-            }
-            
-            card.innerHTML = `
-                <div class="project-card-content">
-                    <div class="project-header">
-                        <h4>${currentProject.name}</h4>
-                        <div class="project-actions">
-                            <button class="btn btn-sm btn-secondary" onclick="showProjectNotes()" title="Edit Notes">📝</button>
-                            <button class="btn btn-sm btn-success" onclick="saveCurrentProject()" title="Save Project">💾</button>
-                        </div>
-                    </div>
-                    <div class="project-stats">
-                        <span class="stat">📏 ${boardCount} boards</span>
-                        <span class="stat">✂️ ${cutCount} cuts</span>
-                        <span class="stat">🧮 ${calcCount} calculations</span>
-                        ${hasNotes ? '<span class="stat">📝 Has notes</span>' : ''}
-                    </div>
-                    <div class="project-preview">
-                        ${previewHtml}
-                    </div>
-                    <div class="project-date">
-                        Last modified: ${currentProject.lastModified ? new Date(currentProject.lastModified).toLocaleDateString() : 'Never'}
-                    </div>
-                </div>
-            `;
-        }
         
-        function renderProjectsGrid() {
-            const grid = document.getElementById('projectsGrid');
-            const noProjectsMsg = document.getElementById('noProjectsMessage');
-            
-            if (!grid || !noProjectsMsg) return;
-            
-            if (projects.length === 0) {
-                grid.style.display = 'none';
-                noProjectsMsg.style.display = 'block';
-                return;
-            }
-            
-            grid.style.display = 'grid';
-            noProjectsMsg.style.display = 'none';
-            
-            grid.innerHTML = projects.map(project => {
-                const boardCount = project.boards ? project.boards.length : 0;
-                const cutCount = project.cuts ? project.cuts.length : 0;
-                const calcCount = project.history ? project.history.length : 0;
-                const hasNotes = project.notes && project.notes.trim().length > 0;
-                const isActive = currentProject && currentProject.id === project.id;
-                const created = new Date(project.created).toLocaleDateString();
-                const modified = project.lastModified ? new Date(project.lastModified).toLocaleDateString() : 'Never';
-                
-                let previewHtml = '';
-                if (boardCount > 0) {
-                    previewHtml = '<div class="project-preview-boards">';
-                    project.boards.slice(0, 4).forEach(board => {
-                        previewHtml += `<div class="preview-board">${inchesToDisplay(board.length, 'opt')} x${board.quantity}</div>`;
-                    });
-                    if (boardCount > 4) previewHtml += `<div class="preview-board">+${boardCount - 4}</div>`;
-                    previewHtml += '</div>';
-                }
-                
-                if (hasNotes) {
-                    previewHtml += `<div class="project-notes-preview">${project.notes.substring(0, 80)}${project.notes.length > 80 ? '...' : ''}</div>`;
-                }
-                
-                if (!previewHtml) {
-                    previewHtml = '<div class="preview-message">Empty project</div>';
-                }
-                
-                return `
-                    <div class="project-card ${isActive ? 'current-project' : ''}" onclick="loadProjectFromCard(${project.id})">
-                        <div class="project-card-content">
-                            <div class="project-header">
-                                <h4>${project.name} ${isActive ? '(Active)' : ''}</h4>
-                                <div class="project-actions" onclick="event.stopPropagation()">
-                                    <button class="btn btn-sm btn-secondary" onclick="duplicateProject(${project.id})" title="Duplicate">📋</button>
-                                    <button class="btn btn-sm btn-secondary" onclick="exportProjectData(projects.find(p => p.id === ${project.id}))" title="Export">📤</button>
-                                    <button class="btn btn-sm btn-warning" onclick="deleteProject(${project.id})" title="Delete">🗑️</button>
-                                </div>
-                            </div>
-                            <div class="project-stats">
-                                <span class="stat">📏 ${boardCount} boards</span>
-                                <span class="stat">✂️ ${cutCount} cuts</span>
-                                <span class="stat">🧮 ${calcCount} calcs</span>
-                                ${hasNotes ? '<span class="stat">📝 Notes</span>' : ''}
-                            </div>
-                            <div class="project-preview">
-                                ${previewHtml}
-                            </div>
-                            <div class="project-date">
-                                Created: ${created} | Modified: ${modified}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
         
         function loadProjectFromCard(projectId) {
             loadProject(projectId);
@@ -4424,8 +4707,7 @@
         function updateProjectStatusBars() {
             const statusBars = [
                 { id: 'calcProjectStatus', name: 'Calculator' },
-                { id: 'cutProjectStatus', name: 'Cut Calculator' },
-                { id: 'optProjectStatus', name: 'Waste Optimizer' }
+                { id: 'cutProjectStatus', name: 'Cut Calculator' }
             ];
             
             statusBars.forEach(bar => {
@@ -4481,7 +4763,7 @@
                 fractionSelects = ['fraction1', 'fraction2', 'grFraction', 'singleBoardWidthFraction', 'singleInputLengthFraction', 'frameMaterialWidthFraction', 'frameWidthFraction', 'frameHeightFraction', 'framePolygonFraction', 'spTotalLengthFraction', 'spacingThicknessFraction'];
             } else if (tabName === 'cut') {
                 precision = parseInt(document.getElementById('cutPrecision')?.value || 16);
-                fractionSelects = ['cutFraction'];
+                fractionSelects = ['cutFraction', 'boardFraction', 'optCutFraction'];
             } else if (tabName === 'optimizer') {
                 precision = parseInt(document.getElementById('optPrecision')?.value || 16);
                 fractionSelects = ['boardFraction', 'optCutFraction'];
@@ -4918,12 +5200,7 @@
             }
             
             // Update memory indicator
-            const indicator = document.getElementById('memoryIndicator');
-            if (memoryValue !== 0) {
-                indicator.textContent = `M: ${inchesToDisplay(memoryValue)}`;
-            } else {
-                indicator.textContent = '';
-            }
+            updateMemoryIndicator();
         }
         
         function addToCalcHistory(entry) {
@@ -5385,9 +5662,31 @@
             }
         }
         
-        function setCutValue() {
+        function updateCutValue() {
             cutValueInches = getInputInches('cutFeet', 'cutInches', 'cutFraction');
-            document.getElementById('cutCurrentValue').textContent = inchesToDisplay(cutValueInches, 'cut');
+            const display = cutValueInches > 0 ? inchesToDisplay(cutValueInches, 'cut') : 'Enter measurement above';
+            document.getElementById('cutCurrentValue').textContent = display;
+        }
+        
+        function performDivision() {
+            const pieces = parseInt(document.getElementById('divisionSelect').value);
+            if (pieces && cutValueInches > 0) {
+                quickCut(pieces);
+                document.getElementById('divisionSelect').value = ''; // Reset dropdown
+            } else if (pieces && cutValueInches <= 0) {
+                showNotification('Please enter a board length first');
+            }
+        }
+        
+        function performCustomDivision() {
+            const pieces = parseInt(document.getElementById('customPieces').value);
+            if (pieces && pieces >= 2 && pieces <= 20 && cutValueInches > 0) {
+                quickCut(pieces);
+            } else if (pieces && cutValueInches <= 0) {
+                showNotification('Please enter a board length first');
+            } else if (pieces && (pieces < 2 || pieces > 20)) {
+                showNotification('Please enter a number between 2 and 20');
+            }
         }
         
         function toggleInputMode() {
@@ -5471,21 +5770,22 @@
                 currentCutResults = currentCutResults.slice(0, 5);
             }
             
+            // Generate visual board diagram
+            const visualBoard = generateVisualBoard(cutValueInches, results, pieces, pieceLength);
+            
+            // Generate marking guide similar to Shelf & Division Calculator
+            const markingGuide = generateMarkingGuide(results, pieces, pieceLength, cutValueInches);
+            
             cutResults.innerHTML = `
                 <h4>Cut ${inchesToDisplay(cutValueInches, 'cut')} into ${pieces} equal pieces${kerfNote}${cutSideNote}</h4>
-                <div class="mark-list">
-                    ${results.map((result, i) => `
-                        <div class="mark-item">
-                            <span class="mark-number">Mark ${i + 1}:</span>
-                            <span class="mark-value">${result.display}</span>
-                        </div>
-                    `).join('')}
-                </div>
+                ${visualBoard}
+                ${markingGuide}
                 <div class="piece-info">
                     Result: ${pieces} pieces @ ${inchesToDisplay(pieceLength, 'cut')} each
                 </div>
                 <div class="cut-result-actions">
                     <button class="btn btn-success btn-sm" onclick="saveCutToProject(0)">Save to Project</button>
+                    <button class="btn btn-secondary btn-sm" onclick="exportEqualDivisionResult(0)">Export Cut List</button>
                 </div>
             `;
             
@@ -5501,14 +5801,102 @@
             }
         }
         
-        function customCut() {
-            const pieces = parseInt(document.getElementById('customPieces')?.value);
-            if (!pieces || pieces < 2 || pieces > 20) {
-                showNotification('Please enter a number between 2 and 20');
-                return;
+        function generateVisualBoard(totalLength, cutMarks, pieces, pieceLength) {
+            const kerfEnabled = document.getElementById('cutKerfEnabled')?.checked;
+            const kerf = kerfEnabled ? parseFloat(document.getElementById('cutKerf')?.value || 0.125) : 0;
+            const cutSide = document.getElementById('cutSide')?.value || 'left';
+            
+            // Generate cut marks and kerf cutouts positioned proportionally
+            const cutElements = [];
+            
+            cutMarks.forEach((mark, i) => {
+                const markPercent = (mark.position / totalLength) * 100;
+                
+                // Add the cut mark line
+                cutElements.push(`<div class="cut-mark" style="left: ${markPercent}%" data-mark="Mark ${i + 1}: ${mark.display}"></div>`);
+                
+                // Add kerf cutout if enabled
+                if (kerfEnabled && kerf > 0) {
+                    const kerfWidthPercent = (kerf / totalLength) * 100;
+                    let kerfLeft;
+                    
+                    if (cutSide === 'left') {
+                        // Kerf is to the left of the mark
+                        kerfLeft = markPercent - kerfWidthPercent;
+                    } else {
+                        // Kerf is to the right of the mark
+                        kerfLeft = markPercent;
+                    }
+                    
+                    cutElements.push(`
+                        <div class="kerf-cutout ${cutSide}-side" 
+                             style="left: ${kerfLeft}%; width: ${kerfWidthPercent}%">
+                        </div>
+                    `);
+                }
+            });
+            
+            // Generate piece labels
+            const pieceLabels = [];
+            for (let i = 0; i < pieces; i++) {
+                const pieceStart = (i * (pieceLength + kerf) / totalLength) * 100;
+                const pieceEnd = ((i + 1) * pieceLength + i * kerf) / totalLength * 100;
+                const pieceCenter = (pieceStart + pieceEnd) / 2;
+                
+                pieceLabels.push(`
+                    <div class="piece-label" style="left: ${pieceCenter}%; transform: translateX(-50%);">
+                        Piece ${i + 1}<br>
+                        <small>${inchesToDisplay(pieceLength, 'cut')}</small>
+                    </div>
+                `);
             }
-            quickCut(pieces);
-            document.getElementById('customPieces').value = '';
+            
+            return `
+                <div class="visual-board">
+                    <div class="board-container">
+                        <div class="board-ends left"></div>
+                        <div class="board-ends right"></div>
+                        ${cutElements.join('')}
+                    </div>
+                    <div class="board-dimension">Total Length: ${inchesToDisplay(totalLength, 'cut')}</div>
+                    <div class="piece-labels">
+                        ${pieceLabels.join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateMarkingGuide(cutMarks, pieces, pieceLength, totalLength) {
+            if (!cutMarks || cutMarks.length === 0) {
+                return '';
+            }
+            
+            return `
+                <div class="marking-guide">
+                    <div class="marks-header">📍 Cut Mark Positions:</div>
+                    <div class="marks-grid">
+                        ${cutMarks.map((mark, i) => `
+                            <div class="mark-item">
+                                <span class="mark-number">Mark ${i + 1}:</span>
+                                <span class="mark-value">${mark.display}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="marking-summary">
+                        <div class="summary-item">
+                            <strong>Total Length:</strong> ${inchesToDisplay(totalLength, 'cut')}
+                        </div>
+                        <div class="summary-item">
+                            <strong>Pieces:</strong> ${pieces} × ${inchesToDisplay(pieceLength, 'cut')} each
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function customCut() {
+            // This function is now handled by performCustomDivision()
+            performCustomDivision();
         }
         
         function toggleKerfDisplay() {
@@ -5630,6 +6018,31 @@
             }
         }
         
+        function updateHistory() {
+            const historyDiv = document.getElementById('history');
+            if (historyDiv) {
+                historyDiv.innerHTML = history.map(h => `<div class="history-item">${h}</div>`).join('');
+            }
+        }
+        
+        function updateCutHistory() {
+            const historyDiv = document.getElementById('cutHistory');
+            if (historyDiv) {
+                historyDiv.innerHTML = cutHistory.map(h => `<div class="history-item">${h}</div>`).join('');
+            }
+        }
+        
+        function updateMemoryIndicator() {
+            const indicator = document.getElementById('memoryIndicator');
+            if (indicator) {
+                if (memoryValue !== 0) {
+                    indicator.textContent = `M: ${inchesToDisplay(memoryValue)}`;
+                } else {
+                    indicator.textContent = '';
+                }
+            }
+        }
+        
         function clearAll() {
             currentValueInches = 0;
             currentOperation = null;
@@ -5660,6 +6073,44 @@
             // When switching to projects tab, ensure timeline is rendered and synced
             if (tab === 'projects') {
                 renderProjectTimeline();
+            }
+        }
+        
+        function switchCutMode(mode) {
+            // Update mode buttons
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            
+            if (mode === 'equal') {
+                document.getElementById('equalDivisionMode').classList.add('active');
+                document.getElementById('equalDivisionContent').style.display = 'block';
+                document.getElementById('cutOptimizationContent').style.display = 'none';
+            } else if (mode === 'optimization') {
+                document.getElementById('cutOptimizationMode').classList.add('active');
+                document.getElementById('equalDivisionContent').style.display = 'none';
+                document.getElementById('cutOptimizationContent').style.display = 'block';
+                
+                // Synchronize precision settings
+                const cutPrecision = document.getElementById('cutPrecision')?.value;
+                const optPrecision = document.getElementById('optPrecision');
+                if (cutPrecision && optPrecision) {
+                    optPrecision.value = cutPrecision;
+                }
+                
+                // Synchronize kerf settings
+                const cutKerfEnabled = document.getElementById('cutKerfEnabled')?.checked;
+                const optKerfEnabled = document.getElementById('optKerfEnabled');
+                if (optKerfEnabled) {
+                    optKerfEnabled.checked = cutKerfEnabled;
+                }
+                
+                const cutKerf = document.getElementById('cutKerf')?.value;
+                const optKerf = document.getElementById('optKerf');
+                if (cutKerf && optKerf) {
+                    optKerf.value = cutKerf;
+                }
+                
+                // Update precision after synchronization
+                updatePrecision('cut');
             }
         }
         
@@ -6098,6 +6549,56 @@
             
             // Scroll to visual layout
             visualDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function exportEqualDivisionResult(index) {
+            if (!currentCutResults || currentCutResults.length === 0 || index >= currentCutResults.length) {
+                showNotification('No cut result to export', 'error');
+                return;
+            }
+            
+            const cutData = currentCutResults[index];
+            const projectName = currentProject ? currentProject.name : 'Woodworking Project';
+            const date = new Date().toLocaleDateString();
+            
+            let exportText = `${projectName} - Equal Division Cut List\n`;
+            exportText += `Generated: ${date}\n\n`;
+            
+            exportText += 'CUT INSTRUCTIONS:\n';
+            exportText += '='.repeat(50) + '\n';
+            exportText += `Original Board Length: ${cutData.originalLength}\n`;
+            exportText += `Number of Pieces: ${cutData.pieces}\n`;
+            exportText += `Piece Length: ${cutData.pieceLength}\n`;
+            exportText += `Kerf Settings: ${cutData.kerfNote}${cutData.cutSideNote}\n\n`;
+            
+            if (cutData.results && cutData.results.length > 0) {
+                exportText += 'CUTTING MARKS:\n';
+                exportText += '-'.repeat(30) + '\n';
+                cutData.results.forEach((mark, i) => {
+                    exportText += `Mark ${i + 1}: ${mark.display}\n`;
+                });
+                exportText += '\n';
+            }
+            
+            exportText += 'CUTTING SEQUENCE:\n';
+            exportText += '-'.repeat(30) + '\n';
+            exportText += '1. Measure and mark all cut positions\n';
+            exportText += '2. Double-check measurements before cutting\n';
+            exportText += '3. Cut at each marked position\n';
+            exportText += `4. Result: ${cutData.pieces} pieces @ ${cutData.pieceLength} each\n`;
+            
+            // Create downloadable file
+            const blob = new Blob([exportText], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${projectName.replace(/[^a-zA-Z0-9]/g, '_')}_equal_division_cuts.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            showNotification('Cut list exported successfully!', 'success');
         }
         
         function toggleVisualLayout() {
@@ -7857,7 +8358,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             const previewContent = `
                 <div class="save-preview-optimization">
                     <div class="preview-header">
-                        <strong>🔧 Waste Optimizer</strong>
+                        <strong>🔧 Cut Optimization</strong>
                     </div>
                     <div class="preview-equation">
                         ${equation}
