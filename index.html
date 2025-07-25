@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Woodworking Calculator</title>
+    <title>WorkShop Pro Calculator</title>
     <style>
         /* CSS Custom Properties for Themeable Colors */
         :root {
@@ -112,11 +112,32 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             --gradient-surface: linear-gradient(135deg, var(--surface-color), var(--background-color));
         }
         
+        /* Festool Theme */
+        .theme-festool {
+            --primary-color: #23AB08;          /* Festool Green */
+            --primary-light: #3CC014;          /* Lighter Green */
+            --primary-dark: #1A8806;           /* Darker Green */
+            --secondary-color: #E2E2E2;        /* Festool Light Gray */
+            --accent-color: #1C3448;           /* Festool Dark Blue-Gray */
+            --background-color: #F8F8F8;       /* Light Gray */
+            --surface-color: #FFFFFF;          /* White */
+            --text-primary: #1C3448;           /* Dark Blue-Gray text */
+            --text-secondary: #666666;         /* Medium Gray text */
+            --text-on-primary: #FFFFFF;        /* White text on green */
+            --border-color: #E2E2E2;           /* Light Gray border */
+            --success-color: #23AB08;          /* Festool Green */
+            --warning-color: #FF9800;          /* Orange */
+            --error-color: #F44336;            /* Red */
+            --info-color: #1C3448;             /* Dark Blue-Gray */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            --gradient-surface: linear-gradient(135deg, var(--surface-color), var(--background-color));
+        }
+        
         /* Dewalt Theme */
         .theme-dewalt {
-            --primary-color: #FFCD00;          /* Dewalt Yellow */
-            --primary-light: #FFD633;          /* Lighter Yellow */
-            --primary-dark: #E6B800;           /* Darker Yellow */
+            --primary-color: #FEAA00;          /* Dewalt Yellow */
+            --primary-light: #FFB41A;          /* Lighter Yellow */
+            --primary-dark: #E09600;           /* Darker Yellow */
             --secondary-color: #333333;        /* Dark Gray */
             --accent-color: #1A1A1A;           /* Near Black */
             --background-color: #F5F5F5;       /* Light Gray */
@@ -126,7 +147,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             --text-on-primary: #000000;        /* Black text on yellow */
             --border-color: #CCCCCC;           /* Light Gray border */
             --success-color: #4CAF50;          /* Green */
-            --warning-color: #FFCD00;          /* Dewalt Yellow */
+            --warning-color: #FEAA00;          /* Dewalt Yellow */
             --error-color: #F44336;            /* Red */
             --info-color: #333333;             /* Dark Gray */
             --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--primary-light));
@@ -135,9 +156,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
 
         /* Milwaukee Theme */
         .theme-milwaukee {
-            --primary-color: #CC2936;          /* Milwaukee Red */
-            --primary-light: #E8384F;          /* Lighter Red */
-            --primary-dark: #A31621;           /* Darker Red */
+            --primary-color: #DB011C;          /* Milwaukee Red */
+            --primary-light: #E23243;          /* Lighter Red */
+            --primary-dark: #B80016;           /* Darker Red */
             --secondary-color: #2D2D2D;        /* Dark Gray */
             --accent-color: #000000;           /* Black */
             --background-color: #F8F8F8;       /* Light Gray */
@@ -148,7 +169,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             --border-color: #DDDDDD;           /* Light Gray border */
             --success-color: #28A745;          /* Green */
             --warning-color: #FFC107;          /* Amber */
-            --error-color: #CC2936;            /* Milwaukee Red */
+            --error-color: #DB011C;            /* Milwaukee Red */
             --info-color: #2D2D2D;             /* Dark Gray */
             --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--primary-light));
             --gradient-surface: linear-gradient(135deg, var(--surface-color), var(--background-color));
@@ -156,9 +177,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
 
         /* Ridgid Theme */
         .theme-ridgid {
-            --primary-color: #FF6600;          /* Ridgid Orange */
-            --primary-light: #FF8533;          /* Lighter Orange */
-            --primary-dark: #E55A00;           /* Darker Orange */
+            --primary-color: #F58025;          /* Ridgid Orange */
+            --primary-light: #F79A4E;          /* Lighter Orange */
+            --primary-dark: #DD6B1D;           /* Darker Orange */
             --secondary-color: #333333;        /* Dark Gray */
             --accent-color: #000000;           /* Black */
             --background-color: #F9F9F9;       /* Light Gray */
@@ -168,7 +189,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             --text-on-primary: #FFFFFF;        /* White text on orange */
             --border-color: #DDDDDD;           /* Light Gray border */
             --success-color: #28A745;          /* Green */
-            --warning-color: #FF6600;          /* Ridgid Orange */
+            --warning-color: #F58025;          /* Ridgid Orange */
             --error-color: #DC3545;            /* Red */
             --info-color: #333333;             /* Dark Gray */
             --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--primary-light));
@@ -196,9 +217,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
 
         /* Noob Theme (Ryobi) */
         .theme-noob {
-            --primary-color: #32CD32;          /* Ryobi Lime Green */
-            --primary-light: #7FFF00;          /* Brighter Lime */
-            --primary-dark: #228B22;           /* Darker Green */
+            --primary-color: #C4E300;          /* Ryobi Lime Green */
+            --primary-light: #D4F310;          /* Brighter Lime */
+            --primary-dark: #A6C400;           /* Darker Green */
             --secondary-color: #333333;        /* Dark Gray */
             --accent-color: #000000;           /* Black */
             --background-color: #F8F8F8;       /* Light Gray */
@@ -207,7 +228,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             --text-secondary: #333333;         /* Dark Gray */
             --text-on-primary: #000000;        /* Black text on lime */
             --border-color: #DDDDDD;           /* Light Gray border */
-            --success-color: #32CD32;          /* Ryobi Green */
+            --success-color: #C4E300;          /* Ryobi Green */
             --warning-color: #FFA500;          /* Orange */
             --error-color: #FF4444;            /* Red */
             --info-color: #333333;             /* Dark Gray */
@@ -1181,7 +1202,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             color: var(--primary-color);
         }
         
-        /* Woodworking Calculators Styles */
+        /* WorkShop Pro Calculator Styles */
         .woodworking-calcs-section {
             margin-bottom: 20px;
         }
@@ -2115,15 +2136,32 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         .board-container {
             position: relative;
             height: 80px;
-            background: linear-gradient(45deg, var(--secondary-color) 25%, transparent 25%), 
-                        linear-gradient(-45deg, var(--secondary-color) 25%, transparent 25%), 
-                        linear-gradient(45deg, transparent 75%, var(--secondary-color) 75%), 
-                        linear-gradient(-45deg, transparent 75%, var(--secondary-color) 75%);
-            background-size: 8px 8px;
-            background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
-            background-color: var(--accent-color);
-            border: 2px solid var(--primary-color);
-            border-radius: 4px;
+            background: #DEB887;
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 8px,
+                    rgba(160, 82, 45, 0.2) 8px,
+                    rgba(160, 82, 45, 0.2) 9px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 15px,
+                    rgba(160, 82, 45, 0.15) 15px,
+                    rgba(160, 82, 45, 0.15) 16px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 25px,
+                    rgba(160, 82, 45, 0.18) 25px,
+                    rgba(160, 82, 45, 0.18) 26px
+                );
+            border: 3px solid #8B4513;
+            border-radius: 2px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
         }
         
         .cut-mark {
@@ -2182,18 +2220,21 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         .board-ends {
             position: absolute;
-            top: -15px;
-            bottom: -15px;
-            width: 2px;
-            background: var(--primary-color);
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: #8B4513;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
         }
         
         .board-ends.left {
-            left: 0;
+            left: -6px;
+            border-radius: 3px 0 0 3px;
         }
         
         .board-ends.right {
-            right: 0;
+            right: -6px;
+            border-radius: 0 3px 3px 0;
         }
         
         .board-dimension {
@@ -3419,17 +3460,18 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
 <body>
     <div class="container">
         <div class="header-section">
-            <h1>Woodworking Calculator</h1>
+            <h1>WorkShop Pro Calculator</h1>
             <div class="header-controls">
                 <div class="theme-selector">
                     <select id="themeSelect" onchange="changeTheme(this.value)" title="Choose Theme">
                         <option value="wood">🟤 Wood</option>
                         <option value="steel">🔧 Steel</option>
                         <option value="dark">🌙 Dark</option>
-                        <option value="dewalt">🟡 Dewalt</option>
+                        <option value="festool">🟢 Festool</option>
                         <option value="milwaukee">🔴 Milwaukee</option>
-                        <option value="ridgid">🟠 Ridgid</option>
                         <option value="makita">🔵 Makita</option>
+                        <option value="dewalt">🟡 Dewalt</option>
+                        <option value="ridgid">🟠 Ridgid</option>
                         <option value="noob">🟢 Noob</option>
                     </select>
                 </div>
@@ -3625,12 +3667,22 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <line x1="200" y1="30" x2="200" y2="130" stroke="#ff0000" stroke-width="2" stroke-dasharray="4,2"/>
                     
                     <!-- Kerf area (will be positioned dynamically) -->
-                    <rect id="kerfAreaSvg" x="200" y="50" width="0" height="60" fill="rgba(0,0,0,0.5)" stroke="white" stroke-width="1" stroke-dasharray="3,2"/>
+                    <defs>
+                        <pattern id="kerfPattern" patternUnits="userSpaceOnUse" width="4" height="4">
+                            <rect width="4" height="4" fill="#ff6b6b"/>
+                            <line x1="0" y1="0" x2="4" y2="4" stroke="white" stroke-width="0.5"/>
+                            <line x1="4" y1="0" x2="0" y2="4" stroke="white" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect id="kerfAreaSvg" x="200" y="50" width="0" height="60" fill="url(#kerfPattern)" stroke="#ff0000" stroke-width="2"/>
                     
                     <!-- Labels -->
                     <text x="200" y="20" text-anchor="middle" font-size="14" font-weight="bold" fill="#ff0000">Mark</text>
                     <text x="100" y="135" text-anchor="middle" font-size="12" fill="#666">Left piece</text>
                     <text x="300" y="135" text-anchor="middle" font-size="12" fill="#666">Right piece</text>
+                    
+                    <!-- Kerf label (will be positioned dynamically) -->
+                    <text id="kerfLabelSvg" x="200" y="85" text-anchor="middle" font-size="10" font-weight="bold" fill="white" style="display: none;">KERF</text>
                     
                     <!-- Dimension arrows -->
                     <path d="M 55 45 L 195 45 M 55 45 L 60 42 M 55 45 L 60 48 M 195 45 L 190 42 M 195 45 L 190 48" stroke="#333" stroke-width="1" fill="none"/>
@@ -4991,7 +5043,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         <div id="helpModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeHelp()">&times;</span>
-                <h2>🪵 Woodworking Calculator Help</h2>
+                <h2>🪵 WorkShop Pro Calculator Help</h2>
                 
                 <h3>Calculator Tab</h3>
                 <p>Pure math calculations without kerf compensation. Perfect for:</p>
@@ -5087,7 +5139,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         function applyTheme(themeName) {
             const body = document.body;
             // Remove all existing theme classes
-            body.classList.remove('theme-wood', 'theme-steel', 'theme-dark', 'theme-dewalt', 'theme-milwaukee', 'theme-ridgid', 'theme-makita', 'theme-noob');
+            body.classList.remove('theme-wood', 'theme-steel', 'theme-dark', 'theme-festool', 'theme-dewalt', 'theme-milwaukee', 'theme-ridgid', 'theme-makita', 'theme-noob');
             
             // Add new theme class (except for default wood theme)
             if (themeName !== 'wood') {
@@ -5567,7 +5619,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             
             if (hasLegacyData) {
                 exportText += '\n' + '-'.repeat(60) + '\n';
-                exportText += 'Generated by Woodworking Calculator\n';
+                exportText += 'Generated by WorkShop Pro Calculator\n';
                 exportText += 'This project timeline shows your manually saved calculations.\n';
             }
             
@@ -5674,7 +5726,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             html += '</div>';
             
             html += `<div class="footer">
-                Generated by Woodworking Calculator<br>
+                Generated by WorkShop Pro Calculator<br>
                 <small>This timeline shows your manually saved calculations for easy reference and printing.</small>
             </div>
         </body>
@@ -7736,21 +7788,25 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             const cutSide = document.getElementById('cutSide')?.value || 'right';
             const diagram = document.getElementById('kerfDiagram');
             const kerfArea = document.getElementById('kerfAreaSvg');
+            const kerfLabel = document.getElementById('kerfLabelSvg');
             const kerfWidth = parseFloat(document.getElementById('cutKerfSize')?.value || 0.125);
             
             if (diagram) {
                 diagram.style.display = kerfEnabled ? 'flex' : 'none';
-                if (kerfArea && kerfEnabled) {
-                    // Calculate kerf width relative to board width (300px = full board)
-                    const svgKerfWidth = (kerfWidth / 12) * 300; // Convert inches to relative width
+                if (kerfArea && kerfLabel && kerfEnabled) {
+                    // Exaggerate kerf width for visibility (multiply by 8 for visual clarity)
+                    const svgKerfWidth = (kerfWidth / 12) * 300 * 8; // Convert inches to relative width, then exaggerate
                     
                     if (cutSide === 'left') {
                         kerfArea.setAttribute('x', 200 - svgKerfWidth);
                         kerfArea.setAttribute('width', svgKerfWidth);
+                        kerfLabel.setAttribute('x', 200 - svgKerfWidth/2);
                     } else {
                         kerfArea.setAttribute('x', 200);
                         kerfArea.setAttribute('width', svgKerfWidth);
+                        kerfLabel.setAttribute('x', 200 + svgKerfWidth/2);
                     }
+                    kerfLabel.style.display = svgKerfWidth > 20 ? 'block' : 'none';
                 }
             }
         }
@@ -11354,6 +11410,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: true,
                 sustainability: "good",
                 grainPattern: "linear-gradient(30deg, #4a3a2b 0%, #6b4e3d 20%, #4a3a2b 40%, #6b4e3d 60%, #4a3a2b 80%, #6b4e3d 100%)",
+                grainImage: null, // Image was corrupted, removing for now
                 finishRecommendations: {
                     natural: ["Tung Oil", "Danish Oil", "Paste Wax"],
                     stain: ["Natural - no stain needed", "Light Golden Oak (if desired)"],
@@ -11955,8 +12012,14 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 `<span class="use-tag">${formatUseTag(use)}</span>`
             ).join('');
             
-            const grainPreview = species.grainPattern ? `
-                <div class="wood-grain-preview" style="background: ${species.grainPattern}; width: 100%; height: 40px; border-radius: 4px; margin-bottom: 12px; border: 1px solid var(--border-color);"></div>
+            const grainPreview = species.grainImage || species.grainPattern ? `
+                <div class="wood-grain-preview" style="
+                    ${species.grainImage ? 
+                        `background-image: url('${species.grainImage}'); background-size: cover; background-position: center;` : 
+                        `background: ${species.grainPattern};`
+                    } 
+                    width: 100%; height: 40px; border-radius: 4px; margin-bottom: 12px; border: 1px solid var(--border-color);
+                "></div>
             ` : '';
             
             const finishRecommendations = species.finishRecommendations ? `
@@ -12224,7 +12287,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             calculateGradeSlope(); // Initialize Grade/Slope Calculator
             initWoodSpeciesDatabase(); // Initialize Wood Species Database
             
-            console.log('Woodworking Calculator with Visual Project Management loaded!');
+            console.log('WorkShop Pro Calculator with Visual Project Management loaded!');
         });
     </script>
 </body>
