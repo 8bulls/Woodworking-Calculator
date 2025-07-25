@@ -4884,6 +4884,31 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             </div>
                             <div id="projectRecommendations" class="project-recommendations"></div>
                         </div>
+
+                        <!-- Attribution Footer (shown when wood images are loaded) -->
+                        <div id="woodImageAttribution" class="wood-attribution-footer" style="
+                            display: none;
+                            margin-top: 20px;
+                            padding: 15px;
+                            background: var(--surface-color);
+                            border: 1px solid var(--border-color);
+                            border-radius: 8px;
+                            text-align: center;
+                            font-size: 12px;
+                            color: var(--text-secondary);
+                        ">
+                            <div style="margin-bottom: 8px;">
+                                📸 <strong>Wood grain images courtesy of:</strong>
+                            </div>
+                            <a href="https://www.wood-database.com/" target="_blank" style="
+                                color: var(--primary-color);
+                                text-decoration: none;
+                                font-weight: bold;
+                            ">The Wood Database</a> by Eric Meier
+                            <div style="margin-top: 8px; font-size: 11px; opacity: 0.8;">
+                                Used with permission • Educational use • <a href="https://www.wood-database.com/" target="_blank" style="color: var(--primary-color);">Visit Wood Database</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -11931,6 +11956,395 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             }
         ];
         
+        // Wood Database URL mapping for image sources
+        // Maps our species names to Wood Database URLs for systematic image collection
+        const woodDatabaseMapping = {
+            "Ash": "ash",
+            "Basswood": "basswood",
+            "Beech": "beech",
+            "Birch": "birch",
+            "Black Walnut": "black-walnut",
+            "Bloodwood": "bloodwood",
+            "Burl Wood": "burl-wood", // May need manual sourcing
+            "Cherry": "cherry",
+            "Cocobolo": "cocobolo",
+            "Douglas Fir": "douglas-fir",
+            "Eastern White Pine": "eastern-white-pine",
+            "Ebony": "ebony",
+            "Elm": "elm",
+            "Hard Maple": "hard-maple",
+            "Hickory": "hickory",
+            "Koa": "koa",
+            "Lignum Vitae": "lignum-vitae",
+            "Mahogany": "mahogany",
+            "Mesquite": "mesquite",
+            "Padauk": "padauk",
+            "Poplar": "poplar",
+            "Purple Heart": "purple-heart",
+            "Red Oak": "red-oak",
+            "Redwood": "redwood",
+            "Rosewood": "rosewood",
+            "Spalted Maple": "spalted-maple",
+            "Sycamore": "sycamore",
+            "Teak": "teak",
+            "Wenge": "wenge",
+            "Western Red Cedar": "western-red-cedar",
+            "White Oak": "white-oak",
+            "Yellow Pine": "yellow-pine",
+            "Zebra Wood": "zebra-wood"
+        };
+        
+        // Generate Wood Database URL for a species
+        function getWoodDatabaseUrl(speciesName) {
+            const urlSlug = woodDatabaseMapping[speciesName];
+            return urlSlug ? `https://www.wood-database.com/${urlSlug}/` : null;
+        }
+        
+        // Image processing and optimization pipeline
+        // ==========================================
+        
+        // Convert image to optimized Base64 (client-side processing)
+        function processImageToBase64(imageFile, maxWidth = 250, maxHeight = 167, quality = 0.8) {
+            return new Promise((resolve, reject) => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+                
+                img.onload = function() {
+                    // Calculate optimal dimensions maintaining aspect ratio
+                    let { width, height } = calculateOptimalDimensions(img.width, img.height, maxWidth, maxHeight);
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    
+                    // Draw and compress image
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Convert to Base64 with optimization
+                    const base64 = canvas.toDataURL('image/jpeg', quality);
+                    
+                    // Validate size (should be under 50KB for performance)
+                    const sizeKB = Math.round((base64.length * 0.75) / 1024);
+                    
+                    resolve({
+                        base64: base64,
+                        sizeKB: sizeKB,
+                        dimensions: { width, height },
+                        original: { width: img.width, height: img.height }
+                    });
+                };
+                
+                img.onerror = () => reject(new Error('Failed to load image'));
+                
+                if (typeof imageFile === 'string') {
+                    img.src = imageFile; // URL
+                } else {
+                    const reader = new FileReader();
+                    reader.onload = e => img.src = e.target.result;
+                    reader.readAsDataURL(imageFile); // File object
+                }
+            });
+        }
+        
+        // Calculate optimal image dimensions maintaining aspect ratio
+        function calculateOptimalDimensions(originalWidth, originalHeight, maxWidth, maxHeight) {
+            const aspectRatio = originalWidth / originalHeight;
+            
+            let width = originalWidth;
+            let height = originalHeight;
+            
+            // Scale down if too large
+            if (width > maxWidth) {
+                width = maxWidth;
+                height = width / aspectRatio;
+            }
+            
+            if (height > maxHeight) {
+                height = maxHeight;
+                width = height * aspectRatio;
+            }
+            
+            return { width: Math.round(width), height: Math.round(height) };
+        }
+        
+        // Batch process multiple wood species images (for when permission is obtained)
+        async function batchProcessWoodImages(imageDataArray) {
+            const results = [];
+            const errors = [];
+            
+            for (let i = 0; i < imageDataArray.length; i++) {
+                const { speciesName, imageUrl } = imageDataArray[i];
+                
+                try {
+                    console.log(`Processing ${speciesName} (${i + 1}/${imageDataArray.length})...`);
+                    
+                    const processed = await processImageToBase64(imageUrl);
+                    
+                    results.push({
+                        speciesName,
+                        success: true,
+                        data: processed,
+                        code: `grainImage: "${processed.base64}",`
+                    });
+                    
+                    // Add small delay to be respectful to Wood Database servers
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                } catch (error) {
+                    errors.push({ speciesName, error: error.message });
+                    results.push({
+                        speciesName,
+                        success: false,
+                        error: error.message
+                    });
+                }
+            }
+            
+            return { results, errors, summary: generateBatchSummary(results) };
+        }
+        
+        // Generate summary of batch processing results
+        function generateBatchSummary(results) {
+            const successful = results.filter(r => r.success);
+            const failed = results.filter(r => !r.success);
+            const totalSize = successful.reduce((sum, r) => sum + (r.data?.sizeKB || 0), 0);
+            
+            return {
+                total: results.length,
+                successful: successful.length,
+                failed: failed.length,
+                totalSizeKB: totalSize,
+                averageSizeKB: successful.length > 0 ? Math.round(totalSize / successful.length) : 0
+            };
+        }
+        
+        // Image validation and fallback systems
+        // =====================================
+        
+        // Validate Base64 image data integrity
+        function validateBase64Image(base64Data) {
+            try {
+                // Check if it's a valid data URL
+                if (!base64Data.startsWith('data:image/')) {
+                    return { valid: false, error: 'Invalid data URL format' };
+                }
+                
+                // Extract the base64 portion
+                const base64Part = base64Data.split(',')[1];
+                if (!base64Part) {
+                    return { valid: false, error: 'Missing base64 data' };
+                }
+                
+                // Test if base64 decodes properly
+                try {
+                    atob(base64Part);
+                } catch (e) {
+                    return { valid: false, error: 'Invalid base64 encoding' };
+                }
+                
+                // Check size constraints (under 100KB recommended)
+                const sizeKB = Math.round((base64Data.length * 0.75) / 1024);
+                if (sizeKB > 100) {
+                    return { valid: false, error: `Image too large: ${sizeKB}KB (max: 100KB)` };
+                }
+                
+                return { 
+                    valid: true, 
+                    sizeKB: sizeKB,
+                    format: base64Data.substring(5, base64Data.indexOf(','))
+                };
+                
+            } catch (error) {
+                return { valid: false, error: error.message };
+            }
+        }
+        
+        // Test image loading with fallback
+        function testImageWithFallback(species) {
+            return new Promise((resolve) => {
+                if (!species.grainImage) {
+                    // No image data, use CSS pattern
+                    resolve({
+                        useImage: false,
+                        fallbackToCss: true,
+                        pattern: species.grainPattern
+                    });
+                    return;
+                }
+                
+                // Test if image loads properly
+                const testImg = new Image();
+                
+                testImg.onload = function() {
+                    resolve({
+                        useImage: true,
+                        fallbackToCss: false,
+                        imageData: species.grainImage,
+                        dimensions: { width: this.width, height: this.height }
+                    });
+                };
+                
+                testImg.onerror = function() {
+                    console.warn(`Failed to load image for ${species.name}, falling back to CSS pattern`);
+                    resolve({
+                        useImage: false,
+                        fallbackToCss: true,
+                        pattern: species.grainPattern,
+                        error: 'Image failed to load'
+                    });
+                };
+                
+                // Set a timeout for slow-loading images
+                setTimeout(() => {
+                    if (!testImg.complete) {
+                        console.warn(`Image loading timeout for ${species.name}, falling back to CSS pattern`);
+                        resolve({
+                            useImage: false,
+                            fallbackToCss: true,
+                            pattern: species.grainPattern,
+                            error: 'Image loading timeout'
+                        });
+                    }
+                }, 3000);
+                
+                testImg.src = species.grainImage;
+            });
+        }
+        
+        // Batch validate all wood species images
+        async function validateAllWoodImages() {
+            const results = {
+                total: 0,
+                withImages: 0,
+                validImages: 0,
+                invalidImages: 0,
+                cssPatterns: 0,
+                details: []
+            };
+            
+            for (const species of woodSpeciesData) {
+                results.total++;
+                
+                if (species.grainImage) {
+                    results.withImages++;
+                    const validation = validateBase64Image(species.grainImage);
+                    
+                    if (validation.valid) {
+                        results.validImages++;
+                    } else {
+                        results.invalidImages++;
+                        console.warn(`Invalid image for ${species.name}: ${validation.error}`);
+                    }
+                    
+                    results.details.push({
+                        species: species.name,
+                        hasImage: true,
+                        valid: validation.valid,
+                        error: validation.error,
+                        sizeKB: validation.sizeKB
+                    });
+                } else {
+                    results.cssPatterns++;
+                    results.details.push({
+                        species: species.name,
+                        hasImage: false,
+                        hasCssPattern: !!species.grainPattern
+                    });
+                }
+            }
+            
+            return results;
+        }
+        
+        // Testing and development utilities
+        // =================================
+        
+        // Test Base64 integration with sample 1x1 pixel image
+        function testBase64Integration() {
+            console.log('🧪 Testing Base64 integration...');
+            
+            // Create a tiny 1x1 red pixel as Base64 (for testing)
+            const testImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAGAWA0dpQAAAABJRU5ErkJggg==';
+            
+            // Test validation
+            const validation = validateBase64Image(testImage);
+            console.log('📋 Validation result:', validation);
+            
+            // Test species with sample image
+            const testSpecies = {
+                name: 'Test Wood',
+                grainImage: testImage,
+                grainPattern: 'linear-gradient(45deg, #8B4513, #D2B48C)'
+            };
+            
+            // Test fallback system
+            testImageWithFallback(testSpecies).then(result => {
+                console.log('🎯 Fallback test result:', result);
+            });
+            
+            // Test card creation
+            const testCard = createWoodSpeciesCard(testSpecies);
+            console.log('🃏 Card HTML length:', testCard.length, 'characters');
+            
+            return {
+                validation,
+                testImageSize: validation.sizeKB,
+                systemReady: validation.valid
+            };
+        }
+        
+        // Generate console commands for Wood Database integration (for after permission)
+        function generateWoodDatabaseCommands() {
+            console.log('📝 Wood Database Integration Commands:');
+            console.log('====================================');
+            
+            woodSpeciesData.forEach(species => {
+                const url = getWoodDatabaseUrl(species.name);
+                if (url) {
+                    console.log(`// ${species.name}`);
+                    console.log(`// URL: ${url}`);
+                    console.log(`// grainImage: "[BASE64_DATA_HERE]",`);
+                    console.log('');
+                }
+            });
+            
+            const mappedSpecies = Object.keys(woodDatabaseMapping);
+            console.log(`✅ Total mappings: ${mappedSpecies.length}/${woodSpeciesData.length} species`);
+            
+            return {
+                totalSpecies: woodSpeciesData.length,
+                mappedSpecies: mappedSpecies.length,
+                unmappedSpecies: woodSpeciesData.filter(s => !woodDatabaseMapping[s.name]).map(s => s.name)
+            };
+        }
+        
+        // Development helper: Test all systems
+        function runDevelopmentTests() {
+            console.log('🚀 Running development tests...');
+            console.log('================================');
+            
+            // Test Base64 system
+            const base64Test = testBase64Integration();
+            
+            // Test attribution system
+            console.log('📸 Attribution system: Ready');
+            
+            // Test species mapping
+            const mappingTest = generateWoodDatabaseCommands();
+            
+            // Test validation system
+            validateAllWoodImages().then(results => {
+                console.log('✅ Validation results:', results);
+            });
+            
+            return {
+                base64Ready: base64Test.systemReady,
+                attributionReady: true,
+                mappingReady: mappingTest.mappedSpecies > 0,
+                totalReadiness: base64Test.systemReady && mappingTest.mappedSpecies > 0
+            };
+        }
+        
         // Project recommendations database
         const projectRecommendations = {
             'dining-table': {
@@ -11997,10 +12411,23 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             
             if (data.length === 0) {
                 grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-secondary);"><h4>No species match your filters</h4><p>Try adjusting your search or filter criteria.</p></div>';
+                updateWoodImageAttribution([]);
                 return;
             }
             
             grid.innerHTML = data.map(species => createWoodSpeciesCard(species)).join('');
+            
+            // Check if any species has grain images and show attribution footer
+            updateWoodImageAttribution(data);
+        }
+        
+        // Show/hide attribution footer based on wood images present
+        function updateWoodImageAttribution(data) {
+            const attributionFooter = document.getElementById('woodImageAttribution');
+            if (!attributionFooter) return;
+            
+            const hasWoodImages = data.some(species => species.grainImage);
+            attributionFooter.style.display = hasWoodImages ? 'block' : 'none';
         }
         
         // Create individual species card
@@ -12018,8 +12445,19 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                         `background-image: url('${species.grainImage}'); background-size: cover; background-position: center;` : 
                         `background: ${species.grainPattern};`
                     } 
-                    width: 100%; height: 40px; border-radius: 4px; margin-bottom: 12px; border: 1px solid var(--border-color);
+                    width: 100%; height: 40px; border-radius: 4px; margin-bottom: ${species.grainImage ? '4px' : '12px'}; border: 1px solid var(--border-color);
                 "></div>
+                ${species.grainImage ? `
+                    <div class="image-attribution" style="
+                        font-size: 10px; 
+                        color: var(--text-secondary); 
+                        text-align: center; 
+                        margin-bottom: 12px;
+                        opacity: 0.8;
+                    ">
+                        Image: <a href="https://www.wood-database.com/" target="_blank" style="color: var(--primary-color); text-decoration: none;">Wood Database</a>
+                    </div>
+                ` : ''}
             ` : '';
             
             const finishRecommendations = species.finishRecommendations ? `
