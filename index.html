@@ -398,32 +398,76 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             min-width: fit-content;
         }
         
-        /* Only apply responsive changes on truly small screens */
-        @media (max-width: 500px) {
+        /* Mobile optimization for main navigation tabs */
+        @media (max-width: 768px) {
             .tab-btn {
-                font-size: 12px;
-                padding: 8px 4px;
+                font-size: 11px;
+                padding: 10px 4px;
+                line-height: 1.2;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .tab-btn {
+                font-size: 10px;
+                padding: 8px 2px;
             }
             
-            /* Replace long text with shorter versions for very narrow windows */
-            .tab-btn:nth-child(2):after { content: "Cut Calc"; }
-            .tab-btn:nth-child(3):after { content: "Specialty"; }
+            /* Use shorter text for narrow screens */
+            .tab-btn:nth-child(2) { font-size: 9px; }
+            .tab-btn:nth-child(3) { font-size: 9px; }
+        }
+        
+        @media (max-width: 480px) {
+            .tab-buttons {
+                gap: 2px;
+                margin-bottom: 10px;
+            }
             
-            .tab-btn:nth-child(2),
-            .tab-btn:nth-child(3) {
+            .tab-btn {
+                font-size: 9px;
+                padding: 8px 1px;
+                min-height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                word-break: break-word;
+                hyphens: auto;
+            }
+            
+            /* Shorter labels for mobile */
+            .tab-btn:nth-child(1) { content: "Calc"; }
+            .tab-btn:nth-child(2) { content: "Cuts"; }
+            .tab-btn:nth-child(3) { content: "Tools"; }
+            .tab-btn:nth-child(4) { content: "📁 Files"; }
+        }
+        
+        @media (max-width: 380px) {
+            .tab-btn {
+                font-size: 8px;
+                padding: 6px 1px;
+                min-height: 36px;
+            }
+            
+            /* Ultra-compact for smallest screens */
+            .tab-btn:nth-child(1)::after { content: "📊"; }
+            .tab-btn:nth-child(2)::after { content: "✂️"; }
+            .tab-btn:nth-child(3)::after { content: "🛠️"; }
+            .tab-btn:nth-child(4)::after { content: "📁"; }
+            
+            .tab-btn {
                 text-indent: -9999px;
                 position: relative;
             }
             
-            .tab-btn:nth-child(2):after,
-            .tab-btn:nth-child(3):after {
+            .tab-btn::after {
                 position: absolute;
                 left: 50%;
                 top: 50%;
                 transform: translate(-50%, -50%);
                 text-indent: 0;
-                font-size: 12px;
-                font-weight: bold;
+                font-size: 16px;
             }
         }
         
@@ -911,92 +955,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             }
         }
         
-        /* Very narrow windows - mobile or narrow desktop */
-        @media (max-width: 500px) {
-            .tab-btn {
-                font-size: 12px;
-                padding: 8px 4px;
-            }
-            
-            /* Further shorten tab names for very narrow windows */
-            .tab-btn:nth-child(2):after { content: "Cut"; }
-            .tab-btn:nth-child(3):after { content: "Tools"; }
-            .tab-btn:nth-child(4):after { content: "📁 Projects"; }
-            
-            .tab-btn:nth-child(4) {
-                text-indent: -9999px;
-                position: relative;
-            }
-            
-            .tab-btn:nth-child(4):after {
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%);
-                text-indent: 0;
-                font-size: 12px;
-                font-weight: bold;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .tab-btn {
-                font-size: 10px;
-                padding: 8px 2px;
-            }
-            
-            .tab-buttons {
-                margin-bottom: 10px;
-            }
-            
-            .container {
-                padding: 15px;
-                margin: 10px;
-                border-radius: 10px;
-            }
-            
-            /* Even shorter names for very small screens */
-            .tab-btn:nth-child(2):after { content: "Cut"; }
-            .tab-btn:nth-child(3):after { content: "Tools"; }
-            .tab-btn:nth-child(4):after { content: "📁"; }
-            
-            .tab-btn:nth-child(4):after {
-                font-size: 14px;
-            }
-        }
-        
-        @media (max-width: 360px) {
-            .tab-btn {
-                font-size: 9px;
-                padding: 6px 1px;
-            }
-            
-            /* Ultra-compact for smallest screens */
-            .tab-btn:nth-child(1):after { content: "Calc"; }
-            .tab-btn:nth-child(2):after { content: "Cut"; }
-            .tab-btn:nth-child(3):after { content: "🔧"; }
-            .tab-btn:nth-child(4):after { content: "📁"; }
-            
-            .tab-btn:nth-child(1) {
-                text-indent: -9999px;
-                position: relative;
-            }
-            
-            .tab-btn:nth-child(1):after {
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%);
-                text-indent: 0;
-                font-size: 9px;
-                font-weight: bold;
-            }
-            
-            .tab-btn:nth-child(3):after,
-            .tab-btn:nth-child(4):after {
-                font-size: 12px;
-            }
-        }
             
             .summary-stats {
                 justify-content: center;
@@ -13985,7 +13943,6 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             const tilesWithWaste = Math.ceil(tilesNeeded * (1 + wasteFactor / 100));
             
             // Get cost info
-            const tileCost = getTileCost();
             const costPerTile = parseFloat(document.getElementById('costPerTile').value) || 0;
             const costPerBox = parseFloat(document.getElementById('costPerBox').value) || 0;
             const tilesPerBox = parseInt(document.getElementById('tilesPerBox').value) || 0;
@@ -13995,13 +13952,13 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             // Calculate costs
             let costDetails = {};
             let totalTileCost = 0;
-            if (document.getElementById('costPerTileRow').style.display !== 'none' && costPerTile > 0) {
+            if (document.getElementById('perTileRow').style.display !== 'none' && costPerTile > 0) {
                 totalTileCost = tilesWithWaste * costPerTile;
                 costDetails = { method: 'per-tile', rate: costPerTile };
-            } else if (document.getElementById('costPerSqFtRow').style.display !== 'none' && costPerSqFt > 0) {
+            } else if (document.getElementById('perSqFtRow').style.display !== 'none' && costPerSqFt > 0) {
                 totalTileCost = projectSqFt * costPerSqFt * (1 + wasteFactor / 100);
                 costDetails = { method: 'per-sqft', rate: costPerSqFt };
-            } else if (document.getElementById('costPerBoxRow').style.display !== 'none' && costPerBox > 0 && tilesPerBox > 0) {
+            } else if (document.getElementById('perBoxRow').style.display !== 'none' && costPerBox > 0 && tilesPerBox > 0) {
                 const boxesNeeded = Math.ceil(tilesWithWaste / tilesPerBox);
                 totalTileCost = boxesNeeded * costPerBox;
                 costDetails = { method: 'per-box', rate: costPerBox, tilesPerBox: tilesPerBox, boxes: boxesNeeded };
@@ -16010,7 +15967,6 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             calculateSingleMiter(); // Initialize Single Board Cut with default selections
             calculateGradeSlope(); // Initialize Grade/Slope Calculator
             initWoodSpeciesDatabase(); // Initialize Wood Species Database
-            initTileCalculator(); // Initialize Tile Calculator
             
             console.log('WorkShop Pro Calculator with Visual Project Management loaded!');
         });
