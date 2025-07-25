@@ -3138,33 +3138,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         
         
-        /* Project Status Bar */
-        .project-status-bar {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border: 1px solid var(--secondary-color);
-            border-radius: 6px;
-            padding: 8px 12px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-        }
-        
-        .project-status-bar.active {
-            background: linear-gradient(135deg, #d4edda, #c3e6cb);
-            border-color: #28a745;
-        }
-        
-        .project-status-bar .status-text {
-            font-weight: 500;
-            color: #666;
-        }
-        
-        .project-status-bar.active .status-text {
-            color: #155724;
-        }
-        
         @media (max-width: 600px) {
             .visual-controls {
                 justify-content: center;
@@ -3454,6 +3427,379 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         .edit-modal .btn {
             margin-right: 10px;
+        }
+
+        /* Tile Calculator Styles */
+        .pattern-preview {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            background: white;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .pattern-preview svg {
+            max-width: 100%;
+            max-height: 180px;
+            border: 1px solid #eee;
+        }
+
+        .tile-results {
+            background: var(--secondary-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .tile-results h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .tile-result-summary,
+        .tile-quantity-section,
+        .tile-cost-section {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tile-cost-section {
+            border-bottom: none;
+        }
+        
+        .tile-preview {
+            background: var(--secondary-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+        
+        .advanced-options-header:hover {
+            background: var(--hover-color);
+            border-radius: 4px;
+            padding: 2px 4px;
+        }
+        
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 4px 0;
+        }
+        
+        .result-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .result-value {
+            color: var(--text-primary);
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .total-cost {
+            border-top: 2px solid var(--primary-color);
+            padding-top: 8px;
+            margin-top: 10px;
+        }
+        
+        .total-cost .result-label,
+        .total-cost .result-value {
+            font-size: 16px;
+            color: var(--primary-color);
+        }
+
+        .tile-type-result {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .tile-type-result:last-child {
+            margin-bottom: 0;
+        }
+
+        .tile-type-name {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .tile-calculation-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .tile-calculation-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .tile-calculation-label {
+            color: var(--text-secondary);
+        }
+
+        .tile-calculation-value {
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .tile-total-section {
+            border-top: 2px solid var(--border-color);
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .tile-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .tile-total-cost {
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+
+        .tile-input-group {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .tile-input-group h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .tile-input-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .tile-input-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .tile-input-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tile-input-field label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .tile-input-field input {
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        .tile-pattern-info {
+            background: var(--hover-color);
+            border-left: 4px solid var(--primary-color);
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-size: 14px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        @media (max-width: 768px) {
+            .tile-input-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+
+        .calc-mode-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid var(--border-color);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--primary-color);
+            background: var(--hover-color);
+        }
+
+        .mode-btn.active {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .mode-description {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: var(--secondary-bg);
+            border-radius: 6px;
+        }
+
+        .mode-interface {
+            margin: 20px 0;
+        }
+
+        .woodworking-input {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .woodworking-input input, .woodworking-input select {
+            padding: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .woodworking-input .unit {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-right: 8px;
+        }
+
+        .compatible-patterns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .pattern-tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pattern-tag:hover {
+            background: var(--secondary-color);
+        }
+
+        .pattern-tag.compatible {
+            background: #28a745;
+        }
+
+        .pattern-tag.warning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .pattern-tag.incompatible {
+            background: #dc3545;
+        }
+
+        .pattern-requirements {
+            margin-top: 15px;
+            padding: 15px;
+            background: var(--secondary-bg);
+            border-radius: 6px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .pattern-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+            padding: 15px;
+            background: var(--secondary-bg);
+            border-radius: 6px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            display: block;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+
+        .difficulty-beginner { color: #28a745; }
+        .difficulty-intermediate { color: #ffc107; }
+        .difficulty-advanced { color: #dc3545; }
+
+        @media (max-width: 768px) {
+            .calc-mode-selector {
+                flex-direction: column;
+            }
+            
+            .woodworking-input {
+                justify-content: center;
+            }
+            
+            .pattern-stats {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tile-input-row {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .tile-input-field input {
+                padding: 10px;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
         }
     </style>
 </head>
@@ -4833,6 +5179,247 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 </div>
             </div>
 
+            <!-- Tile Calculator -->
+            <div class="calc-card" id="tileCard">
+                <div class="calc-card-header" onclick="toggleCalcCard('tile')">
+                    <span class="calc-icon">🔲</span>
+                    <span class="calc-title">Tile & Paver Calculator</span>
+                    <span class="calc-arrow">▼</span>
+                </div>
+                <div class="calc-card-content" id="tileContent">
+                    <div class="calc-description">Calculate tile quantities, costs, and visualize patterns for flooring projects</div>
+                    
+                    <!-- Simplified Tile Calculator -->
+                    <div class="input-section">
+                        <h3>Tile Dimensions</h3>
+                        <div class="tile-input-row">
+                            <div class="tile-input-field">
+                                <label>Length</label>
+                                <div class="woodworking-input">
+                                    <input type="number" id="tileLengthFeet" min="0" placeholder="0" style="width: 50px;" oninput="calculateSimpleTiles()">
+                                    <span class="unit">ft</span>
+                                    <input type="number" id="tileLengthInches" min="0" max="11" step="1" placeholder="12" style="width: 50px;" oninput="calculateSimpleTiles()">
+                                    <span class="unit">in</span>
+                                    <select id="tileLengthFraction" style="width: 70px;" onchange="calculateSimpleTiles()">
+                                        <option value="0">-</option>
+                                        <option value="0.0625">1/16</option>
+                                        <option value="0.125">1/8</option>
+                                        <option value="0.1875">3/16</option>
+                                        <option value="0.25">1/4</option>
+                                        <option value="0.3125">5/16</option>
+                                        <option value="0.375">3/8</option>
+                                        <option value="0.4375">7/16</option>
+                                        <option value="0.5">1/2</option>
+                                        <option value="0.5625">9/16</option>
+                                        <option value="0.625">5/8</option>
+                                        <option value="0.6875">11/16</option>
+                                        <option value="0.75">3/4</option>
+                                        <option value="0.8125">13/16</option>
+                                        <option value="0.875">7/8</option>
+                                        <option value="0.9375">15/16</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="tile-input-field">
+                                <label>Width</label>
+                                <div class="woodworking-input">
+                                    <input type="number" id="tileWidthFeet" min="0" placeholder="0" style="width: 50px;" oninput="calculateSimpleTiles()">
+                                    <span class="unit">ft</span>
+                                    <input type="number" id="tileWidthInches" min="0" max="11" step="1" placeholder="6" style="width: 50px;" oninput="calculateSimpleTiles()">
+                                    <span class="unit">in</span>
+                                    <select id="tileWidthFraction" style="width: 70px;" onchange="calculateSimpleTiles()">
+                                        <option value="0">-</option>
+                                        <option value="0.0625">1/16</option>
+                                        <option value="0.125">1/8</option>
+                                        <option value="0.1875">3/16</option>
+                                        <option value="0.25">1/4</option>
+                                        <option value="0.3125">5/16</option>
+                                        <option value="0.375">3/8</option>
+                                        <option value="0.4375">7/16</option>
+                                        <option value="0.5">1/2</option>
+                                        <option value="0.5625">9/16</option>
+                                        <option value="0.625">5/8</option>
+                                        <option value="0.6875">11/16</option>
+                                        <option value="0.75">3/4</option>
+                                        <option value="0.8125">13/16</option>
+                                        <option value="0.875">7/8</option>
+                                        <option value="0.9375">15/16</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Layout Configuration -->
+                    <div class="input-section">
+                        <h3>Layout Configuration</h3>
+                        <div class="input-row">
+                            <label for="groutSpacing">Grout Spacing:</label>
+                            <select id="groutSpacing" onchange="calculateSimpleTiles()">
+                                <option value="0">None</option>
+                                <option value="0.0625">1/16"</option>
+                                <option value="0.125">1/8"</option>
+                                <option value="0.1875">3/16"</option>
+                                <option value="0.25">1/4"</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-row" id="customGroutRow" style="display: none;">
+                            <label for="customGrout">Custom Spacing (inches):</label>
+                            <input type="number" id="customGrout" step="0.01" min="0" placeholder="0.125" oninput="calculateSimpleTiles()">
+                        </div>
+
+                        <div class="input-row">
+                            <label for="tileOffset">Offset:</label>
+                            <div class="woodworking-input">
+                                <input type="number" id="tileOffsetFeet" min="0" placeholder="0" style="width: 50px;" oninput="calculateSimpleTiles()">
+                                <span class="unit">ft</span>
+                                <input type="number" id="tileOffsetInches" min="0" max="11" step="1" placeholder="0" style="width: 50px;" oninput="calculateSimpleTiles()">
+                                <span class="unit">in</span>
+                                <select id="tileOffsetFraction" style="width: 70px;" onchange="calculateSimpleTiles()">
+                                    <option value="0">-</option>
+                                    <option value="0.0625">1/16</option>
+                                    <option value="0.125">1/8</option>
+                                    <option value="0.1875">3/16</option>
+                                    <option value="0.25">1/4</option>
+                                    <option value="0.3125">5/16</option>
+                                    <option value="0.375">3/8</option>
+                                    <option value="0.4375">7/16</option>
+                                    <option value="0.5">1/2</option>
+                                    <option value="0.5625">9/16</option>
+                                    <option value="0.625">5/8</option>
+                                    <option value="0.6875">11/16</option>
+                                    <option value="0.75">3/4</option>
+                                    <option value="0.8125">13/16</option>
+                                    <option value="0.875">7/8</option>
+                                    <option value="0.9375">15/16</option>
+                                </select>
+                            </div>
+                            <div id="offsetError" class="error-message" style="display: none; color: #dc3545; font-size: 12px; margin-top: 4px;">
+                                Offset cannot exceed tile length
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cost Configuration -->
+                    <div class="input-section">
+                        <h3>Cost Information</h3>
+                        <div class="input-row">
+                            <label for="tileCostMethod">Pricing Method:</label>
+                            <select id="tileCostMethod" onchange="toggleCostInputs(); calculateSimpleTiles()">
+                                <option value="per-tile">Per Tile</option>
+                                <option value="per-sqft" selected>Per Square Foot</option>
+                                <option value="per-box">Per Box/Case</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-row" id="perTileRow" style="display: none;">
+                            <label for="costPerTile">Cost per Tile:</label>
+                            <input type="number" id="costPerTile" step="0.01" min="0" placeholder="2.50" oninput="calculateSimpleTiles()">
+                            <span class="unit">$</span>
+                        </div>
+                        
+                        <div class="input-row" id="perSqFtRow">
+                            <label for="costPerSqFt">Cost per Sq Ft:</label>
+                            <input type="number" id="costPerSqFt" step="0.01" min="0" placeholder="8.95" oninput="calculateSimpleTiles()">
+                            <span class="unit">$/sq ft</span>
+                        </div>
+                        
+                        <div class="input-row" id="perBoxRow" style="display: none;">
+                            <label for="costPerBox">Cost per Box:</label>
+                            <input type="number" id="costPerBox" step="0.01" min="0" placeholder="29.99" oninput="calculateSimpleTiles()">
+                            <span class="unit">$</span>
+                        </div>
+                        
+                        <div class="input-row" id="tilesPerBoxRow" style="display: none;">
+                            <label for="tilesPerBox">Tiles per Box:</label>
+                            <input type="number" id="tilesPerBox" step="1" min="1" placeholder="10" oninput="calculateSimpleTiles()">
+                            <span class="unit">tiles</span>
+                        </div>
+                        
+                        <div class="input-row" id="sqFtPerBoxRow" style="display: none;">
+                            <label for="sqFtPerBox">Sq Ft per Box:</label>
+                            <input type="number" id="sqFtPerBox" step="0.1" min="0" placeholder="10.8" oninput="calculateSimpleTiles()">
+                            <span class="unit">sq ft</span>
+                        </div>
+                        
+                        <div class="input-row">
+                            <label for="additionalCosts">Additional Costs:</label>
+                            <input type="number" id="additionalCosts" step="0.01" min="0" placeholder="0.00" oninput="calculateSimpleTiles()">
+                            <span class="unit">$ (grout, adhesive, etc.)</span>
+                        </div>
+                    </div>
+
+                    <!-- Project Details -->
+                    <div class="input-section">
+                        <h3>Project Details</h3>
+                        <div class="input-row">
+                            <label for="projectSqFt">Total Square Footage:</label>
+                            <input type="number" id="projectSqFt" step="0.1" min="0" placeholder="100" oninput="calculateSimpleTiles()">
+                            <span class="unit">sq ft</span>
+                        </div>
+                        
+                        <div class="input-row">
+                            <label for="wasteFactor">Waste Factor:</label>
+                            <input type="range" id="wasteFactor" min="5" max="20" value="10" oninput="updateWasteDisplay(); calculateSimpleTiles()">
+                            <span class="unit" id="wasteDisplay">10%</span>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Options (Expandable) -->
+                    <div class="input-section">
+                        <div class="advanced-options-header" onclick="toggleAdvancedOptions()" style="cursor: pointer;">
+                            <h3 style="display: inline;">Advanced Options</h3>
+                            <span id="advancedToggle" style="margin-left: 10px; font-size: 12px; color: #666;">▲ Hide</span>
+                        </div>
+                        <div id="advancedOptions" style="display: block;">
+                            <div class="input-row">
+                                <label for="tileThickness">Tile Thickness (for grout calc):</label>
+                                <select id="tileThickness" onchange="calculateSimpleTiles()">
+                                    <option value="0.125">1/8"</option>
+                                    <option value="0.1875">3/16"</option>
+                                    <option value="0.25" selected>1/4" (standard)</option>
+                                    <option value="0.3125">5/16"</option>
+                                    <option value="0.375">3/8"</option>
+                                    <option value="0.5">1/2"</option>
+                                    <option value="0.625">5/8"</option>
+                                    <option value="0.75">3/4"</option>
+                                    <option value="1">1"</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-row">
+                                <label for="roomPerimeter">Room Perimeter (for accurate cuts):</label>
+                                <input type="number" id="roomPerimeter" step="0.1" min="0" placeholder="Total wall length" oninput="calculateSimpleTiles()">
+                                <span class="unit">linear feet</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tile Layout Preview -->
+                    <div class="input-section">
+                        <h3>Layout Preview</h3>
+                        <div id="tilePreview" class="tile-preview">
+                            <!-- Simple tile grid will be generated here -->
+                        </div>
+                    </div>
+
+                    <!-- Results -->
+                    <div class="result-section">
+                        <h3>Results</h3>
+                        <div id="tileResults" class="tile-results">
+                            <!-- Results will be calculated and displayed here -->
+                        </div>
+                    </div>
+
+                    <!-- Save to Project -->
+                    <div class="save-section">
+                        <button class="btn btn-success btn-sm" onclick="saveSimpleTileProject()">Save to Project</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Wood Species Database -->
             <div class="calc-card" id="woodSpeciesCard">
                 <div class="calc-card-header" onclick="toggleCalcCard('woodSpecies')">
@@ -5421,7 +6008,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         function updateProjectSelector() {
             updateGlobalProjectSelector();
             renderProjectTimeline();
-            updateProjectStatusBars();
         }
         
         function updateGlobalProjectSelector() {
@@ -6583,29 +7169,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             input.click();
         }
         
-        // Update project status bars across all tabs
-        function updateProjectStatusBars() {
-            const statusBars = [
-                { id: 'calcProjectStatus', name: 'Calculator' },
-                { id: 'cutProjectStatus', name: 'Cut Calculator' }
-            ];
-            
-            statusBars.forEach(bar => {
-                const element = document.getElementById(bar.id);
-                if (!element) return;
-                
-                const statusText = element.querySelector('.status-text');
-                if (!statusText) return;
-                
-                if (currentProject) {
-                    statusText.textContent = `📁 ${currentProject.name}`;
-                    element.classList.add('active');
-                } else {
-                    statusText.textContent = `No active project`;
-                    element.classList.remove('active');
-                }
-            });
-        }
         
         // Essential data save (no longer auto-called, used for manual saves and app close)
         function saveEssentialData() {
@@ -11333,6 +11896,2494 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         }
         
         // =====================================================
+        // Tile Calculator Functions
+        // =====================================================
+
+        // Comprehensive Pattern Database
+        const patternDatabase = {
+            // === TILE PATTERNS ===
+            'straight-lay': {
+                name: 'Straight Lay/Grid',
+                category: 'tile',
+                difficulty: 'beginner',
+                description: 'Basic alignment with tiles in straight rows and columns',
+                tileRequirements: {
+                    shapes: ['rectangle', 'square'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 4.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Main Tile', ratio: 1, color: '#8B4513' }
+                ],
+                calculations: {
+                    wastePercentage: 5,
+                    cuttingComplexity: 'low',
+                    borderTileRatio: 0.10
+                }
+            },
+            'running-bond': {
+                name: 'Running Bond',
+                category: 'tile',
+                difficulty: 'beginner',
+                description: 'Industry-standard brick pattern with 33% offset (NOT 50%)',
+                tileRequirements: {
+                    shapes: ['rectangle'],
+                    minAspectRatio: 1.5,
+                    maxAspectRatio: 4.0,
+                    offsetLimitation: 0.33
+                },
+                tiles: [
+                    { name: 'Main Tile', ratio: 1, color: '#8B4513' }
+                ],
+                calculations: {
+                    wastePercentage: 8,
+                    cuttingComplexity: 'low',
+                    borderTileRatio: 0.15
+                }
+            },
+            'herringbone': {
+                name: 'Herringbone',
+                category: 'tile',
+                difficulty: 'intermediate',
+                description: '90° interlocking rectangles (NOT squares) in zigzag pattern',
+                tileRequirements: {
+                    shapes: ['rectangle'],
+                    minAspectRatio: 2.0,
+                    maxAspectRatio: 4.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Plank Tile', ratio: 1, color: '#8B4513' }
+                ],
+                calculations: {
+                    wastePercentage: 15,
+                    cuttingComplexity: 'high',
+                    borderTileRatio: 0.25
+                }
+            },
+            'chevron': {
+                name: 'Chevron',
+                category: 'tile',
+                difficulty: 'advanced',
+                description: 'Angled-end rectangles forming continuous zigzag pattern',
+                tileRequirements: {
+                    shapes: ['rectangle-angled'],
+                    minAspectRatio: 3.0,
+                    maxAspectRatio: 6.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Chevron Tile', ratio: 1, color: '#8B4513' }
+                ],
+                calculations: {
+                    wastePercentage: 20,
+                    cuttingComplexity: 'very-high',
+                    borderTileRatio: 0.30
+                }
+            },
+            'diagonal-grid': {
+                name: 'Diagonal Grid',
+                category: 'tile',
+                difficulty: 'intermediate',
+                description: 'Straight lay rotated 45° - makes small spaces appear larger',
+                tileRequirements: {
+                    shapes: ['rectangle', 'square'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 2.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Main Tile', ratio: 1, color: '#8B4513' }
+                ],
+                calculations: {
+                    wastePercentage: 12,
+                    cuttingComplexity: 'medium',
+                    borderTileRatio: 0.20
+                }
+            },
+            'checkerboard': {
+                name: 'Checkerboard',
+                category: 'tile',
+                difficulty: 'beginner',
+                description: 'Alternating colors/finishes using same size square tiles',
+                tileRequirements: {
+                    shapes: ['square'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 1.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Color A', ratio: 1, color: '#8B4513' },
+                    { name: 'Color B', ratio: 1, color: '#D2B48C' }
+                ],
+                calculations: {
+                    wastePercentage: 6,
+                    cuttingComplexity: 'low',
+                    borderTileRatio: 0.12
+                }
+            },
+            'basketweave': {
+                name: 'Basketweave',
+                category: 'tile',
+                difficulty: 'intermediate',
+                description: 'Alternating pairs of rectangles (2:1 ratio required)',
+                tileRequirements: {
+                    shapes: ['rectangle'],
+                    minAspectRatio: 2.0,
+                    maxAspectRatio: 2.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Main Tile', ratio: 1, color: '#8B4513' }
+                ],
+                calculations: {
+                    wastePercentage: 10,
+                    cuttingComplexity: 'medium',
+                    borderTileRatio: 0.18
+                }
+            },
+            'versailles': {
+                name: 'Versailles',
+                category: 'tile',
+                difficulty: 'advanced',
+                description: 'Multiple tile sizes in repeating French pattern',
+                tileRequirements: {
+                    shapes: ['rectangle', 'square'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 2.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Large Square', ratio: 4, color: '#8B4513' },
+                    { name: 'Medium Rectangle', ratio: 2, color: '#D2B48C' },
+                    { name: 'Small Square', ratio: 1, color: '#CD853F' }
+                ],
+                calculations: {
+                    wastePercentage: 18,
+                    cuttingComplexity: 'very-high',
+                    borderTileRatio: 0.25
+                }
+            },
+            'hexagon': {
+                name: 'Hexagon',
+                category: 'tile',
+                difficulty: 'intermediate',
+                description: '6-sided tiles in honeycomb pattern',
+                tileRequirements: {
+                    shapes: ['hexagon'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 1.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Hex Tile', ratio: 1, color: '#8B4513' }
+                ],
+                calculations: {
+                    wastePercentage: 12,
+                    cuttingComplexity: 'high',
+                    borderTileRatio: 0.22
+                }
+            },
+
+            // === PAVER PATTERNS ===
+            'paver-stack-bond': {
+                name: 'Stack Bond (Pavers)',
+                category: 'paver',
+                difficulty: 'beginner',
+                description: 'Straight alignment - easiest paver pattern for DIY',
+                tileRequirements: {
+                    shapes: ['rectangle', 'square'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 3.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Paver', ratio: 1, color: '#A0522D' }
+                ],
+                calculations: {
+                    wastePercentage: 5,
+                    cuttingComplexity: 'very-low',
+                    borderTileRatio: 0.08
+                }
+            },
+            'paver-running-bond': {
+                name: 'Running Bond (Pavers)',
+                category: 'paver',
+                difficulty: 'beginner',
+                description: 'Classic brick pattern with 50% offset (pavers can handle this)',
+                tileRequirements: {
+                    shapes: ['rectangle'],
+                    minAspectRatio: 1.5,
+                    maxAspectRatio: 3.0,
+                    offsetLimitation: 0.50
+                },
+                tiles: [
+                    { name: 'Paver', ratio: 1, color: '#A0522D' }
+                ],
+                calculations: {
+                    wastePercentage: 8,
+                    cuttingComplexity: 'low',
+                    borderTileRatio: 0.12
+                }
+            },
+            'paver-herringbone': {
+                name: 'Herringbone (Pavers)',
+                category: 'paver',
+                difficulty: 'intermediate',
+                description: '90° interlocking brick pattern - very structural',
+                tileRequirements: {
+                    shapes: ['rectangle'],
+                    minAspectRatio: 2.0,
+                    maxAspectRatio: 2.5,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Paver', ratio: 1, color: '#A0522D' }
+                ],
+                calculations: {
+                    wastePercentage: 12,
+                    cuttingComplexity: 'medium',
+                    borderTileRatio: 0.20
+                }
+            },
+            'paver-basketweave': {
+                name: 'Basketweave (Pavers)',
+                category: 'paver',
+                difficulty: 'intermediate',
+                description: 'Alternating pairs - requires 2:1 ratio pavers',
+                tileRequirements: {
+                    shapes: ['rectangle'],
+                    minAspectRatio: 2.0,
+                    maxAspectRatio: 2.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Paver', ratio: 1, color: '#A0522D' }
+                ],
+                calculations: {
+                    wastePercentage: 10,
+                    cuttingComplexity: 'medium',
+                    borderTileRatio: 0.15
+                }
+            },
+            
+            // === ADDITIONAL TILE PATTERNS ===
+            'windmill': {
+                name: 'Windmill',
+                category: 'tile',
+                difficulty: 'advanced',
+                description: 'Four rectangles around central square forming windmill pattern',
+                tileRequirements: {
+                    shapes: ['rectangle', 'square'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 2.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Rectangle', ratio: 2, color: '#8B4513' },
+                    { name: 'Square', ratio: 1, color: '#D2B48C' }
+                ],
+                calculations: {
+                    wastePercentage: 14,
+                    cuttingComplexity: 'high',
+                    borderTileRatio: 0.20
+                }
+            },
+            'pinwheel': {
+                name: 'Pinwheel',
+                category: 'tile',
+                difficulty: 'advanced',
+                description: 'Four triangular shapes around center creating pinwheel effect',
+                tileRequirements: {
+                    shapes: ['triangle', 'square'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 1.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Triangle', ratio: 4, color: '#8B4513' },
+                    { name: 'Center Square', ratio: 1, color: '#F4A460' }
+                ],
+                calculations: {
+                    wastePercentage: 16,
+                    cuttingComplexity: 'very-high',
+                    borderTileRatio: 0.25
+                }
+            },
+            'hopscotch': {
+                name: 'Hopscotch',
+                category: 'tile',
+                difficulty: 'intermediate',
+                description: 'Alternating large and small squares in hopscotch pattern',
+                tileRequirements: {
+                    shapes: ['square'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 1.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Large Square', ratio: 1, color: '#8B4513' },
+                    { name: 'Small Square', ratio: 0.5, color: '#D2B48C' }
+                ],
+                calculations: {
+                    wastePercentage: 8,
+                    cuttingComplexity: 'medium',
+                    borderTileRatio: 0.15
+                }
+            },
+            'offset-grid': {
+                name: 'Offset Grid',
+                category: 'tile',
+                difficulty: 'beginner',
+                description: 'Grid pattern with 50% offset every other row',
+                tileRequirements: {
+                    shapes: ['rectangle', 'square'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 3.0,
+                    offsetLimitation: 0.50
+                },
+                tiles: [
+                    { name: 'Main Tile', ratio: 1, color: '#8B4513' }
+                ],
+                calculations: {
+                    wastePercentage: 7,
+                    cuttingComplexity: 'low',
+                    borderTileRatio: 0.12
+                }
+            },
+            'french-pattern': {
+                name: 'French Pattern',
+                category: 'tile',
+                difficulty: 'expert',
+                description: 'Complex multi-size pattern with 4 different tile sizes',
+                tileRequirements: {
+                    shapes: ['rectangle', 'square'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 2.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Large Rectangle', ratio: 2, color: '#8B4513' },
+                    { name: 'Medium Rectangle', ratio: 1.5, color: '#D2B48C' },
+                    { name: 'Small Rectangle', ratio: 1, color: '#F4A460' },
+                    { name: 'Small Square', ratio: 0.7, color: '#DEB887' }
+                ],
+                calculations: {
+                    wastePercentage: 22,
+                    cuttingComplexity: 'very-high',
+                    borderTileRatio: 0.30
+                }
+            },
+            'modular': {
+                name: 'Modular',
+                category: 'tile',
+                difficulty: 'advanced',
+                description: 'Three tile sizes in repeating modular pattern',
+                tileRequirements: {
+                    shapes: ['rectangle'],
+                    minAspectRatio: 2.0,
+                    maxAspectRatio: 3.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Long Rectangle', ratio: 3, color: '#8B4513' },
+                    { name: 'Medium Rectangle', ratio: 2, color: '#D2B48C' },
+                    { name: 'Short Rectangle', ratio: 1, color: '#F4A460' }
+                ],
+                calculations: {
+                    wastePercentage: 18,
+                    cuttingComplexity: 'high',
+                    borderTileRatio: 0.25
+                }
+            },
+            'cobblestone': {
+                name: 'Cobblestone',
+                category: 'tile',
+                difficulty: 'intermediate',
+                description: 'Irregular brick pattern mimicking old cobblestone streets',
+                tileRequirements: {
+                    shapes: ['rectangle'],
+                    minAspectRatio: 1.5,
+                    maxAspectRatio: 2.5,
+                    offsetLimitation: 0.25
+                },
+                tiles: [
+                    { name: 'Cobble Tile', ratio: 1, color: '#696969' }
+                ],
+                calculations: {
+                    wastePercentage: 12,
+                    cuttingComplexity: 'medium',
+                    borderTileRatio: 0.18
+                }
+            },
+            'brick-ashlar': {
+                name: 'Brick Ashlar',
+                category: 'tile',
+                difficulty: 'intermediate',
+                description: 'Mixed brick sizes in ashlar masonry pattern',
+                tileRequirements: {
+                    shapes: ['rectangle'],
+                    minAspectRatio: 2.0,
+                    maxAspectRatio: 4.0,
+                    offsetLimitation: 0.33
+                },
+                tiles: [
+                    { name: 'Long Brick', ratio: 2, color: '#B22222' },
+                    { name: 'Short Brick', ratio: 1, color: '#CD5C5C' }
+                ],
+                calculations: {
+                    wastePercentage: 15,
+                    cuttingComplexity: 'medium',
+                    borderTileRatio: 0.20
+                }
+            },
+            'quarter-turn': {
+                name: 'Quarter Turn',
+                category: 'tile',
+                difficulty: 'intermediate',
+                description: 'Four tiles arranged in pinwheel with 90° rotations',
+                tileRequirements: {
+                    shapes: ['rectangle'],
+                    minAspectRatio: 2.0,
+                    maxAspectRatio: 3.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Rectangle', ratio: 1, color: '#8B4513' }
+                ],
+                calculations: {
+                    wastePercentage: 13,
+                    cuttingComplexity: 'medium',
+                    borderTileRatio: 0.18
+                }
+            },
+            'mixed-size-straight': {
+                name: 'Mixed Size Straight',
+                category: 'tile',
+                difficulty: 'beginner',
+                description: 'Two different tile sizes in straight-lay pattern',
+                tileRequirements: {
+                    shapes: ['rectangle', 'square'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 2.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Large Tile', ratio: 2, color: '#8B4513' },
+                    { name: 'Small Tile', ratio: 1, color: '#D2B48C' }
+                ],
+                calculations: {
+                    wastePercentage: 9,
+                    cuttingComplexity: 'low',
+                    borderTileRatio: 0.14
+                }
+            },
+            
+            // === ADDITIONAL PAVER PATTERNS ===
+            'paver-circular': {
+                name: 'Circular (Pavers)',
+                category: 'paver',
+                difficulty: 'expert',
+                description: 'Curved circular pattern requiring specialized shaped pavers',
+                tileRequirements: {
+                    shapes: ['wedge', 'curved'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 2.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Wedge Paver', ratio: 1, color: '#A0522D' }
+                ],
+                calculations: {
+                    wastePercentage: 25,
+                    cuttingComplexity: 'very-high',
+                    borderTileRatio: 0.35
+                }
+            },
+            'paver-fan': {
+                name: 'Fan (Pavers)',
+                category: 'paver',
+                difficulty: 'expert',
+                description: 'Fan-shaped repeating pattern with wedge pavers',
+                tileRequirements: {
+                    shapes: ['wedge'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 1.5,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Fan Wedge', ratio: 1, color: '#A0522D' }
+                ],
+                calculations: {
+                    wastePercentage: 20,
+                    cuttingComplexity: 'very-high',
+                    borderTileRatio: 0.30
+                }
+            },
+            'paver-cobblestone': {
+                name: 'Cobblestone (Pavers)',
+                category: 'paver',
+                difficulty: 'intermediate',
+                description: 'Random cobblestone pattern with varying paver sizes',
+                tileRequirements: {
+                    shapes: ['rectangle', 'square'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 2.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Large Cobble', ratio: 2, color: '#A0522D' },
+                    { name: 'Medium Cobble', ratio: 1.5, color: '#8B7355' },
+                    { name: 'Small Cobble', ratio: 1, color: '#696969' }
+                ],
+                calculations: {
+                    wastePercentage: 18,
+                    cuttingComplexity: 'high',
+                    borderTileRatio: 0.25
+                }
+            },
+            'paver-random': {
+                name: 'Random (Pavers)',
+                category: 'paver',
+                difficulty: 'advanced',
+                description: 'Completely random placement with mixed paver sizes',
+                tileRequirements: {
+                    shapes: ['rectangle', 'square'],
+                    minAspectRatio: 1.0,
+                    maxAspectRatio: 3.0,
+                    offsetLimitation: 0
+                },
+                tiles: [
+                    { name: 'Large Paver', ratio: 3, color: '#A0522D' },
+                    { name: 'Medium Paver', ratio: 2, color: '#8B7355' },
+                    { name: 'Small Paver', ratio: 1, color: '#696969' }
+                ],
+                calculations: {
+                    wastePercentage: 22,
+                    cuttingComplexity: 'high',
+                    borderTileRatio: 0.28
+                }
+            }
+        };
+
+        // Current tile calculation data
+        let currentTileData = {
+            mode: 'tile-first', // 'tile-first' or 'pattern-first'
+            selectedPattern: 'running-bond',
+            tileLength: 0, // in inches
+            tileWidth: 0, // in inches
+            aspectRatio: 0,
+            compatiblePatterns: [],
+            groutSpacing: 0,
+            projectSqFt: 0,
+            wasteFactor: 10,
+            tiles: []
+        };
+
+        function initTileCalculator() {
+            populatePatternDropdown();
+            setTileMode('tile-first');
+            updateWasteDisplay();
+        }
+
+        // === DUAL-MODE INTERFACE FUNCTIONS ===
+
+        function setTileMode(mode) {
+            currentTileData.mode = mode;
+            
+            // Update button states
+            document.getElementById('tileModeBtn').classList.remove('active');
+            document.getElementById('patternModeBtn').classList.remove('active');
+            
+            if (mode === 'tile-first') {
+                document.getElementById('tileModeBtn').classList.add('active');
+                document.getElementById('tileFristInterface').style.display = 'block';
+                document.getElementById('patternFirstInterface').style.display = 'none';
+                document.getElementById('modeDescription').textContent = 'Enter your tile dimensions to see compatible patterns';
+            } else {
+                document.getElementById('patternModeBtn').classList.add('active');
+                document.getElementById('tileFristInterface').style.display = 'none';
+                document.getElementById('patternFirstInterface').style.display = 'block';
+                document.getElementById('modeDescription').textContent = 'Choose a pattern to see ideal tile size requirements';
+            }
+            
+            updateTileCalculations();
+        }
+
+        function populatePatternDropdown() {
+            const dropdown = document.getElementById('selectedPattern');
+            dropdown.innerHTML = '';
+            
+            // Group patterns by category
+            const tilePatterns = [];
+            const paverPatterns = [];
+            
+            Object.entries(patternDatabase).forEach(([key, pattern]) => {
+                if (pattern.category === 'tile') {
+                    tilePatterns.push({ key, pattern });
+                } else if (pattern.category === 'paver') {
+                    paverPatterns.push({ key, pattern });
+                }
+            });
+            
+            // Add tile patterns
+            if (tilePatterns.length > 0) {
+                const tileGroup = document.createElement('optgroup');
+                tileGroup.label = 'Tile Patterns';
+                tilePatterns.forEach(({ key, pattern }) => {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = `${pattern.name} (${pattern.difficulty})`;
+                    tileGroup.appendChild(option);
+                });
+                dropdown.appendChild(tileGroup);
+            }
+            
+            // Add paver patterns
+            if (paverPatterns.length > 0) {
+                const paverGroup = document.createElement('optgroup');
+                paverGroup.label = 'Paver Patterns';
+                paverPatterns.forEach(({ key, pattern }) => {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = `${pattern.name} (${pattern.difficulty})`;
+                    paverGroup.appendChild(option);
+                });
+                dropdown.appendChild(paverGroup);
+            }
+        }
+
+        // === PRECISION INPUT FUNCTIONS (reusing existing system) ===
+
+        function getInputInches(feetId, inchesId, fractionId) {
+            const feet = parseFloat(document.getElementById(feetId).value) || 0;
+            const inches = parseFloat(document.getElementById(inchesId).value) || 0;
+            const fraction = parseFloat(document.getElementById(fractionId).value) || 0;
+            return (feet * 12) + inches + fraction;
+        }
+
+        function updateTileFromDimensions() {
+            currentTileData.tileLength = getInputInches('tileLengthFeet', 'tileLengthInches', 'tileLengthFraction');
+            currentTileData.tileWidth = getInputInches('tileWidthFeet', 'tileWidthInches', 'tileWidthFraction');
+            
+            if (currentTileData.tileLength > 0 && currentTileData.tileWidth > 0) {
+                currentTileData.aspectRatio = currentTileData.tileLength / currentTileData.tileWidth;
+                document.getElementById('tileAspectRatio').value = currentTileData.aspectRatio.toFixed(2) + ':1';
+                
+                // Find compatible patterns
+                findCompatiblePatterns();
+            } else {
+                document.getElementById('tileAspectRatio').value = '';
+                document.getElementById('compatiblePatterns').innerHTML = 'Enter dimensions above';
+            }
+            
+            updateTileCalculations();
+        }
+
+        function findCompatiblePatterns() {
+            const aspectRatio = currentTileData.aspectRatio;
+            currentTileData.compatiblePatterns = [];
+            
+            Object.entries(patternDatabase).forEach(([key, pattern]) => {
+                const minRatio = pattern.tileRequirements.minAspectRatio;
+                const maxRatio = pattern.tileRequirements.maxAspectRatio;
+                
+                let compatibility = 'incompatible';
+                if (aspectRatio >= minRatio && aspectRatio <= maxRatio) {
+                    compatibility = 'compatible';
+                    currentTileData.compatiblePatterns.push({ key, pattern, compatibility });
+                } else if (Math.abs(aspectRatio - minRatio) <= 0.2 || Math.abs(aspectRatio - maxRatio) <= 0.2) {
+                    compatibility = 'warning';
+                    currentTileData.compatiblePatterns.push({ key, pattern, compatibility });
+                }
+            });
+            
+            displayCompatiblePatterns();
+        }
+
+        function displayCompatiblePatterns() {
+            const container = document.getElementById('compatiblePatterns');
+            
+            if (currentTileData.compatiblePatterns.length === 0) {
+                container.innerHTML = '<div class="pattern-tag incompatible">No compatible patterns found</div>';
+                return;
+            }
+            
+            let html = '';
+            currentTileData.compatiblePatterns.forEach(({ key, pattern, compatibility }) => {
+                html += `<div class="pattern-tag ${compatibility}" onclick="selectPatternFromCompatible('${key}')">${pattern.name}</div>`;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function selectPatternFromCompatible(patternKey) {
+            currentTileData.selectedPattern = patternKey;
+            updateSelectedPatternDisplay();
+            updateTileCalculations();
+        }
+
+        function updatePatternFirst() {
+            const selectedKey = document.getElementById('selectedPattern').value;
+            currentTileData.selectedPattern = selectedKey;
+            
+            if (selectedKey && patternDatabase[selectedKey]) {
+                const pattern = patternDatabase[selectedKey];
+                displayPatternRequirements(pattern);
+                updateSelectedPatternDisplay();
+            }
+            
+            updateTileCalculations();
+        }
+
+        function displayPatternRequirements(pattern) {
+            const container = document.getElementById('patternRequirements');
+            const reqs = pattern.tileRequirements;
+            
+            let html = `
+                <h4>Pattern Requirements</h4>
+                <div class="requirement-item">
+                    <strong>Shapes:</strong> ${reqs.shapes.join(', ')}
+                </div>
+                <div class="requirement-item">
+                    <strong>Aspect Ratio:</strong> ${reqs.minRatio}:1 to ${reqs.maxRatio}:1
+                </div>
+            `;
+            
+            if (reqs.offsetLimitation > 0) {
+                html += `
+                    <div class="requirement-item">
+                        <strong>Max Offset:</strong> ${(reqs.offsetLimitation * 100)}%
+                    </div>
+                `;
+            }
+            
+            // Suggest common tile sizes
+            html += `
+                <div class="requirement-item">
+                    <strong>Suggested Tile Sizes:</strong>
+                    <div class="suggested-sizes">
+            `;
+            
+            // Generate suggestions based on aspect ratio requirements
+            const commonSizes = generateSuggestedSizes(reqs);
+            commonSizes.forEach(size => {
+                html += `<span class="size-suggestion" onclick="applySuggestedSize(${size.length}, ${size.width})">${size.display}</span>`;
+            });
+            
+            html += `
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        function generateSuggestedSizes(requirements) {
+            const suggestions = [];
+            const minRatio = requirements.minAspectRatio;
+            const maxRatio = requirements.maxAspectRatio;
+            
+            // Common tile dimensions in inches
+            const commonDimensions = [
+                { w: 6, l: 12 }, { w: 6, l: 18 }, { w: 6, l: 24 }, { w: 6, l: 36 },
+                { w: 8, l: 16 }, { w: 8, l: 24 }, { w: 8, l: 32 }, { w: 8, l: 48 },
+                { w: 12, l: 12 }, { w: 12, l: 24 }, { w: 16, l: 16 }, { w: 18, l: 18 },
+                { w: 24, l: 24 }, { w: 12, l: 36 }, { w: 9, l: 47 }
+            ];
+            
+            commonDimensions.forEach(dim => {
+                const ratio = dim.l / dim.w;
+                if (ratio >= minRatio && ratio <= maxRatio) {
+                    suggestions.push({
+                        width: dim.w,
+                        length: dim.l,
+                        display: `${dim.l}" × ${dim.w}"`
+                    });
+                }
+            });
+            
+            return suggestions.slice(0, 6); // Limit to 6 suggestions
+        }
+
+        function applySuggestedSize(length, width) {
+            // Switch to tile-first mode and populate dimensions
+            setTileMode('tile-first');
+            
+            // Set length
+            document.getElementById('tileLengthFeet').value = Math.floor(length / 12);
+            document.getElementById('tileLengthInches').value = length % 12;
+            document.getElementById('tileLengthFraction').value = 0;
+            
+            // Set width
+            document.getElementById('tileWidthFeet').value = Math.floor(width / 12);
+            document.getElementById('tileWidthInches').value = width % 12;
+            document.getElementById('tileWidthFraction').value = 0;
+            
+            updateTileFromDimensions();
+        }
+
+        function updateSelectedPatternDisplay() {
+            const pattern = patternDatabase[currentTileData.selectedPattern];
+            if (!pattern) return;
+            
+            document.getElementById('currentPatternName').textContent = pattern.name;
+            document.getElementById('currentPatternDescription').textContent = pattern.description;
+            document.getElementById('patternDifficulty').textContent = pattern.difficulty;
+            document.getElementById('patternDifficulty').className = `stat-value difficulty-${pattern.difficulty}`;
+            document.getElementById('patternWaste').textContent = pattern.calculations.wastePercentage + '%';
+            document.getElementById('patternCutting').textContent = pattern.calculations.cuttingComplexity;
+            
+            // Update pattern preview
+            generateInteractivePatternPreview();
+        }
+
+        // === INTERACTIVE SVG PATTERN VISUALIZATION ===
+
+        function generateInteractivePatternPreview() {
+            const pattern = patternDatabase[currentTileData.selectedPattern];
+            if (!pattern) return;
+            
+            const container = document.getElementById('patternPreview');
+            const svgWidth = 400;
+            const svgHeight = 250;
+            
+            // Calculate tile dimensions for preview (scale to fit nicely)
+            let previewTileLength = 40;
+            let previewTileWidth = 20;
+            
+            if (currentTileData.tileLength > 0 && currentTileData.tileWidth > 0) {
+                const scale = Math.min(60 / currentTileData.tileLength, 40 / currentTileData.tileWidth);
+                previewTileLength = currentTileData.tileLength * scale;
+                previewTileWidth = currentTileData.tileWidth * scale;
+            }
+            
+            let svg = `
+                <svg width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}" 
+                     style="border: 1px solid #ddd; border-radius: 4px; background: #f9f9f9;">
+                    <defs>
+                        <pattern id="grout" patternUnits="userSpaceOnUse" width="2" height="2">
+                            <rect width="2" height="2" fill="#C0C0C0"/>
+                        </pattern>
+                    </defs>
+            `;
+            
+            // Generate pattern-specific SVG
+            svg += generatePatternSVG(currentTileData.selectedPattern, previewTileLength, previewTileWidth, svgWidth, svgHeight);
+            
+            // Add measurements and annotations
+            svg += generatePatternAnnotations(pattern, previewTileLength, previewTileWidth);
+            
+            svg += '</svg>';
+            container.innerHTML = svg;
+        }
+
+        function generatePatternSVG(patternKey, tileLength, tileWidth, canvasWidth, canvasHeight) {
+            const pattern = patternDatabase[patternKey];
+            const groutWidth = 1; // Visual grout width for preview
+            
+            switch(patternKey) {
+                case 'straight-lay':
+                    return generateStraightLaySVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    
+                case 'running-bond':
+                    return generateRunningBondSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    
+                case 'herringbone':
+                    return generateHerringboneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    
+                case 'diagonal-grid':
+                    return generateDiagonalGridSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    
+                case 'checkerboard':
+                    return generateCheckerboardSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    
+                case 'basketweave':
+                    return generateBasketweaveSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    
+                case 'versailles':
+                    return generateVersaillesSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    
+                case 'hexagon':
+                    return generateHexagonSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    
+                // Paver patterns
+                case 'paver-stack-bond':
+                    return generateStraightLaySVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    
+                case 'paver-running-bond':
+                    return generateRunningBondSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color, 0.5); // 50% offset for pavers
+                    
+                case 'paver-herringbone':
+                    return generateHerringboneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    
+                case 'paver-basketweave':
+                    return generateBasketweaveSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    
+                // New tile patterns
+                case 'windmill':
+                    return generateWindmillSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                case 'pinwheel':
+                    return generatePinwheelSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                case 'hopscotch':
+                    return generateHopscotchSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                case 'offset-grid':
+                    return generateOffsetGridSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                case 'french-pattern':
+                    return generateFrenchPatternSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                case 'modular':
+                    return generateModularSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                case 'cobblestone':
+                    return generateCobbleStoneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                case 'brick-ashlar':
+                    return generateBrickAshlarSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                case 'quarter-turn':
+                    return generateQuarterTurnSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                case 'mixed-size-straight':
+                    return generateMixedSizeStraightSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    
+                // New paver patterns
+                case 'paver-circular':
+                    return generatePaverCircularSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                case 'paver-fan':
+                    return generatePaverFanSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                case 'paver-cobblestone':
+                    return generatePaverCobbleStoneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                case 'paver-random':
+                    return generatePaverRandomSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    
+                default:
+                    return `<text x="200" y="125" text-anchor="middle" fill="#666" font-size="14">Pattern preview coming soon</text>`;
+            }
+        }
+
+        function generateStraightLaySVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
+            let svg = '';
+            const effectiveTileLength = tileLength + groutWidth;
+            const effectiveTileWidth = tileWidth + groutWidth;
+            
+            for (let row = 0; row * effectiveTileWidth < canvasHeight + effectiveTileWidth; row++) {
+                for (let col = 0; col * effectiveTileLength < canvasWidth + effectiveTileLength; col++) {
+                    const x = col * effectiveTileLength;
+                    const y = row * effectiveTileWidth;
+                    
+                    if (x < canvasWidth && y < canvasHeight) {
+                        svg += `<rect x="${x}" y="${y}" width="${tileLength}" height="${tileWidth}" 
+                                fill="${color}" stroke="#C0C0C0" stroke-width="0.5" 
+                                onmouseover="showTileInfo(this, '${tileLength.toFixed(1)}" × ${tileWidth.toFixed(1)}"')" />`;
+                    }
+                }
+            }
+            return svg;
+        }
+
+        function generateRunningBondSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color, offsetPercent = 0.33) {
+            let svg = '';
+            const effectiveTileLength = tileLength + groutWidth;
+            const effectiveTileWidth = tileWidth + groutWidth;
+            const offset = tileLength * offsetPercent;
+            
+            for (let row = 0; row * effectiveTileWidth < canvasHeight + effectiveTileWidth; row++) {
+                const rowOffset = (row % 2) * offset;
+                for (let col = 0; col * effectiveTileLength < canvasWidth + effectiveTileLength + offset; col++) {
+                    const x = col * effectiveTileLength + rowOffset;
+                    const y = row * effectiveTileWidth;
+                    
+                    if (x < canvasWidth + offset && y < canvasHeight && x + tileLength > 0) {
+                        svg += `<rect x="${x}" y="${y}" width="${tileLength}" height="${tileWidth}" 
+                                fill="${color}" stroke="#C0C0C0" stroke-width="0.5" 
+                                onmouseover="showTileInfo(this, 'Running Bond: ${offsetPercent * 100}% offset')" />`;
+                    }
+                }
+            }
+            return svg;
+        }
+
+        function generateHerringboneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
+            let svg = '';
+            const unitWidth = tileLength + tileWidth + groutWidth * 2;
+            const unitHeight = tileLength + tileWidth + groutWidth * 2;
+            
+            for (let row = 0; row * unitHeight < canvasHeight + unitHeight; row++) {
+                for (let col = 0; col * unitWidth < canvasWidth + unitWidth; col++) {
+                    const baseX = col * unitWidth;
+                    const baseY = row * unitHeight;
+                    
+                    // First tile (horizontal)
+                    svg += `<rect x="${baseX}" y="${baseY}" width="${tileLength}" height="${tileWidth}" 
+                            fill="${color}" stroke="#C0C0C0" stroke-width="0.5" 
+                            onmouseover="showTileInfo(this, 'Herringbone H')" />`;
+                    
+                    // Second tile (vertical)
+                    svg += `<rect x="${baseX + tileLength + groutWidth}" y="${baseY}" width="${tileWidth}" height="${tileLength}" 
+                            fill="${color}" stroke="#C0C0C0" stroke-width="0.5" 
+                            onmouseover="showTileInfo(this, 'Herringbone V')" />`;
+                }
+            }
+            return svg;
+        }
+
+        function generateDiagonalGridSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
+            let svg = '';
+            const transform = `rotate(45 ${canvasWidth/2} ${canvasHeight/2})`;
+            
+            svg += `<g transform="${transform}">`;
+            svg += generateStraightLaySVG(tileLength, tileWidth, groutWidth, canvasWidth * 1.5, canvasHeight * 1.5, color);
+            svg += `</g>`;
+            
+            return svg;
+        }
+
+        function generateCheckerboardSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
+            let svg = '';
+            const effectiveTileLength = tileLength + groutWidth;
+            const effectiveTileWidth = tileWidth + groutWidth;
+            
+            for (let row = 0; row * effectiveTileWidth < canvasHeight + effectiveTileWidth; row++) {
+                for (let col = 0; col * effectiveTileLength < canvasWidth + effectiveTileLength; col++) {
+                    const x = col * effectiveTileLength;
+                    const y = row * effectiveTileWidth;
+                    const colorIndex = (row + col) % 2;
+                    const color = tiles[colorIndex].color;
+                    
+                    if (x < canvasWidth && y < canvasHeight) {
+                        svg += `<rect x="${x}" y="${y}" width="${tileLength}" height="${tileWidth}" 
+                                fill="${color}" stroke="#C0C0C0" stroke-width="0.5" 
+                                onmouseover="showTileInfo(this, 'Checkerboard ${tiles[colorIndex].name}')" />`;
+                    }
+                }
+            }
+            return svg;
+        }
+
+        function generateBasketweaveSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
+            let svg = '';
+            const pairWidth = tileLength * 2 + groutWidth * 3;
+            const pairHeight = tileWidth * 2 + groutWidth * 3;
+            
+            for (let row = 0; row * pairHeight < canvasHeight + pairHeight; row++) {
+                for (let col = 0; col * pairWidth < canvasWidth + pairWidth; col++) {
+                    const baseX = col * pairWidth;
+                    const baseY = row * pairHeight;
+                    const isHorizontal = (row + col) % 2 === 0;
+                    
+                    if (isHorizontal) {
+                        // Two horizontal tiles
+                        svg += `<rect x="${baseX}" y="${baseY}" width="${tileLength}" height="${tileWidth}" 
+                                fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                        svg += `<rect x="${baseX}" y="${baseY + tileWidth + groutWidth}" width="${tileLength}" height="${tileWidth}" 
+                                fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    } else {
+                        // Two vertical tiles
+                        svg += `<rect x="${baseX}" y="${baseY}" width="${tileWidth}" height="${tileLength}" 
+                                fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                        svg += `<rect x="${baseX + tileWidth + groutWidth}" y="${baseY}" width="${tileWidth}" height="${tileLength}" 
+                                fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    }
+                }
+            }
+            return svg;
+        }
+
+        function generateVersaillesSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
+            let svg = '';
+            
+            // Versailles pattern uses multiple tile sizes - simplified 4-tile repeat pattern
+            const largeSize = Math.max(tileLength, tileWidth);
+            const mediumSize = largeSize * 0.7;
+            const smallSize = largeSize * 0.5;
+            
+            // Pattern repeat dimensions
+            const patternWidth = largeSize * 2 + groutWidth * 3;
+            const patternHeight = largeSize * 2 + groutWidth * 3;
+            
+            // Get colors for different tile sizes
+            const largeColor = tiles[0] ? tiles[0].color : '#8B4513';
+            const mediumColor = tiles[1] ? tiles[1].color : '#D2B48C';
+            const smallColor = tiles[2] ? tiles[2].color : '#F4A460';
+            
+            for (let row = 0; row * patternHeight < canvasHeight + patternHeight; row++) {
+                for (let col = 0; col * patternWidth < canvasWidth + patternWidth; col++) {
+                    const baseX = col * patternWidth;
+                    const baseY = row * patternHeight;
+                    
+                    // Large center square
+                    svg += `<rect x="${baseX + groutWidth}" y="${baseY + groutWidth}" 
+                            width="${largeSize}" height="${largeSize}" 
+                            fill="${largeColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    
+                    // Medium rectangles around large square
+                    svg += `<rect x="${baseX + largeSize + groutWidth * 2}" y="${baseY + groutWidth}" 
+                            width="${mediumSize}" height="${mediumSize * 0.6}" 
+                            fill="${mediumColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    
+                    svg += `<rect x="${baseX + groutWidth}" y="${baseY + largeSize + groutWidth * 2}" 
+                            width="${mediumSize * 0.6}" height="${mediumSize}" 
+                            fill="${mediumColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    
+                    // Small accent squares
+                    svg += `<rect x="${baseX + largeSize + groutWidth * 2}" y="${baseY + mediumSize * 0.6 + groutWidth * 2}" 
+                            width="${smallSize}" height="${smallSize}" 
+                            fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                }
+            }
+            return svg;
+        }
+
+        function generateHexagonSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
+            let svg = '';
+            
+            // Hexagon dimensions - use the smaller dimension as the radius
+            const radius = Math.min(tileLength, tileWidth) / 2;
+            const hexHeight = radius * Math.sqrt(3);
+            const hexWidth = radius * 2;
+            
+            // Spacing between hexagon centers
+            const horizontalSpacing = hexWidth * 0.75 + groutWidth;
+            const verticalSpacing = hexHeight + groutWidth;
+            
+            // Generate hexagon path
+            function createHexagonPath(centerX, centerY, radius) {
+                const points = [];
+                for (let i = 0; i < 6; i++) {
+                    const angle = (Math.PI / 3) * i;
+                    const x = centerX + radius * Math.cos(angle);
+                    const y = centerY + radius * Math.sin(angle);
+                    points.push(`${x},${y}`);
+                }
+                return `M ${points.join(' L ')} Z`;
+            }
+            
+            // Draw hexagon grid
+            for (let row = 0; row * verticalSpacing < canvasHeight + verticalSpacing; row++) {
+                for (let col = 0; col * horizontalSpacing < canvasWidth + horizontalSpacing; col++) {
+                    const offsetX = (row % 2) * (horizontalSpacing / 2); // Offset every other row
+                    const centerX = col * horizontalSpacing + radius + offsetX;
+                    const centerY = row * verticalSpacing + hexHeight / 2;
+                    
+                    // Only draw if hexagon is visible in canvas
+                    if (centerX - radius < canvasWidth && centerY - hexHeight / 2 < canvasHeight) {
+                        const hexPath = createHexagonPath(centerX, centerY, radius * 0.9); // Slightly smaller for grout lines
+                        svg += `<path d="${hexPath}" fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    }
+                }
+            }
+            return svg;
+        }
+
+        function generatePatternAnnotations(pattern, tileLength, tileWidth) {
+            // Add measurements and pattern info
+            return `
+                <text x="10" y="20" fill="#333" font-size="12" font-weight="bold">${pattern.name}</text>
+                <text x="10" y="35" fill="#666" font-size="10">Difficulty: ${pattern.difficulty}</text>
+                <text x="10" y="48" fill="#666" font-size="10">Waste: ${pattern.calculations.wastePercentage}%</text>
+            `;
+        }
+        
+        // === NEW PATTERN SVG FUNCTIONS ===
+        function generateWindmillSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
+            let svg = '';
+            const rectColor = tiles[0] ? tiles[0].color : '#8B4513';
+            const squareColor = tiles[1] ? tiles[1].color : '#D2B48C';
+            
+            const patternWidth = tileLength * 2 + groutWidth * 3;
+            const patternHeight = tileWidth * 2 + groutWidth * 3;
+            
+            for (let row = 0; row * patternHeight < canvasHeight + patternHeight; row++) {
+                for (let col = 0; col * patternWidth < canvasWidth + patternWidth; col++) {
+                    const baseX = col * patternWidth;
+                    const baseY = row * patternHeight;
+                    
+                    // Center square
+                    svg += `<rect x="${baseX + tileLength/2}" y="${baseY + tileWidth/2}" 
+                            width="${tileLength}" height="${tileWidth}" 
+                            fill="${squareColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    
+                    // Four surrounding rectangles
+                    svg += `<rect x="${baseX}" y="${baseY + tileWidth/2}" 
+                            width="${tileLength/2}" height="${tileWidth}" 
+                            fill="${rectColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    svg += `<rect x="${baseX + tileLength*1.5}" y="${baseY + tileWidth/2}" 
+                            width="${tileLength/2}" height="${tileWidth}" 
+                            fill="${rectColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    svg += `<rect x="${baseX + tileLength/2}" y="${baseY}" 
+                            width="${tileLength}" height="${tileWidth/2}" 
+                            fill="${rectColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    svg += `<rect x="${baseX + tileLength/2}" y="${baseY + tileWidth*1.5}" 
+                            width="${tileLength}" height="${tileWidth/2}" 
+                            fill="${rectColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                }
+            }
+            return svg;
+        }
+        
+        function generateHopscotchSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
+            let svg = '';
+            const largeColor = tiles[0] ? tiles[0].color : '#8B4513';
+            const smallColor = tiles[1] ? tiles[1].color : '#D2B48C';
+            
+            const largeSize = Math.max(tileLength, tileWidth);
+            const smallSize = largeSize * 0.5;
+            
+            for (let row = 0; row * (largeSize + groutWidth) < canvasHeight + largeSize; row++) {
+                for (let col = 0; col * (largeSize + groutWidth) < canvasWidth + largeSize; col++) {
+                    const x = col * (largeSize + groutWidth);
+                    const y = row * (largeSize + groutWidth);
+                    
+                    if ((row + col) % 2 === 0) {
+                        // Large square
+                        svg += `<rect x="${x}" y="${y}" width="${largeSize}" height="${largeSize}" 
+                                fill="${largeColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    } else {
+                        // Four small squares
+                        svg += `<rect x="${x}" y="${y}" width="${smallSize}" height="${smallSize}" 
+                                fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                        svg += `<rect x="${x + smallSize}" y="${y}" width="${smallSize}" height="${smallSize}" 
+                                fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                        svg += `<rect x="${x}" y="${y + smallSize}" width="${smallSize}" height="${smallSize}" 
+                                fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                        svg += `<rect x="${x + smallSize}" y="${y + smallSize}" width="${smallSize}" height="${smallSize}" 
+                                fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    }
+                }
+            }
+            return svg;
+        }
+        
+        function generateOffsetGridSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
+            return generateRunningBondSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color, 0.5);
+        }
+        
+        function generateMixedSizeStraightSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
+            let svg = '';
+            const largeColor = tiles[0] ? tiles[0].color : '#8B4513';
+            const smallColor = tiles[1] ? tiles[1].color : '#D2B48C';
+            
+            const rowHeight = tileWidth + groutWidth;
+            const largeWidth = tileLength * 2;
+            const smallWidth = tileLength;
+            
+            for (let row = 0; row * rowHeight < canvasHeight + rowHeight; row++) {
+                let x = 0;
+                while (x < canvasWidth + largeWidth) {
+                    const y = row * rowHeight;
+                    if (Math.random() > 0.5) {
+                        // Large tile
+                        svg += `<rect x="${x}" y="${y}" width="${largeWidth}" height="${tileWidth}" 
+                                fill="${largeColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                        x += largeWidth + groutWidth;
+                    } else {
+                        // Small tile
+                        svg += `<rect x="${x}" y="${y}" width="${smallWidth}" height="${tileWidth}" 
+                                fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                        x += smallWidth + groutWidth;
+                    }
+                }
+            }
+            return svg;
+        }
+        
+        // Simplified implementations for complex patterns
+        function generatePinwheelSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
+            return `<text x="200" y="125" text-anchor="middle" fill="#666" font-size="14">Pinwheel Pattern</text>
+                    <text x="200" y="145" text-anchor="middle" fill="#666" font-size="12">Complex triangular layout</text>`;
+        }
+        
+        function generateFrenchPatternSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
+            return `<text x="200" y="125" text-anchor="middle" fill="#666" font-size="14">French Pattern</text>
+                    <text x="200" y="145" text-anchor="middle" fill="#666" font-size="12">4-tile complex layout</text>`;
+        }
+        
+        function generateModularSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
+            return `<text x="200" y="125" text-anchor="middle" fill="#666" font-size="14">Modular Pattern</text>
+                    <text x="200" y="145" text-anchor="middle" fill="#666" font-size="12">3-size modular layout</text>`;
+        }
+        
+        function generateCobbleStoneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
+            return generateRunningBondSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color, 0.25);
+        }
+        
+        function generateBrickAshlarSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
+            return generateRunningBondSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles[0].color, 0.33);
+        }
+        
+        function generateQuarterTurnSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
+            return `<text x="200" y="125" text-anchor="middle" fill="#666" font-size="14">Quarter Turn Pattern</text>
+                    <text x="200" y="145" text-anchor="middle" fill="#666" font-size="12">90° rotated tiles</text>`;
+        }
+        
+        // Paver pattern functions
+        function generatePaverCircularSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
+            return `<text x="200" y="125" text-anchor="middle" fill="#666" font-size="14">Circular Paver Pattern</text>
+                    <text x="200" y="145" text-anchor="middle" fill="#666" font-size="12">Curved wedge layout</text>`;
+        }
+        
+        function generatePaverFanSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
+            return `<text x="200" y="125" text-anchor="middle" fill="#666" font-size="14">Fan Paver Pattern</text>
+                    <text x="200" y="145" text-anchor="middle" fill="#666" font-size="12">Fan-shaped wedges</text>`;
+        }
+        
+        function generatePaverCobbleStoneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
+            let svg = '';
+            const colors = tiles.map(t => t.color);
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const x = col * (tileLength * 0.8);
+                    const y = row * (tileWidth * 0.8);
+                    const colorIndex = Math.floor(Math.random() * colors.length);
+                    const size = tileLength * (0.6 + Math.random() * 0.4);
+                    
+                    svg += `<rect x="${x}" y="${y}" width="${size}" height="${size * 0.8}" 
+                            fill="${colors[colorIndex]}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                }
+            }
+            return svg;
+        }
+        
+        function generatePaverRandomSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
+            return generatePaverCobbleStoneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles);
+        }
+
+        // ===== SIMPLIFIED TILE CALCULATOR FUNCTIONS =====
+        
+        function toggleAdvancedOptions() {
+            const options = document.getElementById('advancedOptions');
+            const toggle = document.getElementById('advancedToggle');
+            
+            // Check both inline style and computed style
+            const isHidden = options.style.display === 'none' || 
+                           window.getComputedStyle(options).display === 'none';
+            
+            if (isHidden) {
+                options.style.display = 'block';
+                toggle.textContent = '▲ Hide';
+            } else {
+                options.style.display = 'none';
+                toggle.textContent = '▼ Show';
+            }
+        }
+
+        function getTileDimensions() {
+            // Get tile length
+            const lengthFeet = parseFloat(document.getElementById('tileLengthFeet').value) || 0;
+            const lengthInches = parseFloat(document.getElementById('tileLengthInches').value) || 0;
+            const lengthFraction = parseFloat(document.getElementById('tileLengthFraction').value) || 0;
+            const tileLength = lengthFeet * 12 + lengthInches + lengthFraction;
+            
+            // Get tile width
+            const widthFeet = parseFloat(document.getElementById('tileWidthFeet').value) || 0;
+            const widthInches = parseFloat(document.getElementById('tileWidthInches').value) || 0;
+            const widthFraction = parseFloat(document.getElementById('tileWidthFraction').value) || 0;
+            const tileWidth = widthFeet * 12 + widthInches + widthFraction;
+            
+            return { length: tileLength, width: tileWidth };
+        }
+
+        function getTileOffset() {
+            const offsetFeet = parseFloat(document.getElementById('tileOffsetFeet').value) || 0;
+            const offsetInches = parseFloat(document.getElementById('tileOffsetInches').value) || 0;
+            const offsetFraction = parseFloat(document.getElementById('tileOffsetFraction').value) || 0;
+            return offsetFeet * 12 + offsetInches + offsetFraction;
+        }
+
+        function validateOffset() {
+            const dimensions = getTileDimensions();
+            const offset = getTileOffset();
+            const errorElement = document.getElementById('offsetError');
+            
+            if (offset > dimensions.length) {
+                errorElement.style.display = 'block';
+                return false;
+            } else {
+                errorElement.style.display = 'none';
+                return true;
+            }
+        }
+
+        function calculateSimpleTiles() {
+            // Validate offset first
+            if (!validateOffset()) {
+                document.getElementById('tileResults').innerHTML = '<p style="color: #dc3545;">Please fix the offset error above.</p>';
+                return;
+            }
+
+            // Handle custom grout spacing
+            const groutSelect = document.getElementById('groutSpacing');
+            let groutSpacing = 0;
+            if (groutSelect.value === 'custom') {
+                document.getElementById('customGroutRow').style.display = 'block';
+                groutSpacing = parseFloat(document.getElementById('customGrout').value) || 0;
+            } else {
+                document.getElementById('customGroutRow').style.display = 'none';
+                groutSpacing = parseFloat(groutSelect.value) || 0;
+            }
+
+            // Get inputs
+            const dimensions = getTileDimensions();
+            const offset = getTileOffset();
+            const projectSqFt = parseFloat(document.getElementById('projectSqFt').value) || 0;
+            const wasteFactor = parseInt(document.getElementById('wasteFactor').value) || 10;
+            const tileThickness = parseFloat(document.getElementById('tileThickness').value) || 0.25;
+            const roomPerimeter = parseFloat(document.getElementById('roomPerimeter').value) || 0;
+
+            if (projectSqFt <= 0) {
+                document.getElementById('tileResults').innerHTML = '<p>Enter project square footage to see results.</p>';
+                return;
+            }
+
+            if (dimensions.length <= 0 || dimensions.width <= 0) {
+                document.getElementById('tileResults').innerHTML = '<p>Enter valid tile dimensions to see calculations.</p>';
+                return;
+            }
+
+            // Calculate tile quantities
+            const effectiveLength = dimensions.length + groutSpacing;
+            const effectiveWidth = dimensions.width + groutSpacing;
+            const tileSqFt = (effectiveLength * effectiveWidth) / 144;
+            
+            const tilesNeeded = Math.ceil(projectSqFt / tileSqFt);
+            const tilesWithWaste = Math.ceil(tilesNeeded * (1 + wasteFactor / 100));
+
+            // Calculate costs
+            const costMethod = document.getElementById('tileCostMethod').value;
+            let tileCost = 0;
+            let boxesNeeded = 0;
+            let costDetails = {};
+
+            if (costMethod === 'per-tile') {
+                const costPerTile = parseFloat(document.getElementById('costPerTile').value) || 0;
+                tileCost = tilesWithWaste * costPerTile;
+                costDetails = { method: 'per-tile', rate: costPerTile };
+            } else if (costMethod === 'per-sqft') {
+                const costPerSqFt = parseFloat(document.getElementById('costPerSqFt').value) || 0;
+                tileCost = projectSqFt * (1 + wasteFactor / 100) * costPerSqFt;
+                costDetails = { method: 'per-sqft', rate: costPerSqFt };
+            } else if (costMethod === 'per-box') {
+                const costPerBox = parseFloat(document.getElementById('costPerBox').value) || 0;
+                const tilesPerBox = parseInt(document.getElementById('tilesPerBox').value) || 1;
+                boxesNeeded = Math.ceil(tilesWithWaste / tilesPerBox);
+                tileCost = boxesNeeded * costPerBox;
+                costDetails = { method: 'per-box', rate: costPerBox, tilesPerBox: tilesPerBox };
+            }
+
+            // Calculate grout needed
+            const groutInfo = calculateGroutNeeded(projectSqFt, dimensions, groutSpacing, tileThickness);
+            
+            // Estimate cuts
+            const cutEstimate = estimateCuts(projectSqFt, dimensions, offset, roomPerimeter);
+
+            // Additional costs
+            const additionalCosts = parseFloat(document.getElementById('additionalCosts').value) || 0;
+            const totalCost = tileCost + additionalCosts;
+
+            // Display results
+            displaySimpleTileResults({
+                projectSqFt,
+                tileLength: dimensions.length,
+                tileWidth: dimensions.width,
+                groutSpacing,
+                offset,
+                tileSqFt,
+                tilesNeeded,
+                tilesWithWaste,
+                wasteFactor,
+                boxesNeeded,
+                tileCost,
+                additionalCosts,
+                totalCost,
+                costDetails,
+                groutInfo,
+                cutEstimate
+            });
+
+            // Update preview
+            updateTilePreview(dimensions, groutSpacing, offset);
+        }
+
+        function calculateGroutNeeded(projectSqFt, dimensions, groutSpacing, tileThickness) {
+            if (groutSpacing <= 0) {
+                return { weight: 0, bags: 0, type: 'none' };
+            }
+
+            // Auto-detect grout type
+            const groutType = groutSpacing <= 0.125 ? 'unsanded' : 'sanded';
+            const groutDensity = groutType === 'unsanded' ? 0.11 : 0.13; // lb/in³
+
+            // Convert everything to inches for consistent units
+            const tileArea = projectSqFt * 144; // sq inches
+            const tileLengthInches = dimensions.length;
+            const tileWidthInches = dimensions.width;
+            
+            // Calculate grout line length per tile (between tiles)
+            const groutLinePerTile = (tileLengthInches + tileWidthInches) / (tileLengthInches * tileWidthInches);
+            
+            // Calculate grout volume between tiles
+            const groutVolumeBetweenTiles = tileArea * groutLinePerTile * groutSpacing * tileThickness;
+            
+            // Calculate perimeter grout (always needed along walls)
+            const roomPerimeter = parseFloat(document.getElementById('roomPerimeter').value) || 0;
+            let perimeterToUse = roomPerimeter;
+            
+            // If no perimeter provided, calculate for square room
+            if (perimeterToUse <= 0) {
+                perimeterToUse = 4 * Math.sqrt(projectSqFt);
+            }
+            
+            // Convert perimeter to inches and calculate volume
+            const perimeterInches = perimeterToUse * 12;
+            const groutVolumePerimeter = perimeterInches * groutSpacing * tileThickness;
+            
+            // Total grout volume
+            const totalGroutVolume = groutVolumeBetweenTiles + groutVolumePerimeter;
+            
+            // Convert to pounds
+            const groutWeight = totalGroutVolume * groutDensity;
+            
+            // Calculate bags needed (25 lb bags standard)
+            const groutBags = Math.ceil(groutWeight / 25);
+
+            return {
+                weight: groutWeight,
+                bags: groutBags,
+                type: groutType
+            };
+        }
+
+        function validatePerimeter(projectSqFt, roomPerimeter) {
+            if (roomPerimeter <= 0) return { valid: true };
+            
+            // Calculate minimum possible perimeter for given area (circle)
+            const minPerimeter = 2 * Math.sqrt(Math.PI * projectSqFt);
+            
+            // Calculate maximum reasonable perimeter (very long narrow rectangle, 1:100 ratio)
+            const maxPerimeter = 2 * (Math.sqrt(projectSqFt * 100) + Math.sqrt(projectSqFt / 100));
+            
+            if (roomPerimeter < minPerimeter) {
+                return { 
+                    valid: false, 
+                    error: `Perimeter too small. Minimum possible: ${minPerimeter.toFixed(1)} ft (circular room)`,
+                    suggestion: minPerimeter
+                };
+            }
+            
+            if (roomPerimeter > maxPerimeter) {
+                return { 
+                    valid: false, 
+                    error: `Perimeter unusually large. Maximum reasonable: ${maxPerimeter.toFixed(1)} ft`,
+                    suggestion: maxPerimeter
+                };
+            }
+            
+            // Warn if perimeter seems unusual (less than square room)
+            const squarePerimeter = 4 * Math.sqrt(projectSqFt);
+            if (roomPerimeter < squarePerimeter * 0.9) {
+                return {
+                    valid: true,
+                    warning: `Perimeter seems small. Square room would be ${squarePerimeter.toFixed(1)} ft`
+                };
+            }
+            
+            return { valid: true };
+        }
+
+        function estimateCuts(projectSqFt, dimensions, offset, roomPerimeter) {
+            let borderTiles = 0;
+            let calculationMethod = 'estimated';
+            let validationResult = { valid: true };
+            
+            if (roomPerimeter > 0) {
+                // Validate perimeter makes sense for the area
+                validationResult = validatePerimeter(projectSqFt, roomPerimeter);
+                
+                if (validationResult.valid) {
+                    // Use actual perimeter for more accurate calculation
+                    const tileLength = dimensions.length / 12; // Convert to feet
+                    const tilesAlongPerimeter = Math.ceil(roomPerimeter / tileLength);
+                    borderTiles = tilesAlongPerimeter;
+                    calculationMethod = 'perimeter-based';
+                } else {
+                    // Fall back to square room if invalid perimeter
+                    const roomSide = Math.sqrt(projectSqFt);
+                    const tilesPerSide = Math.ceil(roomSide / (dimensions.length / 12));
+                    borderTiles = Math.max(tilesPerSide * 4 - 4, 0);
+                    calculationMethod = 'invalid-perimeter-fallback';
+                }
+            } else {
+                // Fall back to square room assumption
+                const roomSide = Math.sqrt(projectSqFt);
+                const tilesPerSide = Math.ceil(roomSide / (dimensions.length / 12)); // Convert to feet
+                borderTiles = Math.max(tilesPerSide * 4 - 4, 0); // Subtract corners
+                calculationMethod = 'square-room-estimated';
+            }
+            
+            // Offset creates additional cuts (every other row needs cutting)
+            const offsetCuts = offset > 0 ? Math.ceil(borderTiles * 0.3) : 0;
+            
+            // Field cuts (interior cuts due to layout constraints)
+            const fieldCuts = Math.ceil(projectSqFt / 100); // Rough estimate: 1 cut per 100 sq ft
+            
+            const perimeter = roomPerimeter > 0 ? roomPerimeter : Math.sqrt(projectSqFt) * 4;
+            
+            return {
+                borderCuts: borderTiles,
+                offsetCuts: offsetCuts,
+                fieldCuts: fieldCuts,
+                totalCuts: borderTiles + offsetCuts + fieldCuts,
+                perimeter: perimeter,
+                calculationMethod: calculationMethod,
+                validation: validationResult
+            };
+        }
+
+        function displaySimpleTileResults(data) {
+            const container = document.getElementById('tileResults');
+            
+            let html = `
+                <h4>Tile Requirements & Costs</h4>
+                
+                <div class="tile-result-summary">
+                    <div class="result-row">
+                        <span class="result-label">Project Area:</span>
+                        <span class="result-value">${data.projectSqFt} sq ft</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Tile Size:</span>
+                        <span class="result-value">${(data.tileLength/12).toFixed(2)}" × ${(data.tileWidth/12).toFixed(2)}" (${data.tileLength.toFixed(1)}" × ${data.tileWidth.toFixed(1)}")</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Grout Spacing:</span>
+                        <span class="result-value">${data.groutSpacing > 0 ? (data.groutSpacing * 16).toFixed(0) + '/16"' : 'None'}</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Offset:</span>
+                        <span class="result-value">${data.offset > 0 ? data.offset.toFixed(1) + '"' : 'None'}</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Area per Tile:</span>
+                        <span class="result-value">${data.tileSqFt.toFixed(3)} sq ft</span>
+                    </div>
+                </div>
+                
+                <div class="tile-quantity-section">
+                    <h5>Quantities</h5>
+                    <div class="result-row">
+                        <span class="result-label">Tiles Needed (exact):</span>
+                        <span class="result-value">${data.tilesNeeded}</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">With Waste (+${data.wasteFactor}%):</span>
+                        <span class="result-value">${data.tilesWithWaste}</span>
+                    </div>`;
+            
+            if (data.boxesNeeded > 0) {
+                html += `
+                    <div class="result-row">
+                        <span class="result-label">Boxes Needed:</span>
+                        <span class="result-value">${data.boxesNeeded} (${data.costDetails.tilesPerBox} tiles/box)</span>
+                    </div>`;
+            }
+
+            if (data.cutEstimate.totalCuts > 0) {
+                html += `
+                    <div class="result-row">
+                        <span class="result-label">Estimated Cuts:</span>
+                        <span class="result-value">${data.cutEstimate.totalCuts} tiles</span>
+                    </div>`;
+                
+                // Show breakdown and validation info
+                if (data.cutEstimate.calculationMethod === 'perimeter-based') {
+                    html += `
+                        <div class="result-row" style="font-size: 12px; color: #666; margin-left: 10px;">
+                            <span class="result-label">└ Border: ${data.cutEstimate.borderCuts}, Offset: ${data.cutEstimate.offsetCuts}, Field: ${data.cutEstimate.fieldCuts}</span>
+                            <span class="result-value">Perimeter-based</span>
+                        </div>`;
+                } else if (data.cutEstimate.calculationMethod === 'invalid-perimeter-fallback') {
+                    html += `
+                        <div class="result-row" style="font-size: 12px; color: #dc3545; margin-left: 10px;">
+                            <span class="result-label">└ Border: ${data.cutEstimate.borderCuts}, Offset: ${data.cutEstimate.offsetCuts}, Field: ${data.cutEstimate.fieldCuts}</span>
+                            <span class="result-value">Invalid perimeter - using estimate</span>
+                        </div>`;
+                } else {
+                    html += `
+                        <div class="result-row" style="font-size: 12px; color: #666; margin-left: 10px;">
+                            <span class="result-label">└ Border: ${data.cutEstimate.borderCuts}, Offset: ${data.cutEstimate.offsetCuts}, Field: ${data.cutEstimate.fieldCuts}</span>
+                            <span class="result-value">Square room est.</span>
+                        </div>`;
+                }
+                
+                // Show validation errors or warnings
+                if (data.cutEstimate.validation && !data.cutEstimate.validation.valid) {
+                    html += `
+                        <div class="result-row" style="font-size: 12px; color: #dc3545; margin-left: 10px; font-style: italic;">
+                            <span class="result-label">⚠️ ${data.cutEstimate.validation.error}</span>
+                            <span class="result-value"></span>
+                        </div>`;
+                } else if (data.cutEstimate.validation && data.cutEstimate.validation.warning) {
+                    html += `
+                        <div class="result-row" style="font-size: 12px; color: #f57c00; margin-left: 10px; font-style: italic;">
+                            <span class="result-label">💡 ${data.cutEstimate.validation.warning}</span>
+                            <span class="result-value"></span>
+                        </div>`;
+                }
+            }
+            
+            html += `</div>`;
+
+            // Materials section
+            html += `
+                <div class="tile-cost-section">
+                    <h5>Materials & Costs</h5>`;
+            
+            if (data.costDetails.method === 'per-tile') {
+                html += `
+                    <div class="result-row">
+                        <span class="result-label">Cost per Tile:</span>
+                        <span class="result-value">$${data.costDetails.rate.toFixed(2)}</span>
+                    </div>`;
+            } else if (data.costDetails.method === 'per-sqft') {
+                html += `
+                    <div class="result-row">
+                        <span class="result-label">Cost per Sq Ft:</span>
+                        <span class="result-value">$${data.costDetails.rate.toFixed(2)}</span>
+                    </div>`;
+            } else if (data.costDetails.method === 'per-box') {
+                html += `
+                    <div class="result-row">
+                        <span class="result-label">Cost per Box:</span>
+                        <span class="result-value">$${data.costDetails.rate.toFixed(2)}</span>
+                    </div>`;
+            }
+            
+            html += `
+                    <div class="result-row">
+                        <span class="result-label">Tile Cost:</span>
+                        <span class="result-value">$${data.tileCost.toFixed(2)}</span>
+                    </div>`;
+
+            // Grout information
+            if (data.groutInfo.weight > 0) {
+                html += `
+                    <div class="result-row">
+                        <span class="result-label">Grout Needed:</span>
+                        <span class="result-value">${data.groutInfo.weight.toFixed(1)} lbs (${data.groutInfo.type})</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Grout Bags:</span>
+                        <span class="result-value">${data.groutInfo.bags} bags (25 lb)</span>
+                    </div>`;
+            }
+            
+            if (data.additionalCosts > 0) {
+                html += `
+                    <div class="result-row">
+                        <span class="result-label">Additional Costs:</span>
+                        <span class="result-value">$${data.additionalCosts.toFixed(2)}</span>
+                    </div>`;
+            }
+            
+            html += `
+                    <div class="result-row total-cost">
+                        <span class="result-label"><strong>Total Cost:</strong></span>
+                        <span class="result-value"><strong>$${data.totalCost.toFixed(2)}</strong></span>
+                    </div>
+                </div>`;
+            
+            container.innerHTML = html;
+        }
+
+        function updateTilePreview(dimensions, groutSpacing, offset) {
+            const container = document.getElementById('tilePreview');
+            const previewSize = 300;
+            const gridSize = 8;
+            
+            // Calculate tile size for preview (proportional)
+            const maxDimension = Math.max(dimensions.length, dimensions.width);
+            const scale = (previewSize / gridSize) / maxDimension;
+            
+            const previewLength = dimensions.length * scale;
+            const previewWidth = dimensions.width * scale;
+            const previewGrout = groutSpacing * scale;
+            const previewOffset = offset * scale;
+            
+            let svg = `<svg width="${previewSize}" height="${previewSize}" viewBox="0 0 ${previewSize} ${previewSize}">`;
+            
+            // Draw tiles in grid
+            for (let row = 0; row < gridSize; row++) {
+                for (let col = 0; col < gridSize; col++) {
+                    let x = col * (previewLength + previewGrout);
+                    let y = row * (previewWidth + previewGrout);
+                    
+                    // Apply offset for alternating rows
+                    if (offset > 0 && row % 2 === 1) {
+                        x += previewOffset;
+                    }
+                    
+                    // Only draw if tile fits in preview
+                    if (x + previewLength <= previewSize && y + previewWidth <= previewSize) {
+                        svg += `<rect x="${x}" y="${y}" width="${previewLength}" height="${previewWidth}" 
+                                fill="#8B4513" stroke="#C0C0C0" stroke-width="1" opacity="0.8" />`;
+                    }
+                }
+            }
+            
+            // Add dimensions label
+            svg += `<text x="10" y="20" fill="#333" font-size="12" font-weight="bold">
+                    ${dimensions.length.toFixed(1)}" × ${dimensions.width.toFixed(1)}"</text>`;
+            
+            if (groutSpacing > 0) {
+                svg += `<text x="10" y="35" fill="#666" font-size="10">
+                        Grout: ${(groutSpacing * 16).toFixed(0)}/16"</text>`;
+            }
+            
+            if (offset > 0) {
+                svg += `<text x="10" y="50" fill="#666" font-size="10">
+                        Offset: ${offset.toFixed(1)}"</text>`;
+            }
+            
+            svg += '</svg>';
+            container.innerHTML = svg;
+        }
+
+        function saveSimpleTileProject() {
+            const dimensions = getTileDimensions();
+            const offset = getTileOffset();
+            const projectSqFt = parseFloat(document.getElementById('projectSqFt').value) || 0;
+            const groutSpacing = parseFloat(document.getElementById('groutSpacing').value === 'custom' ? 
+                document.getElementById('customGrout').value : document.getElementById('groutSpacing').value) || 0;
+            const wasteFactor = parseInt(document.getElementById('wasteFactor').value) || 10;
+            const tileThickness = parseFloat(document.getElementById('tileThickness').value) || 0.25;
+            const roomPerimeter = parseFloat(document.getElementById('roomPerimeter').value) || 0;
+            
+            if (projectSqFt <= 0 || dimensions.length <= 0 || dimensions.width <= 0) {
+                alert('Please enter tile dimensions and project area before saving.');
+                return;
+            }
+
+            // Perform all calculations
+            const tileSqFt = (dimensions.length * dimensions.width) / 144;
+            const tilesNeeded = Math.ceil(projectSqFt / tileSqFt);
+            const tilesWithWaste = Math.ceil(tilesNeeded * (1 + wasteFactor / 100));
+            
+            // Get cost info
+            const tileCost = getTileCost();
+            const costPerTile = parseFloat(document.getElementById('costPerTile').value) || 0;
+            const costPerBox = parseFloat(document.getElementById('costPerBox').value) || 0;
+            const tilesPerBox = parseInt(document.getElementById('tilesPerBox').value) || 0;
+            const costPerSqFt = parseFloat(document.getElementById('costPerSqFt').value) || 0;
+            const additionalCosts = parseFloat(document.getElementById('additionalCosts').value) || 0;
+            
+            // Calculate costs
+            let costDetails = {};
+            let totalTileCost = 0;
+            if (document.getElementById('costPerTileRow').style.display !== 'none' && costPerTile > 0) {
+                totalTileCost = tilesWithWaste * costPerTile;
+                costDetails = { method: 'per-tile', rate: costPerTile };
+            } else if (document.getElementById('costPerSqFtRow').style.display !== 'none' && costPerSqFt > 0) {
+                totalTileCost = projectSqFt * costPerSqFt * (1 + wasteFactor / 100);
+                costDetails = { method: 'per-sqft', rate: costPerSqFt };
+            } else if (document.getElementById('costPerBoxRow').style.display !== 'none' && costPerBox > 0 && tilesPerBox > 0) {
+                const boxesNeeded = Math.ceil(tilesWithWaste / tilesPerBox);
+                totalTileCost = boxesNeeded * costPerBox;
+                costDetails = { method: 'per-box', rate: costPerBox, tilesPerBox: tilesPerBox, boxes: boxesNeeded };
+            }
+            
+            // Calculate grout
+            const groutInfo = calculateGroutNeeded(projectSqFt, dimensions, groutSpacing, tileThickness);
+            
+            // Calculate cuts
+            const cutEstimate = estimateCuts(projectSqFt, dimensions, offset, roomPerimeter);
+            
+            // Build comprehensive details
+            const groutDisplay = groutSpacing > 0 ? `${(groutSpacing * 16).toFixed(0)}/16"` : 'None';
+            const offsetDisplay = offset > 0 ? `${offset.toFixed(1)}"` : 'None';
+            
+            const equation = `${projectSqFt} sq ft with ${dimensions.length}" × ${dimensions.width}" tiles`;
+            const result = `${tilesWithWaste} tiles needed (includes ${wasteFactor}% waste)`;
+            
+            let details = `PROJECT SUMMARY
+================
+Area: ${projectSqFt} sq ft
+${roomPerimeter > 0 ? `Perimeter: ${roomPerimeter} linear ft` : 'Perimeter: Not specified (assumed square room)'}
+
+TILE SPECIFICATIONS
+==================
+Size: ${dimensions.length}" × ${dimensions.width}" (${tileSqFt.toFixed(2)} sq ft per tile)
+Grout Spacing: ${groutDisplay}
+Offset: ${offsetDisplay}
+Tile Thickness: ${tileThickness}"
+
+MATERIAL CALCULATIONS
+====================
+Base Tiles Needed: ${tilesNeeded} tiles
+Waste Factor: ${wasteFactor}%
+Total Tiles Needed: ${tilesWithWaste} tiles`;
+
+            if (costDetails.method === 'per-box' && costDetails.boxes) {
+                details += `\nBoxes Needed: ${costDetails.boxes} boxes (${costDetails.tilesPerBox} tiles/box)`;
+            }
+
+            details += `\n\nGROUT REQUIREMENTS
+==================
+Type: ${groutInfo.type === 'none' ? 'No grout needed' : groutInfo.type.charAt(0).toUpperCase() + groutInfo.type.slice(1) + ' grout'}`;
+            
+            if (groutInfo.weight > 0) {
+                details += `\nAmount Needed: ${groutInfo.weight.toFixed(1)} lbs
+Bags Needed: ${groutInfo.bags} bags (25 lb bags)`;
+            }
+
+            details += `\n\nCUT ESTIMATION
+==============
+Total Cuts: ${cutEstimate.totalCuts}
+- Border Cuts: ${cutEstimate.borderCuts}
+- Field Cuts: ${cutEstimate.fieldCuts}
+- Offset Cuts: ${cutEstimate.offsetCuts}
+${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
+
+            if (totalTileCost > 0 || additionalCosts > 0) {
+                details += `\n\nCOST BREAKDOWN
+==============`;
+                if (totalTileCost > 0) {
+                    if (costDetails.method === 'per-tile') {
+                        details += `\nTile Cost: $${totalTileCost.toFixed(2)} (${tilesWithWaste} tiles × $${costDetails.rate.toFixed(2)}/tile)`;
+                    } else if (costDetails.method === 'per-sqft') {
+                        details += `\nTile Cost: $${totalTileCost.toFixed(2)} (${projectSqFt} sq ft × $${costDetails.rate.toFixed(2)}/sq ft × ${(1 + wasteFactor/100).toFixed(2)})`;
+                    } else if (costDetails.method === 'per-box') {
+                        details += `\nTile Cost: $${totalTileCost.toFixed(2)} (${costDetails.boxes} boxes × $${costDetails.rate.toFixed(2)}/box)`;
+                    }
+                }
+                if (additionalCosts > 0) {
+                    details += `\nAdditional Costs: $${additionalCosts.toFixed(2)}`;
+                }
+                details += `\nTotal Project Cost: $${(totalTileCost + additionalCosts).toFixed(2)}`;
+            }
+
+            const saveData = {
+                tool: 'Tile Calculator',
+                equation: equation,
+                result: result,
+                details: details,
+                timestamp: new Date().toISOString()
+            };
+
+            showSaveToProjectModal(saveData);
+        }
+        
+        // Updated cost-enabled tile calculation function
+        function calculateTilesWithCost() {
+            // Handle custom grout spacing
+            const groutSelect = document.getElementById('groutSpacing');
+            if (groutSelect.value === 'custom') {
+                document.getElementById('customGroutRow').style.display = 'block';
+                currentTileData.groutSpacing = parseFloat(document.getElementById('customGrout').value) || 0;
+            } else {
+                document.getElementById('customGroutRow').style.display = 'none';
+                currentTileData.groutSpacing = parseFloat(groutSelect.value) || 0;
+            }
+            
+            // Get basic inputs
+            const projectSqFt = parseFloat(document.getElementById('projectSqFt').value) || 0;
+            const wasteFactor = parseInt(document.getElementById('wasteFactor').value) || 10;
+            
+            if (projectSqFt <= 0) {
+                document.getElementById('tileResults').innerHTML = '<p>Enter project square footage to see results.</p>';
+                return;
+            }
+            
+            // Get tile dimensions from dynamic inputs
+            const tileInputs = document.getElementById('tileInputs');
+            const lengthInput = tileInputs.querySelector('[data-field="length"]');
+            const widthInput = tileInputs.querySelector('[data-field="width"]');
+            
+            if (!lengthInput || !widthInput) {
+                document.getElementById('tileResults').innerHTML = '<p>Configure tile dimensions to see calculations.</p>';
+                return;
+            }
+            
+            const tileLength = parseFloat(lengthInput.value) || 0;
+            const tileWidth = parseFloat(widthInput.value) || 0;
+            
+            if (tileLength <= 0 || tileWidth <= 0) {
+                document.getElementById('tileResults').innerHTML = '<p>Enter valid tile dimensions to see calculations.</p>';
+                return;
+            }
+            
+            // Calculate tile area including grout
+            const effectiveLength = tileLength + currentTileData.groutSpacing;
+            const effectiveWidth = tileWidth + currentTileData.groutSpacing;
+            const sqFtPerTile = (effectiveLength * effectiveWidth) / 144;
+            
+            // Calculate quantities
+            const pattern = patternDatabase[currentTileData.selectedPattern];
+            const patternWaste = pattern ? pattern.calculations.wastePercentage : 10;
+            const totalWaste = Math.max(wasteFactor, patternWaste);
+            
+            const tilesNeeded = Math.ceil(projectSqFt / sqFtPerTile);
+            const tilesWithWaste = Math.ceil(tilesNeeded * (1 + totalWaste / 100));
+            
+            // Calculate costs
+            const costMethod = document.getElementById('tileCostMethod').value;
+            let tileCost = 0;
+            let boxesNeeded = 0;
+            let costPerTile = 0;
+            let costPerSqFt = 0;
+            let costPerBox = 0;
+            let tilesPerBox = 1;
+            
+            if (costMethod === 'per-tile') {
+                costPerTile = parseFloat(document.getElementById('costPerTile').value) || 0;
+                tileCost = tilesWithWaste * costPerTile;
+            } else if (costMethod === 'per-sqft') {
+                costPerSqFt = parseFloat(document.getElementById('costPerSqFt').value) || 0;
+                tileCost = projectSqFt * (1 + totalWaste / 100) * costPerSqFt;
+            } else if (costMethod === 'per-box') {
+                costPerBox = parseFloat(document.getElementById('costPerBox').value) || 0;
+                tilesPerBox = parseInt(document.getElementById('tilesPerBox').value) || 1;
+                boxesNeeded = Math.ceil(tilesWithWaste / tilesPerBox);
+                tileCost = boxesNeeded * costPerBox;
+            }
+            
+            const additionalCosts = parseFloat(document.getElementById('additionalCosts').value) || 0;
+            const totalCost = tileCost + additionalCosts;
+            
+            displayTileResultsWithCost({
+                projectSqFt,
+                tileLength,
+                tileWidth,
+                sqFtPerTile,
+                tilesNeeded,
+                tilesWithWaste,
+                totalWaste,
+                boxesNeeded,
+                tileCost,
+                additionalCosts,
+                totalCost,
+                costMethod,
+                costPerTile,
+                costPerSqFt,
+                costPerBox,
+                tilesPerBox,
+                pattern: pattern ? pattern.name : 'Unknown'
+            });
+        }
+        
+        function displayTileResultsWithCost(data) {
+            const container = document.getElementById('tileResults');
+            
+            let html = `
+                <h4>Tile Requirements & Costs</h4>
+                <div class="tile-result-summary">
+                    <div class="result-row">
+                        <span class="result-label">Project Area:</span>
+                        <span class="result-value">${data.projectSqFt} sq ft</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Tile Size:</span>
+                        <span class="result-value">${data.tileLength}" × ${data.tileWidth}"</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Pattern:</span>
+                        <span class="result-value">${data.pattern}</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Area per Tile:</span>
+                        <span class="result-value">${data.sqFtPerTile.toFixed(3)} sq ft</span>
+                    </div>
+                </div>
+                
+                <div class="tile-quantity-section">
+                    <h5>Quantities</h5>
+                    <div class="result-row">
+                        <span class="result-label">Tiles Needed (exact):</span>
+                        <span class="result-value">${data.tilesNeeded}</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">With Waste (+${data.totalWaste}%):</span>
+                        <span class="result-value">${data.tilesWithWaste}</span>
+                    </div>`;
+            
+            if (data.boxesNeeded > 0) {
+                html += `
+                    <div class="result-row">
+                        <span class="result-label">Boxes Needed:</span>
+                        <span class="result-value">${data.boxesNeeded} (${data.tilesPerBox} tiles/box)</span>
+                    </div>`;
+            }
+            
+            html += `</div>
+                
+                <div class="tile-cost-section">
+                    <h5>Cost Breakdown</h5>`;
+            
+            if (data.costMethod === 'per-tile') {
+                html += `
+                    <div class="result-row">
+                        <span class="result-label">Cost per Tile:</span>
+                        <span class="result-value">$${data.costPerTile.toFixed(2)}</span>
+                    </div>`;
+            } else if (data.costMethod === 'per-sqft') {
+                html += `
+                    <div class="result-row">
+                        <span class="result-label">Cost per Sq Ft:</span>
+                        <span class="result-value">$${data.costPerSqFt.toFixed(2)}</span>
+                    </div>`;
+            } else if (data.costMethod === 'per-box') {
+                html += `
+                    <div class="result-row">
+                        <span class="result-label">Cost per Box:</span>
+                        <span class="result-value">$${data.costPerBox.toFixed(2)}</span>
+                    </div>`;
+            }
+            
+            html += `
+                    <div class="result-row">
+                        <span class="result-label">Tile Cost:</span>
+                        <span class="result-value">$${data.tileCost.toFixed(2)}</span>
+                    </div>`;
+            
+            if (data.additionalCosts > 0) {
+                html += `
+                    <div class="result-row">
+                        <span class="result-label">Additional Costs:</span>
+                        <span class="result-value">$${data.additionalCosts.toFixed(2)}</span>
+                    </div>`;
+            }
+            
+            html += `
+                    <div class="result-row total-cost">
+                        <span class="result-label"><strong>Total Cost:</strong></span>
+                        <span class="result-value"><strong>$${data.totalCost.toFixed(2)}</strong></span>
+                    </div>
+                </div>`;
+            
+            container.innerHTML = html;
+        }
+
+        // Global function for tile hover info (called from SVG)
+        window.showTileInfo = function(element, info) {
+            element.setAttribute('title', info);
+        };
+
+        function updateTileCalculations() {
+            // Update waste factor display
+            updateWasteDisplay();
+            
+            // Trigger pattern preview update
+            updateSelectedPatternDisplay();
+            
+            // Calculate tiles if we have enough information
+            calculateTiles();
+        }
+
+        function generateTileInputs(pattern) {
+            const container = document.getElementById('tileInputs');
+            const patternData = tilePatterns[pattern];
+            
+            let html = `<div class="tile-pattern-info">${patternData.description}</div>`;
+            
+            patternData.tiles.forEach((tile, index) => {
+                html += `
+                    <div class="tile-input-group">
+                        <h4>${tile.name}</h4>
+                        <div class="tile-input-row">
+                            <div class="tile-input-field">
+                                <label>Length (inches)</label>
+                                <input type="number" id="tile${index}Length" step="0.125" min="0.125" placeholder="12" oninput="calculateTiles()">
+                            </div>
+                            <div class="tile-input-field">
+                                <label>Width (inches)</label>
+                                <input type="number" id="tile${index}Width" step="0.125" min="0.125" placeholder="6" oninput="calculateTiles()">
+                            </div>
+                            <div class="tile-input-field">
+                                <label>Tiles per Box</label>
+                                <input type="number" id="tile${index}PerBox" min="1" placeholder="10" oninput="calculateTiles()">
+                            </div>
+                        </div>
+                        <div class="tile-input-row">
+                            <div class="tile-input-field">
+                                <label>Cost per Box ($)</label>
+                                <input type="number" id="tile${index}Cost" step="0.01" min="0" placeholder="29.99" oninput="calculateTiles()">
+                            </div>
+                            <div class="tile-input-field">
+                                <label>Pattern Ratio</label>
+                                <input type="number" id="tile${index}Ratio" value="${tile.ratio}" min="1" readonly style="background: #f5f5f5;">
+                            </div>
+                            <div class="tile-input-field">
+                                <label>Sq Ft per Tile</label>
+                                <input type="text" id="tile${index}SqFt" readonly placeholder="0.50" style="background: #f5f5f5;">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function generatePatternPreview(pattern) {
+            const container = document.getElementById('patternPreview');
+            const patternData = tilePatterns[pattern];
+            
+            // Create SVG pattern visualization
+            let svg = `
+                <svg width="300" height="200" viewBox="0 0 300 200">
+                    <defs>
+                        <pattern id="grout" patternUnits="userSpaceOnUse" width="2" height="2">
+                            <rect width="2" height="2" fill="#C0C0C0"/>
+                        </pattern>
+                    </defs>
+            `;
+            
+            // Generate pattern based on type
+            switch(pattern) {
+                case 'running-bond':
+                    svg += generateRunningBondSVG();
+                    break;
+                case 'subway':
+                    svg += generateSubwaySVG();
+                    break;
+                case 'herringbone':
+                    svg += generateHerringboneSVG();
+                    break;
+                case 'basketweave':
+                    svg += generateBasketweaveSVG();
+                    break;
+                case 'custom':
+                    svg += generateCustomSVG();
+                    break;
+            }
+            
+            svg += '</svg>';
+            container.innerHTML = svg;
+        }
+
+
+
+
+
+        function generateCustomSVG() {
+            return `<text x="150" y="100" text-anchor="middle" fill="#666" font-size="14">Custom Pattern Preview</text>
+                    <text x="150" y="120" text-anchor="middle" fill="#666" font-size="12">Configure your tiles to see preview</text>`;
+        }
+
+        function updateWasteDisplay() {
+            const wasteFactor = document.getElementById('wasteFactor').value;
+            document.getElementById('wasteDisplay').textContent = wasteFactor + '%';
+            currentTileData.wasteFactor = parseInt(wasteFactor);
+        }
+        
+        function toggleCostInputs() {
+            const method = document.getElementById('tileCostMethod').value;
+            
+            // Hide all cost input rows
+            document.getElementById('perTileRow').style.display = 'none';
+            document.getElementById('perSqFtRow').style.display = 'none';
+            document.getElementById('perBoxRow').style.display = 'none';
+            document.getElementById('tilesPerBoxRow').style.display = 'none';
+            document.getElementById('sqFtPerBoxRow').style.display = 'none';
+            
+            // Show relevant rows based on method
+            if (method === 'per-tile') {
+                document.getElementById('perTileRow').style.display = 'block';
+            } else if (method === 'per-sqft') {
+                document.getElementById('perSqFtRow').style.display = 'block';
+            } else if (method === 'per-box') {
+                document.getElementById('perBoxRow').style.display = 'block';
+                document.getElementById('tilesPerBoxRow').style.display = 'block';
+                document.getElementById('sqFtPerBoxRow').style.display = 'block';
+            }
+        }
+
+        function calculateTiles() {
+            // Handle custom grout spacing
+            const groutSelect = document.getElementById('groutSpacing');
+            if (groutSelect.value === 'custom') {
+                document.getElementById('customGroutRow').style.display = 'block';
+                currentTileData.groutSpacing = parseFloat(document.getElementById('customGrout').value) || 0;
+            } else {
+                document.getElementById('customGroutRow').style.display = 'none';
+                currentTileData.groutSpacing = parseFloat(groutSelect.value) || 0;
+            }
+
+            const pattern = currentTileData.pattern;
+            const patternData = tilePatterns[pattern];
+            const projectSqFt = parseFloat(document.getElementById('projectSqFt').value) || 0;
+            
+            if (projectSqFt <= 0) {
+                document.getElementById('tileResults').innerHTML = '<p>Enter project square footage to see results.</p>';
+                return;
+            }
+
+            let results = [];
+            let totalCost = 0;
+            let totalRatio = 0;
+
+            // Calculate total pattern ratio
+            patternData.tiles.forEach((tile, index) => {
+                totalRatio += tile.ratio;
+            });
+
+            // Calculate for each tile type
+            patternData.tiles.forEach((tile, index) => {
+                const length = parseFloat(document.getElementById(`tile${index}Length`).value) || 0;
+                const width = parseFloat(document.getElementById(`tile${index}Width`).value) || 0;
+                const tilesPerBox = parseInt(document.getElementById(`tile${index}PerBox`).value) || 1;
+                const costPerBox = parseFloat(document.getElementById(`tile${index}Cost`).value) || 0;
+
+                if (length > 0 && width > 0) {
+                    // Account for grout spacing
+                    const effectiveLength = length + currentTileData.groutSpacing;
+                    const effectiveWidth = width + currentTileData.groutSpacing;
+                    
+                    // Calculate square footage per tile
+                    const sqFtPerTile = (effectiveLength * effectiveWidth) / 144;
+                    document.getElementById(`tile${index}SqFt`).value = sqFtPerTile.toFixed(3);
+
+                    // Calculate tiles needed for this type based on pattern ratio
+                    const patternSqFt = projectSqFt * (tile.ratio / totalRatio);
+                    const tilesNeeded = Math.ceil(patternSqFt / sqFtPerTile);
+                    const tilesWithWaste = Math.ceil(tilesNeeded * (1 + currentTileData.wasteFactor / 100));
+                    const boxesNeeded = Math.ceil(tilesWithWaste / tilesPerBox);
+                    const cost = boxesNeeded * costPerBox;
+
+                    results.push({
+                        name: tile.name,
+                        length: length,
+                        width: width,
+                        sqFtPerTile: sqFtPerTile,
+                        tilesNeeded: tilesNeeded,
+                        tilesWithWaste: tilesWithWaste,
+                        boxesNeeded: boxesNeeded,
+                        tilesPerBox: tilesPerBox,
+                        costPerBox: costPerBox,
+                        totalCost: cost
+                    });
+
+                    totalCost += cost;
+                }
+            });
+
+            displayTileResults(results, totalCost, projectSqFt);
+        }
+
+        function displayTileResults(results, totalCost, projectSqFt) {
+            const container = document.getElementById('tileResults');
+            
+            if (results.length === 0) {
+                container.innerHTML = '<p>Enter tile dimensions to see calculations.</p>';
+                return;
+            }
+
+            let html = '<h4>Tile Requirements</h4>';
+
+            results.forEach(result => {
+                html += `
+                    <div class="tile-type-result">
+                        <div class="tile-type-name">${result.name} (${result.length}" × ${result.width}")</div>
+                        <div class="tile-calculation-row">
+                            <span class="tile-calculation-label">Tiles needed (exact):</span>
+                            <span class="tile-calculation-value">${result.tilesNeeded}</span>
+                        </div>
+                        <div class="tile-calculation-row">
+                            <span class="tile-calculation-label">Tiles with waste (+${currentTileData.wasteFactor}%):</span>
+                            <span class="tile-calculation-value">${result.tilesWithWaste}</span>
+                        </div>
+                        <div class="tile-calculation-row">
+                            <span class="tile-calculation-label">Boxes needed:</span>
+                            <span class="tile-calculation-value">${result.boxesNeeded} boxes</span>
+                        </div>
+                        <div class="tile-calculation-row">
+                            <span class="tile-calculation-label">Cost:</span>
+                            <span class="tile-calculation-value">$${result.totalCost.toFixed(2)}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                <div class="tile-total-section">
+                    <div class="tile-total-row">
+                        <span>Project Area:</span>
+                        <span>${projectSqFt} sq ft</span>
+                    </div>
+                    <div class="tile-total-row">
+                        <span>Grout Spacing:</span>
+                        <span>${currentTileData.groutSpacing > 0 ? currentTileData.groutSpacing + '"' : 'None'}</span>
+                    </div>
+                    <div class="tile-total-row">
+                        <span>Total Project Cost:</span>
+                        <span class="tile-total-cost">$${totalCost.toFixed(2)}</span>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function saveTileProject() {
+            const pattern = document.getElementById('tilePattern').value;
+            const projectSqFt = parseFloat(document.getElementById('projectSqFt').value) || 0;
+            const groutSpacing = currentTileData.groutSpacing;
+            const wasteFactor = currentTileData.wasteFactor;
+
+            if (projectSqFt <= 0) {
+                showNotification('Please enter project details before saving.', 'error');
+                return;
+            }
+
+            // Collect tile data
+            const patternData = tilePatterns[pattern];
+            let tileData = [];
+            let totalCost = 0;
+
+            patternData.tiles.forEach((tile, index) => {
+                const length = parseFloat(document.getElementById(`tile${index}Length`).value) || 0;
+                const width = parseFloat(document.getElementById(`tile${index}Width`).value) || 0;
+                const tilesPerBox = parseInt(document.getElementById(`tile${index}PerBox`).value) || 1;
+                const costPerBox = parseFloat(document.getElementById(`tile${index}Cost`).value) || 0;
+
+                if (length > 0 && width > 0) {
+                    tileData.push({
+                        name: tile.name,
+                        length: length,
+                        width: width,
+                        tilesPerBox: tilesPerBox,
+                        costPerBox: costPerBox
+                    });
+                    
+                    // Quick cost calculation for project summary
+                    const sqFtPerTile = ((length + groutSpacing) * (width + groutSpacing)) / 144;
+                    const tilesNeeded = Math.ceil((projectSqFt * (tile.ratio / patternData.tiles.reduce((sum, t) => sum + t.ratio, 0))) / sqFtPerTile);
+                    const tilesWithWaste = Math.ceil(tilesNeeded * (1 + wasteFactor / 100));
+                    const boxesNeeded = Math.ceil(tilesWithWaste / tilesPerBox);
+                    totalCost += boxesNeeded * costPerBox;
+                }
+            });
+
+            // Create equation and details for standard save format
+            const equation = `${tilePatterns[pattern].name} - ${projectSqFt} sq ft`;
+            const details = `Pattern: ${tilePatterns[pattern].name}\nArea: ${projectSqFt} sq ft\nGrout: ${groutSpacing > 0 ? groutSpacing + '"' : 'None'}\nWaste Factor: ${wasteFactor}%\nTotal Cost: $${totalCost.toFixed(2)}`;
+
+            const saveData = {
+                equation: equation,
+                result: `$${totalCost.toFixed(2)} total cost`,
+                details: details,
+                // Store additional tile-specific data
+                tileData: {
+                    pattern: tilePatterns[pattern].name,
+                    projectSqFt: projectSqFt,
+                    groutSpacing: groutSpacing,
+                    wasteFactor: wasteFactor,
+                    tiles: tileData,
+                    totalCost: totalCost
+                }
+            };
+
+            showSaveToProjectModal('Tile Calculator', saveData);
+        }
+
+        // =====================================================
         // Wood Species Database Functions
         // =====================================================
         
@@ -11351,6 +14402,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: false,
                 sustainability: "good",
                 grainPattern: "linear-gradient(45deg, #d4a574 0%, #c89660 25%, #d4a574 50%, #c89660 75%, #d4a574 100%)",
+                grainImage: "ash_400.jpg", // Ready for image when available
                 finishRecommendations: {
                     natural: ["Danish Oil", "Tung Oil", "Shellac"],
                     stain: ["Medium Brown", "Dark Walnut", "Honey Oak"],
@@ -11372,6 +14424,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: true,
                 sustainability: "excellent",
                 grainPattern: "linear-gradient(0deg, #f5f2eb 0%, #ebe4d5 100%)",
+                grainImage: "basswood_400.jpg", // Ready for image when available
                 finishRecommendations: {
                     natural: ["Water-based Poly", "Shellac"],
                     stain: ["Any stain - excellent uptake", "Paint - preferred"],
@@ -11393,6 +14446,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: true,
                 sustainability: "excellent",
                 grainPattern: "linear-gradient(5deg, #e8d5c4 0%, #d4b896 40%, #e8d5c4 80%, #d4b896 100%)",
+                grainImage: "beech_400.jpg", // Ready for image when available
                 finishRecommendations: {
                     natural: ["Danish Oil", "Lacquer", "Shellac"],
                     stain: ["Light Oak", "Medium Brown", "Cherry"],
@@ -11414,6 +14468,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: true,
                 sustainability: "excellent",
                 grainPattern: "linear-gradient(10deg, #f2ebdc 0%, #e8d5c4 30%, #f2ebdc 70%, #e8d5c4 100%)",
+                grainImage: "birch_400.jpg", // Ready for image when available
                 finishRecommendations: {
                     natural: ["Lacquer", "Shellac", "Water-based Poly"],
                     stain: ["Cherry", "Golden Oak", "Dark Walnut"],
@@ -11435,7 +14490,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: true,
                 sustainability: "good",
                 grainPattern: "linear-gradient(30deg, #4a3a2b 0%, #6b4e3d 20%, #4a3a2b 40%, #6b4e3d 60%, #4a3a2b 80%, #6b4e3d 100%)",
-                grainImage: null, // Image was corrupted, removing for now
+                grainImage: "black_walnut_400.jpg",
                 finishRecommendations: {
                     natural: ["Tung Oil", "Danish Oil", "Paste Wax"],
                     stain: ["Natural - no stain needed", "Light Golden Oak (if desired)"],
@@ -11485,6 +14540,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: true,
                 sustainability: "good",
                 grainPattern: "linear-gradient(25deg, #b5735a 0%, #d4956f 30%, #b5735a 60%, #d4956f 100%)",
+                grainImage: "cherry_400.jpg",
                 finishRecommendations: {
                     natural: ["Shellac", "Lacquer", "Danish Oil"],
                     stain: ["Natural (darkens naturally)", "Light Cherry", "Medium Cherry"],
@@ -11541,6 +14597,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: true,
                 sustainability: "excellent",
                 grainPattern: "linear-gradient(0deg, #f9f6e8 0%, #ede3cc 50%, #f9f6e8 100%)",
+                grainImage: "eastern_white_pine_400.jpg", // Ready for image when available
                 finishRecommendations: {
                     natural: ["Shellac", "Water-based Poly", "Danish Oil"],
                     stain: ["Pine stain", "Golden Oak", "Honey"],
@@ -11597,6 +14654,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: true,
                 sustainability: "excellent",
                 grainPattern: "linear-gradient(0deg, #f7f4e8 0%, #ede5d1 40%, #f7f4e8 100%)",
+                grainImage: "hard_maple_400.jpg",
                 finishRecommendations: {
                     natural: ["Water-based Poly", "Shellac", "Lacquer"],
                     stain: ["Light Oak", "Honey", "Medium Brown"],
@@ -11618,6 +14676,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: false,
                 sustainability: "good",
                 grainPattern: "linear-gradient(25deg, #d4b896 0%, #a67c52 30%, #d4b896 60%, #a67c52 100%)",
+                grainImage: "hickory_400.jpg", // Ready for image when available
                 finishRecommendations: {
                     natural: ["Tung Oil", "Danish Oil", "Polyurethane"],
                     stain: ["Light Oak", "Golden Oak", "Medium Brown"],
@@ -11667,6 +14726,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: true,
                 sustainability: "poor",
                 grainPattern: "linear-gradient(20deg, #a0643c 0%, #d4956f 40%, #a0643c 80%, #d4956f 100%)",
+                grainImage: "mahogany_400.jpg", // Ready for image when available
                 finishRecommendations: {
                     natural: ["Lacquer", "Varnish", "Shellac"],
                     stain: ["Natural (beautiful as-is)", "Light Cherry", "Medium Brown"],
@@ -11730,6 +14790,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: true,
                 sustainability: "excellent",
                 grainPattern: "linear-gradient(90deg, #f0e8d4 0%, #d4c5a9 30%, #a69c7a 60%, #f0e8d4 100%)",
+                grainImage: "poplar_400.jpg", // Ready for image when available
                 finishRecommendations: {
                     natural: ["Primer + Paint", "Shellac (if clear)"],
                     stain: ["Paint preferred", "Gel stain (if needed)"],
@@ -11751,6 +14812,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: false,
                 sustainability: "poor",
                 grainPattern: "linear-gradient(30deg, #8b4a9c 0%, #a855c7 40%, #8b4a9c 70%, #a855c7 100%)",
+                grainImage: "purple_heart_400.jpg", // Ready for image when available
                 finishRecommendations: {
                     natural: ["Lacquer with UV protection", "Shellac", "Wax"],
                     stain: ["Natural only - don't hide purple"],
@@ -11772,6 +14834,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: true,
                 sustainability: "good",
                 grainPattern: "linear-gradient(15deg, #c49b7a 0%, #a67c52 20%, #c49b7a 35%, #a67c52 50%, #c49b7a 65%, #a67c52 80%, #c49b7a 100%)",
+                grainImage: "red_oak_400.jpg",
                 finishRecommendations: {
                     natural: ["Polyurethane", "Lacquer", "Danish Oil"],
                     stain: ["Golden Oak", "Dark Walnut", "Honey", "Ebony"],
@@ -11849,6 +14912,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: false,
                 sustainability: "poor",
                 grainPattern: "linear-gradient(35deg, #b8956f 0%, #8b6914 25%, #b8956f 50%, #6d5411 75%, #b8956f 100%)",
+                grainImage: "teak_400.jpg", // Ready for image when available
                 finishRecommendations: {
                     natural: ["Teak Oil", "No finish (weathers naturally)", "Marine Varnish"],
                     stain: ["Natural only - oils resist stain"],
@@ -11884,6 +14948,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: true,
                 sustainability: "excellent",
                 grainPattern: "linear-gradient(10deg, #c4856b 0%, #a0643c 30%, #c4856b 70%, #a0643c 100%)",
+                grainImage: "western_red_cedar_400.jpg", // Ready for image when available
                 finishRecommendations: {
                     natural: ["No finish (weathers naturally)", "Cedar Oil", "Semi-transparent Stain"],
                     stain: ["Semi-transparent only", "Cedar tone", "Natural"],
@@ -11905,6 +14970,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 beginner: false,
                 sustainability: "good",
                 grainPattern: "linear-gradient(20deg, #b89d7c 0%, #9a7f5f 25%, #b89d7c 50%, #9a7f5f 75%, #b89d7c 100%)",
+                grainImage: "white_oak_400.jpg", // Ready for image when available
                 finishRecommendations: {
                     natural: ["Spar Varnish", "Tung Oil", "Epoxy (marine)"],
                     stain: ["Golden Oak", "Weathered Gray", "Driftwood"],
@@ -12445,8 +15511,8 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                         `background-image: url('${species.grainImage}'); background-size: cover; background-position: center;` : 
                         `background: ${species.grainPattern};`
                     } 
-                    width: 100%; height: 40px; border-radius: 4px; margin-bottom: ${species.grainImage ? '4px' : '12px'}; border: 1px solid var(--border-color);
-                "></div>
+                    width: 100%; height: 150px; border-radius: 4px; margin-bottom: ${species.grainImage ? '4px' : '12px'}; border: 1px solid var(--border-color);
+                " onerror="this.style.backgroundImage='none'; this.style.background='${species.grainPattern || '#ddd'}';"></div>
                 ${species.grainImage ? `
                     <div class="image-attribution" style="
                         font-size: 10px; 
@@ -12707,7 +15773,9 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             
             loadFromLocalStorage();
             updateProjectSelector();
-            updateProjectStatusBars();
+            
+            // Initialize tile cost inputs with default per-sqft method
+            toggleCostInputs();
             updateConversionPreview();
             
             // Initialize diagrams
@@ -12724,6 +15792,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             calculateSingleMiter(); // Initialize Single Board Cut with default selections
             calculateGradeSlope(); // Initialize Grade/Slope Calculator
             initWoodSpeciesDatabase(); // Initialize Wood Species Database
+            initTileCalculator(); // Initialize Tile Calculator
             
             console.log('WorkShop Pro Calculator with Visual Project Management loaded!');
         });
