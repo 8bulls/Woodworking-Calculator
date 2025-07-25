@@ -5,6 +5,197 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Woodworking Calculator</title>
     <style>
+        /* CSS Custom Properties for Themeable Colors */
+        :root {
+            /* Wood Theme (Default) */
+            --primary-color: #8B4513;
+            --primary-light: #A0522D;
+            --primary-dark: #6B3410;
+            --secondary-color: #D2B48C;
+            --accent-color: #DEB887;
+            --background-color: #FFFFFF;
+            --surface-color: #F8F9FA;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --text-on-primary: #FFFFFF;
+            --border-color: #D2B48C;
+            --success-color: #4CAF50;
+            --warning-color: #FF9800;
+            --error-color: #F44336;
+            --info-color: #2196F3;
+            
+            /* Gradient variations */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            --gradient-surface: linear-gradient(135deg, var(--surface-color), var(--background-color));
+            
+            /* Theme transition */
+            --theme-transition: all 0.3s ease;
+        }
+        
+        /* Steel Theme */
+        .theme-steel {
+            --primary-color: #6B7280;
+            --primary-light: #9CA3AF;
+            --primary-dark: #4B5563;
+            --secondary-color: #D1D5DB;
+            --accent-color: #E5E7EB;
+            --background-color: #F9FAFB;
+            --surface-color: #FFFFFF;
+            --text-primary: #111827;
+            --text-secondary: #4B5563;
+            --text-on-primary: #FFFFFF;
+            --border-color: #D1D5DB;
+            --success-color: #10B981;
+            --warning-color: #F59E0B;
+            --error-color: #EF4444;
+            --info-color: #6B7280;
+            --gradient-primary: linear-gradient(135deg, #6B7280, #4B5563);
+            --gradient-surface: linear-gradient(135deg, var(--surface-color), var(--background-color));
+        }
+        
+        /* Steel Theme Diamond Plate Background */
+body.theme-steel {
+background: 
+/* Brushed metal texture */
+repeating-linear-gradient(
+45deg,
+rgba(255,255,255,0.03) 0px,
+rgba(255,255,255,0.03) 1px,
+transparent 1px,
+transparent 2px,
+rgba(0,0,0,0.03) 2px,
+rgba(0,0,0,0.03) 3px,
+transparent 3px,
+transparent 4px
+),
+/* Base steel gradient */
+linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
+}        /* Steel Theme Tab Button Overrides */
+        .theme-steel .tab-btn {
+            background: linear-gradient(135deg, #9CA3AF, #6B7280);
+            color: #FFFFFF;
+            border: 1px solid #4B5563;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+        
+        .theme-steel .tab-btn.active {
+            background: linear-gradient(135deg, #4B5563, #374151);
+            color: #FFFFFF;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .theme-steel .tab-btn:hover {
+            background: linear-gradient(135deg, #6B7280, #4B5563);
+            transform: none;
+        }
+
+        
+        
+        /* Dark Theme */
+        .theme-dark {
+            --primary-color: #3F51B5;          /* Muted Blue - subtle accent */
+            --primary-light: #5C6BC0;          /* Lighter Blue */
+            --primary-dark: #303F9F;           /* Darker Blue */
+            --secondary-color: #424242;        /* Medium Gray */
+            --accent-color: #757575;           /* Neutral Gray */
+            --background-color: #121212;       /* Material Dark Background */
+            --surface-color: #1E1E1E;          /* Elevated Surface */
+            --text-primary: #E0E0E0;           /* Off-white text */
+            --text-secondary: #A0A0A0;         /* Muted Gray text */
+            --text-on-primary: #FFFFFF;        /* White text on blue */
+            --border-color: #2D2D2D;           /* Subtle border */
+            --success-color: #4CAF50;          /* Muted Green */
+            --warning-color: #FF9800;          /* Muted Orange */
+            --error-color: #F44336;            /* Muted Red */
+            --info-color: #2196F3;             /* Muted Info Blue */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            --gradient-surface: linear-gradient(135deg, var(--surface-color), var(--background-color));
+        }
+        
+        /* Dewalt Theme */
+        .theme-dewalt {
+            --primary-color: #FFCD00;          /* Dewalt Yellow */
+            --primary-light: #FFD633;          /* Lighter Yellow */
+            --primary-dark: #E6B800;           /* Darker Yellow */
+            --secondary-color: #333333;        /* Dark Gray */
+            --accent-color: #1A1A1A;           /* Near Black */
+            --background-color: #F5F5F5;       /* Light Gray */
+            --surface-color: #FFFFFF;          /* White */
+            --text-primary: #000000;           /* Black */
+            --text-secondary: #333333;         /* Dark Gray */
+            --text-on-primary: #000000;        /* Black text on yellow */
+            --border-color: #CCCCCC;           /* Light Gray border */
+            --success-color: #4CAF50;          /* Green */
+            --warning-color: #FFCD00;          /* Dewalt Yellow */
+            --error-color: #F44336;            /* Red */
+            --info-color: #333333;             /* Dark Gray */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            --gradient-surface: linear-gradient(135deg, var(--surface-color), var(--background-color));
+        }
+
+        /* Milwaukee Theme */
+        .theme-milwaukee {
+            --primary-color: #CC2936;          /* Milwaukee Red */
+            --primary-light: #E8384F;          /* Lighter Red */
+            --primary-dark: #A31621;           /* Darker Red */
+            --secondary-color: #2D2D2D;        /* Dark Gray */
+            --accent-color: #000000;           /* Black */
+            --background-color: #F8F8F8;       /* Light Gray */
+            --surface-color: #FFFFFF;          /* White */
+            --text-primary: #000000;           /* Black */
+            --text-secondary: #2D2D2D;         /* Dark Gray */
+            --text-on-primary: #FFFFFF;        /* White text on red */
+            --border-color: #DDDDDD;           /* Light Gray border */
+            --success-color: #28A745;          /* Green */
+            --warning-color: #FFC107;          /* Amber */
+            --error-color: #CC2936;            /* Milwaukee Red */
+            --info-color: #2D2D2D;             /* Dark Gray */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            --gradient-surface: linear-gradient(135deg, var(--surface-color), var(--background-color));
+        }
+
+        /* Ridgid Theme */
+        .theme-ridgid {
+            --primary-color: #FF6600;          /* Ridgid Orange */
+            --primary-light: #FF8533;          /* Lighter Orange */
+            --primary-dark: #E55A00;           /* Darker Orange */
+            --secondary-color: #333333;        /* Dark Gray */
+            --accent-color: #000000;           /* Black */
+            --background-color: #F9F9F9;       /* Light Gray */
+            --surface-color: #FFFFFF;          /* White */
+            --text-primary: #000000;           /* Black */
+            --text-secondary: #333333;         /* Dark Gray */
+            --text-on-primary: #FFFFFF;        /* White text on orange */
+            --border-color: #DDDDDD;           /* Light Gray border */
+            --success-color: #28A745;          /* Green */
+            --warning-color: #FF6600;          /* Ridgid Orange */
+            --error-color: #DC3545;            /* Red */
+            --info-color: #333333;             /* Dark Gray */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            --gradient-surface: linear-gradient(135deg, var(--surface-color), var(--background-color));
+        }
+
+        /* Noob Theme (Ryobi) */
+        .theme-noob {
+            --primary-color: #32CD32;          /* Ryobi Lime Green */
+            --primary-light: #7FFF00;          /* Brighter Lime */
+            --primary-dark: #228B22;           /* Darker Green */
+            --secondary-color: #333333;        /* Dark Gray */
+            --accent-color: #000000;           /* Black */
+            --background-color: #F8F8F8;       /* Light Gray */
+            --surface-color: #FFFFFF;          /* White */
+            --text-primary: #000000;           /* Black */
+            --text-secondary: #333333;         /* Dark Gray */
+            --text-on-primary: #000000;        /* Black text on lime */
+            --border-color: #DDDDDD;           /* Light Gray border */
+            --success-color: #32CD32;          /* Ryobi Green */
+            --warning-color: #FFA500;          /* Orange */
+            --error-color: #FF4444;            /* Red */
+            --info-color: #333333;             /* Dark Gray */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            --gradient-surface: linear-gradient(135deg, var(--surface-color), var(--background-color));
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -13,27 +204,29 @@
         
         html, body {
             font-family: Arial, sans-serif;
-            background: #8B4513;
-            color: #2F1B14;
+            background: var(--primary-color);
+            color: var(--text-primary);
             padding: 0;
             margin: 0;
             min-height: 100vh;
             overflow-x: hidden;
+            transition: var(--theme-transition);
         }
         
         body {
             padding: 10px;
-            background: linear-gradient(135deg, #8B4513, #DEB887);
+            background: var(--gradient-primary);
         }
         
         .container {
             max-width: 500px;
             margin: 0 auto;
-            background: #ffffff;
+            background: var(--background-color);
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             position: relative;
+            transition: var(--theme-transition);
         }
         
         .header-section {
@@ -44,32 +237,62 @@
         }
         
         h1 {
-            color: #8B4513;
+            color: var(--primary-color);
             font-size: 24px;
             font-weight: bold;
             margin: 0;
+            transition: var(--theme-transition);
         }
         
         .help-btn {
-            background: #D2B48C;
-            border: 2px solid #8B4513;
+            background: var(--secondary-color);
+            border: 2px solid var(--primary-color);
             border-radius: 50%;
             width: 30px;
             height: 30px;
-            color: #8B4513;
+            color: var(--primary-color);
             font-weight: bold;
             font-size: 16px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: var(--theme-transition);
             display: flex;
             align-items: center;
             justify-content: center;
         }
         
         .help-btn:hover {
-            background: #8B4513;
-            color: white;
+            background: var(--primary-color);
+            color: var(--text-on-primary);
             transform: scale(1.1);
+        }
+        
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .theme-selector select {
+            padding: 6px 10px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--background-color);
+            color: var(--primary-color);
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--theme-transition);
+            min-width: 90px;
+        }
+        
+        .theme-selector select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+        
+        .theme-selector select:hover {
+            border-color: var(--primary-light);
         }
         
         .tab-buttons {
@@ -81,11 +304,12 @@
         
         /* Global Project Selector */
         .global-project-selector {
-            background: linear-gradient(135deg, #8B4513, #A0522D);
+            background: var(--gradient-primary);
             border-radius: 8px;
             padding: 12px 15px;
             margin-bottom: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: var(--theme-transition);
         }
         
         .project-selector-content {
@@ -96,43 +320,76 @@
         }
         
         .project-label {
-            color: white;
+            color: var(--text-on-primary);
             font-weight: bold;
             font-size: 14px;
+            transition: var(--theme-transition);
         }
         
         #globalProjectDropdown {
             padding: 6px 12px;
-            border: 2px solid #D2B48C;
+            border: 2px solid var(--border-color);
             border-radius: 5px;
-            background: white;
-            color: #333;
+            background: var(--background-color);
+            color: var(--text-primary);
             font-size: 14px;
             min-width: 200px;
             cursor: pointer;
+            transition: var(--theme-transition);
         }
         
         #globalProjectDropdown:focus {
             outline: none;
-            border-color: #8B4513;
+            border-color: var(--primary-color);
             box-shadow: 0 0 5px rgba(139, 69, 19, 0.3);
         }
         
         .tab-btn {
-            flex: 1;
-            padding: 12px;
-            background: #D2B48C;
-            color: #8B4513;
+            flex: 1 1 auto;
+            padding: 12px 8px;
+            background: var(--secondary-color);
+            color: var(--primary-color);
             border: none;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: var(--theme-transition);
+            white-space: nowrap;
+            min-width: fit-content;
+        }
+        
+        /* Only apply responsive changes on truly small screens */
+        @media (max-width: 500px) {
+            .tab-btn {
+                font-size: 12px;
+                padding: 8px 4px;
+            }
+            
+            /* Replace long text with shorter versions for very narrow windows */
+            .tab-btn:nth-child(2):after { content: "Cut Calc"; }
+            .tab-btn:nth-child(3):after { content: "Specialty"; }
+            
+            .tab-btn:nth-child(2),
+            .tab-btn:nth-child(3) {
+                text-indent: -9999px;
+                position: relative;
+            }
+            
+            .tab-btn:nth-child(2):after,
+            .tab-btn:nth-child(3):after {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                text-indent: 0;
+                font-size: 12px;
+                font-weight: bold;
+            }
         }
         
         .tab-btn.active {
-            background: #8B4513;
-            color: white;
+            background: var(--primary-color);
+            color: var(--text-on-primary);
         }
         
         .tab-content {
@@ -158,10 +415,12 @@
         
         select, input {
             padding: 10px;
-            border: 2px solid #D2B48C;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             font-size: 16px;
-            background: white;
+            background: var(--background-color);
+            color: var(--text-primary);
+            transition: var(--theme-transition);
         }
         
         .wide-input {
@@ -209,7 +468,7 @@
         
         .save-preview {
             background: #f8f9fa;
-            border: 2px solid #D2B48C;
+            border: 2px solid var(--secondary-color);
             border-radius: 5px;
             padding: 15px;
             margin: 10px 0;
@@ -222,13 +481,13 @@
             font-size: 16px;
             margin-bottom: 10px;
             padding-bottom: 8px;
-            border-bottom: 1px solid #D2B48C;
+            border-bottom: 1px solid var(--secondary-color);
         }
         
         .save-preview-lumber .preview-summary {
             font-size: 14px;
             margin-bottom: 10px;
-            color: #8B4513;
+            color: var(--primary-color);
         }
         
         .save-preview-lumber .preview-details {
@@ -241,13 +500,13 @@
             font-size: 16px;
             margin-bottom: 10px;
             padding-bottom: 8px;
-            border-bottom: 1px solid #D2B48C;
+            border-bottom: 1px solid var(--secondary-color);
         }
         
         .save-preview-cut .preview-equation {
             font-size: 14px;
             margin-bottom: 8px;
-            color: #8B4513;
+            color: var(--primary-color);
         }
         
         .save-preview-cut .preview-result {
@@ -271,13 +530,13 @@
             font-size: 16px;
             margin-bottom: 10px;
             padding-bottom: 8px;
-            border-bottom: 1px solid #D2B48C;
+            border-bottom: 1px solid var(--secondary-color);
         }
         
         .save-preview-optimization .preview-equation {
             font-size: 14px;
             margin-bottom: 8px;
-            color: #8B4513;
+            color: var(--primary-color);
         }
         
         .save-preview-optimization .preview-result {
@@ -304,13 +563,13 @@
             font-size: 16px;
             margin-bottom: 10px;
             padding-bottom: 8px;
-            border-bottom: 1px solid #D2B48C;
+            border-bottom: 1px solid var(--secondary-color);
         }
         
         .save-preview-spacing .preview-equation {
             font-size: 14px;
             margin-bottom: 8px;
-            color: #8B4513;
+            color: var(--primary-color);
         }
         
         .save-preview-spacing .preview-result {
@@ -359,17 +618,18 @@
         
         .save-preview h5 {
             margin: 0 0 10px 0;
-            color: #8B4513;
+            color: var(--primary-color);
             font-size: 16px;
         }
         
         /* Project Timeline Styles */
         .project-timeline-header {
-            background: linear-gradient(135deg, #8B4513, #A0522D);
+            background: var(--gradient-primary);
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
-            color: white;
+            color: var(--text-on-primary);
+            transition: var(--theme-transition);
         }
         
         .project-title-section {
@@ -446,7 +706,7 @@
         }
         
         .project-loader-dropdown option {
-            background: #8B4513;
+            background: var(--primary-color);
             color: white;
         }
         
@@ -478,7 +738,7 @@
             top: 0;
             bottom: -30px;
             width: 2px;
-            background: #D2B48C;
+            background: var(--secondary-color);
         }
         
         .timeline-item:last-child:before {
@@ -513,7 +773,7 @@
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            border-left: 4px solid #D2B48C;
+            border-left: 4px solid var(--secondary-color);
         }
         
         .timeline-card-header {
@@ -529,7 +789,7 @@
         
         .timeline-tool-name {
             font-weight: bold;
-            color: #8B4513;
+            color: var(--primary-color);
             font-size: 16px;
             margin-bottom: 5px;
         }
@@ -598,8 +858,8 @@
             margin-bottom: 20px;
         }
         
-        /* Mobile responsive */
-        @media (max-width: 768px) {
+        /* Mobile responsive - actual mobile devices */
+        @media (max-width: 768px) and (hover: none) and (pointer: coarse) {
             .project-title-section {
                 flex-direction: column;
                 gap: 15px;
@@ -609,6 +869,94 @@
             .project-actions {
                 justify-content: center;
             }
+        }
+        
+        /* Very narrow windows - mobile or narrow desktop */
+        @media (max-width: 500px) {
+            .tab-btn {
+                font-size: 12px;
+                padding: 8px 4px;
+            }
+            
+            /* Further shorten tab names for very narrow windows */
+            .tab-btn:nth-child(2):after { content: "Cut"; }
+            .tab-btn:nth-child(3):after { content: "Tools"; }
+            .tab-btn:nth-child(4):after { content: "📁 Projects"; }
+            
+            .tab-btn:nth-child(4) {
+                text-indent: -9999px;
+                position: relative;
+            }
+            
+            .tab-btn:nth-child(4):after {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                text-indent: 0;
+                font-size: 12px;
+                font-weight: bold;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .tab-btn {
+                font-size: 10px;
+                padding: 8px 2px;
+            }
+            
+            .tab-buttons {
+                margin-bottom: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            /* Even shorter names for very small screens */
+            .tab-btn:nth-child(2):after { content: "Cut"; }
+            .tab-btn:nth-child(3):after { content: "Tools"; }
+            .tab-btn:nth-child(4):after { content: "📁"; }
+            
+            .tab-btn:nth-child(4):after {
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .tab-btn {
+                font-size: 9px;
+                padding: 6px 1px;
+            }
+            
+            /* Ultra-compact for smallest screens */
+            .tab-btn:nth-child(1):after { content: "Calc"; }
+            .tab-btn:nth-child(2):after { content: "Cut"; }
+            .tab-btn:nth-child(3):after { content: "🔧"; }
+            .tab-btn:nth-child(4):after { content: "📁"; }
+            
+            .tab-btn:nth-child(1) {
+                text-indent: -9999px;
+                position: relative;
+            }
+            
+            .tab-btn:nth-child(1):after {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                text-indent: 0;
+                font-size: 9px;
+                font-weight: bold;
+            }
+            
+            .tab-btn:nth-child(3):after,
+            .tab-btn:nth-child(4):after {
+                font-size: 12px;
+            }
+        }
             
             .summary-stats {
                 justify-content: center;
@@ -678,7 +1026,7 @@
             text-align: center;
             font-size: 18px;
             font-weight: bold;
-            border: 2px solid #8B4513;
+            border: 2px solid var(--primary-color);
         }
         
         /* Calculator display styles */
@@ -694,7 +1042,7 @@
         
         .calc-equation {
             font-size: 16px;
-            color: #D2B48C;
+            color: var(--secondary-color);
             min-height: 24px;
             margin-bottom: 5px;
         }
@@ -726,7 +1074,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
-            background: #D2B48C;
+            background: var(--secondary-color);
             color: #2F1B14;
         }
         
@@ -740,7 +1088,7 @@
         }
         
         .calc-btn.operation {
-            background: #8B4513;
+            background: var(--primary-color);
             color: white;
         }
         
@@ -771,7 +1119,7 @@
             top: 5px;
             right: 10px;
             font-size: 12px;
-            color: #D2B48C;
+            color: var(--secondary-color);
         }
         
         .conversion-section {
@@ -795,13 +1143,13 @@
         
         .conversion-input-row label {
             font-weight: bold;
-            color: #8B4513;
+            color: var(--primary-color);
             min-width: 80px;
         }
         
         .conversion-preview {
             background: #f8f9fa;
-            border: 1px solid #D2B48C;
+            border: 1px solid var(--secondary-color);
             border-radius: 5px;
             padding: 8px 12px;
             margin-bottom: 10px;
@@ -811,7 +1159,7 @@
         
         #conversionValue {
             font-weight: bold;
-            color: #8B4513;
+            color: var(--primary-color);
         }
         
         /* Woodworking Calculators Styles */
@@ -820,26 +1168,28 @@
         }
         
         .calc-card {
-            border: 2px solid #D2B48C;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             margin-bottom: 10px;
-            background: white;
+            background: var(--background-color);
             overflow: visible;
+            transition: var(--theme-transition);
         }
         
         .calc-card-header {
-            background: linear-gradient(135deg, #D2B48C, #F5DEB3);
+            background: var(--gradient-primary);
             padding: 12px 15px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 10px;
             user-select: none;
-            transition: background 0.3s;
+            transition: var(--theme-transition);
+            color: var(--text-on-primary);
         }
         
         .calc-card-header:hover {
-            background: linear-gradient(135deg, #C8A882, #F0D0A0);
+            background: var(--primary-light);
         }
         
         .calc-icon {
@@ -849,12 +1199,12 @@
         .calc-title {
             flex: 1;
             font-weight: bold;
-            color: #8B4513;
+            color: inherit;
         }
         
         .calc-arrow {
             transition: transform 0.3s;
-            color: #8B4513;
+            color: inherit;
         }
         
         .calc-card.expanded .calc-arrow {
@@ -864,7 +1214,8 @@
         .calc-card-content {
             display: none;
             padding: 20px;
-            background: #fefefe;
+            background: var(--surface-color);
+            transition: var(--theme-transition);
         }
         
         .calc-card.expanded .calc-card-content {
@@ -872,7 +1223,7 @@
         }
         
         .calc-description {
-            color: #666;
+            color: var(--text-secondary);
             margin-bottom: 15px;
             font-style: italic;
         }
@@ -905,14 +1256,14 @@
         .input-row label {
             min-width: 120px;
             font-weight: bold;
-            color: #8B4513;
+            color: var(--primary-color);
         }
         
         .input-row input {
             flex: 1;
             max-width: 150px;
             padding: 8px;
-            border: 2px solid #D2B48C;
+            border: 2px solid var(--secondary-color);
             border-radius: 4px;
         }
         
@@ -924,7 +1275,7 @@
         
         .calc-result {
             background: #f8f9fa;
-            border: 1px solid #D2B48C;
+            border: 1px solid var(--secondary-color);
             border-radius: 5px;
             padding: 15px;
             text-align: center;
@@ -933,7 +1284,7 @@
         .result-display {
             font-size: 16px;
             font-weight: bold;
-            color: #8B4513;
+            color: var(--primary-color);
             margin-bottom: 10px;
         }
         
@@ -943,14 +1294,14 @@
             height: 120px;
             position: relative;
             background: #f0f0f0;
-            border: 2px solid #8B4513;
+            border: 2px solid var(--primary-color);
             border-radius: 4px;
         }
         
         .lumber-piece {
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, #DEB887, #D2B48C);
+            background: linear-gradient(45deg, var(--accent-color), var(--secondary-color));
             position: relative;
             overflow: hidden;
         }
@@ -962,7 +1313,7 @@
             left: 10px;
             right: 10px;
             bottom: 10px;
-            border: 1px dashed #8B4513;
+            border: 1px dashed var(--primary-color);
             border-radius: 2px;
         }
         
@@ -973,7 +1324,7 @@
             border-radius: 3px;
             font-size: 10px;
             font-weight: bold;
-            color: #8B4513;
+            color: var(--primary-color);
         }
         
         .dimension-label.top {
@@ -1004,13 +1355,13 @@
         
         .cart-section {
             margin-top: 20px;
-            border-top: 2px solid #D2B48C;
+            border-top: 2px solid var(--secondary-color);
             padding-top: 15px;
         }
         
         .cart-display {
             background: #f8f9fa;
-            border: 1px solid #D2B48C;
+            border: 1px solid var(--secondary-color);
             border-radius: 6px;
             padding: 15px;
             margin-bottom: 15px;
@@ -1024,12 +1375,12 @@
             align-items: center;
             margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #D2B48C;
+            border-bottom: 1px solid var(--secondary-color);
         }
         
         .cart-header h4 {
             margin: 0;
-            color: #8B4513;
+            color: var(--primary-color);
         }
         
         .cart-items {
@@ -1053,7 +1404,7 @@
         }
         
         .cart-item-header strong {
-            color: #8B4513;
+            color: var(--primary-color);
             font-size: 16px;
         }
         
@@ -1113,13 +1464,13 @@
             margin-top: 10px;
             padding: 10px;
             background: #f8f9fa;
-            border: 1px solid #D2B48C;
+            border: 1px solid var(--secondary-color);
             border-radius: 4px;
         }
         
         .cut-list h4 {
             margin: 0 0 8px 0;
-            color: #8B4513;
+            color: var(--primary-color);
             font-size: 14px;
         }
         
@@ -1149,7 +1500,7 @@
         .golden-rectangle {
             width: 100%;
             height: 100%;
-            border: 2px solid #8B4513;
+            border: 2px solid var(--primary-color);
             border-radius: 4px;
             display: flex;
             position: relative;
@@ -1158,7 +1509,7 @@
         .golden-small {
             flex: 1;
             background: linear-gradient(135deg, #FFD700, #FFA500);
-            border-right: 1px solid #8B4513;
+            border-right: 1px solid var(--primary-color);
         }
         
         .golden-large {
@@ -1172,7 +1523,7 @@
             left: 50%;
             transform: translateX(-50%);
             font-weight: bold;
-            color: #8B4513;
+            color: var(--primary-color);
             font-size: 14px;
         }
         
@@ -1181,7 +1532,7 @@
             margin-bottom: 15px;
             border-radius: 6px;
             overflow: hidden;
-            border: 2px solid #D2B48C;
+            border: 2px solid var(--secondary-color);
         }
         
         .mode-btn {
@@ -1189,13 +1540,13 @@
             padding: 8px 12px;
             border: none;
             background: #f8f9fa;
-            color: #8B4513;
+            color: var(--primary-color);
             cursor: pointer;
             transition: background 0.3s;
         }
         
         .mode-btn.active {
-            background: #8B4513;
+            background: var(--primary-color);
             color: white;
         }
         
@@ -1211,8 +1562,8 @@
         .spacing-line {
             width: 100%;
             height: 20px;
-            background: #DEB887;
-            border: 2px solid #8B4513;
+            background: var(--accent-color);
+            border: 2px solid var(--primary-color);
             border-radius: 4px;
             position: relative;
             display: flex;
@@ -1224,7 +1575,7 @@
         .spacing-marker {
             width: 3px;
             height: 40px;
-            background: #8B4513;
+            background: var(--primary-color);
             border-radius: 1px;
             position: relative;
         }
@@ -1250,16 +1601,16 @@
             width: 100%;
             height: 100%;
             position: relative;
-            border: 2px solid #8B4513;
+            border: 2px solid var(--primary-color);
             border-radius: 4px;
-            background: linear-gradient(45deg, #F5DEB3, #D2B48C);
+            background: linear-gradient(45deg, #F5DEB3, var(--secondary-color));
         }
         
         .angle-line {
             position: absolute;
             width: 2px;
             height: 40px;
-            background: #8B4513;
+            background: var(--primary-color);
             transform-origin: bottom center;
         }
         
@@ -1272,9 +1623,9 @@
         
         .preset-btn {
             padding: 6px 12px;
-            border: 1px solid #D2B48C;
+            border: 1px solid var(--secondary-color);
             background: #f8f9fa;
-            color: #8B4513;
+            color: var(--primary-color);
             border-radius: 4px;
             cursor: pointer;
             font-size: 12px;
@@ -1282,20 +1633,20 @@
         }
         
         .preset-btn:hover {
-            background: #8B4513;
+            background: var(--primary-color);
             color: white;
         }
         
         .preset-section {
             background: #f9f9f9;
-            border: 2px solid #D2B48C;
+            border: 2px solid var(--secondary-color);
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 15px;
         }
         
         .preset-section h4 {
-            color: #8B4513;
+            color: var(--primary-color);
             margin-bottom: 10px;
         }
         
@@ -1385,7 +1736,7 @@
         
         .calc-modal h3 {
             margin-bottom: 15px;
-            color: #8B4513;
+            color: var(--primary-color);
         }
         
         .calc-modal .input-group {
@@ -1422,37 +1773,37 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: var(--theme-transition);
         }
         
         .btn-primary {
-            background: #8B4513;
-            color: white;
+            background: var(--primary-color);
+            color: var(--text-on-primary);
         }
         
         .btn-primary:hover {
-            background: #A0522D;
+            background: var(--primary-light);
             transform: translateY(-2px);
         }
         
         .btn-secondary {
-            background: #D2B48C;
-            color: #8B4513;
+            background: var(--secondary-color);
+            color: var(--primary-color);
         }
         
         .btn-secondary:hover {
-            background: #DEB887;
+            background: var(--accent-color);
             transform: translateY(-2px);
         }
         
         .btn-operation {
-            background: #D2B48C;
-            color: #8B4513;
+            background: var(--secondary-color);
+            color: var(--primary-color);
         }
         
         .btn-operation.active {
-            background: #8B4513;
-            color: white;
+            background: var(--primary-color);
+            color: var(--text-on-primary);
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
         }
         
@@ -1488,7 +1839,7 @@
         }
         
         .mode-btn.active {
-            background: #8B4513;
+            background: var(--primary-color);
             color: white;
             box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
             transform: translateY(-1px);
@@ -1506,14 +1857,14 @@
         .board-container {
             position: relative;
             height: 80px;
-            background: linear-gradient(45deg, #D2B48C 25%, transparent 25%), 
-                        linear-gradient(-45deg, #D2B48C 25%, transparent 25%), 
-                        linear-gradient(45deg, transparent 75%, #D2B48C 75%), 
-                        linear-gradient(-45deg, transparent 75%, #D2B48C 75%);
+            background: linear-gradient(45deg, var(--secondary-color) 25%, transparent 25%), 
+                        linear-gradient(-45deg, var(--secondary-color) 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, var(--secondary-color) 75%), 
+                        linear-gradient(-45deg, transparent 75%, var(--secondary-color) 75%);
             background-size: 8px 8px;
             background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
-            background-color: #DEB887;
-            border: 2px solid #8B4513;
+            background-color: var(--accent-color);
+            border: 2px solid var(--primary-color);
             border-radius: 4px;
         }
         
@@ -1576,7 +1927,7 @@
             top: -15px;
             bottom: -15px;
             width: 2px;
-            background: #8B4513;
+            background: var(--primary-color);
         }
         
         .board-ends.left {
@@ -1590,7 +1941,7 @@
         .board-dimension {
             text-align: center;
             margin-top: 15px;
-            color: #8B4513;
+            color: var(--primary-color);
             font-weight: bold;
             font-size: 14px;
         }
@@ -1673,6 +2024,146 @@
             margin-bottom: 20px;
         }
         
+        /* Pilot Hole Results Styling */
+        .result-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        
+        .result-card h4 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .pilot-hole-result {
+            background: linear-gradient(135deg, #f0f8ff, #e6f2ff);
+            border: 2px solid #4CAF50;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .pilot-hole-result h3 {
+            margin: 0 0 15px 0;
+            color: #2e7d32;
+            font-size: 20px;
+            white-space: nowrap;
+        }
+        
+        .drill-bit-size {
+            font-size: 36px;
+            font-weight: bold;
+            color: #1565c0;
+            margin: 10px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .calculation-note {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+            margin: 10px 0 0 0;
+        }
+        
+        .drilling-tips {
+            background: #fff8dc;
+            border: 1px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .drilling-tips h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
+            font-size: 18px;
+            text-align: left;
+        }
+        
+        .drilling-tips ul {
+            margin: 0;
+            padding-left: 20px;
+            list-style-type: none;
+            text-align: left;
+        }
+        
+        .drilling-tips ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            color: #555;
+            line-height: 1.5;
+            text-align: left;
+            word-wrap: break-word;
+            hyphens: none;
+        }
+        
+        .drilling-tips ul li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        /* Quick Reference Table Styles */
+        .reference-table-container {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .screw-reference-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .screw-reference-table th {
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 8px;
+            text-align: center;
+            font-size: 14px;
+            border: 1px solid var(--primary-dark);
+        }
+        
+        .screw-reference-table td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-size: 13px;
+        }
+        
+        .screw-reference-table tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .screw-reference-table tbody tr:hover {
+            background: #f0f8ff;
+        }
+        
+        .screw-reference-table .screw-category {
+            background: #f5f5f5;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .screw-reference-table .lag-bolt {
+            background: #fff8dc;
+        }
+        
         .identification-tabs {
             display: flex;
             gap: 2px;
@@ -1701,7 +2192,7 @@
         }
         
         .id-tab.active {
-            background: #8B4513;
+            background: var(--primary-color);
             color: white;
             box-shadow: 0 2px 4px rgba(139, 69, 19, 0.3);
         }
@@ -1721,7 +2212,7 @@
         
         .screw-size-circles.lag-bolts {
             background: #F5F5DC;
-            border: 2px solid #8B4513;
+            border: 2px solid var(--primary-color);
         }
         
         .size-circle-container {
@@ -1755,13 +2246,13 @@
         }
         
         .size-circle.lag-bolt {
-            background: #8B4513;
+            background: var(--primary-color);
             border-color: #654321;
         }
         
         .size-circle.lag-bolt:hover {
-            background: #A0522D;
-            border-color: #8B4513;
+            background: var(--primary-light);
+            border-color: var(--primary-color);
         }
         
         .size-circle.lag-bolt.selected {
@@ -1778,12 +2269,12 @@
         
         .common-screw-btn.lag-btn {
             background-color: #F5F5DC;
-            border: 2px solid #8B4513;
-            color: #8B4513;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
         }
         
         .common-screw-btn.lag-btn:hover {
-            background-color: #8B4513;
+            background-color: var(--primary-color);
             color: white;
         }
         
@@ -1794,7 +2285,7 @@
         }
         
         .wood-btn.selected {
-            background-color: #8B4513;
+            background-color: var(--primary-color);
             color: white;
             border-color: #654321;
         }
@@ -1858,8 +2349,8 @@
         }
         
         .size-circle:hover {
-            background: #8B4513;
-            border-color: #8B4513;
+            background: var(--primary-color);
+            border-color: var(--primary-color);
             box-shadow: 0 0 8px rgba(139, 69, 19, 0.4);
         }
         
@@ -1889,13 +2380,13 @@
         }
         
         .common-screw-btn:hover {
-            border-color: #8B4513;
+            border-color: var(--primary-color);
             background: #f9f9f9;
             transform: translateY(-2px);
         }
         
         .common-screw-btn strong {
-            color: #8B4513;
+            color: var(--primary-color);
             display: block;
             margin-bottom: 4px;
         }
@@ -1954,14 +2445,14 @@
         }
         
         .wood-btn:hover {
-            border-color: #8B4513;
+            border-color: var(--primary-color);
             background: #f9f9f9;
             transform: translateY(-2px);
         }
         
         .wood-btn.selected {
-            border-color: #8B4513;
-            background: #8B4513;
+            border-color: var(--primary-color);
+            background: var(--primary-color);
             color: white;
         }
         
@@ -1973,21 +2464,23 @@
         }
         
         .btn-success {
-            background: #28a745;
-            color: white;
+            background: var(--success-color);
+            color: var(--text-on-primary);
         }
         
         .btn-success:hover {
-            background: #1e7e34;
+            background: var(--success-color);
+            filter: brightness(0.9);
         }
         
         .btn-warning {
-            background: #ffc107;
-            color: #212529;
+            background: var(--warning-color);
+            color: var(--text-on-primary);
         }
         
         .btn-warning:hover {
-            background: #d39e00;
+            background: var(--warning-color);
+            filter: brightness(0.9);
         }
         
         /* Removed old project management bar styles - now using cleaner status indicators */
@@ -2120,7 +2613,7 @@
             margin-top: 15px;
             padding: 15px;
             background: #f8f9fa;
-            border: 2px solid #D2B48C;
+            border: 2px solid var(--secondary-color);
             border-radius: 8px;
             overflow-x: auto;
         }
@@ -2136,13 +2629,13 @@
         .board-header {
             font-weight: bold;
             margin-bottom: 10px;
-            color: #8B4513;
+            color: var(--primary-color);
         }
         
         .board-visual {
             height: 40px;
-            background: linear-gradient(45deg, #D2B48C, #F5DEB3);
-            border: 2px solid #8B4513;
+            background: linear-gradient(45deg, var(--secondary-color), #F5DEB3);
+            border: 2px solid var(--primary-color);
             border-radius: 4px;
             position: relative;
             margin-bottom: 5px;
@@ -2152,7 +2645,7 @@
         .cut-segment {
             position: absolute;
             height: 100%;
-            border-right: 2px solid #8B4513;
+            border-right: 2px solid var(--primary-color);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2236,7 +2729,7 @@
         
         .project-card {
             background: white;
-            border: 2px solid #D2B48C;
+            border: 2px solid var(--secondary-color);
             border-radius: 10px;
             overflow: hidden;
             transition: transform 0.2s, box-shadow 0.2s;
@@ -2266,7 +2759,7 @@
         
         .project-header h4 {
             margin: 0;
-            color: #8B4513;
+            color: var(--primary-color);
             font-size: 16px;
         }
         
@@ -2318,8 +2811,8 @@
         }
         
         .preview-board {
-            background: linear-gradient(45deg, #D2B48C, #F5DEB3);
-            border: 1px solid #8B4513;
+            background: linear-gradient(45deg, var(--secondary-color), #F5DEB3);
+            border: 1px solid var(--primary-color);
             border-radius: 2px;
             padding: 2px 4px;
             font-size: 10px;
@@ -2349,7 +2842,7 @@
         /* Project Status Bar */
         .project-status-bar {
             background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border: 1px solid #D2B48C;
+            border: 1px solid var(--secondary-color);
             border-radius: 6px;
             padding: 8px 12px;
             margin-bottom: 15px;
@@ -2420,7 +2913,7 @@
             max-height: 200px;
             overflow-y: auto;
             background: #f9f9f9;
-            border: 2px solid #D2B48C;
+            border: 2px solid var(--secondary-color);
             border-radius: 8px;
             padding: 10px;
             margin-bottom: 15px;
@@ -2443,7 +2936,7 @@
         
         .waste-section h3 {
             margin-bottom: 10px;
-            color: #8B4513;
+            color: var(--primary-color);
         }
         
         .board-input, .cut-input {
@@ -2486,7 +2979,7 @@
             position: relative;
             width: 300px;
             height: 60px;
-            background: linear-gradient(180deg, #D2691E 0%, #8B4513 100%);
+            background: linear-gradient(180deg, #D2691E 0%, var(--primary-color) 100%);
             border: 2px solid #654321;
             border-radius: 2px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -2549,14 +3042,14 @@
         /* Cut result styles */
         .cut-results {
             background: #f5f5f5;
-            border: 2px solid #8B4513;
+            border: 2px solid var(--primary-color);
             border-radius: 8px;
             padding: 15px;
             margin-top: 15px;
         }
         
         .cut-results h4 {
-            color: #8B4513;
+            color: var(--primary-color);
             margin-bottom: 10px;
             font-size: 16px;
         }
@@ -2572,7 +3065,7 @@
             background: white;
             padding: 10px;
             border-radius: 5px;
-            border-left: 4px solid #8B4513;
+            border-left: 4px solid var(--primary-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -2580,7 +3073,7 @@
         
         .mark-item .mark-number {
             font-weight: bold;
-            color: #8B4513;
+            color: var(--primary-color);
         }
         
         .mark-item .mark-value {
@@ -2653,7 +3146,7 @@
         
         .edit-modal h3 {
             margin-bottom: 15px;
-            color: #8B4513;
+            color: var(--primary-color);
         }
         
         .edit-modal .input-group {
@@ -2669,7 +3162,21 @@
     <div class="container">
         <div class="header-section">
             <h1>Woodworking Calculator</h1>
-            <button class="help-btn" onclick="showHelp()" title="Help">?</button>
+            <div class="header-controls">
+                <div class="theme-selector">
+                    <select id="themeSelect" onchange="changeTheme(this.value)" title="Choose Theme">
+                        <option value="wood">🟤 Wood</option>
+                        <option value="steel">🔧 Steel</option>
+                        <option value="dark">🌙 Dark</option>
+                        <option value="dewalt">🟡 Dewalt</option>
+                        <option value="milwaukee">🔴 Milwaukee</option>
+                        <option value="ridgid">🟠 Ridgid</option>
+                        <option value="noob">🟢 Noob</option>
+                    </select>
+                </div>
+                <button class="help-btn" onclick="showHelp()" title="Help">?</button>
+                <button class="help-btn" onclick="fetchDadJoke()" title="Groan Zone - Dad Jokes">🙄</button>
+            </div>
         </div>
         
         <div class="tab-buttons">
@@ -2758,7 +3265,7 @@
             </div>
             
             <div class="conversion-section">
-                <h4 style="color: #8B4513; margin-bottom: 10px;">Quick Conversions</h4>
+                <h4 style="color: var(--primary-color); margin-bottom: 10px;">Quick Conversions</h4>
                 <div class="conversion-input-row">
                     <label>Direct Input:</label>
                     <input type="number" id="directDecimalInput" placeholder="37.625" step="0.001" class="wide-input" onchange="handleDirectInput()">
@@ -3444,7 +3951,7 @@
                             <p style="margin-bottom: 15px;">Once calibrated, hold your screw up to these circles to find the matching diameter:</p>
                             
                             <!-- Standard Wood Screws -->
-                            <h5 style="margin: 15px 0 10px 0; color: #8B4513;">📌 Standard Wood Screws</h5>
+                            <h5 style="margin: 15px 0 10px 0; color: var(--primary-color);">📌 Standard Wood Screws</h5>
                             <div class="screw-size-circles">
                                 <div class="size-circle-container">
                                     <div class="size-circle" data-size="0.086" data-name="#2" style="width: 8.2px; height: 8.2px;"></div>
@@ -3512,7 +4019,7 @@
                             </div>
                             
                             <!-- Lag Bolts/Screws -->
-                            <h5 style="margin: 20px 0 10px 0; color: #8B4513;">⚡ Lag Bolts/Heavy Duty Screws</h5>
+                            <h5 style="margin: 20px 0 10px 0; color: var(--primary-color);">⚡ Lag Bolts/Heavy Duty Screws</h5>
                             <div class="screw-size-circles lag-bolts">
                                 <div class="size-circle-container">
                                     <div class="size-circle lag-bolt" data-size="0.375" data-name="3/8\" Lag" style="width: 36px; height: 36px;"></div>
@@ -3539,7 +4046,7 @@
 
                         <!-- Common Types Identification -->
                         <div id="commonIdContent" class="id-content" style="display: none;">
-                            <h5 style="margin: 10px 0; color: #8B4513;">🔩 Standard Screws</h5>
+                            <h5 style="margin: 10px 0; color: var(--primary-color);">🔩 Standard Screws</h5>
                             <div class="common-screw-grid">
                                 <button class="common-screw-btn" onclick="selectCommonScrew('#6', 'hinge')">
                                     <strong>Hinge Screw #6</strong><br>
@@ -3575,7 +4082,7 @@
                                 </button>
                             </div>
                             
-                            <h5 style="margin: 20px 0 10px 0; color: #8B4513;">⚡ Lag Bolts & Heavy Duty</h5>
+                            <h5 style="margin: 20px 0 10px 0; color: var(--primary-color);">⚡ Lag Bolts & Heavy Duty</h5>
                             <div class="common-screw-grid">
                                 <button class="common-screw-btn lag-btn" onclick="selectCommonScrew('3/8lag', 'lag')">
                                     <strong>3/8" Lag Bolt</strong><br>
@@ -3640,9 +4147,207 @@
 
                     <!-- Results Display -->
                     <div class="calc-result" id="screwResults" style="display: none;">
-                        <h4>Step 3: Pilot Hole Recommendation</h4>
+                        <h4 style="font-size: 20px; margin-bottom: 20px;">Step 3: Pilot Hole Recommendations</h4>
                         <div class="result-display" id="screwResultDisplay">Select a screw and wood type</div>
-                        <button class="btn btn-success btn-sm" onclick="saveScrewToProject()">Save to Project</button>
+                    </div>
+                    
+                    <!-- Quick Reference Button -->
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn btn-secondary" onclick="toggleQuickReference()">
+                            📊 Quick Reference Table
+                        </button>
+                    </div>
+                    
+                    <!-- Quick Reference Table -->
+                    <div id="quickReferenceTable" style="display: none; margin-top: 20px;">
+                        <div class="reference-table-container">
+                            <h4 style="text-align: center; margin-bottom: 15px;">🔩 Comprehensive Pilot Hole Reference</h4>
+                            <table class="screw-reference-table">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">Screw Size</th>
+                                        <th rowspan="2">Diameter</th>
+                                        <th colspan="3">Pilot Hole Size</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Hardwood</th>
+                                        <th>Softwood</th>
+                                        <th>Plywood/MDF</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="referenceTableBody">
+                                    <!-- Table rows will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grade/Slope Calculator -->
+            <div class="calc-card" id="gradeCard">
+                <div class="calc-card-header" onclick="toggleCalcCard('grade')">
+                    <span class="calc-icon">📐</span>
+                    <span class="calc-title">Grade/Slope Calculator</span>
+                    <span class="calc-arrow">▼</span>
+                </div>
+                <div class="calc-card-content" id="gradeContent">
+                    <div class="calc-description">Calculate slopes for ramps, drainage, and construction projects</div>
+                    
+                    <!-- Visual Diagram -->
+                    <div class="calc-visual">
+                        <svg id="slopeDiagram" width="100%" height="200" viewBox="0 0 400 200" style="max-width: 400px; margin: 0 auto; display: block;">
+                            <!-- Grid lines -->
+                            <defs>
+                                <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
+                                </pattern>
+                            </defs>
+                            <rect width="400" height="200" fill="url(#grid)" />
+                            
+                            <!-- Ground line -->
+                            <line x1="50" y1="170" x2="350" y2="170" stroke="#666" stroke-width="2"/>
+                            
+                            <!-- Slope triangle -->
+                            <path id="slopeTriangle" d="M 50 170 L 300 170 L 300 100 Z" fill="rgba(139, 69, 19, 0.2)" stroke="var(--primary-color)" stroke-width="3"/>
+                            
+                            <!-- Rise line -->
+                            <line x1="300" y1="170" x2="300" y2="100" stroke="#D2691E" stroke-width="3" stroke-dasharray="5,5"/>
+                            
+                            <!-- Run line -->
+                            <line x1="50" y1="170" x2="300" y2="170" stroke="#228B22" stroke-width="3"/>
+                            
+                            <!-- Angle arc -->
+                            <path id="angleArc" d="M 100 170 A 50 50 0 0 0 85.35 139.65" fill="none" stroke="#FF6347" stroke-width="2"/>
+                            
+                            <!-- Labels -->
+                            <text x="175" y="190" text-anchor="middle" font-size="14" font-weight="bold" fill="#228B22">Run</text>
+                            <text x="320" y="135" text-anchor="middle" font-size="14" font-weight="bold" fill="#D2691E">Rise</text>
+                            <text x="120" y="160" text-anchor="middle" font-size="12" fill="#FF6347" id="angleLabel">Angle</text>
+                            
+                            <!-- Result display -->
+                            <text x="200" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#333" id="gradePercentLabel">Grade: --</text>
+                            <text x="200" y="50" text-anchor="middle" font-size="14" fill="#666" id="ratioLabel">Ratio: --</text>
+                        </svg>
+                    </div>
+                    
+                    <!-- Calculation Mode -->
+                    <div class="calc-mode-selector" style="margin: 20px 0;">
+                        <button class="mode-btn active" onclick="setGradeMode('find-grade')" id="gradeModeGrade">Find Grade %</button>
+                        <button class="mode-btn" onclick="setGradeMode('find-rise')" id="gradeModeRise">Find Rise</button>
+                        <button class="mode-btn" onclick="setGradeMode('find-run')" id="gradeModeRun">Find Run</button>
+                    </div>
+                    
+                    <!-- Input Fields -->
+                    <div class="calc-inputs">
+                        <!-- Rise Input -->
+                        <div id="gradeRiseInput" class="input-row">
+                            <label>Rise (Vertical):</label>
+                            <input type="number" id="gradeRiseFeet" placeholder="0" min="0" class="wide-input" onchange="calculateGradeSlope()">
+                            <span>ft</span>
+                            <input type="number" id="gradeRiseInches" placeholder="0" min="0" max="11" class="wide-input" onchange="calculateGradeSlope()">
+                            <span>in</span>
+                            <select id="gradeRiseFraction" style="width: 120px;" onchange="calculateGradeSlope()">
+                                <option value="0" selected>0</option>
+                                <option value="0.0625">1/16"</option>
+                                <option value="0.125">1/8"</option>
+                                <option value="0.1875">3/16"</option>
+                                <option value="0.25">1/4"</option>
+                                <option value="0.3125">5/16"</option>
+                                <option value="0.375">3/8"</option>
+                                <option value="0.4375">7/16"</option>
+                                <option value="0.5">1/2"</option>
+                                <option value="0.5625">9/16"</option>
+                                <option value="0.625">5/8"</option>
+                                <option value="0.6875">11/16"</option>
+                                <option value="0.75">3/4"</option>
+                                <option value="0.8125">13/16"</option>
+                                <option value="0.875">7/8"</option>
+                                <option value="0.9375">15/16"</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Run Input -->
+                        <div id="gradeRunInput" class="input-row">
+                            <label>Run (Horizontal):</label>
+                            <input type="number" id="gradeRunFeet" placeholder="0" min="0" class="wide-input" onchange="calculateGradeSlope()">
+                            <span>ft</span>
+                            <input type="number" id="gradeRunInches" placeholder="0" min="0" max="11" class="wide-input" onchange="calculateGradeSlope()">
+                            <span>in</span>
+                            <select id="gradeRunFraction" style="width: 120px;" onchange="calculateGradeSlope()">
+                                <option value="0" selected>0</option>
+                                <option value="0.0625">1/16"</option>
+                                <option value="0.125">1/8"</option>
+                                <option value="0.1875">3/16"</option>
+                                <option value="0.25">1/4"</option>
+                                <option value="0.3125">5/16"</option>
+                                <option value="0.375">3/8"</option>
+                                <option value="0.4375">7/16"</option>
+                                <option value="0.5">1/2"</option>
+                                <option value="0.5625">9/16"</option>
+                                <option value="0.625">5/8"</option>
+                                <option value="0.6875">11/16"</option>
+                                <option value="0.75">3/4"</option>
+                                <option value="0.8125">13/16"</option>
+                                <option value="0.875">7/8"</option>
+                                <option value="0.9375">15/16"</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Grade Input (for find rise/run modes) -->
+                        <div id="gradePercentInput" class="input-row" style="display: none;">
+                            <label>Grade Percentage:</label>
+                            <input type="number" id="gradePercent" placeholder="8.33" step="0.01" min="0" onchange="calculateGradeSlope()">
+                            <span>%</span>
+                        </div>
+                        
+                        <!-- Common Use Presets -->
+                        <div class="preset-section" style="margin-top: 20px;">
+                            <h5 style="margin-bottom: 10px; color: var(--primary-color);">Common Applications:</h5>
+                            <div class="preset-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                                <button class="preset-btn" onclick="setGradePreset('ada-max', '1:12 ADA Max (8.33%)')">
+                                    <strong>ADA Ramp Max</strong><br>
+                                    <small>1:12 (8.33%)</small>
+                                </button>
+                                <button class="preset-btn" onclick="setGradePreset('ada-preferred', '1:20 ADA Preferred (5%)')">
+                                    <strong>ADA Preferred</strong><br>
+                                    <small>1:20 (5%)</small>
+                                </button>
+                                <button class="preset-btn" onclick="setGradePreset('drainage-min', 'Min Drainage (1%)')">
+                                    <strong>Min Drainage</strong><br>
+                                    <small>1:100 (1%)</small>
+                                </button>
+                                <button class="preset-btn" onclick="setGradePreset('drainage-ideal', 'Ideal Drainage (2%)')">
+                                    <strong>Ideal Drainage</strong><br>
+                                    <small>1:50 (2%)</small>
+                                </button>
+                                <button class="preset-btn" onclick="setGradePreset('driveway-max', 'Driveway Max (15%)')">
+                                    <strong>Driveway Max</strong><br>
+                                    <small>1:6.67 (15%)</small>
+                                </button>
+                                <button class="preset-btn" onclick="setGradePreset('shed-ramp', 'Shed Ramp (10%)')">
+                                    <strong>Shed Ramp</strong><br>
+                                    <small>1:10 (10%)</small>
+                                </button>
+                                <button class="preset-btn" onclick="setGradePreset('stairs-typical', 'Stairs Typical (70%)')">
+                                    <strong>Stairs (35°)</strong><br>
+                                    <small>7:10 (70%)</small>
+                                </button>
+                                <button class="preset-btn" onclick="setGradePreset('roof-min', 'Roof Min 4:12 (33%)')">
+                                    <strong>Roof Min</strong><br>
+                                    <small>4:12 (33.3%)</small>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Results Display -->
+                    <div class="calc-result" id="gradeResults" style="display: none;">
+                        <h4>Slope Calculations:</h4>
+                        <div class="result-display" id="gradeResultDisplay">
+                            <!-- Results will be displayed here -->
+                        </div>
+                        <button class="btn btn-success btn-sm" onclick="saveGradeToProject()">Save to Project</button>
                     </div>
                 </div>
             </div>
@@ -3733,7 +4438,7 @@
                 <div id="notesContent">
                     <p><strong>Project:</strong> <span id="notesProjectName">No project selected</span></p>
                     <textarea id="projectNotesText" placeholder="Add notes about your project - materials needed, measurements, design thoughts, etc." 
-                              style="width: 100%; height: 200px; margin: 10px 0; padding: 10px; border: 2px solid #D2B48C; border-radius: 5px; font-family: Arial, sans-serif; resize: vertical;"></textarea>
+                              style="width: 100%; height: 200px; margin: 10px 0; padding: 10px; border: 2px solid var(--secondary-color); border-radius: 5px; font-family: Arial, sans-serif; resize: vertical;"></textarea>
                     <div style="text-align: right; margin-top: 10px;">
                         <button class="btn btn-secondary" onclick="closeProjectNotes()" style="margin-right: 10px;">Cancel</button>
                         <button class="btn btn-success" onclick="saveProjectNotes()">Save Notes</button>
@@ -3757,7 +4462,7 @@
                     
                     <div class="save-project-selection">
                         <label for="saveProjectDropdown"><strong>Save to Project:</strong></label>
-                        <select id="saveProjectDropdown" style="width: 100%; padding: 8px; margin: 5px 0; border: 2px solid #D2B48C; border-radius: 5px;">
+                        <select id="saveProjectDropdown" style="width: 100%; padding: 8px; margin: 5px 0; border: 2px solid var(--secondary-color); border-radius: 5px;">
                             <option value="">Select a project...</option>
                         </select>
                         <button class="btn btn-primary btn-sm" onclick="createNewProjectFromSaveModal()" style="margin-top: 5px;">+ Create New Project</button>
@@ -3766,7 +4471,7 @@
                     <div class="save-notes-section">
                         <label for="saveNotesText"><strong>Add Notes (optional):</strong></label>
                         <textarea id="saveNotesText" placeholder="Add context about this calculation - what you're building, why this measurement matters, etc." 
-                                  style="width: 100%; height: 100px; margin: 5px 0; padding: 10px; border: 2px solid #D2B48C; border-radius: 5px; font-family: Arial, sans-serif; resize: vertical;"></textarea>
+                                  style="width: 100%; height: 100px; margin: 5px 0; padding: 10px; border: 2px solid var(--secondary-color); border-radius: 5px; font-family: Arial, sans-serif; resize: vertical;"></textarea>
                     </div>
                     
                     <div style="text-align: right; margin-top: 15px;">
@@ -3777,6 +4482,27 @@
             </div>
         </div>
         
+        <!-- Dad Joke Modal -->
+        <div id="jokeModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeJoke()">&times;</span>
+                <h2>🙄 Groan Zone - Dad Jokes</h2>
+                
+                <div id="jokeLoading" style="display: none;">
+                    <p>Getting a fresh dad joke... 🎣</p>
+                </div>
+                
+                <div id="jokeText" style="display: none;">
+                    <!-- Joke content will be inserted here -->
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="fetchDadJoke()" style="margin-right: 10px;">Another One 🔄</button>
+                    <button onclick="closeJoke()">That's Enough 😅</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Help Modal -->
         <div id="helpModal" class="modal">
             <div class="modal-content">
@@ -3808,6 +4534,7 @@
                     <li><strong>Golden Ratio Calculator:</strong> Find proportional dimensions using the golden ratio (1.618)</li>
                     <li><strong>Shelf & Division Calculator:</strong> Calculate shelf spacing and material divisions</li>
                     <li><strong>Miter Angle Calculator:</strong> Calculate miter angles for polygons, frames, and single cuts</li>
+                    <li><strong>Grade/Slope Calculator:</strong> Calculate slopes for ramps, drainage, stairs, and roofing with ADA compliance indicators</li>
                 </ul>
                 
                 <h3>Precision Settings</h3>
@@ -3858,6 +4585,45 @@
     </div>
 
     <script>
+        // =====================================================
+        // Theme Management Functions
+        // =====================================================
+        
+        // Load saved theme on page load
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('woodworking-calculator-theme') || 'wood';
+            const themeSelect = document.getElementById('themeSelect');
+            if (themeSelect) {
+                themeSelect.value = savedTheme;
+            }
+            applyTheme(savedTheme);
+        }
+        
+        // Apply theme to document body
+        function applyTheme(themeName) {
+            const body = document.body;
+            // Remove all existing theme classes
+            body.classList.remove('theme-wood', 'theme-steel', 'theme-dark', 'theme-dewalt', 'theme-milwaukee', 'theme-ridgid', 'theme-noob');
+            
+            // Add new theme class (except for default wood theme)
+            if (themeName !== 'wood') {
+                body.classList.add(`theme-${themeName}`);
+            }
+            
+            // Save theme preference
+            localStorage.setItem('woodworking-calculator-theme', themeName);
+        }
+        
+        // Handle theme change from dropdown
+        function changeTheme(themeName) {
+            applyTheme(themeName);
+            showNotification(`Theme changed to ${themeName.charAt(0).toUpperCase() + themeName.slice(1)}`, 'success');
+        }
+        
+        // =====================================================
+        // Calculator Variables
+        // =====================================================
+        
         let currentValueInches = 0;
         let cutValueInches = 0;
         let currentOperation = null;
@@ -4345,15 +5111,15 @@
     <title>${project.name} - Project Timeline</title>
     <style>
         body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
-        .header { background: linear-gradient(135deg, #8B4513, #A0522D); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .header { background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
         .header h1 { margin: 0; font-size: 24px; }
         .project-info { margin-top: 10px; font-size: 14px; opacity: 0.9; }
         .notes { background: #fff9c4; border: 1px solid #f0e68c; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
         .timeline { background: #f8f9fa; border-radius: 8px; padding: 20px; }
-        .timeline-item { background: white; border-left: 4px solid #D2B48C; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .timeline-item { background: white; border-left: 4px solid var(--secondary-color); border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .tool-header { display: flex; align-items: center; margin-bottom: 15px; }
         .tool-icon { font-size: 20px; margin-right: 10px; }
-        .tool-name { font-weight: bold; color: #8B4513; font-size: 16px; flex: 1; }
+        .tool-name { font-weight: bold; color: var(--primary-color); font-size: 16px; flex: 1; }
         .timestamp { font-size: 12px; color: #666; }
         .equation { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 4px; padding: 10px; margin: 10px 0; font-family: monospace; }
         .result { font-weight: bold; color: #28a745; font-size: 16px; margin: 10px 0; }
@@ -4361,7 +5127,7 @@
         .user-notes { background: #fff9c4; border: 1px solid #f0e68c; border-radius: 4px; padding: 10px; margin: 10px 0; font-style: italic; }
         .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 14px; }
         .empty-state { text-align: center; color: #666; font-style: italic; }
-        @media print { body { max-width: none; margin: 0; padding: 15px; } .header { background: #8B4513 !important; } }
+        @media print { body { max-width: none; margin: 0; padding: 15px; } .header { background: var(--primary-color) !important; } }
     </style>
 </head>
 <body>
@@ -6087,7 +6853,7 @@
                     <div style="text-align: center; margin-top: 10px;">
                         <svg width="250" height="120" viewBox="0 0 250 120">
                             <!-- Board outline -->
-                            <rect x="30" y="30" width="180" height="50" fill="#D2691E" stroke="#8B4513" stroke-width="2"/>
+                            <rect x="30" y="30" width="180" height="50" fill="#D2691E" stroke="var(--primary-color)" stroke-width="2"/>
                             <!-- Miter cut line -->
                             <line x1="150" y1="30" x2="210" y2="80" stroke="#FFD700" stroke-width="3"/>
                             <line x1="152" y1="30" x2="212" y2="80" stroke="#000" stroke-width="1" stroke-dasharray="3,3"/>
@@ -6664,6 +7430,50 @@
             }
         }
         
+        // Dad Jokes Feature
+        async function fetchDadJoke() {
+            const modal = document.getElementById('jokeModal');
+            const jokeText = document.getElementById('jokeText');
+            const loadingText = document.getElementById('jokeLoading');
+            
+            // Show modal with loading state
+            if (modal) {
+                modal.style.display = 'block';
+                jokeText.style.display = 'none';
+                loadingText.style.display = 'block';
+            }
+            
+            try {
+                const response = await fetch('https://icanhazdadjoke.com/', {
+                    headers: { 'Accept': 'application/json' }
+                });
+                
+                if (!response.ok) throw new Error('Dad joke service unavailable');
+                
+                const data = await response.json();
+                
+                // Show the joke
+                if (modal) {
+                    loadingText.style.display = 'none';
+                    jokeText.style.display = 'block';
+                    jokeText.textContent = data.joke;
+                }
+                
+            } catch (error) {
+                console.error('Dad joke fetch failed:', error);
+                if (modal) {
+                    loadingText.style.display = 'none';
+                    jokeText.style.display = 'block';
+                    jokeText.textContent = "Dad joke service is taking a break! Here's a backup: Why don't scientists trust atoms? Because they make up everything! 😅";
+                }
+            }
+        }
+        
+        function closeJoke() {
+            const modal = document.getElementById('jokeModal');
+            if (modal) modal.style.display = 'none';
+        }
+
         function showHelp() {
             const modal = document.getElementById('helpModal');
             if (modal) modal.style.display = 'block';
@@ -6840,7 +7650,7 @@
                         <strong>${board.quantity}× ${inchesToDisplay(board.length, 'opt')} boards</strong>
                     </div>
                     <div style="display: flex; gap: 5px; align-items: center;">
-                        <button onclick="editBoard(${i})" style="background: #8B4513; color: white; border: none; border-radius: 3px; padding: 4px 8px; cursor: pointer; font-size: 12px;">Edit</button>
+                        <button onclick="editBoard(${i})" style="background: var(--primary-color); color: white; border: none; border-radius: 3px; padding: 4px 8px; cursor: pointer; font-size: 12px;">Edit</button>
                         <button onclick="removeBoard(${i})" style="background: #cd5c5c; color: white; border: none; border-radius: 3px; padding: 4px 8px; cursor: pointer;">×</button>
                     </div>
                 </div>`
@@ -6867,7 +7677,7 @@
                         <strong>${group.count}× ${inchesToDisplay(group.length, 'opt')}</strong>
                     </div>
                     <div style="display: flex; gap: 5px; align-items: center;">
-                        <button onclick="editCutGroup(${group.length}, [${group.ids.join(',')}])" style="background: #8B4513; color: white; border: none; border-radius: 3px; padding: 4px 8px; cursor: pointer; font-size: 12px;">Edit</button>
+                        <button onclick="editCutGroup(${group.length}, [${group.ids.join(',')}])" style="background: var(--primary-color); color: white; border: none; border-radius: 3px; padding: 4px 8px; cursor: pointer; font-size: 12px;">Edit</button>
                         <button onclick="removeCutGroup(${group.length})" style="background: #cd5c5c; color: white; border: none; border-radius: 3px; padding: 4px 8px; cursor: pointer;">×</button>
                     </div>
                 </div>`
@@ -7208,6 +8018,7 @@
         // Close modals when clicking outside
         window.onclick = function(event) {
             const helpModal = document.getElementById('helpModal');
+            const jokeModal = document.getElementById('jokeModal');
             const editModal = document.getElementById('editModal');
             const calcModal = document.getElementById('calcModal');
             const notesModal = document.getElementById('notesModal');
@@ -7216,6 +8027,9 @@
             
             if (event.target === helpModal) {
                 helpModal.style.display = 'none';
+            }
+            if (event.target === jokeModal) {
+                jokeModal.style.display = 'none';
             }
             if (event.target === editModal) {
                 editModal.style.display = 'none';
@@ -7327,11 +8141,11 @@
             
             diagram.innerHTML = `
                 <div style="text-align: center; margin: 15px 0;">
-                    <div class="lumber-piece" style="width: ${diagramWidth}px; height: ${diagramHeight}px; position: relative; margin: 0 auto; background: linear-gradient(45deg, #D2B48C, #F5DEB3); border: 2px solid #8B4513; border-radius: 4px; display: inline-block;">
-                        <div style="font-size: 10px; position: absolute; top: -15px; left: 0; color: #8B4513; white-space: nowrap;">L: ${length}"</div>
-                        <div style="font-size: 10px; position: absolute; left: -40px; top: 50%; transform: translateY(-50%); color: #8B4513; white-space: nowrap;">W: ${width}"</div>
-                        <div style="font-size: 10px; position: absolute; right: -40px; top: 50%; transform: translateY(-50%); color: #8B4513; white-space: nowrap;">T: ${thickness}"</div>
-                        ${quantity > 1 ? `<div style="font-size: 10px; position: absolute; bottom: -15px; right: 0; color: #8B4513; white-space: nowrap;">×${quantity}</div>` : ''}
+                    <div class="lumber-piece" style="width: ${diagramWidth}px; height: ${diagramHeight}px; position: relative; margin: 0 auto; background: linear-gradient(45deg, var(--secondary-color), #F5DEB3); border: 2px solid var(--primary-color); border-radius: 4px; display: inline-block;">
+                        <div style="font-size: 10px; position: absolute; top: -15px; left: 0; color: var(--primary-color); white-space: nowrap;">L: ${length}"</div>
+                        <div style="font-size: 10px; position: absolute; left: -40px; top: 50%; transform: translateY(-50%); color: var(--primary-color); white-space: nowrap;">W: ${width}"</div>
+                        <div style="font-size: 10px; position: absolute; right: -40px; top: 50%; transform: translateY(-50%); color: var(--primary-color); white-space: nowrap;">T: ${thickness}"</div>
+                        ${quantity > 1 ? `<div style="font-size: 10px; position: absolute; bottom: -15px; right: 0; color: var(--primary-color); white-space: nowrap;">×${quantity}</div>` : ''}
                     </div>
                     <div style="font-size: 11px; color: #666; margin-top: 10px;">
                         ${thickness}" × ${width}" × ${length}" ${quantity > 1 ? `(${quantity} pieces)` : ''}
@@ -7398,8 +8212,8 @@
             
             diagram.innerHTML = `
                 <div class="golden-rectangle" style="width: ${longScaled}px; height: ${shortScaled}px; position: relative; margin: 10px auto;">
-                    <div style="font-size: 10px; position: absolute; top: -15px; left: 0; color: #8B4513;">${long.toFixed(1)}"</div>
-                    <div style="font-size: 10px; position: absolute; left: -30px; top: 50%; transform: translateY(-50%); color: #8B4513;">${short.toFixed(1)}"</div>
+                    <div style="font-size: 10px; position: absolute; top: -15px; left: 0; color: var(--primary-color);">${long.toFixed(1)}"</div>
+                    <div style="font-size: 10px; position: absolute; left: -30px; top: 50%; transform: translateY(-50%); color: var(--primary-color);">${short.toFixed(1)}"</div>
                     <div class="golden-square" style="width: ${shortScaled}px; height: ${shortScaled}px;"></div>
                 </div>
             `;
@@ -7553,11 +8367,11 @@
             }
             
             // Draw main cabinet frame (vertical rectangle)
-            html += `<div style="position: absolute; left: 50px; top: 30px; width: ${diagramWidth}px; height: ${diagramHeight}px; border: 3px solid #8B4513; background: #f8f9fa; border-radius: 4px;"></div>`;
+            html += `<div style="position: absolute; left: 50px; top: 30px; width: ${diagramWidth}px; height: ${diagramHeight}px; border: 3px solid var(--primary-color); background: #f8f9fa; border-radius: 4px;"></div>`;
             
             // Add measurement indicators on the left side
-            html += `<div style="position: absolute; left: 20px; top: 30px; font-size: 11px; color: #8B4513; font-weight: bold;">0"</div>`;
-            html += `<div style="position: absolute; left: 10px; top: ${30 + diagramHeight - 10}px; font-size: 11px; color: #8B4513; font-weight: bold;">${inchesToDisplay(total, 'calculator')}</div>`;
+            html += `<div style="position: absolute; left: 20px; top: 30px; font-size: 11px; color: var(--primary-color); font-weight: bold;">0"</div>`;
+            html += `<div style="position: absolute; left: 10px; top: ${30 + diagramHeight - 10}px; font-size: 11px; color: var(--primary-color); font-weight: bold;">${inchesToDisplay(total, 'calculator')}</div>`;
             
             if (thickness === 0) {
                 // Simple shelf spacing without thickness - center marks
@@ -7614,7 +8428,7 @@
                         const shelfThickness = shelfEnd - shelfStart;
                         
                         // Draw shelf as horizontal bar across cabinet
-                        html += `<div style="position: absolute; left: 50px; top: ${shelfStart}px; width: ${diagramWidth}px; height: ${Math.max(2, shelfThickness)}px; background: linear-gradient(to bottom, #8B4513, #A0522D); border: 1px solid #654321; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>`;
+                        html += `<div style="position: absolute; left: 50px; top: ${shelfStart}px; width: ${diagramWidth}px; height: ${Math.max(2, shelfThickness)}px; background: linear-gradient(to bottom, var(--primary-color), var(--primary-light)); border: 1px solid #654321; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>`;
                         
                         // Smart positioning to prevent overlap
                         const labelHeight = 24;
@@ -7651,7 +8465,7 @@
                         }
                         
                         // Bottom edge measurement on right side
-                        html += `<div style="position: absolute; left: ${70 + diagramWidth}px; top: ${bottomLabelTop}px; width: 90px; height: ${labelHeight}px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #8B4513; font-weight: bold; background: rgba(255,255,255,0.98); border: 2px solid #8B4513; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">Shelf ${i + 1} Bottom: ${inchesToDisplay(currentPos, 'calculator')}</div>`;
+                        html += `<div style="position: absolute; left: ${70 + diagramWidth}px; top: ${bottomLabelTop}px; width: 90px; height: ${labelHeight}px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--primary-color); font-weight: bold; background: rgba(255,255,255,0.98); border: 2px solid var(--primary-color); border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">Shelf ${i + 1} Bottom: ${inchesToDisplay(currentPos, 'calculator')}</div>`;
                         
                         // Top edge measurement on right side 
                         html += `<div style="position: absolute; left: ${70 + diagramWidth}px; top: ${topLabelTop}px; width: 90px; height: ${labelHeight}px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #654321; font-weight: bold; background: rgba(255,255,255,0.98); border: 2px solid #654321; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">Shelf ${i + 1} Top: ${inchesToDisplay(currentPos + thickness, 'calculator')}</div>`;
@@ -7661,10 +8475,10 @@
                         const topLabelCenter = topLabelTop + labelHeight/2;
                         
                         // Bottom leader line
-                        html += `<div style="position: absolute; left: ${50 + diagramWidth}px; top: ${shelfStart}px; width: 20px; height: 2px; background: #8B4513; opacity: 0.8;"></div>`;
+                        html += `<div style="position: absolute; left: ${50 + diagramWidth}px; top: ${shelfStart}px; width: 20px; height: 2px; background: var(--primary-color); opacity: 0.8;"></div>`;
                         if (Math.abs(shelfStart - bottomLabelCenter) > 3) {
                             // Add vertical line if label is not near shelf edge
-                            html += `<div style="position: absolute; left: ${69 + diagramWidth}px; top: ${Math.min(shelfStart, bottomLabelCenter)}px; width: 2px; height: ${Math.abs(shelfStart - bottomLabelCenter)}px; background: #8B4513; opacity: 0.6;"></div>`;
+                            html += `<div style="position: absolute; left: ${69 + diagramWidth}px; top: ${Math.min(shelfStart, bottomLabelCenter)}px; width: 2px; height: ${Math.abs(shelfStart - bottomLabelCenter)}px; background: var(--primary-color); opacity: 0.6;"></div>`;
                         }
                         
                         // Top leader line  
@@ -7770,14 +8584,14 @@
                         <defs>
                             <!-- Wood grain pattern for frame pieces -->
                             <pattern id="frameWoodGrain" patternUnits="userSpaceOnUse" width="15" height="6">
-                                <rect width="15" height="6" fill="#DEB887"/>
+                                <rect width="15" height="6" fill="var(--accent-color)"/>
                                 <line x1="0" y1="2" x2="15" y2="2" stroke="#CD853F" stroke-width="0.4"/>
                                 <line x1="0" y1="4" x2="15" y2="4" stroke="#CD853F" stroke-width="0.2"/>
                             </pattern>
                         </defs>
                         
                         <!-- Main polygon outline with enhanced styling -->
-                        <polygon points="${points}" stroke="#8B4513" stroke-width="6" fill="url(#frameWoodGrain)" opacity="0.8"/>
+                        <polygon points="${points}" stroke="var(--primary-color)" stroke-width="6" fill="url(#frameWoodGrain)" opacity="0.8"/>
                         
                         <!-- Inner polygon for frame effect -->
                         <polygon points="${points}" stroke="#654321" stroke-width="2" fill="none" stroke-dasharray="3,2"/>
@@ -7789,8 +8603,8 @@
                         ${miterLabels}
                         
                         <!-- Center information -->
-                        <circle cx="${centerX}" cy="${centerY}" r="3" fill="#8B4513"/>
-                        <text x="${centerX}" y="${centerY - 10}" text-anchor="middle" font-size="14" font-weight="bold" fill="#8B4513">
+                        <circle cx="${centerX}" cy="${centerY}" r="3" fill="var(--primary-color)"/>
+                        <text x="${centerX}" y="${centerY - 10}" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--primary-color)">
                             ${sides}-Sided Frame
                         </text>
                         
@@ -8234,12 +9048,12 @@
                     <svg width="${svgWidth}" height="${svgHeight}" style="display: block; margin: 0 auto; border: 1px solid #ddd; border-radius: 8px; background: #fafafa;">
                         <!-- Board outline with wood grain effect -->
                         <rect x="${centerX - boardVisualWidth/2}" y="${boardY}" width="${boardVisualWidth}" height="${boardVisualHeight}" 
-                              fill="url(#woodGrain)" stroke="#8B4513" stroke-width="3" rx="2"/>
+                              fill="url(#woodGrain)" stroke="var(--primary-color)" stroke-width="3" rx="2"/>
                         
                         <!-- Wood grain pattern definition -->
                         <defs>
                             <pattern id="woodGrain" patternUnits="userSpaceOnUse" width="20" height="8">
-                                <rect width="20" height="8" fill="#DEB887"/>
+                                <rect width="20" height="8" fill="var(--accent-color)"/>
                                 <line x1="0" y1="2" x2="20" y2="2" stroke="#CD853F" stroke-width="0.5"/>
                                 <line x1="0" y1="5" x2="20" y2="5" stroke="#CD853F" stroke-width="0.3"/>
                             </pattern>
@@ -8277,7 +9091,7 @@
                         </text>
                         
                         <!-- Dimension labels with leader lines -->
-                        <text x="${centerX}" y="${boardY + boardVisualHeight + 25}" text-anchor="middle" font-size="14" font-weight="bold" fill="#8B4513">
+                        <text x="${centerX}" y="${boardY + boardVisualHeight + 25}" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--primary-color)">
                             Long Side: ${inchesToDisplay(longSide, 'calculator')}
                         </text>
                         <text x="${centerX}" y="${boardY + boardVisualHeight + 40}" text-anchor="middle" font-size="14" font-weight="bold" fill="#654321">
@@ -9128,6 +9942,449 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             // The calculation is already saved when calculatePilotHole runs
             showNotification('Screw calculation saved to project', 'success');
         }
+
+        // =====================================================
+        // Grade/Slope Calculator Functions
+        // =====================================================
+        
+        let gradeMode = 'find-grade'; // Current calculation mode
+        
+        function setGradeMode(mode) {
+            gradeMode = mode;
+            
+            // Update button states
+            document.querySelectorAll('#gradeCard .calc-mode-selector .mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('gradeMode' + mode.split('-')[1].charAt(0).toUpperCase() + mode.split('-')[1].slice(1)).classList.add('active');
+            
+            // Show/hide inputs based on mode
+            const riseInput = document.getElementById('gradeRiseInput');
+            const runInput = document.getElementById('gradeRunInput');
+            const percentInput = document.getElementById('gradePercentInput');
+            
+            if (mode === 'find-grade') {
+                riseInput.style.display = 'flex';
+                runInput.style.display = 'flex';
+                percentInput.style.display = 'none';
+            } else if (mode === 'find-rise') {
+                riseInput.style.display = 'none';
+                runInput.style.display = 'flex';
+                percentInput.style.display = 'flex';
+            } else if (mode === 'find-run') {
+                riseInput.style.display = 'flex';
+                runInput.style.display = 'none';
+                percentInput.style.display = 'flex';
+            }
+            
+            calculateGradeSlope();
+        }
+        
+        function calculateGradeSlope() {
+            let rise = 0, run = 0, percent = 0;
+            
+            // Get Rise value (in inches)
+            const riseFeet = parseFloat(document.getElementById('gradeRiseFeet').value) || 0;
+            const riseInches = parseFloat(document.getElementById('gradeRiseInches').value) || 0;
+            const riseFraction = parseFloat(document.getElementById('gradeRiseFraction').value) || 0;
+            rise = (riseFeet * 12) + riseInches + riseFraction;
+            
+            // Get Run value (in inches)
+            const runFeet = parseFloat(document.getElementById('gradeRunFeet').value) || 0;
+            const runInches = parseFloat(document.getElementById('gradeRunInches').value) || 0;
+            const runFraction = parseFloat(document.getElementById('gradeRunFraction').value) || 0;
+            run = (runFeet * 12) + runInches + runFraction;
+            
+            // Get Percentage value
+            percent = parseFloat(document.getElementById('gradePercent').value) || 0;
+            
+            let calculatedRise, calculatedRun, calculatedPercent, angle, ratio;
+            
+            if (gradeMode === 'find-grade') {
+                if (rise > 0 && run > 0) {
+                    calculatedPercent = (rise / run) * 100;
+                    angle = Math.atan(rise / run) * (180 / Math.PI);
+                    ratio = `1:${(run / rise).toFixed(2)}`;
+                    displayGradeResults(rise, run, calculatedPercent, angle, ratio);
+                    updateSlopeVisual(rise, run, calculatedPercent, angle);
+                } else {
+                    hideGradeResults();
+                }
+            } else if (gradeMode === 'find-rise') {
+                if (run > 0 && percent > 0) {
+                    calculatedRise = (run * percent) / 100;
+                    angle = Math.atan(calculatedRise / run) * (180 / Math.PI);
+                    ratio = `1:${(run / calculatedRise).toFixed(2)}`;
+                    displayGradeResults(calculatedRise, run, percent, angle, ratio);
+                    updateSlopeVisual(calculatedRise, run, percent, angle);
+                } else {
+                    hideGradeResults();
+                }
+            } else if (gradeMode === 'find-run') {
+                if (rise > 0 && percent > 0) {
+                    calculatedRun = (rise * 100) / percent;
+                    angle = Math.atan(rise / calculatedRun) * (180 / Math.PI);
+                    ratio = `1:${(calculatedRun / rise).toFixed(2)}`;
+                    displayGradeResults(rise, calculatedRun, percent, angle, ratio);
+                    updateSlopeVisual(rise, calculatedRun, percent, angle);
+                } else {
+                    hideGradeResults();
+                }
+            }
+        }
+        
+        function displayGradeResults(rise, run, percent, angle, ratio) {
+            const resultsDiv = document.getElementById('gradeResults');
+            const resultDisplay = document.getElementById('gradeResultDisplay');
+            
+            // Convert values back to feet/inches for display
+            const riseDisplay = inchesToDisplay(rise);
+            const runDisplay = inchesToDisplay(run);
+            
+            // Determine compliance color coding
+            let complianceColor = '#333';
+            let complianceText = '';
+            
+            if (percent <= 5) {
+                complianceColor = '#228B22';
+                complianceText = '✅ ADA Compliant (Preferred)';
+            } else if (percent <= 8.33) {
+                complianceColor = '#FFA500';
+                complianceText = '⚠️ ADA Max Compliance';
+            } else if (percent <= 15) {
+                complianceColor = '#FF6347';
+                complianceText = '⚡ Steep (Check local codes)';
+            } else {
+                complianceColor = '#DC143C';
+                complianceText = '🚨 Very Steep (May not be allowed)';
+            }
+            
+            let html = `
+                <div class="grade-result-summary" style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 10px;">
+                        <div>
+                            <strong>Grade:</strong> <span style="font-size: 18px; color: var(--primary-color);">${percent.toFixed(2)}%</span>
+                        </div>
+                        <div>
+                            <strong>Angle:</strong> <span style="font-size: 18px; color: var(--primary-color);">${angle.toFixed(2)}°</span>
+                        </div>
+                        <div>
+                            <strong>Ratio:</strong> <span style="font-size: 16px; color: #666;">${ratio}</span>
+                        </div>
+                        <div>
+                            <strong>Rise:Run:</strong> <span style="font-size: 16px; color: #666;">${(rise/12).toFixed(2)}:${(run/12).toFixed(2)}</span>
+                        </div>
+                    </div>
+                    <div style="text-align: center; font-weight: bold; color: ${complianceColor};">
+                        ${complianceText}
+                    </div>
+                </div>
+                
+                <div class="grade-detailed-results">
+                    <h5 style="margin-bottom: 10px; color: var(--primary-color);">Detailed Measurements:</h5>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px;">
+                        <div><strong>Rise (Vertical):</strong> ${riseDisplay}</div>
+                        <div><strong>Run (Horizontal):</strong> ${runDisplay}</div>
+                    </div>
+                </div>
+            `;
+            
+            if (gradeMode === 'find-rise') {
+                html += `
+                    <div class="calculated-value" style="margin-top: 15px; padding: 10px; background: #e8f5e8; border-radius: 5px;">
+                        <strong>📏 Calculated Rise:</strong> ${riseDisplay}
+                    </div>
+                `;
+            } else if (gradeMode === 'find-run') {
+                html += `
+                    <div class="calculated-value" style="margin-top: 15px; padding: 10px; background: #e8f5e8; border-radius: 5px;">
+                        <strong>📏 Calculated Run:</strong> ${runDisplay}
+                    </div>
+                `;
+            }
+            
+            // Save calculation data for project saving
+            window.currentGradeCalculation = {
+                mode: gradeMode,
+                rise: rise,
+                run: run,
+                percent: percent,
+                angle: angle,
+                ratio: ratio,
+                riseDisplay: riseDisplay,
+                runDisplay: runDisplay,
+                timestamp: new Date().toISOString()
+            };
+            
+            resultDisplay.innerHTML = html;
+            resultsDiv.style.display = 'block';
+        }
+        
+        function hideGradeResults() {
+            document.getElementById('gradeResults').style.display = 'none';
+            
+            // Reset visual display
+            document.getElementById('gradePercentLabel').textContent = 'Grade: --';
+            document.getElementById('ratioLabel').textContent = 'Ratio: --';
+            document.getElementById('angleLabel').textContent = 'Angle';
+        }
+        
+        function updateSlopeVisual(rise, run, percent, angle) {
+            // Update the SVG visual representation
+            const svg = document.getElementById('slopeDiagram');
+            const triangle = document.getElementById('slopeTriangle');
+            const angleArc = document.getElementById('angleArc');
+            const gradeLabel = document.getElementById('gradePercentLabel');
+            const ratioLabel = document.getElementById('ratioLabel');
+            const angleLabel = document.getElementById('angleLabel');
+            
+            // Calculate proportional dimensions for visual (keeping within SVG bounds)
+            const maxWidth = 250; // Available width for run
+            const maxHeight = 100; // Available height for rise
+            
+            let visualRun = maxWidth;
+            let visualRise = (rise / run) * maxWidth;
+            
+            // If rise is too tall, scale both proportionally
+            if (visualRise > maxHeight) {
+                const scale = maxHeight / visualRise;
+                visualRise = maxHeight;
+                visualRun = visualRun * scale;
+            }
+            
+            // Update triangle path
+            const startX = 50;
+            const startY = 170;
+            const endX = startX + visualRun;
+            const topY = startY - visualRise;
+            
+            triangle.setAttribute('d', `M ${startX} ${startY} L ${endX} ${startY} L ${endX} ${topY} Z`);
+            
+            // Update rise line
+            svg.querySelector('line[stroke="#D2691E"]').setAttribute('x1', endX);
+            svg.querySelector('line[stroke="#D2691E"]').setAttribute('y1', startY);
+            svg.querySelector('line[stroke="#D2691E"]').setAttribute('x2', endX);
+            svg.querySelector('line[stroke="#D2691E"]').setAttribute('y2', topY);
+            
+            // Update run line
+            svg.querySelector('line[stroke="#228B22"]').setAttribute('x1', startX);
+            svg.querySelector('line[stroke="#228B22"]').setAttribute('x2', endX);
+            
+            // Update angle arc (simplified)
+            const arcRadius = Math.min(50, visualRun / 3);
+            const arcEndX = startX + arcRadius * Math.cos(angle * Math.PI / 180);
+            const arcEndY = startY - arcRadius * Math.sin(angle * Math.PI / 180);
+            angleArc.setAttribute('d', `M ${startX + arcRadius} ${startY} A ${arcRadius} ${arcRadius} 0 0 0 ${arcEndX} ${arcEndY}`);
+            
+            // Update labels
+            gradeLabel.textContent = `Grade: ${percent.toFixed(2)}%`;
+            ratioLabel.textContent = `Ratio: 1:${(run/rise).toFixed(2)}`;
+            angleLabel.textContent = `${angle.toFixed(1)}°`;
+            
+            // Position angle label
+            const labelX = startX + (arcRadius * 1.5);
+            const labelY = startY - (arcRadius * 0.3);
+            angleLabel.setAttribute('x', labelX);
+            angleLabel.setAttribute('y', labelY);
+        }
+        
+        function setGradePreset(presetType, description) {
+            // Clear existing values
+            document.getElementById('gradeRiseFeet').value = '';
+            document.getElementById('gradeRiseInches').value = '';
+            document.getElementById('gradeRiseFraction').value = '0';
+            document.getElementById('gradeRunFeet').value = '';
+            document.getElementById('gradeRunInches').value = '';
+            document.getElementById('gradeRunFraction').value = '0';
+            document.getElementById('gradePercent').value = '';
+            
+            // Set to find-grade mode for most presets
+            setGradeMode('find-grade');
+            
+            switch(presetType) {
+                case 'ada-max':
+                    // 1:12 ratio - 1 inch rise for every 12 inches run
+                    document.getElementById('gradeRiseInches').value = '1';
+                    document.getElementById('gradeRunFeet').value = '1';
+                    break;
+                case 'ada-preferred':
+                    // 1:20 ratio - 1 inch rise for every 20 inches run
+                    document.getElementById('gradeRiseInches').value = '1';
+                    document.getElementById('gradeRunInches').value = '20';
+                    break;
+                case 'drainage-min':
+                    // 1% grade - 1 inch rise per 100 inches run
+                    document.getElementById('gradeRiseInches').value = '1';
+                    document.getElementById('gradeRunFeet').value = '8';
+                    document.getElementById('gradeRunInches').value = '4';
+                    break;
+                case 'drainage-ideal':
+                    // 2% grade - 2 inches rise per 100 inches run
+                    document.getElementById('gradeRiseInches').value = '2';
+                    document.getElementById('gradeRunFeet').value = '8';
+                    document.getElementById('gradeRunInches').value = '4';
+                    break;
+                case 'driveway-max':
+                    // 15% grade - 15 inches rise per 100 inches run
+                    document.getElementById('gradeRiseInches').value = '15';
+                    document.getElementById('gradeRunFeet').value = '8';
+                    document.getElementById('gradeRunInches').value = '4';
+                    break;
+                case 'shed-ramp':
+                    // 10% grade - 10 inches rise per 100 inches run
+                    document.getElementById('gradeRiseInches').value = '10';
+                    document.getElementById('gradeRunFeet').value = '8';
+                    document.getElementById('gradeRunInches').value = '4';
+                    break;
+                case 'stairs-typical':
+                    // 35° angle, approximately 70% grade
+                    document.getElementById('gradeRiseInches').value = '7';
+                    document.getElementById('gradeRunInches').value = '10';
+                    break;
+                case 'roof-min':
+                    // 4:12 roof pitch - 4 inches rise per 12 inches run
+                    document.getElementById('gradeRiseInches').value = '4';
+                    document.getElementById('gradeRunFeet').value = '1';
+                    break;
+            }
+            
+            calculateGradeSlope();
+            showNotification(`Applied preset: ${description}`, 'success');
+        }
+        
+        function saveGradeToProject() {
+            if (!window.currentGradeCalculation) {
+                showNotification('No calculation to save', 'error');
+                return;
+            }
+            
+            const calc = window.currentGradeCalculation;
+            
+            // Create preview content
+            let previewContent = `
+                <div class="save-preview-spacing">
+                    <div class="preview-header">Grade/Slope Calculation</div>
+                    <div class="preview-equation">Mode: ${calc.mode.replace('find-', 'Calculate ').replace('grade', 'Grade %').replace('rise', 'Rise').replace('run', 'Run')}</div>
+                    <div class="preview-result">
+                        Grade: ${calc.percent.toFixed(2)}% | Angle: ${calc.angle.toFixed(2)}° | Ratio: ${calc.ratio}
+                    </div>
+                    <div class="preview-summary">
+                        Rise: ${calc.riseDisplay} | Run: ${calc.runDisplay}
+                    </div>
+                </div>
+            `;
+            
+            // Determine equation based on mode
+            let equation = '';
+            if (calc.mode === 'find-grade') {
+                equation = `${calc.riseDisplay} rise ÷ ${calc.runDisplay} run = ${calc.percent.toFixed(2)}%`;
+            } else if (calc.mode === 'find-rise') {
+                equation = `${calc.runDisplay} run × ${calc.percent.toFixed(2)}% = ${calc.riseDisplay} rise`;
+            } else if (calc.mode === 'find-run') {
+                equation = `${calc.riseDisplay} rise ÷ ${calc.percent.toFixed(2)}% = ${calc.runDisplay} run`;
+            }
+            
+            // Determine compliance status
+            let complianceText = '';
+            if (calc.percent <= 5) {
+                complianceText = 'ADA Compliant (Preferred)';
+            } else if (calc.percent <= 8.33) {
+                complianceText = 'ADA Max Compliance';
+            } else if (calc.percent <= 15) {
+                complianceText = 'Steep (Check local codes)';
+            } else {
+                complianceText = 'Very Steep (May not be allowed)';
+            }
+            
+            const saveData = {
+                toolName: 'Grade/Slope Calculator',
+                type: 'Grade/Slope Calculator',
+                summary: `${calc.percent.toFixed(2)}% grade (${calc.angle.toFixed(1)}°) - ${complianceText}`,
+                equation: equation,
+                result: `${calc.percent.toFixed(2)}% grade, ${calc.angle.toFixed(2)}° angle, ${calc.ratio} ratio`,
+                details: `Mode: ${calc.mode.replace('find-', 'Calculate ').replace('grade', 'Grade %').replace('rise', 'Rise').replace('run', 'Run')}\nRise: ${calc.riseDisplay}\nRun: ${calc.runDisplay}\nGrade: ${calc.percent.toFixed(2)}%\nAngle: ${calc.angle.toFixed(2)}°\nRatio: ${calc.ratio}\nCompliance: ${complianceText}`,
+                preview: previewContent
+            };
+            
+            showSaveToProjectModal(saveData);
+        }
+        
+        function toggleQuickReference() {
+            const tableDiv = document.getElementById('quickReferenceTable');
+            const isHidden = tableDiv.style.display === 'none';
+            
+            if (isHidden) {
+                // Populate table if not already done
+                populateReferenceTable();
+                tableDiv.style.display = 'block';
+            } else {
+                tableDiv.style.display = 'none';
+            }
+        }
+        
+        function populateReferenceTable() {
+            const tbody = document.getElementById('referenceTableBody');
+            
+            // Check if already populated
+            if (tbody.children.length > 0) return;
+            
+            // Define all screw sizes and their pilot holes
+            const screwData = [
+                // Standard wood screws
+                { size: '#2', diameter: '0.086"', hardwood: '1/16"', softwood: '3/64"', plywood: '3/64"' },
+                { size: '#3', diameter: '0.099"', hardwood: '1/16"', softwood: '1/16"', plywood: '3/64"' },
+                { size: '#4', diameter: '0.112"', hardwood: '5/64"', softwood: '1/16"', plywood: '1/16"' },
+                { size: '#5', diameter: '0.125"', hardwood: '5/64"', softwood: '1/16"', plywood: '1/16"' },
+                { size: '#6', diameter: '0.138"', hardwood: '3/32"', softwood: '5/64"', plywood: '5/64"' },
+                { size: '#7', diameter: '0.151"', hardwood: '3/32"', softwood: '5/64"', plywood: '5/64"' },
+                { size: '#8', diameter: '0.164"', hardwood: '7/64"', softwood: '3/32"', plywood: '3/32"' },
+                { size: '#9', diameter: '0.177"', hardwood: '1/8"', softwood: '3/32"', plywood: '3/32"' },
+                { size: '#10', diameter: '0.190"', hardwood: '1/8"', softwood: '7/64"', plywood: '7/64"' },
+                { size: '#12', diameter: '0.216"', hardwood: '9/64"', softwood: '1/8"', plywood: '1/8"' },
+                { size: '#14', diameter: '0.242"', hardwood: '5/32"', softwood: '9/64"', plywood: '9/64"' },
+                { size: '#16', diameter: '0.268"', hardwood: '3/16"', softwood: '5/32"', plywood: '5/32"' },
+                { size: '#18', diameter: '0.294"', hardwood: '13/64"', softwood: '3/16"', plywood: '3/16"' },
+                { size: '#20', diameter: '0.320"', hardwood: '7/32"', softwood: '13/64"', plywood: '13/64"' },
+                // Fractional sizes
+                { size: '1/4"', diameter: '0.250"', hardwood: '11/64"', softwood: '5/32"', plywood: '5/32"' },
+                { size: '5/16"', diameter: '0.313"', hardwood: '7/32"', softwood: '3/16"', plywood: '3/16"' },
+                { size: '3/8"', diameter: '0.375"', hardwood: '1/4"', softwood: '7/32"', plywood: '7/32"' },
+                { size: '7/16"', diameter: '0.438"', hardwood: '5/16"', softwood: '9/32"', plywood: '9/32"' },
+                // Lag bolts
+                { size: '1/4" Lag', diameter: '0.250"', hardwood: '3/16"', softwood: '5/32"', plywood: '5/32"', isLag: true },
+                { size: '5/16" Lag', diameter: '0.313"', hardwood: '1/4"', softwood: '13/64"', plywood: '13/64"', isLag: true },
+                { size: '3/8" Lag', diameter: '0.375"', hardwood: '5/16"', softwood: '1/4"', plywood: '1/4"', isLag: true },
+                { size: '1/2" Lag', diameter: '0.500"', hardwood: '3/8"', softwood: '5/16"', plywood: '5/16"', isLag: true },
+                { size: '5/8" Lag', diameter: '0.625"', hardwood: '1/2"', softwood: '7/16"', plywood: '7/16"', isLag: true },
+                { size: '3/4" Lag', diameter: '0.750"', hardwood: '5/8"', softwood: '1/2"', plywood: '1/2"', isLag: true }
+            ];
+            
+            // Create table rows
+            let html = '';
+            let lastCategory = '';
+            
+            screwData.forEach(screw => {
+                // Add category row
+                const currentCategory = screw.isLag ? 'lag' : 'standard';
+                if (currentCategory !== lastCategory) {
+                    html += `<tr class="screw-category">
+                        <td colspan="5">${screw.isLag ? 'Lag Bolts' : 'Standard Wood Screws'}</td>
+                    </tr>`;
+                    lastCategory = currentCategory;
+                }
+                
+                // Add data row
+                html += `<tr class="${screw.isLag ? 'lag-bolt' : ''}">
+                    <td><strong>${screw.size}</strong></td>
+                    <td>${screw.diameter}</td>
+                    <td>${screw.hardwood}</td>
+                    <td>${screw.softwood}</td>
+                    <td>${screw.plywood}</td>
+                </tr>`;
+            });
+            
+            tbody.innerHTML = html;
+        }
         
         function calculatePilotHole(screwSize, woodType) {
             console.log('calculatePilotHole called with:', screwSize, woodType);
@@ -9271,6 +10528,9 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                                 <li>For ${woodType}: ${woodType === 'hardwood' ? 'Go slow, use cutting oil if needed' : woodType === 'softwood' ? 'Standard drilling speed works well' : woodType === 'plywood' ? 'Medium speed, watch for tear-out' : 'Use appropriate speed for material'}</li>
                             </ul>
                         </div>
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button class="btn btn-success" onclick="saveScrewToProject()">📁 Save to Project</button>
+                        </div>
                     </div>
                 `;
                 
@@ -9298,6 +10558,9 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         }
         
         document.addEventListener('DOMContentLoaded', function() {
+            // Load saved theme
+            loadSavedTheme();
+            
             // Initialize screw calculator
             initScrewCalculator();
             
@@ -9340,6 +10603,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             calculateMiterAngle();
             calculateFrameBuilder(); // Initialize Frame Builder with default selections
             calculateSingleMiter(); // Initialize Single Board Cut with default selections
+            calculateGradeSlope(); // Initialize Grade/Slope Calculator
             
             console.log('Woodworking Calculator with Visual Project Management loaded!');
         });
