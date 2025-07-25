@@ -5653,48 +5653,243 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
 
         <!-- Help Modal -->
         <div id="helpModal" class="modal">
-            <div class="modal-content">
+            <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
                 <span class="close" onclick="closeHelp()">&times;</span>
-                <h2>🪵 WorkShop Pro Calculator Help</h2>
+                <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 30px;">WorkShop Pro Calculator Help</h2>
                 
-                <h3>Calculator Tab</h3>
-                <p>Pure math calculations without kerf compensation. Perfect for:</p>
-                <ul>
-                    <li>Adding multiple board lengths</li>
-                    <li>Calculating total project dimensions</li>
-                    <li>General measurement conversions</li>
-                </ul>
-                <p><strong>Input modes:</strong> Toggle between fraction mode (feet/inches/fractions) and decimal mode (decimal inches).</p>
-                
-                <h3>Cut Calculator Tab</h3>
-                <p>Cutting operations with automatic kerf compensation. Features:</p>
-                <ul>
-                    <li><strong>Quick Cuts:</strong> Cut boards in half, thirds, or fourths with automatic kerf compensation</li>
-                    <li><strong>Cut Side of Mark:</strong> Choose if you cut on the left or right side of your pencil mark</li>
-                    <li><strong>Kerf Settings:</strong> Select your blade width (1/16" to 3/16")</li>
-                </ul>
-                <p>The app calculates exactly where to mark your cuts so you get identical pieces after accounting for blade kerf.</p>
-                
-                <h3>Specialty Calculators Tab</h3>
-                <p>Specialized woodworking tools for advanced calculations:</p>
-                <ul>
-                    <li><strong>Lumber Shopping Cart:</strong> Calculate board feet and lumber costs by species</li>
-                    <li><strong>Golden Ratio Calculator:</strong> Find proportional dimensions using the golden ratio (1.618)</li>
-                    <li><strong>Shelf & Division Calculator:</strong> Calculate shelf spacing and material divisions</li>
-                    <li><strong>Miter Angle Calculator:</strong> Calculate miter angles for polygons, frames, and single cuts</li>
-                    <li><strong>Grade/Slope Calculator:</strong> Calculate slopes for ramps, drainage, stairs, and roofing with ADA compliance indicators</li>
-                </ul>
-                
-                <h3>Precision Settings</h3>
-                <p>Set your measuring precision (1/32" to 1") - all inputs and outputs will match your tape measure markings.</p>
-                
-                <h3>Tips</h3>
-                <ul>
-                    <li>Results automatically convert to feet and inches when appropriate</li>
-                    <li>History tracks all your calculations for reference</li>
-                    <li>All tabs work offline once loaded</li>
-                    <li>Designed for use with work gloves in dusty shop conditions</li>
-                </ul>
+                <!-- Navigation Tabs for Help Sections -->
+                <div style="display: flex; justify-content: center; margin-bottom: 20px; border-bottom: 2px solid var(--border-color);">
+                    <button class="help-tab-btn active" onclick="showHelpSection('calculators')" style="padding: 10px 20px; border: none; background: none; cursor: pointer; border-bottom: 3px solid transparent; font-weight: bold;">📱 Calculators</button>
+                    <button class="help-tab-btn" onclick="showHelpSection('projects')" style="padding: 10px 20px; border: none; background: none; cursor: pointer; border-bottom: 3px solid transparent; font-weight: bold;">📁 Projects</button>
+                    <button class="help-tab-btn" onclick="showHelpSection('tips')" style="padding: 10px 20px; border: none; background: none; cursor: pointer; border-bottom: 3px solid transparent; font-weight: bold;">💡 Tips</button>
+                </div>
+
+                <!-- Calculators Section -->
+                <div id="helpCalculators" class="help-section">
+                    <h3 style="color: var(--primary-color); border-left: 4px solid var(--primary-color); padding-left: 15px; margin: 25px 0 15px 0;">📊 Basic Calculators</h3>
+                    
+                    <div class="help-calc-card">
+                        <h4>🧮 Calculator Tab</h4>
+                        <p><strong>Purpose:</strong> Pure math calculations with woodworking precision</p>
+                        <p><strong>Inputs:</strong> Feet, inches, fractions (1/32" to 1") or decimal inches</p>
+                        <p><strong>Operations:</strong> Addition, subtraction, multiplication, division</p>
+                        <p><strong>Features:</strong> Memory functions (MC, MR, M+, M-), history tracking, precision conversion</p>
+                        <p><strong>Best For:</strong> Total project dimensions, adding multiple measurements, quick conversions</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>✂️ Cut Calculator Tab</h4>
+                        <p><strong>Purpose:</strong> Precise cutting with automatic kerf compensation</p>
+                        <p><strong>Modes:</strong></p>
+                        <ul style="margin: 8px 0; padding-left: 20px;">
+                            <li><strong>Equal Division:</strong> Divide boards into equal pieces (halves, thirds, quarters)</li>
+                            <li><strong>Cut Optimization:</strong> Minimize waste across multiple boards</li>
+                        </ul>
+                        <p><strong>Inputs:</strong> Board lengths, number of cuts, kerf width (1/16" to 3/16"), cut side preference</p>
+                        <p><strong>Outputs:</strong> Exact cut marks, piece lengths, total waste</p>
+                        <p><strong>Best For:</strong> Repetitive cuts, maximizing lumber efficiency</p>
+                    </div>
+
+                    <h3 style="color: var(--primary-color); border-left: 4px solid var(--primary-color); padding-left: 15px; margin: 25px 0 15px 0;">🛠️ Specialty Calculators</h3>
+
+                    <div class="help-calc-card">
+                        <h4>🛒 Lumber Shopping Cart</h4>
+                        <p><strong>Purpose:</strong> Calculate lumber costs and board feet by species</p>
+                        <p><strong>Inputs:</strong> Wood species, dimensions (thickness × width × length), quantity</p>
+                        <p><strong>Outputs:</strong> Board feet, individual & total costs, shopping cart summary</p>
+                        <p><strong>Features:</strong> Species pricing memory, cart management, cost comparisons</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>✨ Golden Ratio Calculator</h4>
+                        <p><strong>Purpose:</strong> Create proportionally pleasing dimensions using φ (1.618)</p>
+                        <p><strong>Inputs:</strong> One dimension (width or height)</p>
+                        <p><strong>Outputs:</strong> Complementary dimension, visual rectangle preview</p>
+                        <p><strong>Best For:</strong> Picture frames, furniture proportions, aesthetic design</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>📐 Shelf & Division Calculator</h4>
+                        <p><strong>Purpose:</strong> Calculate equal spacing and divisions</p>
+                        <p><strong>Inputs:</strong> Total length, number of divisions or desired spacing</p>
+                        <p><strong>Outputs:</strong> Exact spacing, cut marks, visual diagram</p>
+                        <p><strong>Best For:</strong> Shelf spacing, picket fences, drawer dividers</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>📐 Miter Angle Calculator</h4>
+                        <p><strong>Purpose:</strong> Calculate precise angles for joints</p>
+                        <p><strong>Modes:</strong></p>
+                        <ul style="margin: 8px 0; padding-left: 20px;">
+                            <li><strong>Polygon:</strong> Regular polygons (3-12 sides)</li>
+                            <li><strong>Frame Builder:</strong> Custom rectangles with different angles</li>
+                            <li><strong>Single Cut:</strong> Individual miter cuts</li>
+                        </ul>
+                        <p><strong>Outputs:</strong> Miter saw angles, bevel angles, visual diagrams</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>🔩 Screw & Pilot Hole Calculator</h4>
+                        <p><strong>Purpose:</strong> Find correct hole sizes for any screw</p>
+                        <p><strong>Inputs:</strong> Screw size (#2-#20, fractions, lag bolts), wood type</p>
+                        <p><strong>Outputs:</strong> Pilot hole, clearance hole, countersink sizes</p>
+                        <p><strong>Features:</strong> Complete reference table, wood-specific recommendations</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>📐 Grade/Slope Calculator</h4>
+                        <p><strong>Purpose:</strong> Calculate slopes and grades for construction</p>
+                        <p><strong>Inputs:</strong> Rise, run, or angle</p>
+                        <p><strong>Outputs:</strong> Percentage grade, angle, rise/run ratios</p>
+                        <p><strong>Features:</strong> ADA compliance indicators, common slope references</p>
+                        <p><strong>Best For:</strong> Ramps, drainage, roofing, stairs</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>🔲 Tile & Paver Calculator</h4>
+                        <p><strong>Purpose:</strong> Calculate tile quantities, costs, and layouts</p>
+                        <p><strong>Inputs:</strong> Tile size, project area, grout spacing, offset, waste factor</p>
+                        <p><strong>Outputs:</strong> Tiles needed, boxes required, total cost, grout estimate, cut estimation</p>
+                        <p><strong>Features:</strong> Multiple pricing methods, grout type auto-detection, perimeter validation</p>
+                        <p><strong>Best For:</strong> Flooring projects, backsplashes, outdoor patios</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>🌳 Wood Species Database</h4>
+                        <p><strong>Purpose:</strong> Research wood properties and characteristics</p>
+                        <p><strong>Features:</strong> 40+ species, search/filter by use case, cost level, workability</p>
+                        <p><strong>Information:</strong> Janka hardness, density, workability rating, best uses</p>
+                        <p><strong>Tools:</strong> Project wizard for wood recommendations</p>
+                    </div>
+                </div>
+
+                <!-- Projects Section -->
+                <div id="helpProjects" class="help-section" style="display: none;">
+                    <h3 style="color: var(--primary-color); border-left: 4px solid var(--primary-color); padding-left: 15px; margin: 25px 0 15px 0;">📁 Project Management System</h3>
+                    
+                    <div class="help-calc-card">
+                        <h4>🎯 Active Project</h4>
+                        <p>Select an active project from the dropdown at the top of the page. This project will:</p>
+                        <ul style="margin: 8px 0; padding-left: 20px;">
+                            <li>Automatically receive all saved calculations</li>
+                            <li>Show in the global selector across all tabs</li>
+                            <li>Be used for project-specific notes and tracking</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>💾 Saving Calculations</h4>
+                        <p>Every calculator has a "Save to Project" button that:</p>
+                        <ul style="margin: 8px 0; padding-left: 20px;">
+                            <li>Captures complete calculation details (inputs, outputs, formulas)</li>
+                            <li>Timestamps each save automatically</li>
+                            <li>Allows adding custom notes</li>
+                            <li>Shows preview before saving</li>
+                        </ul>
+                        <p><strong>What gets saved:</strong> Tool used, inputs, results, calculation method, timestamp</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>📊 Project Timeline</h4>
+                        <p>The Projects tab shows a chronological timeline of all saved calculations:</p>
+                        <ul style="margin: 8px 0; padding-left: 20px;">
+                            <li><strong>Filter by tool:</strong> See only specific calculator results</li>
+                            <li><strong>Edit/Delete:</strong> Modify saved calculations</li>
+                            <li><strong>Search:</strong> Find specific calculations quickly</li>
+                            <li><strong>Export:</strong> Download project data as JSON</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>📝 Project Management</h4>
+                        <p><strong>Creating Projects:</strong> Use the "+ New" button to create named projects</p>
+                        <p><strong>Switching Projects:</strong> Use the dropdown to change active project</p>
+                        <p><strong>Project Notes:</strong> Add notes to the active project for additional context</p>
+                        <p><strong>Viewing History:</strong> Use the Projects tab dropdown to view any project's timeline</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>📤 Import/Export</h4>
+                        <p><strong>Export:</strong> Download individual projects or all projects as JSON files</p>
+                        <p><strong>Import:</strong> Upload previously exported project files</p>
+                        <p><strong>Backup:</strong> Regular exports serve as project backups</p>
+                        <p><strong>Sharing:</strong> Share project files with colleagues or across devices</p>
+                    </div>
+                </div>
+
+                <!-- Tips Section -->
+                <div id="helpTips" class="help-section" style="display: none;">
+                    <h3 style="color: var(--primary-color); border-left: 4px solid var(--primary-color); padding-left: 15px; margin: 25px 0 15px 0;">💡 Pro Tips & Features</h3>
+                    
+                    <div class="help-calc-card">
+                        <h4>🎯 Precision Settings</h4>
+                        <p>Set precision (1/32" to 1") to match your measuring tools. All calculations will round to your selected precision, making shop measurements easier.</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>🎨 Themes</h4>
+                        <p>Choose from tool brand themes (Festool, DeWalt, Milwaukee, etc.) or general themes (Wood, Steel, Dark). Themes persist between sessions.</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>📱 Mobile Friendly</h4>
+                        <p>Designed for use in the shop with work gloves. Large buttons, clear displays, and touch-friendly interface work great on tablets and phones.</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>🔄 Automatic Conversions</h4>
+                        <p>Results automatically display in the most readable format (feet + inches vs. total inches) based on the value size.</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>💾 Data Persistence</h4>
+                        <p>All data (projects, calculations, preferences) saves to your browser's local storage. Works completely offline after first load.</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>🎭 Dad Jokes</h4>
+                        <p>Click the groan emoji (🙄) for a random dad joke to brighten your shop time!</p>
+                    </div>
+
+                    <div class="help-calc-card">
+                        <h4>⌨️ Keyboard Shortcuts</h4>
+                        <ul style="margin: 8px 0; padding-left: 20px;">
+                            <li><strong>Tab:</strong> Navigate between inputs</li>
+                            <li><strong>Enter:</strong> Execute calculations</li>
+                            <li><strong>Escape:</strong> Close modals</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <style>
+                    .help-tab-btn.active {
+                        border-bottom-color: var(--primary-color) !important;
+                        color: var(--primary-color);
+                    }
+                    .help-calc-card {
+                        background: var(--secondary-bg);
+                        border: 1px solid var(--border-color);
+                        border-radius: 8px;
+                        padding: 15px;
+                        margin-bottom: 15px;
+                        border-left: 4px solid var(--secondary-color);
+                    }
+                    .help-calc-card h4 {
+                        color: var(--primary-color);
+                        margin: 0 0 10px 0;
+                        font-size: 16px;
+                    }
+                    .help-calc-card p {
+                        margin: 8px 0;
+                        line-height: 1.4;
+                    }
+                    .help-calc-card ul {
+                        margin: 8px 0;
+                    }
+                    .help-calc-card li {
+                        margin: 4px 0;
+                    }
+                </style>
             </div>
         </div>
         
@@ -8639,6 +8834,29 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         function closeHelp() {
             const modal = document.getElementById('helpModal');
             if (modal) modal.style.display = 'none';
+        }
+
+        function showHelpSection(section) {
+            // Hide all help sections
+            document.getElementById('helpCalculators').style.display = 'none';
+            document.getElementById('helpProjects').style.display = 'none';
+            document.getElementById('helpTips').style.display = 'none';
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.help-tab-btn');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected section and activate corresponding tab
+            if (section === 'calculators') {
+                document.getElementById('helpCalculators').style.display = 'block';
+                document.querySelector('button[onclick="showHelpSection(\'calculators\')"]').classList.add('active');
+            } else if (section === 'projects') {
+                document.getElementById('helpProjects').style.display = 'block';
+                document.querySelector('button[onclick="showHelpSection(\'projects\')"]').classList.add('active');
+            } else if (section === 'tips') {
+                document.getElementById('helpTips').style.display = 'block';
+                document.querySelector('button[onclick="showHelpSection(\'tips\')"]').classList.add('active');
+            }
         }
         
         // Edit modal functions
