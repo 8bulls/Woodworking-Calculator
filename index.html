@@ -3814,6 +3814,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div class="mode-toggle" style="display: flex; align-items: center; margin-right: 10px;">
                     <label style="margin-right: 5px; font-size: 12px;">Mode:</label>
                     <select id="uiModeSelect" onchange="updateUIMode(this.value)" style="padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--background-color); color: var(--text-primary); font-size: 12px;">
+                        <option value="beginner">Beginner</option>
                         <option value="simple">Simple</option>
                         <option value="advanced">Advanced</option>
                     </select>
@@ -3844,6 +3845,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
 
         <!-- Calculator Tab -->
         <div id="calculator" class="tab-content active">
+            <!-- Beginner Welcome Message -->
+            <div id="beginnerWelcome" style="display: none; background: linear-gradient(135deg, #e8f5e8, #f0f8f0); border: 2px solid #4CAF50; border-radius: 12px; padding: 20px; margin-bottom: 20px; text-align: center;">
+                <h3 style="color: #2E7D32; margin: 0 0 10px 0;">👋 Welcome to Your First Calculator!</h3>
+                <p style="margin: 0 0 15px 0; color: #1B5E20;">Start by entering a measurement in inches, then click + or - to do math!</p>
+                <div style="font-size: 12px; color: #4CAF50;">💡 Try: Enter 25.5, click +, then enter 12.25</div>
+            </div>
+            
             <div class="settings-row">
                 <label>Precision:</label>
                 <select id="precision" onchange="updatePrecision('calculator'); updateWoodworkingFractions();">
@@ -3878,6 +3886,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <button class="calc-btn operation" onclick="setOperation('-')" id="subBtn">−</button>
                 <button class="calc-btn operation" onclick="setOperation('*')" id="mulBtn">×</button>
                 <button class="calc-btn operation" onclick="setOperation('/')" id="divBtn">÷</button>
+            </div>
+            
+            <!-- Progressive Disclosure Button -->
+            <div id="showMoreOperations" style="display: none; text-align: center; margin: 15px 0;">
+                <button class="btn btn-secondary" onclick="showMoreCalculatorFeatures()" style="padding: 8px 16px;">
+                    ➕ Show Multiply & Divide
+                </button>
             </div>
             
             <!-- Input 2 for Addition/Subtraction (feet/inches) -->
@@ -5950,12 +5965,47 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         // Centralized UI configuration
         const uiConfig = {
-            mode: localStorage.getItem('uiMode') || 'advanced', // 'simple' or 'advanced'
+            mode: localStorage.getItem('uiMode') || getDefaultMode(), // 'beginner', 'simple', or 'advanced'
             defaultCollapsed: true,
             categories: {
                 measurement: ['spacing', 'angle', 'grade'],
                 material: ['boardFoot', 'tile', 'woodSpecies'],
                 reference: ['goldenRatio', 'screw']
+            },
+            modes: {
+                beginner: {
+                    showTabs: false,
+                    availableOperations: ['+', '-'],
+                    inputMethod: 'decimal', // 'decimal', 'feet-inches'
+                    memoryButtons: false,
+                    conversions: false,
+                    precision: false,
+                    history: false,
+                    saveToProject: false,
+                    maxCalculations: 5 // upgrade to simple after this
+                },
+                simple: {
+                    showTabs: ['calculator', 'projects'],
+                    availableOperations: ['+', '-', '*', '/'],
+                    inputMethod: 'feet-inches',
+                    memoryButtons: false,
+                    conversions: true,
+                    precision: false,
+                    history: true,
+                    saveToProject: true,
+                    maxCalculations: 20 // upgrade to advanced after this
+                },
+                advanced: {
+                    showTabs: ['calculator', 'cutCalculator', 'specialty', 'projects'],
+                    availableOperations: ['+', '-', '*', '/'],
+                    inputMethod: 'feet-inches',
+                    memoryButtons: true,
+                    conversions: true,
+                    precision: true,
+                    history: true,
+                    saveToProject: true,
+                    maxCalculations: Infinity
+                }
             },
             visibility: {
                 memoryButtons: true,
@@ -5967,34 +6017,69 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 rememberCollapsedState: true,
                 showDescriptions: true,
                 animateTransitions: true
+            },
+            stats: {
+                calculationsPerformed: parseInt(localStorage.getItem('calculationsPerformed')) || 0
             }
         };
+        
+        // Determine default mode based on user experience
+        function getDefaultMode() {
+            const calculations = parseInt(localStorage.getItem('calculationsPerformed')) || 0;
+            const savedMode = localStorage.getItem('uiMode');
+            
+            // Respect user's explicit choice
+            if (savedMode) return savedMode;
+            
+            // Auto-assign based on usage
+            if (calculations === 0) return 'beginner';
+            if (calculations < 5) return 'beginner';
+            if (calculations < 20) return 'simple';
+            return 'advanced';
+        }
+        
+        // Track usage for auto-upgrading
+        function trackCalculationUsage() {
+            uiConfig.stats.calculationsPerformed++;
+            localStorage.setItem('calculationsPerformed', uiConfig.stats.calculationsPerformed.toString());
+            
+            // Auto-upgrade if appropriate
+            const currentMode = uiConfig.mode;
+            const modeConfig = uiConfig.modes[currentMode];
+            
+            if (uiConfig.stats.calculationsPerformed >= modeConfig.maxCalculations) {
+                if (currentMode === 'beginner') {
+                    suggestModeUpgrade('simple');
+                } else if (currentMode === 'simple') {
+                    suggestModeUpgrade('advanced');
+                }
+            }
+        }
+        
+        // Suggest mode upgrade with user notification
+        function suggestModeUpgrade(newMode) {
+            const upgradeMessages = {
+                simple: "🎉 You're getting the hang of this! Want to unlock more tools?",
+                advanced: "⚡ Ready for the full power? Switch to Advanced Mode for all features!"
+            };
+            
+            if (confirm(upgradeMessages[newMode] + "\n\nSwitch to " + newMode.charAt(0).toUpperCase() + newMode.slice(1) + " Mode?")) {
+                updateUIMode(newMode);
+                showNotification(`Upgraded to ${newMode.charAt(0).toUpperCase() + newMode.slice(1)} Mode!`, 'success');
+            }
+        }
         
         // Update visibility based on mode
         function updateUIMode(mode) {
             uiConfig.mode = mode;
             localStorage.setItem('uiMode', mode);
-            
-            if (mode === 'simple') {
-                uiConfig.visibility.memoryButtons = false;
-                uiConfig.visibility.advancedOptions = false;
-                uiConfig.visibility.helpSections = false;
-                uiConfig.visibility.specialtyCalculators = false;
-                uiConfig.defaultCollapsed = true;
-            } else {
-                uiConfig.visibility.memoryButtons = true;
-                uiConfig.visibility.advancedOptions = true;
-                uiConfig.visibility.helpSections = true;
-                uiConfig.visibility.specialtyCalculators = true;
-                uiConfig.defaultCollapsed = false;
-            }
-            
             applyUIMode();
         }
         
         // Apply UI mode settings
         function applyUIMode() {
             console.log('Applying UI mode:', uiConfig.mode);
+            const modeConfig = uiConfig.modes[uiConfig.mode];
             
             // Update mode selector
             const modeSelect = document.getElementById('uiModeSelect');
@@ -6002,54 +6087,162 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 modeSelect.value = uiConfig.mode;
             }
             
-            // Hide/show memory buttons
-            const memoryButtons = document.querySelectorAll('.calc-btn.memory');
-            memoryButtons.forEach(btn => {
-                btn.style.display = uiConfig.visibility.memoryButtons ? 'block' : 'none';
-            });
+            // Show/hide tabs based on mode
+            const allTabs = document.querySelectorAll('.tab-btn');
+            const tabsContainer = document.querySelector('.tab-buttons');
             
-            // Hide/show specialty calculators tab
-            const specialtyTab = document.querySelector('button[onclick="switchTab(\'specialty\')"]');
-            if (specialtyTab) {
-                specialtyTab.style.display = uiConfig.visibility.specialtyCalculators ? 'inline-block' : 'none';
-            }
-            
-            // If in simple mode and currently on specialty tab, switch to calculator
-            if (uiConfig.mode === 'simple' && document.getElementById('specialty').classList.contains('active')) {
+            if (modeConfig.showTabs === false) {
+                // Beginner mode: hide tabs completely
+                tabsContainer.style.display = 'none';
+                // Ensure calculator tab is active
                 switchTab('calculator');
-            }
-            
-            // Collapse all calculators in simple mode
-            if (uiConfig.mode === 'simple') {
-                calculatorRegistry.calculators.forEach(calc => {
-                    calc.collapse();
+            } else {
+                // Simple/Advanced mode: show specific tabs
+                tabsContainer.style.display = 'flex';
+                allTabs.forEach(tab => {
+                    const tabName = tab.onclick.toString().match(/switchTab\('(\w+)'\)/)?.[1];
+                    if (tabName) {
+                        tab.style.display = modeConfig.showTabs.includes(tabName) ? 'inline-block' : 'none';
+                    }
                 });
             }
             
-            // Hide advanced calculators in simple mode
+            // Handle calculator interface elements
+            applyCalculatorMode(modeConfig);
+            
+            // Hide advanced calculators based on mode
             const advancedCalcs = calculatorRegistry.calculators.filter(calc => calc.advanced);
             advancedCalcs.forEach(calc => {
                 if (calc.element) {
-                    calc.element.style.display = uiConfig.mode === 'simple' ? 'none' : 'block';
+                    calc.element.style.display = uiConfig.mode === 'advanced' ? 'block' : 'none';
                 }
             });
             
             // Update help sections visibility
             const helpBtn = document.querySelector('button[onclick="showHelp()"]');
             if (helpBtn) {
-                helpBtn.style.display = uiConfig.visibility.helpSections ? 'inline-block' : 'none';
+                helpBtn.style.display = uiConfig.mode === 'advanced' ? 'inline-block' : 'none';
             }
-            
-            // Show/hide descriptions
-            const calcDescriptions = document.querySelectorAll('.calc-description');
-            calcDescriptions.forEach(desc => {
-                desc.style.display = uiConfig.preferences.showDescriptions ? 'block' : 'none';
-            });
             
             // Show/hide "Show More Tools" section
             const showMoreToolsSection = document.getElementById('showMoreToolsSection');
             if (showMoreToolsSection) {
                 showMoreToolsSection.style.display = uiConfig.mode === 'simple' ? 'block' : 'none';
+            }
+            
+            // Update expand/collapse controls
+            const expandCollapseControls = document.getElementById('expandCollapseControls');
+            if (expandCollapseControls) {
+                expandCollapseControls.style.display = uiConfig.mode === 'advanced' ? 'block' : 'none';
+            }
+        }
+        
+        // Apply mode-specific calculator interface changes
+        function applyCalculatorMode(modeConfig) {
+            // Show/hide beginner welcome message
+            const beginnerWelcome = document.getElementById('beginnerWelcome');
+            if (beginnerWelcome) {
+                beginnerWelcome.style.display = uiConfig.mode === 'beginner' ? 'block' : 'none';
+            }
+            
+            // Show/hide precision selector
+            const precisionRow = document.querySelector('.settings-row');
+            if (precisionRow) {
+                precisionRow.style.display = modeConfig.precision ? 'block' : 'none';
+            }
+            
+            // Handle operation buttons and progressive disclosure
+            const operationButtons = document.querySelectorAll('.calc-btn.operation');
+            const showMoreOperations = document.getElementById('showMoreOperations');
+            
+            operationButtons.forEach(btn => {
+                const operation = btn.textContent.trim();
+                const operationMap = { '+': '+', '−': '-', '×': '*', '÷': '/' };
+                const actualOp = operationMap[operation] || operation;
+                btn.style.display = modeConfig.availableOperations.includes(actualOp) ? 'block' : 'none';
+            });
+            
+            // Show "Show More Operations" button only in beginner mode if multiply/divide are hidden
+            if (showMoreOperations) {
+                const hasMultiplyDivide = modeConfig.availableOperations.includes('*') && modeConfig.availableOperations.includes('/');
+                showMoreOperations.style.display = (uiConfig.mode === 'beginner' && !hasMultiplyDivide) ? 'block' : 'none';
+            }
+            
+            // Show/hide memory buttons
+            const memoryButtons = document.querySelectorAll('.calc-btn.memory');
+            memoryButtons.forEach(btn => {
+                btn.style.display = modeConfig.memoryButtons ? 'block' : 'none';
+            });
+            
+            // Show/hide save to project button
+            const saveBtn = document.querySelector('.calc-btn.save');
+            if (saveBtn) {
+                saveBtn.style.display = modeConfig.saveToProject ? 'block' : 'none';
+            }
+            
+            // Show/hide conversion section
+            const conversionSection = document.querySelector('.conversion-section');
+            if (conversionSection) {
+                conversionSection.style.display = modeConfig.conversions ? 'block' : 'none';
+            }
+            
+            // Show/hide history
+            const history = document.getElementById('history');
+            if (history) {
+                history.style.display = modeConfig.history ? 'block' : 'none';
+            }
+            
+            // Handle input method
+            applyInputMethod(modeConfig.inputMethod);
+        }
+        
+        // Apply input method (decimal vs feet-inches)
+        function applyInputMethod(method) {
+            const input1Group = document.querySelector('.input-group');
+            const feetInchesInputs = input1Group.querySelectorAll('input[type="number"], select');
+            
+            if (method === 'decimal') {
+                // Hide feet/inches inputs, show single decimal input
+                feetInchesInputs.forEach(input => input.style.display = 'none');
+                input1Group.querySelectorAll('span').forEach(span => span.style.display = 'none');
+                
+                // Add decimal input if it doesn't exist
+                let decimalInput = document.getElementById('decimalOnlyInput');
+                if (!decimalInput) {
+                    decimalInput = document.createElement('input');
+                    decimalInput.id = 'decimalOnlyInput';
+                    decimalInput.type = 'number';
+                    decimalInput.placeholder = 'Enter inches (e.g., 37.25)';
+                    decimalInput.step = '0.001';
+                    decimalInput.className = 'wide-input';
+                    decimalInput.style.width = '200px';
+                    decimalInput.onchange = updateCalculation;
+                    
+                    const label = input1Group.querySelector('label');
+                    label.textContent = 'Measurement:';
+                    input1Group.appendChild(decimalInput);
+                    
+                    const inchesSpan = document.createElement('span');
+                    inchesSpan.textContent = 'inches';
+                    inchesSpan.id = 'decimalInchesLabel';
+                    input1Group.appendChild(inchesSpan);
+                }
+                decimalInput.style.display = 'inline-block';
+                document.getElementById('decimalInchesLabel').style.display = 'inline';
+            } else {
+                // Show feet/inches inputs, hide decimal input
+                feetInchesInputs.forEach(input => input.style.display = 'inline-block');
+                input1Group.querySelectorAll('span').forEach(span => {
+                    if (span.id !== 'decimalInchesLabel') span.style.display = 'inline';
+                });
+                
+                const decimalInput = document.getElementById('decimalOnlyInput');
+                if (decimalInput) decimalInput.style.display = 'none';
+                const decimalLabel = document.getElementById('decimalInchesLabel');
+                if (decimalLabel) decimalLabel.style.display = 'none';
+                
+                const label = input1Group.querySelector('label');
+                label.textContent = 'Input 1:';
             }
         }
         
@@ -7928,6 +8121,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         function setOperation(op) {
             currentOperation = op;
             
+            // Track usage for auto-upgrading
+            trackCalculationUsage();
+            
             // Hide both input groups first
             document.getElementById('input2GroupFeetInches').style.display = 'none';
             document.getElementById('input2GroupNumber').style.display = 'none';
@@ -7956,7 +8152,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         
         function updateCalculation() {
-            value1 = getInputInches('feet1', 'inches1', 'fraction1');
+            // Handle decimal input in beginner mode
+            const decimalInput = document.getElementById('decimalOnlyInput');
+            if (decimalInput && decimalInput.style.display !== 'none' && decimalInput.value) {
+                value1 = parseFloat(decimalInput.value) || 0;
+            } else {
+                value1 = getInputInches('feet1', 'inches1', 'fraction1');
+            }
             
             // Get value2 based on operation type
             if (currentOperation === '+' || currentOperation === '-') {
@@ -9817,6 +10019,18 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     localStorage.setItem(`calc-${cardType}-collapsed`, 'true');
                 }
             }
+        }
+        
+        // Progressive Disclosure Functions
+        function showMoreCalculatorFeatures() {
+            // Add multiply and divide to beginner mode
+            uiConfig.modes.beginner.availableOperations = ['+', '-', '*', '/'];
+            
+            // Update the interface
+            applyUIMode();
+            
+            // Show a helpful notification
+            showNotification('✨ Multiply (×) and Divide (÷) unlocked!', 'success');
         }
         
         // Expand/Collapse All Functions
