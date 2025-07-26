@@ -3811,6 +3811,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         <option value="noob">🟢 Noob</option>
                     </select>
                 </div>
+                <div class="mode-toggle" style="display: flex; align-items: center; margin-right: 10px;">
+                    <label style="margin-right: 5px; font-size: 12px;">Mode:</label>
+                    <select id="uiModeSelect" onchange="updateUIMode(this.value)" style="padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--background-color); color: var(--text-primary); font-size: 12px;">
+                        <option value="simple">Simple</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
                 <button class="help-btn" onclick="showHelp()" title="Help">?</button>
                 <button class="help-btn" onclick="fetchDadJoke()" title="Groan Zone - Dad Jokes">🙄</button>
             </div>
@@ -3922,6 +3929,15 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             
             <div class="history" id="history">
                 <!-- History will appear here -->
+            </div>
+            
+            <!-- Show More Tools for Simple Mode -->
+            <div id="showMoreToolsSection" style="display: none; text-align: center; margin: 30px 0; padding: 20px; background: var(--surface-color); border-radius: 8px;">
+                <h3 style="color: var(--primary-color); margin-bottom: 15px;">Need More Tools?</h3>
+                <p style="margin-bottom: 20px; color: var(--text-secondary);">Switch to Advanced Mode to access specialty calculators like Board Foot, Miter Angles, Tile Layout, and more!</p>
+                <button class="btn btn-primary" onclick="updateUIMode('advanced')" style="padding: 10px 30px; font-size: 16px;">
+                    🔧 Switch to Advanced Mode
+                </button>
             </div>
         </div>
         
@@ -4146,6 +4162,16 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
 
         <!-- Specialty Calculators Tab -->
         <div id="specialty" class="tab-content">
+            <!-- Expand/Collapse All Controls -->
+            <div id="expandCollapseControls" style="text-align: center; margin-bottom: 20px; padding: 15px; background: var(--surface-color); border-radius: 8px;">
+                <button class="btn btn-secondary" onclick="expandAllCalculators()" style="margin-right: 10px;">
+                    📖 Expand All
+                </button>
+                <button class="btn btn-secondary" onclick="collapseAllCalculators()">
+                    📚 Collapse All
+                </button>
+            </div>
+            
             <!-- Board Foot Calculator -->
             <div class="calc-card" id="boardFootCard">
                 <div class="calc-card-header" onclick="toggleCalcCard('boardFoot')">
@@ -5918,6 +5944,202 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
     </div>
 
     <script>
+        // =====================================================
+        // UI Configuration System
+        // =====================================================
+        
+        // Centralized UI configuration
+        const uiConfig = {
+            mode: localStorage.getItem('uiMode') || 'advanced', // 'simple' or 'advanced'
+            defaultCollapsed: true,
+            categories: {
+                measurement: ['spacing', 'angle', 'grade'],
+                material: ['boardFoot', 'tile', 'woodSpecies'],
+                reference: ['goldenRatio', 'screw']
+            },
+            visibility: {
+                memoryButtons: true,
+                advancedOptions: true,
+                helpSections: true,
+                specialtyCalculators: true
+            },
+            preferences: {
+                rememberCollapsedState: true,
+                showDescriptions: true,
+                animateTransitions: true
+            }
+        };
+        
+        // Update visibility based on mode
+        function updateUIMode(mode) {
+            uiConfig.mode = mode;
+            localStorage.setItem('uiMode', mode);
+            
+            if (mode === 'simple') {
+                uiConfig.visibility.memoryButtons = false;
+                uiConfig.visibility.advancedOptions = false;
+                uiConfig.visibility.helpSections = false;
+                uiConfig.visibility.specialtyCalculators = false;
+                uiConfig.defaultCollapsed = true;
+            } else {
+                uiConfig.visibility.memoryButtons = true;
+                uiConfig.visibility.advancedOptions = true;
+                uiConfig.visibility.helpSections = true;
+                uiConfig.visibility.specialtyCalculators = true;
+                uiConfig.defaultCollapsed = false;
+            }
+            
+            applyUIMode();
+        }
+        
+        // Apply UI mode settings
+        function applyUIMode() {
+            console.log('Applying UI mode:', uiConfig.mode);
+            
+            // Update mode selector
+            const modeSelect = document.getElementById('uiModeSelect');
+            if (modeSelect) {
+                modeSelect.value = uiConfig.mode;
+            }
+            
+            // Hide/show memory buttons
+            const memoryButtons = document.querySelectorAll('.calc-btn.memory');
+            memoryButtons.forEach(btn => {
+                btn.style.display = uiConfig.visibility.memoryButtons ? 'block' : 'none';
+            });
+            
+            // Hide/show specialty calculators tab
+            const specialtyTab = document.querySelector('button[onclick="switchTab(\'specialty\')"]');
+            if (specialtyTab) {
+                specialtyTab.style.display = uiConfig.visibility.specialtyCalculators ? 'inline-block' : 'none';
+            }
+            
+            // If in simple mode and currently on specialty tab, switch to calculator
+            if (uiConfig.mode === 'simple' && document.getElementById('specialty').classList.contains('active')) {
+                switchTab('calculator');
+            }
+            
+            // Collapse all calculators in simple mode
+            if (uiConfig.mode === 'simple') {
+                calculatorRegistry.calculators.forEach(calc => {
+                    calc.collapse();
+                });
+            }
+            
+            // Hide advanced calculators in simple mode
+            const advancedCalcs = calculatorRegistry.calculators.filter(calc => calc.advanced);
+            advancedCalcs.forEach(calc => {
+                if (calc.element) {
+                    calc.element.style.display = uiConfig.mode === 'simple' ? 'none' : 'block';
+                }
+            });
+            
+            // Update help sections visibility
+            const helpBtn = document.querySelector('button[onclick="showHelp()"]');
+            if (helpBtn) {
+                helpBtn.style.display = uiConfig.visibility.helpSections ? 'inline-block' : 'none';
+            }
+            
+            // Show/hide descriptions
+            const calcDescriptions = document.querySelectorAll('.calc-description');
+            calcDescriptions.forEach(desc => {
+                desc.style.display = uiConfig.preferences.showDescriptions ? 'block' : 'none';
+            });
+            
+            // Show/hide "Show More Tools" section
+            const showMoreToolsSection = document.getElementById('showMoreToolsSection');
+            if (showMoreToolsSection) {
+                showMoreToolsSection.style.display = uiConfig.mode === 'simple' ? 'block' : 'none';
+            }
+        }
+        
+        // =====================================================
+        // Calculator Registry System
+        // =====================================================
+        
+        const calculatorRegistry = {
+            calculators: [],
+            
+            register(calculator) {
+                this.calculators.push(calculator);
+                return this;
+            },
+            
+            getById(id) {
+                return this.calculators.find(calc => calc.id === id);
+            },
+            
+            getByCategory(category) {
+                return this.calculators.filter(calc => calc.category === category);
+            },
+            
+            getVisible() {
+                return this.calculators.filter(calc => {
+                    if (uiConfig.mode === 'simple' && calc.advanced) {
+                        return false;
+                    }
+                    return true;
+                });
+            },
+            
+            initialize() {
+                this.calculators.forEach(calc => {
+                    if (calc.initialize) {
+                        calc.initialize();
+                    }
+                });
+            }
+        };
+        
+        // Calculator class for modular components
+        class Calculator {
+            constructor(config) {
+                this.id = config.id;
+                this.name = config.name;
+                this.category = config.category;
+                this.icon = config.icon;
+                this.description = config.description;
+                this.advanced = config.advanced || false;
+                this.defaultCollapsed = config.defaultCollapsed !== undefined ? config.defaultCollapsed : uiConfig.defaultCollapsed;
+                this.element = null;
+            }
+            
+            isCollapsed() {
+                if (!this.element) return this.defaultCollapsed;
+                const content = document.getElementById(this.id + 'Content');
+                return content && content.style.display === 'none';
+            }
+            
+            toggle() {
+                toggleCalcCard(this.id);
+            }
+            
+            collapse() {
+                const content = document.getElementById(this.id + 'Content');
+                const arrow = document.querySelector(`#${this.id}Card .calc-arrow`);
+                if (content && arrow) {
+                    content.style.display = 'none';
+                    arrow.textContent = '▼';
+                }
+            }
+            
+            expand() {
+                const content = document.getElementById(this.id + 'Content');
+                const arrow = document.querySelector(`#${this.id}Card .calc-arrow`);
+                if (content && arrow) {
+                    content.style.display = 'block';
+                    arrow.textContent = '▲';
+                }
+            }
+            
+            initialize() {
+                this.element = document.getElementById(this.id + 'Card');
+                if (this.defaultCollapsed && uiConfig.preferences.rememberCollapsedState) {
+                    this.collapse();
+                }
+            }
+        }
+        
         // =====================================================
         // Theme Management Functions
         // =====================================================
@@ -9583,10 +9805,39 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             if (content.style.display === 'none' || content.style.display === '') {
                 content.style.display = 'block';
                 arrow.textContent = '▲';
+                // Save state
+                if (uiConfig.preferences.rememberCollapsedState) {
+                    localStorage.setItem(`calc-${cardType}-collapsed`, 'false');
+                }
             } else {
                 content.style.display = 'none';
                 arrow.textContent = '▼';
+                // Save state
+                if (uiConfig.preferences.rememberCollapsedState) {
+                    localStorage.setItem(`calc-${cardType}-collapsed`, 'true');
+                }
             }
+        }
+        
+        // Expand/Collapse All Functions
+        function expandAllCalculators() {
+            calculatorRegistry.calculators.forEach(calc => {
+                calc.expand();
+                // Save individual states
+                if (uiConfig.preferences.rememberCollapsedState) {
+                    localStorage.setItem(`calc-${calc.id}-collapsed`, 'false');
+                }
+            });
+        }
+        
+        function collapseAllCalculators() {
+            calculatorRegistry.calculators.forEach(calc => {
+                calc.collapse();
+                // Save individual states
+                if (uiConfig.preferences.rememberCollapsedState) {
+                    localStorage.setItem(`calc-${calc.id}-collapsed`, 'true');
+                }
+            });
         }
 
         function calculateBoardFeet() {
@@ -16141,6 +16392,100 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             
             loadFromLocalStorage();
             updateProjectSelector();
+            
+            // =====================================================
+            // Register All Calculators
+            // =====================================================
+            
+            // Register all specialty calculators
+            calculatorRegistry
+                .register(new Calculator({
+                    id: 'boardFoot',
+                    name: 'Lumber Shopping Cart',
+                    category: 'material',
+                    icon: '📏',
+                    description: 'Calculate board feet and track lumber costs',
+                    advanced: false
+                }))
+                .register(new Calculator({
+                    id: 'goldenRatio',
+                    name: 'Golden Ratio Calculator',
+                    category: 'reference',
+                    icon: '✨',
+                    description: 'Find proportional dimensions using the golden ratio',
+                    advanced: true
+                }))
+                .register(new Calculator({
+                    id: 'spacing',
+                    name: 'Shelf & Division Calculator',
+                    category: 'measurement',
+                    icon: '📐',
+                    description: 'Calculate equal spacing for shelves and divisions',
+                    advanced: false
+                }))
+                .register(new Calculator({
+                    id: 'angle',
+                    name: 'Miter Angle Calculator',
+                    category: 'measurement',
+                    icon: '📐',
+                    description: 'Calculate miter angles for polygons and frames',
+                    advanced: false
+                }))
+                .register(new Calculator({
+                    id: 'screw',
+                    name: 'Screw & Pilot Hole Calculator',
+                    category: 'reference',
+                    icon: '🔩',
+                    description: 'Find the right pilot hole size for screws',
+                    advanced: true
+                }))
+                .register(new Calculator({
+                    id: 'grade',
+                    name: 'Grade/Slope Calculator',
+                    category: 'measurement',
+                    icon: '📐',
+                    description: 'Calculate slopes for ramps and drainage',
+                    advanced: true
+                }))
+                .register(new Calculator({
+                    id: 'tile',
+                    name: 'Tile & Paver Calculator',
+                    category: 'material',
+                    icon: '🔲',
+                    description: 'Calculate tile quantities and costs',
+                    advanced: false
+                }))
+                .register(new Calculator({
+                    id: 'woodSpecies',
+                    name: 'Wood Species Database',
+                    category: 'material',
+                    icon: '🌳',
+                    description: 'Reference guide for wood properties',
+                    advanced: false
+                }));
+            
+            // Initialize all calculators
+            calculatorRegistry.initialize();
+            
+            // Apply initial UI mode
+            applyUIMode();
+            
+            // Set initial collapsed state for all calculators
+            if (uiConfig.preferences.rememberCollapsedState) {
+                calculatorRegistry.calculators.forEach(calc => {
+                    const savedState = localStorage.getItem(`calc-${calc.id}-collapsed`);
+                    if (savedState === null) {
+                        // No saved state, use default
+                        if (calc.defaultCollapsed) {
+                            calc.collapse();
+                        }
+                    } else if (savedState === 'true') {
+                        calc.collapse();
+                    } else {
+                        calc.expand();
+                    }
+                });
+            }
             
             // Initialize tile cost inputs with default per-sqft method
             toggleCostInputs();
