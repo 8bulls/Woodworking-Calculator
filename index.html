@@ -867,6 +867,38 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             margin-bottom: 15px;
         }
         
+        .timeline-diagram {
+            margin: 15px 0;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+            overflow: hidden;
+        }
+        
+        .timeline-diagram-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #e9ecef;
+            padding: 8px 12px;
+            font-size: 0.9em;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .timeline-diagram-preview {
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .timeline-diagram-preview img {
+            transition: transform 0.2s ease;
+            border-radius: 4px;
+        }
+        
+        .timeline-diagram-preview img:hover {
+            transform: scale(1.05);
+        }
+        
         .timeline-tool-info {
             flex: 1;
         }
@@ -6538,15 +6570,23 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         // Save to Project Modal Functions
         let currentSaveData = null; // Store the data being saved
         
-        function showSaveToProjectModal(toolNameOrData, data) {
+        function showSaveToProjectModal(toolNameOrData, data, diagramContainerId) {
             // Handle both old format (toolName, data) and new format (saveDataObject)
             if (typeof toolNameOrData === 'string') {
-                // Old format: showSaveToProjectModal('Tool Name', data)
+                // Old format: showSaveToProjectModal('Tool Name', data, diagramContainerId)
                 currentSaveData = {
                     toolName: toolNameOrData,
                     timestamp: new Date().toISOString(),
                     ...data
                 };
+                
+                // Capture diagram if container ID provided
+                if (diagramContainerId) {
+                    const diagramData = captureSVGDiagram(diagramContainerId);
+                    if (diagramData) {
+                        currentSaveData.diagram = diagramData;
+                    }
+                }
                 
                 const modal = document.getElementById('saveToProjectModal');
                 const previewContent = document.getElementById('savePreviewContent');
@@ -6558,6 +6598,12 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 }
                 if (data.result) {
                     previewHtml += `<strong>Result:</strong> ${data.result}<br>`;
+                }
+                if (currentSaveData.diagram) {
+                    previewHtml += `<div style="margin: 10px 0; text-align: center;">
+                        <strong>Diagram:</strong><br>
+                        <img src="${currentSaveData.diagram.dataUrl}" style="max-width: 200px; max-height: 100px; border: 1px solid #ddd; border-radius: 4px;" alt="Calculation Diagram">
+                    </div>`;
                 }
                 if (data.details) {
                     previewHtml += `<strong>Details:</strong><br>${data.details.replace(/\n/g, '<br>')}`;
@@ -6575,6 +6621,16 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     details: saveData.details
                 };
                 
+                // Check if saveData includes diagram container ID or diagram data
+                if (saveData.diagramContainerId) {
+                    const diagramData = captureSVGDiagram(saveData.diagramContainerId);
+                    if (diagramData) {
+                        currentSaveData.diagram = diagramData;
+                    }
+                } else if (saveData.diagram) {
+                    currentSaveData.diagram = saveData.diagram;
+                }
+                
                 const modal = document.getElementById('saveToProjectModal');
                 const previewContent = document.getElementById('savePreviewContent');
                 
@@ -6588,6 +6644,12 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     }
                     if (saveData.result) {
                         previewHtml += `<strong>Result:</strong> ${saveData.result}<br>`;
+                    }
+                    if (currentSaveData.diagram) {
+                        previewHtml += `<div style="margin: 10px 0; text-align: center;">
+                            <strong>Diagram:</strong><br>
+                            <img src="${currentSaveData.diagram.dataUrl}" style="max-width: 200px; max-height: 100px; border: 1px solid #ddd; border-radius: 4px;" alt="Calculation Diagram">
+                        </div>`;
                     }
                     if (saveData.details) {
                         previewHtml += `<strong>Details:</strong><br>${saveData.details.replace(/\n/g, '<br>')}`;
@@ -7075,6 +7137,15 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         
                         ${logEntry.equation ? `<div class="timeline-equation">${logEntry.equation}</div>` : ''}
                         ${logEntry.result ? `<div class="timeline-result">Result: ${logEntry.result}</div>` : ''}
+                        ${logEntry.diagram ? `<div class="timeline-diagram">
+                            <div class="timeline-diagram-header">
+                                <strong>📊 Diagram:</strong>
+                                <button class="btn btn-sm btn-secondary" onclick="viewDiagramFullSize('${logEntry.id}')" title="View Full Size">🔍</button>
+                            </div>
+                            <div class="timeline-diagram-preview">
+                                <img src="${logEntry.diagram.dataUrl}" style="max-width: 100%; max-height: 150px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;" onclick="viewDiagramFullSize('${logEntry.id}')" alt="Calculation Diagram">
+                            </div>
+                        </div>` : ''}
                         ${logEntry.details ? `<div class="timeline-details">${getTimelineDetailsDisplay(logEntry)}</div>` : ''}
                         ${logEntry.userNotes ? `<div class="timeline-notes">${logEntry.userNotes}</div>` : ''}
                     </div>
@@ -7136,6 +7207,78 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 updateProjectSelector();
                 showNotification('Calculation removed from project', 'success');
             }
+        }
+
+        // Diagram View Functions
+        function viewDiagramFullSize(itemId) {
+            const project = viewedProject || currentProject;
+            if (!project) return;
+            
+            const logEntry = project.projectLog.find(item => item.id === parseInt(itemId));
+            if (!logEntry || !logEntry.diagram) return;
+            
+            showDiagramModal(logEntry);
+        }
+
+        function showDiagramModal(logEntry) {
+            // Create modal if it doesn't exist
+            let modal = document.getElementById('diagramModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'diagramModal';
+                modal.className = 'modal';
+                modal.innerHTML = `
+                    <div class="modal-content" style="max-width: 90vw; max-height: 90vh;">
+                        <span class="close" onclick="closeDiagramModal()">&times;</span>
+                        <div id="diagramModalContent"></div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+            
+            const content = document.getElementById('diagramModalContent');
+            content.innerHTML = `
+                <h3 style="color: var(--primary-color); margin-bottom: 20px;">📊 ${logEntry.toolName} - Diagram</h3>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="${logEntry.diagram.dataUrl}" style="max-width: 100%; max-height: 70vh; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" alt="Full Size Diagram">
+                </div>
+                <div style="background: var(--secondary-bg); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <strong>Calculation:</strong> ${logEntry.equation || 'N/A'}<br>
+                    <strong>Result:</strong> ${logEntry.result || 'N/A'}<br>
+                    <strong>Saved:</strong> ${new Date(logEntry.saved).toLocaleString()}
+                </div>
+                <div style="text-align: center;">
+                    <button class="btn btn-secondary" onclick="downloadDiagram('${logEntry.id}')" style="margin-right: 10px;">📥 Download SVG</button>
+                    <button class="btn btn-secondary" onclick="closeDiagramModal()">Close</button>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        function closeDiagramModal() {
+            const modal = document.getElementById('diagramModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function downloadDiagram(itemId) {
+            const project = viewedProject || currentProject;
+            if (!project) return;
+            
+            const logEntry = project.projectLog.find(item => item.id === parseInt(itemId));
+            if (!logEntry || !logEntry.diagram) return;
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.href = logEntry.diagram.dataUrl;
+            link.download = `${logEntry.toolName.replace(/[^a-z0-9]/gi, '_')}_diagram_${logEntry.id}.svg`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('Diagram downloaded', 'success');
         }
         
         // All Projects Modal Functions
@@ -8794,6 +8937,53 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             if (modal) modal.style.display = 'none';
         }
 
+        // SVG Diagram Capture Utility
+        function captureSVGDiagram(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return null;
+            
+            const svg = container.querySelector('svg');
+            if (!svg) return null;
+            
+            try {
+                // Clone the SVG to avoid modifying the original
+                const svgClone = svg.cloneNode(true);
+                
+                // Remove interactive elements for static save
+                svgClone.querySelectorAll('[onmouseover], [onclick], [onhover]').forEach(el => {
+                    el.removeAttribute('onmouseover');
+                    el.removeAttribute('onclick');
+                    el.removeAttribute('onhover');
+                });
+                
+                // Ensure proper styling is preserved
+                svgClone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+                
+                // Get computed styles and add inline styles for key visual elements
+                const computedStyles = window.getComputedStyle(svg);
+                if (computedStyles.backgroundColor && computedStyles.backgroundColor !== 'rgba(0, 0, 0, 0)') {
+                    svgClone.style.backgroundColor = computedStyles.backgroundColor;
+                }
+                
+                // Serialize to string
+                const serializer = new XMLSerializer();
+                const svgString = serializer.serializeToString(svgClone);
+                
+                // Create data URL for easy embedding
+                const svgDataUrl = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
+                
+                return {
+                    svgString: svgString,
+                    dataUrl: svgDataUrl,
+                    width: svg.getAttribute('width') || svg.viewBox?.baseVal?.width || 400,
+                    height: svg.getAttribute('height') || svg.viewBox?.baseVal?.height || 200
+                };
+            } catch (error) {
+                console.warn('Failed to capture SVG diagram:', error);
+                return null;
+            }
+        }
+
         function showHelpSection(section) {
             // Hide all help sections
             document.getElementById('helpCalculators').style.display = 'none';
@@ -10413,7 +10603,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 details: details
             };
             
-            showSaveToProjectModal('Golden Ratio Calculator', data);
+            showSaveToProjectModal('Golden Ratio Calculator', data, 'goldenDiagramContainer');
         }
 
         function setAngleSides(sides) {
@@ -10835,7 +11025,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     details: `Polygon: ${sides} sides\nInterior angle: ${interiorAngle.toFixed(1)}°\nMiter cut angle: ${miterAngle.toFixed(2)}°\nTable saw angle: ${tableAngle.toFixed(2)}°\nEach piece needs ${miterAngle.toFixed(2)}° cut on both ends`
                 };
                 
-                showSaveToProjectModal('Miter Angle Calculator - Polygon', data);
+                showSaveToProjectModal('Miter Angle Calculator - Polygon', data, 'angleDiagramContainer');
                 
             } else if (currentMiterMode === 'frame') {
                 const sides = parseInt(document.getElementById('frameShapeSides').value);
@@ -10867,7 +11057,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     details: `Frame: ${frameName}\nDimensions: ${dimensionsSummary}\nMaterial width: ${inchesToDisplay(materialWidth)}\nMiter angle: ${miterAngle.toFixed(1)}°\nCut angle for joining frame pieces`
                 };
                 
-                showSaveToProjectModal('Miter Angle Calculator - Frame Builder', data);
+                showSaveToProjectModal('Miter Angle Calculator - Frame Builder', data, 'angleDiagramContainer');
                 
             } else {
                 // Single Board Cut mode
@@ -10903,7 +11093,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     details: `Cut Type: ${cutDescription}\nAngle: ${angle}°\nBoard width: ${inchesToDisplay(boardWidth)}\nKnown side: ${knownSide} (${inchesToDisplay(inputLength)})\nLong side: ${inchesToDisplay(longSide)}\nShort side: ${inchesToDisplay(shortSide)}\nOffset: ${inchesToDisplay(totalOffset)}`
                 };
                 
-                showSaveToProjectModal('Miter Angle Calculator - Single Board Cut', data);
+                showSaveToProjectModal('Miter Angle Calculator - Single Board Cut', data, 'angleDiagramContainer');
             }
         }
 
@@ -11106,7 +11296,8 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     }) : null,
                     fullDetails: details
                 },
-                preview: previewContent
+                preview: previewContent,
+                diagramContainerId: 'spacingContent'
             };
             
             showSaveToProjectModal(saveData);
@@ -11813,7 +12004,8 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 equation: equation,
                 result: `${calc.percent.toFixed(2)}% grade, ${calc.angle.toFixed(2)}° angle, ${calc.ratio} ratio`,
                 details: `Mode: ${calc.mode.replace('find-', 'Calculate ').replace('grade', 'Grade %').replace('rise', 'Rise').replace('run', 'Run')}\nRise: ${calc.riseDisplay}\nRun: ${calc.runDisplay}\nGrade: ${calc.percent.toFixed(2)}%\nAngle: ${calc.angle.toFixed(2)}°\nRatio: ${calc.ratio}\nCompliance: ${complianceText}`,
-                preview: previewContent
+                preview: previewContent,
+                diagramContainerId: 'gradeContent'
             };
             
             showSaveToProjectModal(saveData);
@@ -14039,7 +14231,8 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
                 equation: equation,
                 result: result,
                 details: details,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                diagramContainerId: 'tilePreview'
             };
 
             showSaveToProjectModal(saveData);
