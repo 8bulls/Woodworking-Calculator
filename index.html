@@ -1255,6 +1255,18 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
+        .calc-result.negative-result {
+            color: #FF5722;
+            background-color: rgba(255, 87, 34, 0.1);
+            border: 1px solid rgba(255, 87, 34, 0.3);
+            cursor: default;
+        }
+        
+        .calc-result.negative-result:hover {
+            background-color: rgba(255, 87, 34, 0.15);
+            transform: none;
+        }
+        
         .result-hint {
             text-align: center;
             font-size: 12px;
@@ -8357,7 +8369,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 precision = parseInt(document.getElementById('precision')?.value || 16);
             }
             
-            const roundedInches = Math.round(totalInches * precision) / precision;
+            // Handle negative numbers
+            const isNegative = totalInches < 0;
+            const absInches = Math.abs(totalInches);
+            
+            const roundedInches = Math.round(absInches * precision) / precision;
             const feet = Math.floor(roundedInches / 12);
             const remainingInches = roundedInches - (feet * 12);
             const wholeInches = Math.floor(remainingInches);
@@ -8371,7 +8387,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 } else {
                     // Clean foot measurement - add 0"
                     display += ' 0"';
-                    return display;
+                    return isNegative ? '-' + display : display;
                 }
             }
             
@@ -8391,6 +8407,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             
             if (display === '') display = '0';
             display += '"';
+            
+            // Add negative sign if needed
+            if (isNegative) {
+                display = '-' + display;
+            }
             
             return display;
         }
@@ -8502,16 +8523,26 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             case '/': calcResult = value2 !== 0 ? value1 / value2 : 0; break;
                         }
                         
-                        if (calcResult !== 0) {
-                            result.textContent = inchesToDisplay(calcResult);
-                            result.classList.add('has-value');
-                            currentValueInches = calcResult; // Update current value
-                            lastCalculatorUpdate = Date.now(); // Mark calculator as most recent
-                            lastConversionSource = 'calculator';
-                            updateConversionPreview(); // Update conversion preview
-                            
-                            // Show hint that result is clickable
+                        // Always show the result, even if it's zero or negative
+                        result.textContent = inchesToDisplay(calcResult);
+                        result.classList.add('has-value');
+                        currentValueInches = calcResult; // Update current value
+                        lastCalculatorUpdate = Date.now(); // Mark calculator as most recent
+                        lastConversionSource = 'calculator';
+                        updateConversionPreview(); // Update conversion preview
+                        
+                        // Show hint that result is clickable (but not for negative/zero)
+                        if (calcResult > 0) {
                             document.getElementById('resultHint').style.display = 'block';
+                        } else {
+                            document.getElementById('resultHint').style.display = 'none';
+                        }
+                        
+                        // Add warning styling for negative results
+                        if (calcResult < 0) {
+                            result.classList.add('negative-result');
+                        } else {
+                            result.classList.remove('negative-result');
                         }
                     }
                 }
@@ -8638,87 +8669,60 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             updateCalculation();
         }
         
-        function clearCalculator() {
-            // Clear smart inputs
+        function resetCalculatorState() {
+            // Clear ALL smart input variables
+            currentInput1Inches = 0;
+            currentInput2Inches = 0;
+            currentValueInches = 0;
+            
+            // Clear ALL global variables  
+            value1 = 0;
+            value2 = 0;
+            currentOperation = null;
+            
+            // Clear ALL DOM elements - smart inputs
             document.getElementById('smartInput1').value = '';
             document.getElementById('smartInput2').value = '';
             document.getElementById('factor').value = '';
             
-            // Clear preview divs
-            document.getElementById('previewInput1').innerHTML = '';
-            document.getElementById('previewInput2').innerHTML = '';
-            
-            // Clear legacy inputs for backward compatibility
+            // Clear ALL DOM elements - legacy inputs
             document.getElementById('feet1').value = '';
             document.getElementById('inches1').value = '';
             document.getElementById('fraction1').value = '0';
-            clearInput2();
+            document.getElementById('feet2').value = '';
+            document.getElementById('inches2').value = '';
+            document.getElementById('fraction2').value = '0';
             
-            // Reset all state variables
-            currentInput1Inches = 0;
-            currentInput2Inches = 0;
-            currentValueInches = 0;
-            currentOperation = null;
-            value1 = 0;
-            value2 = 0;
+            // Clear ALL preview divs
+            document.getElementById('previewInput1').innerHTML = '';
+            document.getElementById('previewInput2').innerHTML = '';
             
-            // Hide both input groups
+            // Reset UI state
+            document.querySelectorAll('.calc-btn.operation').forEach(btn => btn.classList.remove('active'));
             document.getElementById('input2GroupFeetInches').style.display = 'none';
             document.getElementById('input2GroupNumber').style.display = 'none';
-            document.querySelectorAll('.calc-btn.operation').forEach(btn => btn.classList.remove('active'));
-            
-            // Hide result hint
             document.getElementById('resultHint').style.display = 'none';
-            
+        }
+        
+        function clearCalculator() {
+            resetCalculatorState();
             updateCalculation();
             updateConversionPreview();
         }
         
         function useResultAsInput1() {
             if (currentValueInches > 0) {
-                // Set Input 1 to current result
-                const resultDisplay = inchesToDisplay(currentValueInches, 'calculator');
-                document.getElementById('smartInput1').value = resultDisplay;
+                const resultValue = currentValueInches;
                 
-                // Parse the value back to ensure consistency
+                // FIRST: Complete reset of ALL systems to eliminate conflicts
+                resetCalculatorState();
+                
+                // THEN: Set only Input 1 with the result value
+                document.getElementById('smartInput1').value = inchesToDisplay(resultValue);
+                handleSmartInput(document.getElementById('smartInput1'), 'previewInput1', updateInput1Value);
+                
+                // Visual feedback
                 const smartInput1 = document.getElementById('smartInput1');
-                handleSmartInput(smartInput1, 'previewInput1', updateInput1Value);
-                
-                // Update legacy inputs to match the new value
-                const parts = inchesToParts(currentInput1Inches);
-                document.getElementById('feet1').value = parts.feet || 0;
-                document.getElementById('inches1').value = parts.inches || 0;
-                document.getElementById('fraction1').value = parts.fraction || 0;
-                
-                // Clear Input 2 completely - both smart inputs and legacy inputs
-                document.getElementById('smartInput2').value = '';
-                document.getElementById('previewInput2').innerHTML = '';
-                currentInput2Inches = 0;
-                
-                // Force clear ALL legacy inputs to ensure no ghost values
-                document.getElementById('feet2').value = '';
-                document.getElementById('inches2').value = '';
-                document.getElementById('fraction2').value = '0';
-                document.getElementById('factor').value = '';
-                
-                // IMPORTANT: Clear operation and value2 to prevent calculation
-                currentOperation = null; // No operation selected
-                value2 = 0; // Ensure no second value
-                
-                // Don't reset currentValueInches here - let updateCalculation handle display
-                
-                // Hide input 2 groups and remove operation highlighting
-                document.getElementById('input2GroupFeetInches').style.display = 'none';
-                document.getElementById('input2GroupNumber').style.display = 'none';
-                document.querySelectorAll('.calc-btn.operation').forEach(btn => btn.classList.remove('active'));
-                
-                // Update display
-                updateCalculation();
-                
-                // Hide the hint since we're starting a new calculation
-                document.getElementById('resultHint').style.display = 'none';
-                
-                // Brief highlight animation for Input 1
                 smartInput1.style.boxShadow = '0 0 0 3px rgba(76, 175, 80, 0.3)';
                 setTimeout(() => {
                     smartInput1.style.boxShadow = '';
@@ -8726,6 +8730,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 
                 // Show notification
                 showNotification('Result moved to Input 1 - ready for next operation!');
+                
+                // Update display after everything is set
+                updateCalculation();
             }
         }
         
