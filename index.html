@@ -4007,6 +4007,22 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
     </style>
 </head>
 <body>
+    <script>
+        // Early initialization functions needed by HTML elements
+        function updateUIMode(mode) {
+            // This will be properly defined later, but we need a stub for the HTML
+            if (window.updateUIModeReal) {
+                window.updateUIModeReal(mode);
+            }
+        }
+        
+        function switchTab(tab) {
+            // This will be properly defined later, but we need a stub for the HTML
+            if (window.switchTabReal) {
+                window.switchTabReal(tab);
+            }
+        }
+    </script>
     <!-- ================================================================
          SECTION 2: HTML STRUCTURE
          ================================================================ -->
@@ -6411,6 +6427,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             localStorage.setItem('uiMode', mode);
             applyUIMode();
         }
+        
+        // Set the real implementation
+        window.updateUIModeReal = updateUIMode;
         
         // Apply UI mode settings
         function applyUIMode() {
@@ -10104,6 +10123,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             }
         }
         
+        // Set the real implementation
+        window.switchTabReal = switchTab;
+        
         function switchCutMode(mode) {
             // Update mode buttons
             document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
@@ -11702,9 +11724,12 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             const species = document.getElementById('bfSpecies').value;
             const customSpecies = document.getElementById('bfCustomSpecies').value;
             const price = parseFloat(document.getElementById('bfPrice').value) || 0;
-            const thickness = parseFloat(document.getElementById('bfThickness').value) || 0;
-            const width = parseFloat(document.getElementById('bfWidth').value) || 0;
-            const length = parseFloat(document.getElementById('bfLength').value) || 0;
+            
+            // Use smart input values
+            const thickness = currentBfThicknessInches || parseFloat(document.getElementById('bfThickness').value) || 0;
+            const width = currentBfWidthInches || parseFloat(document.getElementById('bfWidth').value) || 0;
+            const lengthInInches = currentBfLengthInches || parseFloat(document.getElementById('bfLength').value) || 0;
+            const length = lengthInInches / 12; // Convert to feet for board foot calculation
             const quantity = parseFloat(document.getElementById('bfQuantity').value) || 1;
             
             // Validate required fields
@@ -11760,6 +11785,48 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             lumberCart = lumberCart.filter(item => item.id !== itemId);
             updateCartDisplay();
             showNotification('Item removed from cart');
+        }
+
+        function clearLumberCart() {
+            if (lumberCart.length === 0) return;
+            
+            if (confirm('Clear all items from cart?')) {
+                lumberCart = [];
+                updateCartDisplay();
+                showNotification('Cart cleared');
+            }
+        }
+
+        function clearBoardFootForm() {
+            // Clear dropdowns and inputs
+            document.getElementById('bfSpecies').value = '';
+            document.getElementById('bfCustomSpecies').value = '';
+            document.getElementById('bfPrice').value = '';
+            document.getElementById('bfQuantity').value = '1';
+            document.getElementById('customSpeciesRow').style.display = 'none';
+            
+            // Clear smart inputs
+            document.getElementById('smartBfThickness').value = '';
+            document.getElementById('smartBfWidth').value = '';
+            document.getElementById('smartBfLength').value = '';
+            
+            // Clear preview displays
+            document.getElementById('previewBfThickness').innerHTML = '';
+            document.getElementById('previewBfWidth').innerHTML = '';
+            document.getElementById('previewBfLength').innerHTML = '';
+            
+            // Clear legacy inputs
+            document.getElementById('bfThickness').value = '';
+            document.getElementById('bfWidth').value = '';
+            document.getElementById('bfLength').value = '';
+            
+            // Reset smart input values
+            currentBfThicknessInches = 0;
+            currentBfWidthInches = 0;
+            currentBfLengthInches = 0;
+            
+            // Clear result display
+            document.getElementById('boardFootResult').innerHTML = '<div class="result-placeholder">Enter item details above</div>';
         }
 
         function calculateMiterAngle() {
@@ -11879,116 +11946,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             calculateBoardFeet();
         }
 
-        // Lumber Cart Management Functions
-        function addToLumberCart() {
-            const species = document.getElementById('bfSpecies').value;
-            const customSpecies = document.getElementById('bfCustomSpecies').value;
-            const price = parseFloat(document.getElementById('bfPrice').value) || 0;
-            const thickness = parseFloat(document.getElementById('bfThickness').value) || 0;
-            const width = parseFloat(document.getElementById('bfWidth').value) || 0;
-            const length = parseFloat(document.getElementById('bfLength').value) || 0;
-            const quantity = parseFloat(document.getElementById('bfQuantity').value) || 1;
-            
-            // Validate required fields
-            if (!species || (species === 'Custom' && !customSpecies.trim())) {
-                showNotification('Please select a wood species');
-                return;
-            }
-            
-            if (thickness <= 0 || width <= 0 || length <= 0 || quantity <= 0) {
-                showNotification('Please enter valid dimensions and quantity');
-                return;
-            }
-            
-            if (price <= 0) {
-                showNotification('Please enter a valid price per board foot');
-                return;
-            }
-            
-            // Calculate board feet and line total
-            const boardFeet = (thickness * width * length * quantity) / 144;
-            const lineTotal = boardFeet * price;
-            const displaySpecies = species === 'Custom' ? customSpecies.trim() : species;
-            
-            // Create cart item
-            const cartItem = {
-                id: Date.now(), // Simple unique ID
-                species: displaySpecies,
-                thickness,
-                width,
-                length,
-                quantity,
-                pricePerBF: price,
-                boardFeet,
-                lineTotal
-            };
-            
-            // Remember price for this species (for price memory feature)
-            speciesPrices[displaySpecies] = price;
-            
-            // Add to cart
-            lumberCart.push(cartItem);
-            
-            // Update cart display
-            updateCartDisplay();
-            
-            // Clear form for next item
-            clearBoardFootForm();
-            
-            showNotification(`Added ${displaySpecies} to cart`);
-        }
-
-        function removeFromLumberCart(itemId) {
-            lumberCart = lumberCart.filter(item => item.id !== itemId);
-            updateCartDisplay();
-            showNotification('Item removed from cart');
-        }
-
-        function clearLumberCart() {
-            if (lumberCart.length === 0) return;
-            
-            if (confirm('Clear all items from cart?')) {
-                lumberCart = [];
-                updateCartDisplay();
-                showNotification('Cart cleared');
-            }
-        }
-
-        function clearBoardFootForm() {
-            // Clear dropdowns and inputs
-            document.getElementById('bfSpecies').value = '';
-            document.getElementById('bfCustomSpecies').value = '';
-            document.getElementById('bfPrice').value = '';
-            document.getElementById('bfQuantity').value = '1';
-            document.getElementById('customSpeciesRow').style.display = 'none';
-            
-            // Clear smart inputs
-            document.getElementById('smartBfThickness').value = '';
-            document.getElementById('smartBfWidth').value = '';
-            document.getElementById('smartBfLength').value = '';
-            
-            // Clear preview displays
-            document.getElementById('previewBfThickness').innerHTML = '';
-            document.getElementById('previewBfWidth').innerHTML = '';
-            document.getElementById('previewBfLength').innerHTML = '';
-            
-            // Clear legacy inputs
-            document.getElementById('bfThickness').value = '';
-            document.getElementById('bfWidth').value = '';
-            document.getElementById('bfLength').value = '';
-            
-            // Reset smart input values
-            currentBfThicknessInches = 0;
-            currentBfWidthInches = 0;
-            currentBfLengthInches = 0;
-            
-            // Clear result display
-            document.getElementById('boardFootResult').innerHTML = '<div class="result-placeholder">Enter item details above</div>';
-            
-            // Update diagram
-            updateBoardDiagram(0, 0, 0, 0);
-        }
-
         function updateCartDisplay() {
             const cartContainer = document.getElementById('lumberCartDisplay');
             const cartHeader = document.getElementById('cartHeaderTitle');
@@ -12060,9 +12017,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             cartContainer.innerHTML = cartHTML;
             
             // Enable/disable save cart button
-            const saveBtn = document.getElementById('saveCartBtn');
-            if (saveBtn) {
-                saveBtn.disabled = lumberCart.length === 0;
+            const saveCartBtn = document.getElementById('saveCartBtn');
+            if (saveCartBtn) {
+                saveCartBtn.disabled = lumberCart.length === 0;
             }
         }
 
