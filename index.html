@@ -4748,10 +4748,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             </div>
                             <div class="input-row">
                                 <label>Board Width:</label>
+                                <input type="text" id="smartSingleBoardWidth" placeholder="Try: 3&quot;, 3.5&quot;, 3 1/2&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewSingleBoardWidth', updateSingleBoardWidthValue)">
+                            </div>
+                            <div id="previewSingleBoardWidth" class="input-preview"></div>
+                            <div style="display: none;">
+                                <!-- Hidden legacy inputs for backward compatibility -->
                                 <input type="number" id="singleBoardWidthFeet" placeholder="0" min="0" class="wide-input" onchange="calculateSingleMiter()">
-                                <span>ft</span>
                                 <input type="number" id="singleBoardWidthInches" placeholder="3" min="0" max="11" class="wide-input" onchange="calculateSingleMiter()">
-                                <span>in</span>
                                 <select id="singleBoardWidthFraction" style="width: 120px;" onchange="calculateSingleMiter()">
                                     <option value="0" selected>0</option>
                                     <option value="0.0625">1/16"</option>
@@ -4787,10 +4790,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             </div>
                             <div class="input-row">
                                 <label id="singleInputLabel">Long side length:</label>
+                                <input type="text" id="smartSingleInputLength" placeholder="Try: 12&quot;, 1', 1 0 1/2&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewSingleInputLength', updateSingleInputLengthValue)">
+                            </div>
+                            <div id="previewSingleInputLength" class="input-preview"></div>
+                            <div style="display: none;">
+                                <!-- Hidden legacy inputs for backward compatibility -->
                                 <input type="number" id="singleInputLengthFeet" placeholder="1" min="0" class="wide-input" onchange="calculateSingleMiter()">
-                                <span>ft</span>
                                 <input type="number" id="singleInputLengthInches" placeholder="0" min="0" max="11" class="wide-input" onchange="calculateSingleMiter()">
-                                <span>in</span>
                                 <select id="singleInputLengthFraction" style="width: 120px;" onchange="calculateSingleMiter()">
                                     <option value="0" selected>0</option>
                                     <option value="0.0625">1/16"</option>
@@ -4828,10 +4834,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             
                             <div class="input-row">
                                 <label>Material Width:</label>
+                                <input type="text" id="smartFrameMaterialWidth" placeholder="Try: 2&quot;, 1.5&quot;, 1 1/2&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewFrameMaterialWidth', updateFrameMaterialWidthValue)">
+                            </div>
+                            <div id="previewFrameMaterialWidth" class="input-preview"></div>
+                            <div style="display: none;">
+                                <!-- Hidden legacy inputs for backward compatibility -->
                                 <input type="number" id="frameMaterialWidthFeet" placeholder="0" min="0" class="wide-input" onchange="calculateFrameBuilder()">
-                                <span>ft</span>
                                 <input type="number" id="frameMaterialWidthInches" placeholder="2" min="0" max="11" class="wide-input" onchange="calculateFrameBuilder()">
-                                <span>in</span>
                                 <select id="frameMaterialWidthFraction" style="width: 120px;" onchange="calculateFrameBuilder()">
                                     <option value="0" selected>0</option>
                                     <option value="0.0625">1/16"</option>
@@ -4864,10 +4873,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             <div id="frameRectangleDimensions">
                                 <div class="input-row">
                                     <label id="frameWidthLabel">Inside Width:</label>
+                                    <input type="text" id="smartFrameWidth" placeholder="Try: 8&quot;, 0.75', 8 1/2&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewFrameWidth', updateFrameWidthValue)">
+                                </div>
+                                <div id="previewFrameWidth" class="input-preview"></div>
+                                <div style="display: none;">
+                                    <!-- Hidden legacy inputs for backward compatibility -->
                                     <input type="number" id="frameWidthFeet" placeholder="0" min="0" class="wide-input" onchange="calculateFrameBuilder()">
-                                    <span>ft</span>
                                     <input type="number" id="frameWidthInches" placeholder="8" min="0" max="11" class="wide-input" onchange="calculateFrameBuilder()">
-                                    <span>in</span>
                                     <select id="frameWidthFraction" style="width: 120px;" onchange="calculateFrameBuilder()">
                                         <option value="0" selected>0</option>
                                         <option value="0.0625">1/16"</option>
@@ -4889,10 +4901,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                 </div>
                                 <div class="input-row">
                                     <label id="frameHeightLabel">Inside Height:</label>
+                                    <input type="text" id="smartFrameHeight" placeholder="Try: 10&quot;, 0.83', 10 1/4&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewFrameHeight', updateFrameHeightValue)">
+                                </div>
+                                <div id="previewFrameHeight" class="input-preview"></div>
+                                <div style="display: none;">
+                                    <!-- Hidden legacy inputs for backward compatibility -->
                                     <input type="number" id="frameHeightFeet" placeholder="0" min="0" class="wide-input" onchange="calculateFrameBuilder()">
-                                    <span>ft</span>
                                     <input type="number" id="frameHeightInches" placeholder="10" min="0" max="11" class="wide-input" onchange="calculateFrameBuilder()">
-                                    <span>in</span>
                                     <select id="frameHeightFraction" style="width: 120px;" onchange="calculateFrameBuilder()">
                                         <option value="0" selected>0</option>
                                         <option value="0.0625">1/16"</option>
@@ -4918,10 +4933,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             <div id="framePolygonDimensions" style="display: none;">
                                 <div class="input-row">
                                     <label id="framePolygonLabel">Inside Side Length:</label>
+                                    <input type="text" id="smartFramePolygon" placeholder="Try: 12&quot;, 1', 12 3/4&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewFramePolygon', updateFramePolygonValue)">
+                                </div>
+                                <div id="previewFramePolygon" class="input-preview"></div>
+                                <div style="display: none;">
+                                    <!-- Hidden legacy inputs for backward compatibility -->
                                     <input type="number" id="framePolygonFeet" placeholder="0" min="0" class="wide-input" onchange="calculateFrameBuilder()">
-                                    <span>ft</span>
                                     <input type="number" id="framePolygonInches" placeholder="12" min="0" max="11" class="wide-input" onchange="calculateFrameBuilder()">
-                                    <span>in</span>
                                     <select id="framePolygonFraction" style="width: 120px;" onchange="calculateFrameBuilder()">
                                         <option value="0" selected>0</option>
                                         <option value="0.0625">1/16"</option>
@@ -10843,6 +10861,44 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             calculateBoardFeet();
         }
 
+        // Smart input callbacks for Miter Angle Calculator
+        let currentSingleBoardWidthInches = 0;
+        let currentSingleInputLengthInches = 0;
+        let currentFrameMaterialWidthInches = 0;
+        let currentFrameWidthInches = 0;
+        let currentFrameHeightInches = 0;
+        let currentFramePolygonInches = 0;
+
+        function updateSingleBoardWidthValue(inches, display) {
+            currentSingleBoardWidthInches = inches;
+            calculateSingleMiter();
+        }
+
+        function updateSingleInputLengthValue(inches, display) {
+            currentSingleInputLengthInches = inches;
+            calculateSingleMiter();
+        }
+
+        function updateFrameMaterialWidthValue(inches, display) {
+            currentFrameMaterialWidthInches = inches;
+            calculateFrameBuilder();
+        }
+
+        function updateFrameWidthValue(inches, display) {
+            currentFrameWidthInches = inches;
+            calculateFrameBuilder();
+        }
+
+        function updateFrameHeightValue(inches, display) {
+            currentFrameHeightInches = inches;
+            calculateFrameBuilder();
+        }
+
+        function updateFramePolygonValue(inches, display) {
+            currentFramePolygonInches = inches;
+            calculateFrameBuilder();
+        }
+
         // Smart input callbacks for Grade/Slope Calculator
         let currentGradeRiseInches = 0;
         let currentGradeRunInches = 0;
@@ -11769,10 +11825,24 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
 
         function calculateSingleMiter() {
             const angle = parseFloat(document.getElementById('singleMiterAngle').value) || 0;
-            const boardWidth = getInputInches('singleBoardWidthFeet', 'singleBoardWidthInches', 'singleBoardWidthFraction');
+            
+            // Use smart input values if available, otherwise fall back to legacy inputs
+            let boardWidth;
+            if (currentSingleBoardWidthInches > 0) {
+                boardWidth = currentSingleBoardWidthInches;
+            } else {
+                boardWidth = getInputInches('singleBoardWidthFeet', 'singleBoardWidthInches', 'singleBoardWidthFraction');
+            }
+            
             const knownSide = document.getElementById('singleKnownSide').value;
             const cutType = document.getElementById('singleCutType').value;
-            const inputLength = getInputInches('singleInputLengthFeet', 'singleInputLengthInches', 'singleInputLengthFraction');
+            
+            let inputLength;
+            if (currentSingleInputLengthInches > 0) {
+                inputLength = currentSingleInputLengthInches;
+            } else {
+                inputLength = getInputInches('singleInputLengthFeet', 'singleInputLengthInches', 'singleInputLengthFraction');
+            }
             const resultDiv = document.getElementById('maResult');
             
             if (angle === 0 || boardWidth === 0 || inputLength === 0) {
@@ -11934,7 +12004,15 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
 
         function calculateFrameBuilder() {
             const sides = parseInt(document.getElementById('frameShapeSides').value);
-            const materialWidth = getInputInches('frameMaterialWidthFeet', 'frameMaterialWidthInches', 'frameMaterialWidthFraction');
+            
+            // Use smart input values if available, otherwise fall back to legacy inputs
+            let materialWidth;
+            if (currentFrameMaterialWidthInches > 0) {
+                materialWidth = currentFrameMaterialWidthInches;
+            } else {
+                materialWidth = getInputInches('frameMaterialWidthFeet', 'frameMaterialWidthInches', 'frameMaterialWidthFraction');
+            }
+            
             const dimensionType = document.getElementById('frameDimensionType').value;
             const resultDiv = document.getElementById('maResult');
             
@@ -11955,8 +12033,20 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             
             if (sides === 4) {
                 // Rectangle/Square frame
-                const inputWidth = getInputInches('frameWidthFeet', 'frameWidthInches', 'frameWidthFraction');
-                const inputHeight = getInputInches('frameHeightFeet', 'frameHeightInches', 'frameHeightFraction');
+                let inputWidth, inputHeight;
+                
+                // Use smart input values if available, otherwise fall back to legacy inputs
+                if (currentFrameWidthInches > 0) {
+                    inputWidth = currentFrameWidthInches;
+                } else {
+                    inputWidth = getInputInches('frameWidthFeet', 'frameWidthInches', 'frameWidthFraction');
+                }
+                
+                if (currentFrameHeightInches > 0) {
+                    inputHeight = currentFrameHeightInches;
+                } else {
+                    inputHeight = getInputInches('frameHeightFeet', 'frameHeightInches', 'frameHeightFraction');
+                }
                 
                 if (inputWidth === 0 || inputHeight === 0) {
                     resultDiv.innerHTML = '<div class="result-placeholder">Enter frame dimensions</div>';
@@ -12009,7 +12099,14 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 
             } else {
                 // Regular polygon frame
-                const inputSideLength = getInputInches('framePolygonFeet', 'framePolygonInches', 'framePolygonFraction');
+                let inputSideLength;
+                
+                // Use smart input values if available, otherwise fall back to legacy inputs
+                if (currentFramePolygonInches > 0) {
+                    inputSideLength = currentFramePolygonInches;
+                } else {
+                    inputSideLength = getInputInches('framePolygonFeet', 'framePolygonInches', 'framePolygonFraction');
+                }
                 
                 if (inputSideLength === 0) {
                     resultDiv.innerHTML = '<div class="result-placeholder">Enter polygon side length</div>';
@@ -12077,7 +12174,14 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 
             } else if (currentMiterMode === 'frame') {
                 const sides = parseInt(document.getElementById('frameShapeSides').value);
-                const materialWidth = getInputInches('frameMaterialWidthFeet', 'frameMaterialWidthInches', 'frameMaterialWidthFraction');
+                
+                // Use smart input values if available, otherwise fall back to legacy inputs
+                let materialWidth;
+                if (currentFrameMaterialWidthInches > 0) {
+                    materialWidth = currentFrameMaterialWidthInches;
+                } else {
+                    materialWidth = getInputInches('frameMaterialWidthFeet', 'frameMaterialWidthInches', 'frameMaterialWidthFraction');
+                }
                 
                 if (materialWidth === 0) {
                     showNotification('Enter frame details first');
@@ -12097,11 +12201,27 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 // Get dimensions summary
                 let dimensionsSummary = '';
                 if (sides === 4) {
-                    const width = getInputInches('frameWidthFeet', 'frameWidthInches', 'frameWidthFraction');
-                    const height = getInputInches('frameHeightFeet', 'frameHeightInches', 'frameHeightFraction');
+                    // Use smart input values if available, otherwise fall back to legacy inputs
+                    let width, height;
+                    if (currentFrameWidthInches > 0) {
+                        width = currentFrameWidthInches;
+                    } else {
+                        width = getInputInches('frameWidthFeet', 'frameWidthInches', 'frameWidthFraction');
+                    }
+                    if (currentFrameHeightInches > 0) {
+                        height = currentFrameHeightInches;
+                    } else {
+                        height = getInputInches('frameHeightFeet', 'frameHeightInches', 'frameHeightFraction');
+                    }
                     dimensionsSummary = `${inchesToDisplay(width)} × ${inchesToDisplay(height)}`;
                 } else {
-                    const sideLength = getInputInches('framePolygonFeet', 'framePolygonInches', 'framePolygonFraction');
+                    // Use smart input values if available, otherwise fall back to legacy inputs
+                    let sideLength;
+                    if (currentFramePolygonInches > 0) {
+                        sideLength = currentFramePolygonInches;
+                    } else {
+                        sideLength = getInputInches('framePolygonFeet', 'framePolygonInches', 'framePolygonFraction');
+                    }
                     dimensionsSummary = `${inchesToDisplay(sideLength)} side length`;
                 }
                 
@@ -12154,7 +12274,14 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 
             } else if (currentMiterMode === 'frame') {
                 const sides = parseInt(document.getElementById('frameShapeSides').value);
-                const materialWidth = getInputInches('frameMaterialWidthFeet', 'frameMaterialWidthInches', 'frameMaterialWidthFraction');
+                
+                // Use smart input values if available, otherwise fall back to legacy inputs
+                let materialWidth;
+                if (currentFrameMaterialWidthInches > 0) {
+                    materialWidth = currentFrameMaterialWidthInches;
+                } else {
+                    materialWidth = getInputInches('frameMaterialWidthFeet', 'frameMaterialWidthInches', 'frameMaterialWidthFraction');
+                }
                 
                 if (materialWidth === 0) {
                     showNotification('Enter frame details first', 'warning');
@@ -12168,11 +12295,27 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 let dimensionsSummary = '';
                 
                 if (sides === 4) {
-                    const width = getInputInches('frameWidthFeet', 'frameWidthInches', 'frameWidthFraction');
-                    const height = getInputInches('frameHeightFeet', 'frameHeightInches', 'frameHeightFraction');
+                    // Use smart input values if available, otherwise fall back to legacy inputs
+                    let width, height;
+                    if (currentFrameWidthInches > 0) {
+                        width = currentFrameWidthInches;
+                    } else {
+                        width = getInputInches('frameWidthFeet', 'frameWidthInches', 'frameWidthFraction');
+                    }
+                    if (currentFrameHeightInches > 0) {
+                        height = currentFrameHeightInches;
+                    } else {
+                        height = getInputInches('frameHeightFeet', 'frameHeightInches', 'frameHeightFraction');
+                    }
                     dimensionsSummary = `${inchesToDisplay(width)} × ${inchesToDisplay(height)}`;
                 } else {
-                    const sideLength = getInputInches('framePolygonFeet', 'framePolygonInches', 'framePolygonFraction');
+                    // Use smart input values if available, otherwise fall back to legacy inputs
+                    let sideLength;
+                    if (currentFramePolygonInches > 0) {
+                        sideLength = currentFramePolygonInches;
+                    } else {
+                        sideLength = getInputInches('framePolygonFeet', 'framePolygonInches', 'framePolygonFraction');
+                    }
                     dimensionsSummary = `${inchesToDisplay(sideLength)} per side`;
                 }
                 
