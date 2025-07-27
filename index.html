@@ -15473,10 +15473,24 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         }
 
         function getTileOffset() {
-            const offsetFeet = parseFloat(document.getElementById('tileOffsetFeet').value) || 0;
-            const offsetInches = parseFloat(document.getElementById('tileOffsetInches').value) || 0;
-            const offsetFraction = parseFloat(document.getElementById('tileOffsetFraction').value) || 0;
-            return offsetFeet * 12 + offsetInches + offsetFraction;
+            const offsetSelect = document.getElementById('tileOffsetSelect');
+            const tileDimensions = getTileDimensions();
+            
+            if (offsetSelect.value === 'custom') {
+                // Use smart input value if available
+                if (typeof currentTileOffsetInches !== 'undefined' && currentTileOffsetInches > 0) {
+                    return currentTileOffsetInches;
+                }
+                // Fall back to legacy inputs
+                const offsetFeet = parseFloat(document.getElementById('tileOffsetFeet').value) || 0;
+                const offsetInches = parseFloat(document.getElementById('tileOffsetInches').value) || 0;
+                const offsetFraction = parseFloat(document.getElementById('tileOffsetFraction').value) || 0;
+                return offsetFeet * 12 + offsetInches + offsetFraction;
+            } else {
+                // Use dropdown value as fraction of tile length
+                const offsetFraction = parseFloat(offsetSelect.value) || 0;
+                return tileDimensions.length * offsetFraction;
+            }
         }
 
         function updateTileOffset() {
@@ -15508,10 +15522,8 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             // Clear smart inputs
             document.getElementById('smartTileLength').value = '';
             document.getElementById('smartTileWidth').value = '';
-            document.getElementById('smartProjectArea').value = '';
             document.getElementById('previewTileLength').textContent = '';
             document.getElementById('previewTileWidth').textContent = '';
-            document.getElementById('previewProjectArea').textContent = '';
             
             // Clear tile dimensions (legacy)
             document.getElementById('tileLengthFeet').value = '';
@@ -15561,7 +15573,10 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             // Clear smart input state
             if (typeof currentTileLengthInches !== 'undefined') currentTileLengthInches = 0;
             if (typeof currentTileWidthInches !== 'undefined') currentTileWidthInches = 0;
-            if (typeof currentProjectAreaSqFt !== 'undefined') currentProjectAreaSqFt = 0;
+            if (typeof currentTileOffsetInches !== 'undefined') currentTileOffsetInches = 0;
+            
+            // Clear offset error
+            document.getElementById('offsetError').style.display = 'none';
         }
 
         function validateOffset() {
