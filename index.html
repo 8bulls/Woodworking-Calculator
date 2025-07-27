@@ -3841,6 +3841,40 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
+            
+            /* Ensure all inputs and selects stay within container */
+            input[type="text"],
+            input[type="number"],
+            select,
+            .wide-input,
+            .smart-input {
+                max-width: 100%;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            
+            /* Fix settings panels on mobile */
+            .settings-panel {
+                padding: 15px !important;
+                margin: 10px 0 !important;
+            }
+            
+            /* Ensure flex items wrap properly */
+            .settings-panel > div {
+                min-width: 0 !important;
+            }
+            
+            /* Fix overflow in calc-card-content */
+            .calc-card-content {
+                overflow-x: hidden;
+                padding: 10px;
+            }
+            
+            /* Adjust minimum widths for mobile */
+            div[style*="min-width: 200px"],
+            div[style*="min-width: 150px"] {
+                min-width: 100% !important;
+            }
         }
 
         .calc-mode-selector {
@@ -3989,6 +4023,39 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             
             .pattern-stats {
                 grid-template-columns: 1fr;
+            }
+            
+            /* Fix input groups and rows on mobile */
+            .input-row,
+            .input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .input-row input,
+            .input-row select {
+                width: 100% !important;
+                margin-bottom: 5px;
+            }
+            
+            /* Fix woodworking inputs on mobile */
+            .woodworking-input {
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+            
+            .woodworking-input input,
+            .woodworking-input select {
+                flex: 0 0 auto;
+                min-width: 60px;
+                max-width: 100px;
+            }
+            
+            /* Prevent horizontal scroll */
+            .tab-content,
+            .mode-content {
+                overflow-x: hidden;
+            }
                 gap: 10px;
             }
         }
