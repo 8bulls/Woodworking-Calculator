@@ -4351,40 +4351,55 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             
             <!-- Cut Optimization Mode Content -->
             <div id="cutOptimizationContent" class="mode-content" style="display: none;">
-                <div class="settings-row">
-                    <label>Precision:</label>
-                    <select id="optPrecision" onchange="updatePrecision('optimizer')">
-                        <option value="32">1/32"</option>
-                        <option value="16" selected>1/16"</option>
-                        <option value="8">1/8"</option>
-                        <option value="4">1/4"</option>
-                        <option value="2">1/2"</option>
-                        <option value="1">1"</option>
-                    </select>
+                <!-- Settings Panel -->
+                <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                        <!-- Left Column -->
+                        <div style="flex: 1; min-width: 250px;">
+                            <div class="settings-row" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Precision:</label>
+                                <select id="optPrecision" onchange="updatePrecision('optimizer'); autoRecalculateOptimization();" class="wide-input" style="width: 100%;">
+                                    <option value="32">1/32"</option>
+                                    <option value="16" selected>1/16"</option>
+                                    <option value="8">1/8"</option>
+                                    <option value="4">1/4"</option>
+                                    <option value="2">1/2"</option>
+                                    <option value="1">1"</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div style="flex: 1; min-width: 250px;">
+                            <div class="settings-row">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Kerf Width:</label>
+                                <select id="optKerf" class="wide-input" style="width: 100%;" onchange="autoRecalculateOptimization()">
+                                    <option value="0">None</option>
+                                    <option value="0.0625">1/16"</option>
+                                    <option value="0.09375">3/32"</option>
+                                    <option value="0.125" selected>1/8"</option>
+                                    <option value="0.1875">3/16"</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="settings-row">
-                    <label>
-                        <input type="checkbox" id="optKerfEnabled" checked onchange="toggleKerfDisplay()"> 
-                        Kerf Compensation
-                    </label>
-                </div>
-                
-                <div class="settings-row" id="optKerfRow">
-                    <label>Kerf:</label>
-                    <select id="optKerf">
-                        <option value="0.0625">1/16"</option>
-                        <option value="0.09375">3/32"</option>
-                        <option value="0.125" selected>1/8"</option>
-                        <option value="0.1875">3/16"</option>
-                    </select>
-                </div>
-                
-                <div class="waste-section">
-                    <h3>Available Boards</h3>
-                    <div class="board-input">
-                        <input type="text" id="smartBoardLength" placeholder="Try: 8', 96&quot;, 8 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewBoardLength', updateBoardLengthValue)">
-                        <div id="previewBoardLength" class="input-preview"></div>
+                <!-- Available Boards Section -->
+                <div class="calc-section" style="background: var(--surface-color); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                    <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Available Boards</h4>
+                    <div class="board-input" style="display: grid; grid-template-columns: 2fr 60px auto; gap: 10px; align-items: end;">
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Board Length:</label>
+                            <input type="text" id="smartBoardLength" placeholder="Try: 8', 96&quot;, 8 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewBoardLength', updateBoardLengthValue)" style="padding: 12px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Qty:</label>
+                            <input type="number" id="boardQuantity" placeholder="1" min="1" value="1" style="width: 100%; padding: 12px;">
+                        </div>
+                        <button class="btn btn-primary" onclick="addBoard()" style="padding: 12px 24px; height: fit-content;">Add Board</button>
+                    </div>
+                    <div id="previewBoardLength" class="input-preview"></div>
                         <div style="display: none;">
                             <!-- Hidden legacy inputs for backward compatibility -->
                             <input type="number" id="boardFeet" placeholder="0" min="0" class="wide-input">
@@ -4408,18 +4423,24 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                 <option value="0.9375">15/16"</option>
                             </select>
                         </div>
-                        <input type="number" id="boardQuantity" placeholder="1" min="1" class="wide-input">
-                        <span>qty</span>
-                        <button class="btn btn-secondary" onclick="addBoard()">Add</button>
-                    </div>
-                    <div id="boardsList"></div>
+                    <div id="boardsList" style="margin-top: 15px;"></div>
                 </div>
                 
-                <div class="waste-section">
-                    <h3>Needed Cuts</h3>
-                    <div class="cut-input">
-                        <input type="text" id="smartOptCutLength" placeholder="Try: 24&quot;, 2', 2 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewOptCutLength', updateOptCutLengthValue)">
-                        <div id="previewOptCutLength" class="input-preview"></div>
+                <!-- Needed Cuts Section -->
+                <div class="calc-section" style="background: var(--surface-color); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                    <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Needed Cuts</h4>
+                    <div class="cut-input" style="display: grid; grid-template-columns: 2fr 60px auto; gap: 10px; align-items: end;">
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Cut Length:</label>
+                            <input type="text" id="smartOptCutLength" placeholder="Try: 24&quot;, 2', 2 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewOptCutLength', updateOptCutLengthValue)" style="padding: 12px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Qty:</label>
+                            <input type="number" id="cutQuantity" placeholder="1" min="1" value="1" style="width: 100%; padding: 12px;">
+                        </div>
+                        <button class="btn btn-primary" onclick="addCut()" style="padding: 12px 24px; height: fit-content;">Add Cut</button>
+                    </div>
+                    <div id="previewOptCutLength" class="input-preview"></div>
                         <div style="display: none;">
                             <!-- Hidden legacy inputs for backward compatibility -->
                             <input type="number" id="optCutFeet" placeholder="0" min="0" class="wide-input">
@@ -4443,16 +4464,23 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                 <option value="0.9375">15/16"</option>
                             </select>
                         </div>
-                        <input type="number" id="cutQuantity" placeholder="1" min="1" class="wide-input">
-                        <span>qty</span>
-                        <button class="btn btn-secondary" onclick="addCut()">Add</button>
-                    </div>
-                    <div id="cutsList"></div>
+                    <div id="cutsList" style="margin-top: 15px;"></div>
                 </div>
                 
-                <button class="btn btn-primary" onclick="optimizeCuts()" style="width: 100%; margin-bottom: 15px;">Optimize Cuts</button>
+                <!-- Action Buttons -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <button class="btn btn-primary" onclick="optimizeCuts()" style="padding: 15px; font-size: 16px;">
+                        🔧 Optimize Cuts
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearOptimization()" style="padding: 15px; font-size: 16px;">
+                        Clear All
+                    </button>
+                </div>
                 
-                <div id="optimizationResults"></div>
+                <!-- Results Section -->
+                <div class="results-section">
+                    <div id="optimizationResults"></div>
+                </div>
                 
                 <!-- Visual Cut Layout -->
                 <div id="visualLayout" style="display: none;">
@@ -9973,6 +10001,41 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             if (document.getElementById('customPieces')) document.getElementById('customPieces').value = '';
         }
         
+        function clearOptimization() {
+            // Clear boards and cuts arrays
+            boards = [];
+            cuts = [];
+            
+            // Clear input fields
+            if (document.getElementById('smartBoardLength')) document.getElementById('smartBoardLength').value = '';
+            if (document.getElementById('previewBoardLength')) document.getElementById('previewBoardLength').innerHTML = '';
+            if (document.getElementById('boardQuantity')) document.getElementById('boardQuantity').value = '1';
+            
+            if (document.getElementById('smartOptCutLength')) document.getElementById('smartOptCutLength').value = '';
+            if (document.getElementById('previewOptCutLength')) document.getElementById('previewOptCutLength').innerHTML = '';
+            if (document.getElementById('cutQuantity')) document.getElementById('cutQuantity').value = '1';
+            
+            // Clear lists
+            if (document.getElementById('boardsList')) document.getElementById('boardsList').innerHTML = '';
+            if (document.getElementById('cutsList')) document.getElementById('cutsList').innerHTML = '';
+            
+            // Clear results
+            if (document.getElementById('optimizationResults')) document.getElementById('optimizationResults').innerHTML = '';
+            if (document.getElementById('boardVisualization')) document.getElementById('boardVisualization').innerHTML = '';
+            if (document.getElementById('visualLayout')) document.getElementById('visualLayout').style.display = 'none';
+            
+            // Clear global optimization results
+            window.currentOptimizationResults = null;
+            window.currentKerfEnabled = null;
+        }
+        
+        function autoRecalculateOptimization() {
+            // Only recalculate if we have boards and cuts
+            if (boards.length > 0 && cuts.length > 0) {
+                optimizeCuts();
+            }
+        }
+        
         function switchTab(tab, evt) {
             // Remove active class from all tabs and buttons
             const tabBtns = document.querySelectorAll('.tab-btn');
@@ -10390,6 +10453,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             
             if (document.getElementById('boardFeet')) document.getElementById('boardFeet').value = '';
             if (document.getElementById('boardInches')) document.getElementById('boardInches').value = '';
+            
+            // Auto-recalculate if we have cuts
+            autoRecalculateOptimization();
             if (document.getElementById('boardFraction')) document.getElementById('boardFraction').value = '0';
             if (document.getElementById('boardQuantity')) document.getElementById('boardQuantity').value = '1';
         }
@@ -10412,6 +10478,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             if (document.getElementById('optCutInches')) document.getElementById('optCutInches').value = '';
             if (document.getElementById('optCutFraction')) document.getElementById('optCutFraction').value = '0';
             if (document.getElementById('cutQuantity')) document.getElementById('cutQuantity').value = '1';
+            
+            // Auto-recalculate if we have boards
+            autoRecalculateOptimization();
         }
         
         function updateBoardsList() {
@@ -10419,14 +10488,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             if (!div) return;
             
             div.innerHTML = boards.map((board, i) => 
-                `<div style="padding: 8px; background: #f0f0f0; margin: 4px; border-radius: 5px; display: flex; align-items: center; justify-content: space-between;">
+                `<div style="padding: 10px; background: #f0f0f0; margin: 4px 0; border-radius: 5px; display: flex; align-items: center; justify-content: space-between;">
                     <div style="flex: 1;">
                         <strong>${board.quantity}× ${inchesToDisplay(board.length, 'opt')} boards</strong>
                     </div>
-                    <div style="display: flex; gap: 5px; align-items: center;">
-                        <button onclick="editBoard(${i})" style="background: var(--primary-color); color: white; border: none; border-radius: 3px; padding: 4px 8px; cursor: pointer; font-size: 12px;">Edit</button>
-                        <button onclick="removeBoard(${i})" style="background: #cd5c5c; color: white; border: none; border-radius: 3px; padding: 4px 8px; cursor: pointer;">×</button>
-                    </div>
+                    <button onclick="removeBoard(${i})" style="background: #dc3545; color: white; border: none; border-radius: 3px; padding: 6px 12px; cursor: pointer; font-weight: bold;">×</button>
                 </div>`
             ).join('');
         }
@@ -10446,14 +10512,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             });
             
             div.innerHTML = Object.values(cutGroups).map(group => 
-                `<div style="padding: 8px; background: #f0f0f0; margin: 4px; border-radius: 5px; display: flex; align-items: center; justify-content: space-between;">
+                `<div style="padding: 10px; background: #f0f0f0; margin: 4px 0; border-radius: 5px; display: flex; align-items: center; justify-content: space-between;">
                     <div style="flex: 1;">
                         <strong>${group.count}× ${inchesToDisplay(group.length, 'opt')}</strong>
                     </div>
-                    <div style="display: flex; gap: 5px; align-items: center;">
-                        <button onclick="editCutGroup(${group.length}, [${group.ids.join(',')}])" style="background: var(--primary-color); color: white; border: none; border-radius: 3px; padding: 4px 8px; cursor: pointer; font-size: 12px;">Edit</button>
-                        <button onclick="removeCutGroup(${group.length})" style="background: #cd5c5c; color: white; border: none; border-radius: 3px; padding: 4px 8px; cursor: pointer;">×</button>
-                    </div>
+                    <button onclick="removeCutGroup(${group.length})" style="background: #dc3545; color: white; border: none; border-radius: 3px; padding: 6px 12px; cursor: pointer; font-weight: bold;">×</button>
                 </div>`
             ).join('');
         }
@@ -10461,12 +10524,14 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         function removeBoard(index) {
             boards.splice(index, 1);
             updateBoardsList();
+            autoRecalculateOptimization();
         }
         
         function removeCutGroup(length) {
             // Remove all cuts that match this length (within small tolerance)
             cuts = cuts.filter(cut => Math.abs(cut.length - length) > 0.0001);
             updateCutsList();
+            autoRecalculateOptimization();
         }
         
         function optimizeCuts() {
@@ -10475,8 +10540,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 return;
             }
             
-            const kerfEnabled = document.getElementById('optKerfEnabled')?.checked;
-            const kerf = kerfEnabled ? parseFloat(document.getElementById('optKerf')?.value || 0.125) : 0;
+            const kerfValue = parseFloat(document.getElementById('optKerf')?.value || 0);
+            const kerf = kerfValue;
+            const kerfEnabled = kerfValue > 0;
             
             // Create expanded board list with individual boards
             let availableBoards = [];
