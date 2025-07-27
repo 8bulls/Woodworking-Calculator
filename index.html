@@ -4779,26 +4779,69 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 </div>
                 <div class="calc-card-content" id="spacingContent">
                     <div class="calc-description">Calculate shelf spacing and divisions for woodworking projects</div>
-                    <div class="calc-inputs">
-                        <div class="input-row">
-                            <label>Total Length:</label>
-                            <input type="text" id="smartShelfLength" placeholder="Try: 8' 0 3/4&quot; or 96.75&quot; or 8.0625'" class="wide-input" oninput="handleSmartInput(this, 'previewShelfLength', updateShelfLengthValue)">
+                    
+                    <!-- Settings Panel -->
+                    <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Cabinet Dimensions</h4>
+                        
+                        <!-- Total Length Input -->
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Total Length:</label>
+                            <input type="text" id="smartShelfLength" placeholder="Try: 8' 0 3/4&quot; or 96.75&quot; or 8.0625'" class="wide-input" oninput="handleSmartInput(this, 'previewShelfLength', updateShelfLengthValue)" style="padding: 12px;">
+                            <div id="previewShelfLength" class="input-preview"></div>
                         </div>
-                        <div id="previewShelfLength" class="input-preview"></div>
-                        <div class="input-row">
-                            <label>Number of Shelves:</label>
-                            <input type="number" id="spNumShelves" min="1" placeholder="5" oninput="calculateSpacing()">
-                            <span class="unit">shelves</span>
+                        
+                        <!-- Calculation Mode Selector -->
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Calculate By:</label>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="mode-btn active" onclick="setShelfMode('count')" id="shelfModeCount" style="flex: 1;">Number of Shelves</button>
+                                <button class="mode-btn" onclick="setShelfMode('spacing')" id="shelfModeSpacing" style="flex: 1;">Desired Spacing</button>
+                            </div>
                         </div>
-                        <div class="input-row">
-                            <label>Material Thickness:</label>
-                            <input type="text" id="smartShelfThickness" placeholder="Try: 3/4&quot; or 0.75&quot; or 19mm" class="wide-input" oninput="handleSmartInput(this, 'previewShelfThickness', updateShelfThicknessValue)">
+                        
+                        <!-- Mode-specific inputs -->
+                        <div id="shelfCountInput" style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Number of Shelves:</label>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <input type="number" id="spNumShelves" min="1" placeholder="5" oninput="calculateSpacing()" style="width: 100px; padding: 12px;">
+                                <span style="font-weight: 600; color: var(--text-secondary);">shelves</span>
+                            </div>
                         </div>
-                        <div id="previewShelfThickness" class="input-preview"></div>
+                        
+                        <div id="shelfSpacingInput" style="display: none; margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Desired Spacing:</label>
+                            <input type="text" id="smartDesiredSpacing" placeholder="Try: 12&quot;, 1', 300mm" class="wide-input" oninput="handleSmartInput(this, 'previewDesiredSpacing', updateDesiredSpacingValue)" style="padding: 12px;">
+                            <div id="previewDesiredSpacing" class="input-preview"></div>
+                        </div>
+                        
+                        <!-- Material Thickness -->
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Material Thickness:</label>
+                            <select id="shelfThicknessSelect" onchange="updateShelfThickness()" style="width: 100%; padding: 12px; margin-bottom: 10px;">
+                                <option value="none">None (Center Marks Only)</option>
+                                <option value="0.75" selected>3/4" (Standard)</option>
+                                <option value="0.5">1/2"</option>
+                                <option value="1.0">1"</option>
+                                <option value="1.5">1-1/2"</option>
+                                <option value="custom">Custom Thickness</option>
+                            </select>
+                            <div id="customThicknessRow" style="display: none;">
+                                <input type="text" id="smartShelfThickness" placeholder="Try: 3/4&quot; or 0.75&quot; or 19mm" class="wide-input" oninput="handleSmartInput(this, 'previewShelfThickness', updateShelfThicknessValue)" style="padding: 12px;">
+                                <div id="previewShelfThickness" class="input-preview"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Clear Button -->
+                        <div style="text-align: right; margin-top: 15px;">
+                            <button class="btn btn-secondary" onclick="clearShelfCalculator()" style="padding: 10px 20px;">Clear All</button>
+                        </div>
                     </div>
-                    <div class="calc-result">
-                        <div class="result-display" id="spResult">Enter dimensions to calculate</div>
-                        <button class="btn btn-success btn-sm" onclick="saveSpacingToProject()">Save to Project</button>
+                    
+                    <!-- Results Section -->
+                    <div class="calc-result" style="margin-bottom: 20px;">
+                        <div class="result-display" id="spResult" style="padding: 20px; background: #f8f9fa; border-radius: 8px; margin-bottom: 15px;">Enter dimensions to calculate</div>
+                        <button class="btn btn-success" onclick="saveSpacingToProject()" style="padding: 12px 24px; font-size: 16px;">💾 Save to Project</button>
                     </div>
                     <div class="calc-visual">
                         <div style="max-height: 700px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px; background: #f8f9fa;">
@@ -11202,6 +11245,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         // Smart input callbacks for Shelf & Division Calculator
         let currentShelfLengthInches = 0;
         let currentShelfThicknessInches = 0.75; // Default to 3/4"
+        let currentDesiredSpacingInches = 0;
+        let shelfCalculationMode = 'count'; // 'count' or 'spacing'
 
         function updateShelfLengthValue(inches, display) {
             currentShelfLengthInches = inches;
@@ -11210,6 +11255,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
 
         function updateShelfThicknessValue(inches, display) {
             currentShelfThicknessInches = inches;
+            calculateSpacing();
+        }
+        
+        function updateDesiredSpacingValue(inches, display) {
+            currentDesiredSpacingInches = inches;
             calculateSpacing();
         }
 
@@ -11375,6 +11425,63 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             return;
         }
 
+        function setShelfMode(mode) {
+            shelfCalculationMode = mode;
+            
+            // Update button states
+            document.getElementById('shelfModeCount').classList.toggle('active', mode === 'count');
+            document.getElementById('shelfModeSpacing').classList.toggle('active', mode === 'spacing');
+            
+            // Show/hide appropriate inputs
+            document.getElementById('shelfCountInput').style.display = mode === 'count' ? 'block' : 'none';
+            document.getElementById('shelfSpacingInput').style.display = mode === 'spacing' ? 'block' : 'none';
+            
+            // Recalculate if we have data
+            calculateSpacing();
+        }
+        
+        function updateShelfThickness() {
+            const select = document.getElementById('shelfThicknessSelect');
+            const customRow = document.getElementById('customThicknessRow');
+            
+            if (select.value === 'custom') {
+                customRow.style.display = 'block';
+            } else {
+                customRow.style.display = 'none';
+                if (select.value === 'none') {
+                    currentShelfThicknessInches = 0;
+                } else {
+                    currentShelfThicknessInches = parseFloat(select.value);
+                }
+                calculateSpacing();
+            }
+        }
+        
+        function clearShelfCalculator() {
+            // Clear inputs
+            document.getElementById('smartShelfLength').value = '';
+            document.getElementById('previewShelfLength').innerHTML = '';
+            document.getElementById('spNumShelves').value = '';
+            document.getElementById('smartDesiredSpacing').value = '';
+            document.getElementById('previewDesiredSpacing').innerHTML = '';
+            document.getElementById('shelfThicknessSelect').value = '0.75';
+            document.getElementById('smartShelfThickness').value = '';
+            document.getElementById('previewShelfThickness').innerHTML = '';
+            document.getElementById('customThicknessRow').style.display = 'none';
+            
+            // Reset state variables
+            currentShelfLengthInches = 0;
+            currentShelfThicknessInches = 0.75;
+            currentDesiredSpacingInches = 0;
+            
+            // Reset to count mode
+            setShelfMode('count');
+            
+            // Clear results
+            document.getElementById('spResult').innerHTML = '<div class="result-placeholder">Enter dimensions to calculate</div>';
+            updateSpacingDiagram(0, 0, 0, 0);
+        }
+
         function calculateSpacing() {
             // Use smart input values if available, otherwise fall back to legacy inputs
             let totalLength = currentShelfLengthInches;
@@ -11382,27 +11489,71 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 totalLength = getInputInches('spTotalLengthFeet', 'spTotalLengthInches', 'spTotalLengthFraction');
             }
             
-            const numShelves = parseInt(document.getElementById('spNumShelves').value) || 0;
-            
             let thickness = currentShelfThicknessInches;
-            if (thickness === 0) {
-                thickness = getInputInches('spacingThicknessFeet', 'spacingThicknessInches', 'spacingThicknessFraction');
-            }
             const resultDiv = document.getElementById('spResult');
             
-            if (totalLength === 0 || numShelves === 0) {
-                resultDiv.innerHTML = '<div class="result-placeholder">Enter values above</div>';
-                updateSpacingDiagram(0, 0, 0, 0);
-                return;
+            // Handle different calculation modes
+            let numShelves = 0;
+            let spacing = 0;
+            
+            if (shelfCalculationMode === 'count') {
+                numShelves = parseInt(document.getElementById('spNumShelves').value) || 0;
+                
+                if (totalLength === 0 || numShelves === 0) {
+                    resultDiv.innerHTML = '<div class="result-placeholder">Enter total length and number of shelves</div>';
+                    updateSpacingDiagram(0, 0, 0, 0);
+                    return;
+                }
+            } else { // spacing mode
+                spacing = currentDesiredSpacingInches;
+                
+                if (totalLength === 0 || spacing === 0) {
+                    resultDiv.innerHTML = '<div class="result-placeholder">Enter total length and desired spacing</div>';
+                    updateSpacingDiagram(0, 0, 0, 0);
+                    return;
+                }
+                
+                // Calculate number of shelves that fit with given spacing
+                const availableLength = totalLength - spacing; // Account for first space
+                const shelfPlusSpace = thickness + spacing;
+                
+                if (shelfPlusSpace > 0) {
+                    numShelves = Math.floor(availableLength / shelfPlusSpace);
+                }
+                
+                if (numShelves <= 0) {
+                    resultDiv.innerHTML = '<div class="result-warning">Spacing too large for cabinet length</div>';
+                    updateSpacingDiagram(0, 0, 0, 0);
+                    return;
+                }
             }
             
             // Convert shelves to spaces: N shelves = N+1 spaces
             const numSpaces = numShelves + 1;
-            let spacing, shelfInfo, description;
+            let shelfInfo, description;
             
+            // Calculate spacing if not already known (count mode)
+            if (shelfCalculationMode === 'count') {
+                if (thickness === 0) {
+                    // Simple shelf spacing without thickness
+                    spacing = totalLength / numSpaces;
+                } else {
+                    // Account for shelf thickness
+                    const totalThickness = numShelves * thickness;
+                    const availableSpace = totalLength - totalThickness;
+                    
+                    if (availableSpace < 0) {
+                        resultDiv.innerHTML = '<div class="result-warning">Shelves too thick for total length!</div>';
+                        updateSpacingDiagram(0, 0, 0, 0);
+                        return;
+                    }
+                    
+                    spacing = availableSpace / numSpaces;
+                }
+            }
+            
+            // Generate the display based on thickness
             if (thickness === 0) {
-                // Simple shelf spacing without thickness
-                spacing = totalLength / numSpaces;
                 const centerMarks = Array.from({length: numShelves}, (_, i) => inchesToDisplay((i + 1) * spacing, 'calculator'));
                 
                 resultDiv.innerHTML = `
@@ -11433,17 +11584,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     </div>` : ''}
                 `;
             } else {
-                // Account for material thickness
-                const totalThickness = numShelves * thickness;
-                const availableSpace = totalLength - totalThickness;
-                
-                if (availableSpace <= 0) {
-                    resultDiv.innerHTML = '<div class="result-placeholder">Material too thick for this spacing</div>';
-                    updateSpacingDiagram(0, 0, 0, 0);
-                    return;
-                }
-                
-                spacing = availableSpace / numSpaces;
                 
                 // Calculate shelf positions (left and right edges)
                 shelfInfo = [];
@@ -11461,8 +11601,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     currentPos += thickness; // Move past shelf
                 }
                 
+                const modeText = shelfCalculationMode === 'spacing' ? 
+                    ` (fits ${numShelves} shelves with ${inchesToDisplay(spacing, 'calculator')} spacing)` : '';
+                
                 resultDiv.innerHTML = `
-                    <div class="result-value">${inchesToDisplay(spacing, 'calculator')} per space</div>
+                    <div class="result-value">${inchesToDisplay(spacing, 'calculator')} per space${modeText}</div>
                     <div class="result-summary">
                         <div class="summary-row">
                             <span class="summary-label">Total Length:</span>
@@ -11476,6 +11619,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             <span class="summary-label">Spaces:</span>
                             <span class="summary-value">${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each</span>
                         </div>
+                        ${shelfCalculationMode === 'spacing' ? `
+                        <div class="summary-row" style="color: var(--primary-color); font-weight: bold;">
+                            <span class="summary-label">Mode:</span>
+                            <span class="summary-value">Calculated by desired spacing</span>
+                        </div>` : ''}
                     </div>
                     <div class="divider-marks">
                         <div class="marks-header">📏 Shelf Marking Guide:</div>
