@@ -4333,7 +4333,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: end; margin-top: 15px;">
                     <div class="input-group">
                         <label style="display: block; margin-bottom: 8px; font-weight: 600;">Custom Division:</label>
-                        <input type="number" id="customPieces" placeholder="Enter number of pieces" min="2" max="20" class="wide-input" onchange="performCustomDivision()" style="padding: 12px;">
+                        <input type="number" id="customPieces" placeholder="Enter number of pieces" min="2" max="20" class="wide-input" oninput="performCustomDivision()" style="padding: 12px;">
                     </div>
                     
                     <button class="btn btn-primary" onclick="clearCut()" style="padding: 12px 24px; height: fit-content;">Clear All</button>
@@ -6705,6 +6705,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         let operationValue = 0;
         let history = [];
         let cutHistory = [];
+        let lastDivisionType = null; // 'quick' or 'custom'
+        let lastDivisionValue = null; // number of pieces
         let lastConversionSource = 'calculator'; // Track whether last action was 'calculator' or 'direct'
         let lastCalculatorUpdate = 0; // Timestamp of last calculator calculation
         let lastDirectInputUpdate = 0; // Timestamp of last direct input
@@ -9527,15 +9529,19 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             } else {
                 cutValueInches = getInputInches('cutFeet', 'cutInches', 'cutFraction');
             }
-            const display = cutValueInches > 0 ? inchesToDisplay(cutValueInches, 'cut') : 'Enter measurement above';
-            document.getElementById('cutCurrentValue').textContent = display;
+            // cutCurrentValue element was removed in UI redesign
+            
+            // Auto-recalculate if there's an active division
+            autoRecalculateDivision();
         }
         
         function performDivision() {
             const pieces = parseInt(document.getElementById('divisionSelect').value);
             if (pieces && cutValueInches > 0) {
+                lastDivisionType = 'quick';
+                lastDivisionValue = pieces;
                 quickCut(pieces);
-                document.getElementById('divisionSelect').value = ''; // Reset dropdown
+                // Don't reset dropdown anymore to keep selection
             } else if (pieces && cutValueInches <= 0) {
                 showNotification('Please enter a board length first');
             }
@@ -9544,7 +9550,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         function performCustomDivision() {
             const pieces = parseInt(document.getElementById('customPieces').value);
             if (pieces && pieces >= 2 && pieces <= 20 && cutValueInches > 0) {
+                lastDivisionType = 'custom';
+                lastDivisionValue = pieces;
                 quickCut(pieces);
+                // Clear quick division dropdown when using custom
+                document.getElementById('divisionSelect').value = '';
             } else if (pieces && cutValueInches <= 0) {
                 showNotification('Please enter a board length first');
             } else if (pieces && (pieces < 2 || pieces > 20)) {
@@ -9593,16 +9603,20 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             let currentPos = 0;
             
             for (let i = 0; i < pieces - 1; i++) {
-                // Calculate where each piece ends
+                // Calculate where each piece ends without kerf
                 currentPos += pieceLength;
                 
-                // Adjust mark position based on cut side
+                // Adjust mark position based on cut side and accumulated kerf
                 let markPosition = currentPos;
-                if (kerfEnabled && cutSide === 'left') {
-                    // If cutting on left side of mark, add kerf to mark position
-                    markPosition += kerf;
+                if (kerf > 0) {
+                    if (cutSide === 'left') {
+                        // For left side cuts, add accumulated kerf
+                        markPosition += (i + 1) * kerf;
+                    } else {
+                        // For right side cuts, add accumulated kerf from previous cuts
+                        markPosition += i * kerf;
+                    }
                 }
-                // If cutting on right side, mark position stays at piece end
                 
                 results.push({
                     position: markPosition,
@@ -9614,8 +9628,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             const cutResults = document.createElement('div');
             cutResults.className = 'cut-results';
             
-            const kerfNote = kerfEnabled ? ` (${inchesToDisplay(kerf, 'cut')} kerf)` : ' (no kerf)';
-            const cutSideNote = kerfEnabled ? `, ${cutSide} side` : '';
+            const kerfNote = kerf > 0 ? ` (${inchesToDisplay(kerf, 'cut')} kerf)` : ' (no kerf)';
+            const cutSideNote = kerf > 0 ? `, ${cutSide} side` : '';
             
             // Store cut result data globally for saving
             const cutResultData = {
@@ -9644,7 +9658,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 ${visualBoard}
                 ${markingGuide}
                 <div class="piece-info">
-                    Result: ${pieces} pieces @ ${inchesToDisplay(pieceLength, 'cut')} each
+                    Each piece: ${inchesToDisplay(pieceLength, 'cut')}
                 </div>
                 <div class="cut-result-actions">
                     <button class="btn btn-success btn-sm" onclick="saveCutToProject(0)">Save to Project</button>
@@ -9678,7 +9692,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 cutElements.push(`<div class="cut-mark" style="left: ${markPercent}%" data-mark="Mark ${i + 1}: ${mark.display}"></div>`);
                 
                 // Add kerf cutout if enabled
-                if (kerfEnabled && kerf > 0) {
+                if (kerf > 0) {
                     const kerfWidthPercent = (kerf / totalLength) * 100;
                     let kerfLeft;
                     
@@ -9700,17 +9714,23 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             
             // Generate piece labels
             const pieceLabels = [];
+            let currentPosition = 0;
+            
             for (let i = 0; i < pieces; i++) {
-                const pieceStart = (i * (pieceLength + kerf) / totalLength) * 100;
-                const pieceEnd = ((i + 1) * pieceLength + i * kerf) / totalLength * 100;
-                const pieceCenter = (pieceStart + pieceEnd) / 2;
+                // Calculate piece start and end positions
+                const pieceStart = currentPosition;
+                const pieceEnd = pieceStart + pieceLength;
+                const pieceCenter = ((pieceStart + pieceEnd) / totalLength) * 100;
                 
                 pieceLabels.push(`
                     <div class="piece-label" style="left: ${pieceCenter}%; transform: translateX(-50%);">
-                        Piece ${i + 1}<br>
+                        ${i + 1}<br>
                         <small>${inchesToDisplay(pieceLength, 'cut')}</small>
                     </div>
                 `);
+                
+                // Move to next piece position (accounting for kerf)
+                currentPosition = pieceEnd + kerf;
             }
             
             return `
@@ -9780,6 +9800,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             if (cutSideRow) {
                 cutSideRow.style.display = kerfEnabled ? 'block' : 'none';
             }
+            
+            // Auto-recalculate if there's an active division
+            autoRecalculateDivision();
             
             if (diagram) {
                 diagram.style.display = kerfEnabled ? 'flex' : 'none';
@@ -9928,13 +9951,26 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             clearOperationInputs();
         }
         
+        function autoRecalculateDivision() {
+            // Only recalculate if we have a board length and a previous division
+            if (cutValueInches > 0 && lastDivisionValue) {
+                quickCut(lastDivisionValue);
+            }
+        }
+        
         function clearCut() {
             cutValueInches = 0;
-            if (document.getElementById('cutCurrentValue')) document.getElementById('cutCurrentValue').textContent = 'Enter measurement above';
+            currentCutLengthInches = 0;
+            lastDivisionType = null;
+            lastDivisionValue = null;
+            if (document.getElementById('smartCutLength')) document.getElementById('smartCutLength').value = '';
+            if (document.getElementById('previewCutLength')) document.getElementById('previewCutLength').innerHTML = '';
             if (document.getElementById('cutFeet')) document.getElementById('cutFeet').value = '';
             if (document.getElementById('cutInches')) document.getElementById('cutInches').value = '';
             if (document.getElementById('cutFraction')) document.getElementById('cutFraction').value = '0';
             if (document.getElementById('cutHistory')) document.getElementById('cutHistory').innerHTML = '';
+            if (document.getElementById('divisionSelect')) document.getElementById('divisionSelect').value = '';
+            if (document.getElementById('customPieces')) document.getElementById('customPieces').value = '';
         }
         
         function switchTab(tab, evt) {

@@ -60,6 +60,63 @@ python -m http.server 8000  # For local development server
 - History functionality allows saving and reviewing calculations
 - Board foot calculator and golden ratio tools are built-in utilities
 
+## Calculator Design Principles
+
+### 1. Reactive Calculations
+- **Auto-recalculate**: When any input changes, automatically recalculate results if enough data exists
+- **Remember state**: Store last calculation type/values to enable auto-recalculation
+- **Input events**: Use `oninput` for real-time updates, not just `onchange`
+- **Implementation pattern**:
+  ```javascript
+  let lastDivisionType = null;  // 'quick' or 'custom'
+  let lastDivisionValue = null; // number of pieces
+  
+  function autoRecalculateDivision() {
+      if (cutValueInches > 0 && lastDivisionValue) {
+          quickCut(lastDivisionValue);
+      }
+  }
+  ```
+
+### 2. UI Simplification
+- **Remove redundancy**: Don't use checkboxes + dropdowns for same setting (e.g., kerf on/off + kerf size)
+- **Smart defaults**: Include "None" or "0" options in dropdowns instead of separate enable/disable controls
+- **Conditional visibility**: Show/hide related controls based on primary selections
+- **Example**: Kerf compensation - single dropdown with "None" option instead of checkbox + dropdown
+
+### 3. Consistent Layout Patterns
+- **Settings panels**: Use light background boxes with grid/flex layouts for settings
+  ```html
+  <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px;">
+      <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+          <div style="flex: 1; min-width: 250px;"><!-- Column 1 --></div>
+          <div style="flex: 1; min-width: 250px;"><!-- Column 2 --></div>
+      </div>
+  </div>
+  ```
+- **Input sections**: Clear labels, consistent spacing, responsive widths
+- **Results sections**: Titled sections with scrollable areas for long results
+
+### 4. State Management
+- **Global variables**: Track current values and last selections for persistence
+- **Clear functions**: Reset ALL related state variables, not just UI elements
+  ```javascript
+  function clearCut() {
+      cutValueInches = 0;
+      currentCutLengthInches = 0;
+      lastDivisionType = null;
+      lastDivisionValue = null;
+      // Clear all UI elements...
+  }
+  ```
+- **Smart callbacks**: Input handlers should update state AND trigger recalculations
+
+### 5. Responsive Design
+- **Flexible layouts**: Use flexbox with wrap, avoid fixed-width grids
+- **Min-widths**: Set minimum widths on columns to force stacking on small screens
+- **Container constraints**: Use `width: 100%; max-width: 450px;` for inputs
+- **Avoid over-constraining**: Let content flow naturally within reasonable bounds
+
 ## Development Guidelines
 
 ### Code Modularity and Consistency
