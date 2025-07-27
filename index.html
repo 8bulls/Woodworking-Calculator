@@ -11729,7 +11729,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             const thickness = currentBfThicknessInches || parseFloat(document.getElementById('bfThickness').value) || 0;
             const width = currentBfWidthInches || parseFloat(document.getElementById('bfWidth').value) || 0;
             const lengthInInches = currentBfLengthInches || parseFloat(document.getElementById('bfLength').value) || 0;
-            const length = lengthInInches / 12; // Convert to feet for board foot calculation
             const quantity = parseFloat(document.getElementById('bfQuantity').value) || 1;
             
             // Validate required fields
@@ -11738,7 +11737,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 return;
             }
             
-            if (thickness <= 0 || width <= 0 || length <= 0 || quantity <= 0) {
+            if (thickness <= 0 || width <= 0 || lengthInInches <= 0 || quantity <= 0) {
                 showNotification('Please enter valid dimensions and quantity');
                 return;
             }
@@ -11748,8 +11747,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 return;
             }
             
-            // Calculate board feet and line total
-            const boardFeet = (thickness * width * length * quantity) / 144;
+            // Calculate board feet and line total (using length in inches)
+            const boardFeet = (thickness * width * lengthInInches * quantity) / 144;
             const lineTotal = boardFeet * price;
             const displaySpecies = species === 'Custom' ? customSpecies.trim() : species;
             
@@ -11759,7 +11758,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 species: displaySpecies,
                 thickness,
                 width,
-                length,
+                length: lengthInInches, // Store length in inches
                 quantity,
                 pricePerBF: price,
                 boardFeet,

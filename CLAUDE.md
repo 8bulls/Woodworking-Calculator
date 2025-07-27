@@ -62,7 +62,53 @@ python -m http.server 8000  # For local development server
 
 ## Calculator Design Principles
 
-### 1. Reactive Calculations
+### 1. Smart Input Integration
+- **Always Use Smart Input Values**: 
+  - Use the smart input callback values (e.g., `currentBfThicknessInches`) as the primary data source
+  - Fall back to legacy inputs only when smart inputs are not available
+  - Never read from legacy hidden inputs if smart inputs are being used
+  
+- **Consistent Unit Handling**:
+  - Smart inputs always return values in inches - this is the canonical unit
+  - Store all internal calculations in inches for consistency
+  - Convert to display units (feet, fractions) only for output
+  
+- **Proper Variable Management**:
+  - Define smart input callback variables at the top of the script
+  - Reset these variables when clearing forms
+  - Example pattern:
+  ```javascript
+  // Smart input callbacks
+  let currentBfThicknessInches = 0;
+  let currentBfWidthInches = 0;
+  let currentBfLengthInches = 0;
+  
+  function updateBfThicknessValue(inches, display) {
+      currentBfThicknessInches = inches;
+      calculateBoardFeet();
+  }
+  ```
+
+### 2. Calculation Accuracy
+- **Board Foot Calculations**:
+  - Formula when all dimensions in inches: `(thickness × width × length) / 144`
+  - Formula when length in feet: `(thickness × width × length) / 12`
+  - Always document which units are expected in comments
+  - Never mix unit systems in a single calculation
+  
+- **Validation Before Calculation**:
+  - Check all required inputs are present and positive
+  - Use the actual variables being used in calculations for validation
+  - Don't validate `length` if you're using `lengthInInches`
+  - Provide clear error messages indicating what's missing
+  
+- **Avoid Unit Conversion Errors**:
+  - Don't convert units multiple times in a calculation chain
+  - Be explicit about units in variable names (e.g., `lengthInInches` vs `lengthInFeet`)
+  - Test calculations with known values to verify accuracy
+  - Common error: Converting to feet then still dividing by 144 instead of 12
+
+### 3. Reactive Calculations
 - **Auto-recalculate**: When any input changes, automatically recalculate results if enough data exists
 - **Remember state**: Store last calculation type/values to enable auto-recalculation
 - **Input events**: Use `oninput` for real-time updates, not just `onchange`
@@ -78,13 +124,13 @@ python -m http.server 8000  # For local development server
   }
   ```
 
-### 2. UI Simplification
+### 4. UI Simplification
 - **Remove redundancy**: Don't use checkboxes + dropdowns for same setting (e.g., kerf on/off + kerf size)
 - **Smart defaults**: Include "None" or "0" options in dropdowns instead of separate enable/disable controls
 - **Conditional visibility**: Show/hide related controls based on primary selections
 - **Example**: Kerf compensation - single dropdown with "None" option instead of checkbox + dropdown
 
-### 3. Consistent Layout Patterns
+### 5. Consistent Layout Patterns
 - **Settings panels**: Use light background boxes with grid/flex layouts for settings
   ```html
   <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px;">
@@ -97,7 +143,7 @@ python -m http.server 8000  # For local development server
 - **Input sections**: Clear labels, consistent spacing, responsive widths
 - **Results sections**: Titled sections with scrollable areas for long results
 
-### 4. State Management
+### 6. State Management
 - **Global variables**: Track current values and last selections for persistence
 - **Clear functions**: Reset ALL related state variables, not just UI elements
   ```javascript
@@ -111,11 +157,35 @@ python -m http.server 8000  # For local development server
   ```
 - **Smart callbacks**: Input handlers should update state AND trigger recalculations
 
-### 5. Responsive Design
+### 7. Responsive Design
 - **Flexible layouts**: Use flexbox with wrap, avoid fixed-width grids
 - **Min-widths**: Set minimum widths on columns to force stacking on small screens
 - **Container constraints**: Use `width: 100%; max-width: 450px;` for inputs
 - **Avoid over-constraining**: Let content flow naturally within reasonable bounds
+
+### 8. Validation Best Practices
+- **Validate Actual Variables**: Always validate the exact variables used in calculations
+  ```javascript
+  // WRONG - validates 'length' but uses 'lengthInInches'
+  if (thickness <= 0 || width <= 0 || length <= 0) { return; }
+  const boardFeet = (thickness * width * lengthInInches) / 144;
+  
+  // CORRECT - validates the actual variable used
+  if (thickness <= 0 || width <= 0 || lengthInInches <= 0) { return; }
+  const boardFeet = (thickness * width * lengthInInches) / 144;
+  ```
+
+- **Clear Error Messages**: Specify exactly what's wrong
+  - Bad: "Invalid input"
+  - Good: "Please enter valid dimensions and quantity"
+  - Better: "Length must be greater than 0"
+
+- **Early Validation**: Check required fields before optional ones
+  1. First check if required selections are made (species, type)
+  2. Then validate dimensions are positive
+  3. Finally validate optional fields (price, notes)
+
+- **Consistent Validation Order**: Follow the same validation sequence across all calculators
 
 ## Development Guidelines
 
