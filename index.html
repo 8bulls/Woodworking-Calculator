@@ -8825,10 +8825,14 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 { regex: /^(\d+)(?:\s*['\x27]|\s*ft)\s*(\d+)(?:\s*(\d+)\/(\d+))?\s*(?:["\x22]|\s*in)?$/i, type: 'feet_inches_frac' },
                 // Feet only with fractions: 4' 1/2 or 4 1/2 ft  
                 { regex: /^(\d+)(?:\s*(\d+)\/(\d+))?\s*['\x27]$/i, type: 'feet_frac' },
+                // Feet followed by fractional inches: 1' 1/16 or 4' 3/8
+                { regex: /^(\d+)\s*['\x27]\s*(\d+)\/(\d+)\s*["\x22]?$/i, type: 'feet_then_frac_inches' },
                 // Just inches with fractions: 54 1/2" or 54.5"
                 { regex: /^(\d+)(?:\.(\d+)|(\d+)\/(\d+))?\s*["\x22]?$/i, type: 'inches_frac' },
                 // Pure fraction: 3/4 or 3/4"
                 { regex: /^(\d+)\/(\d+)\s*["\x22]?$/i, type: 'pure_fraction' },
+                // Inches with space-separated fraction: 1 1/16 or 12 3/4
+                { regex: /^(\d+)\s+(\d+)\/(\d+)\s*["\x22]?$/i, type: 'inches_space_frac' },
                 // Decimal feet: 4.5' or 4.5 ft
                 { regex: /^(\d+(?:\.\d+)?)\s*(?:['\x27]|ft)$/i, type: 'decimal_feet' },
                 // Space separated: "4 6 1/2" (feet inches fraction)
@@ -8866,7 +8870,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 value: 0,
                 display: '0"',
                 isValid: false,
-                error: 'Unrecognized format. Try: 4\'6", 48", 4 6 1/2, or 48.5'
+                error: 'Unrecognized format. Try: 4\'6", 48", 1\' 1/16, 4 6 1/2, 48.5, or 1 1/16'
             };
         }
         
@@ -8907,6 +8911,22 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     }
                     
                     inches = feet2 * 12 + (num2 / den2);
+                    break;
+                    
+                case 'feet_then_frac_inches':
+                    const feetPart = parseInt(match[1]) || 0;
+                    const numInchFrac = parseInt(match[2]) || 0;
+                    const denInchFrac = parseInt(match[3]) || 1;
+                    
+                    // Validate fraction
+                    if (numInchFrac >= denInchFrac && numInchFrac > 0) {
+                        return { error: `Invalid fraction: ${numInchFrac}/${denInchFrac} (must be less than 1)` };
+                    }
+                    if (denInchFrac > 32) {
+                        return { error: `Invalid fraction: ${numInchFrac}/${denInchFrac} (max denominator is 32)` };
+                    }
+                    
+                    inches = feetPart * 12 + (numInchFrac / denInchFrac);
                     break;
                     
                 case 'inches_frac':
@@ -8971,6 +8991,22 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     }
                     
                     inches = num / den;
+                    break;
+                    
+                case 'inches_space_frac':
+                    const wholeInches = parseInt(match[1]) || 0;
+                    const numFrac = parseInt(match[2]) || 0;
+                    const denFrac = parseInt(match[3]) || 1;
+                    
+                    // Validate fraction
+                    if (numFrac >= denFrac && numFrac > 0) {
+                        return { error: `Invalid fraction: ${numFrac}/${denFrac} (must be less than 1)` };
+                    }
+                    if (denFrac > 32) {
+                        return { error: `Invalid fraction: ${numFrac}/${denFrac} (max denominator is 32)` };
+                    }
+                    
+                    inches = wholeInches + (numFrac / denFrac);
                     break;
                     
                 case 'decimal':
