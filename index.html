@@ -548,8 +548,72 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             transition: var(--theme-transition);
         }
         
+        /* Smart input standardized width - works with flexible card containers */
+        input[id^="smart"],
+        #smartGoldenRatio,
+        #smartShelfLength,
+        #smartShelfThickness,
+        #smartTileLength,
+        #smartTileWidth,
         .wide-input {
-            width: 80px !important;
+            width: 450px;
+            max-width: 450px;
+        }
+
+        /* Ensure all input containers can accommodate smart inputs naturally */
+        .input-row,
+        .calc-inputs,
+        .calculator-inputs,
+        .calc-card,
+        .calc-card-content {
+            min-width: 0;
+            width: 100%;
+            overflow: visible;
+        }
+
+        /* Smart Input Feedback System */
+        .input-preview {
+            margin: 5px 0 10px 0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .input-preview.success {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid #4CAF50;
+            color: #2E7D32;
+        }
+
+        .input-preview.warning {
+            background: rgba(255, 152, 0, 0.1);
+            border: 1px solid #FF9800;
+            color: #F57C00;
+        }
+
+        .input-preview.error {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid #F44336;
+            color: #D32F2F;
+        }
+
+        /* Smart input validation states */
+        .smart-input.valid {
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+
+        .smart-input.invalid {
+            border-color: #F44336;
+            box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.2);
+        }
+
+        .smart-input.warning {
+            border-color: #FF9800;
+            box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.2);
         }
         
         .modal {
@@ -1078,6 +1142,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         .input-group input {
             width: 80px;
             text-align: center;
+        }
+        
+        /* Override for smart inputs in input-group - they need full width */
+        .input-group input.smart-input {
+            width: 450px;
+            max-width: 450px;
+            text-align: left;
         }
         
         .input-group select {
@@ -3925,10 +3996,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             
             <div class="input-group">
                 <label>Input 1:</label>
+                <input type="text" id="smartInput1" placeholder="Try: 4'6&quot;, 48&quot;, 4 6 1/2, 48.5&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewInput1', updateInput1Value)" onchange="handleSmartInput(this, 'previewInput1', updateInput1Value)">
+            </div>
+            <div id="previewInput1" class="input-preview"></div>
+            <div style="display: none;">
+                <!-- Hidden legacy inputs for backward compatibility -->
                 <input type="number" id="feet1" placeholder="0" min="0" class="wide-input" onchange="updateCalculation()">
-                <span>ft</span>
                 <input type="number" id="inches1" placeholder="0" min="0" max="11" class="wide-input" onchange="updateCalculation()">
-                <span>in</span>
                 <select id="fraction1" style="width: 120px;" onchange="updateCalculation()">
                     <option value="0">0</option>
                 </select>
@@ -3951,10 +4025,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             <!-- Input 2 for Addition/Subtraction (feet/inches) -->
             <div class="input-group" id="input2GroupFeetInches" style="display: none;">
                 <label>Input 2:</label>
+                <input type="text" id="smartInput2" placeholder="Try: 4'6&quot;, 48&quot;, 4 6 1/2, 48.5&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewInput2', updateInput2Value)" onchange="handleSmartInput(this, 'previewInput2', updateInput2Value)">
+            </div>
+            <div id="previewInput2" class="input-preview" style="display: none;"></div>
+            <div style="display: none;">
+                <!-- Hidden legacy inputs for backward compatibility -->
                 <input type="number" id="feet2" placeholder="0" min="0" class="wide-input" onchange="updateCalculation()">
-                <span>ft</span>
                 <input type="number" id="inches2" placeholder="0" min="0" max="11" class="wide-input" onchange="updateCalculation()">
-                <span>in</span>
                 <select id="fraction2" style="width: 120px;" onchange="updateCalculation()">
                     <option value="0">0</option>
                 </select>
@@ -4112,10 +4189,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             
             <div class="input-group">
                 <label>Board Length:</label>
+                <input type="text" id="smartCutLength" placeholder="Try: 8', 96&quot;, 8 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewCutLength', updateCutLengthValue)">
+            </div>
+            <div id="previewCutLength" class="input-preview"></div>
+            <div style="display: none;">
+                <!-- Hidden legacy inputs for backward compatibility -->
                 <input type="number" id="cutFeet" placeholder="0" min="0" class="wide-input" onchange="updateCutValue()">
-                <span>ft</span>
                 <input type="number" id="cutInches" placeholder="0" min="0" max="11" class="wide-input" onchange="updateCutValue()">
-                <span>in</span>
                 <select id="cutFraction" style="width: 120px;" onchange="updateCutValue()">
                     <option value="0">0</option>
                 </select>
@@ -4185,13 +4265,31 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div class="waste-section">
                     <h3>Available Boards</h3>
                     <div class="board-input">
-                        <input type="number" id="boardFeet" placeholder="0" min="0" class="wide-input">
-                        <span>ft</span>
-                        <input type="number" id="boardInches" placeholder="0" min="0" max="11" class="wide-input">
-                        <span>in</span>
-                        <select id="boardFraction" style="width: 120px;">
-                            <option value="0">0</option>
-                        </select>
+                        <input type="text" id="smartBoardLength" placeholder="Try: 8', 96&quot;, 8 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewBoardLength', updateBoardLengthValue)">
+                        <div id="previewBoardLength" class="input-preview"></div>
+                        <div style="display: none;">
+                            <!-- Hidden legacy inputs for backward compatibility -->
+                            <input type="number" id="boardFeet" placeholder="0" min="0" class="wide-input">
+                            <input type="number" id="boardInches" placeholder="0" min="0" max="11" class="wide-input">
+                            <select id="boardFraction" style="width: 120px;">
+                                <option value="0">0</option>
+                                <option value="0.0625">1/16"</option>
+                                <option value="0.125">1/8"</option>
+                                <option value="0.1875">3/16"</option>
+                                <option value="0.25">1/4"</option>
+                                <option value="0.3125">5/16"</option>
+                                <option value="0.375">3/8"</option>
+                                <option value="0.4375">7/16"</option>
+                                <option value="0.5">1/2"</option>
+                                <option value="0.5625">9/16"</option>
+                                <option value="0.625">5/8"</option>
+                                <option value="0.6875">11/16"</option>
+                                <option value="0.75">3/4"</option>
+                                <option value="0.8125">13/16"</option>
+                                <option value="0.875">7/8"</option>
+                                <option value="0.9375">15/16"</option>
+                            </select>
+                        </div>
                         <input type="number" id="boardQuantity" placeholder="1" min="1" class="wide-input">
                         <span>qty</span>
                         <button class="btn btn-secondary" onclick="addBoard()">Add</button>
@@ -4202,13 +4300,31 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div class="waste-section">
                     <h3>Needed Cuts</h3>
                     <div class="cut-input">
-                        <input type="number" id="optCutFeet" placeholder="0" min="0" class="wide-input">
-                        <span>ft</span>
-                        <input type="number" id="optCutInches" placeholder="0" min="0" max="11" class="wide-input">
-                        <span>in</span>
-                        <select id="optCutFraction" style="width: 120px;">
-                            <option value="0">0</option>
-                        </select>
+                        <input type="text" id="smartOptCutLength" placeholder="Try: 24&quot;, 2', 2 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewOptCutLength', updateOptCutLengthValue)">
+                        <div id="previewOptCutLength" class="input-preview"></div>
+                        <div style="display: none;">
+                            <!-- Hidden legacy inputs for backward compatibility -->
+                            <input type="number" id="optCutFeet" placeholder="0" min="0" class="wide-input">
+                            <input type="number" id="optCutInches" placeholder="0" min="0" max="11" class="wide-input">
+                            <select id="optCutFraction" style="width: 120px;">
+                                <option value="0">0</option>
+                                <option value="0.0625">1/16"</option>
+                                <option value="0.125">1/8"</option>
+                                <option value="0.1875">3/16"</option>
+                                <option value="0.25">1/4"</option>
+                                <option value="0.3125">5/16"</option>
+                                <option value="0.375">3/8"</option>
+                                <option value="0.4375">7/16"</option>
+                                <option value="0.5">1/2"</option>
+                                <option value="0.5625">9/16"</option>
+                                <option value="0.625">5/8"</option>
+                                <option value="0.6875">11/16"</option>
+                                <option value="0.75">3/4"</option>
+                                <option value="0.8125">13/16"</option>
+                                <option value="0.875">7/8"</option>
+                                <option value="0.9375">15/16"</option>
+                            </select>
+                        </div>
                         <input type="number" id="cutQuantity" placeholder="1" min="1" class="wide-input">
                         <span>qty</span>
                         <button class="btn btn-secondary" onclick="addCut()">Add</button>
@@ -4330,18 +4446,27 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         </div>
                         <div class="input-row">
                             <label>Thickness:</label>
+                            <input type="text" id="smartBfThickness" placeholder="Try: 3/4&quot;, 1.5&quot;, 1 1/2&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewBfThickness', updateBfThicknessValue)">
+                        </div>
+                        <div id="previewBfThickness" class="input-preview"></div>
+                        <div style="display: none;">
                             <input type="number" id="bfThickness" step="0.25" min="0.1" placeholder="1" oninput="calculateBoardFeet()">
-                            <span class="unit">inches</span>
                         </div>
                         <div class="input-row">
                             <label>Width:</label>
+                            <input type="text" id="smartBfWidth" placeholder="Try: 6&quot;, 5 1/2&quot;, 12.25&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewBfWidth', updateBfWidthValue)">
+                        </div>
+                        <div id="previewBfWidth" class="input-preview"></div>
+                        <div style="display: none;">
                             <input type="number" id="bfWidth" step="0.25" min="0.1" placeholder="6" oninput="calculateBoardFeet()">
-                            <span class="unit">inches</span>
                         </div>
                         <div class="input-row">
                             <label>Length:</label>
+                            <input type="text" id="smartBfLength" placeholder="Try: 8', 96&quot;, 8 0 1/2&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewBfLength', updateBfLengthValue)">
+                        </div>
+                        <div id="previewBfLength" class="input-preview"></div>
+                        <div style="display: none;">
                             <input type="number" id="bfLength" step="1" min="0.1" placeholder="96" oninput="calculateBoardFeet()">
-                            <span class="unit">inches</span>
                         </div>
                         <div class="input-row">
                             <label>Quantity:</label>
@@ -4428,11 +4553,19 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         </div>
                         <div class="input-row">
                             <label id="goldenInputLabel">Known dimension:</label>
-                            <input type="number" id="grFeet" placeholder="0" min="0" class="wide-input" onchange="calculateGoldenRatioNew()">
-                            <span>ft</span>
-                            <input type="number" id="grInches" placeholder="0" min="0" max="11" class="wide-input" onchange="calculateGoldenRatioNew()">
-                            <span>in</span>
-                            <select id="grFraction" style="width: 120px;" onchange="calculateGoldenRatioNew()">
+                            <input type="text" 
+                                   id="smartGoldenRatio" 
+                                   placeholder="Try: 4'6&quot;, 48&quot;, 4 6 1/2, 48.5&quot;" 
+                                   class="wide-input smart-input" 
+                                   oninput="handleSmartInput(this, 'smartGoldenRatioPreview', updateGoldenRatioValue)" 
+                                   onchange="handleSmartInput(this, 'smartGoldenRatioPreview', updateGoldenRatioValue)">
+                        </div>
+                        <div id="smartGoldenRatioPreview" class="input-preview" style="display: none;"></div>
+                        <div style="display: none;">
+                            <!-- Hidden legacy inputs for backward compatibility -->
+                            <input type="number" id="grFeet" placeholder="0" min="0" class="wide-input">
+                            <input type="number" id="grInches" placeholder="0" min="0" max="11" class="wide-input">
+                            <select id="grFraction" style="width: 120px;">
                                 <option value="0">0</option>
                                 <option value="0.0625">1/16"</option>
                                 <option value="0.125">1/8"</option>
@@ -4471,14 +4604,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <div class="calc-inputs">
                         <div class="input-row">
                             <label>Total Length:</label>
-                            <input type="number" id="spTotalLengthFeet" placeholder="4" min="0" class="wide-input" oninput="calculateSpacing()">
-                            <span>ft</span>
-                            <input type="number" id="spTotalLengthInches" placeholder="0" min="0" max="11" class="wide-input" oninput="calculateSpacing()">
-                            <span>in</span>
-                            <select id="spTotalLengthFraction" style="width: 120px;" oninput="calculateSpacing()">
-                                <option value="0" selected>0</option>
-                            </select>
+                            <input type="text" id="smartShelfLength" placeholder="Try: 8' 0 3/4&quot; or 96.75&quot; or 8.0625'" class="wide-input" oninput="handleSmartInput(this, 'previewShelfLength', updateShelfLengthValue)">
                         </div>
+                        <div id="previewShelfLength" class="input-preview"></div>
                         <div class="input-row">
                             <label>Number of Shelves:</label>
                             <input type="number" id="spNumShelves" min="1" placeholder="5" oninput="calculateSpacing()">
@@ -4486,14 +4614,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         </div>
                         <div class="input-row">
                             <label>Material Thickness:</label>
-                            <input type="number" id="spacingThicknessFeet" placeholder="0" min="0" class="wide-input" oninput="calculateSpacing()">
-                            <span>ft</span>
-                            <input type="number" id="spacingThicknessInches" placeholder="0" min="0" max="11" class="wide-input" oninput="calculateSpacing()">
-                            <span>in</span>
-                            <select id="spacingThicknessFraction" style="width: 120px;" oninput="calculateSpacing()">
-                                <option value="0.75" selected>3/4"</option>
-                            </select>
+                            <input type="text" id="smartShelfThickness" placeholder="Try: 3/4&quot; or 0.75&quot; or 19mm" class="wide-input" oninput="handleSmartInput(this, 'previewShelfThickness', updateShelfThicknessValue)">
                         </div>
+                        <div id="previewShelfThickness" class="input-preview"></div>
                     </div>
                     <div class="calc-result">
                         <div class="result-display" id="spResult">Enter dimensions to calculate</div>
@@ -5154,10 +5277,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         <!-- Rise Input -->
                         <div id="gradeRiseInput" class="input-row">
                             <label>Rise (Vertical):</label>
+                            <input type="text" id="smartGradeRise" placeholder="Try: 5&quot;, 6 1/2&quot;, 0.5'" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewGradeRise', updateGradeRiseValue)">
+                        </div>
+                        <div id="previewGradeRise" class="input-preview"></div>
+                        <div style="display: none;">
+                            <!-- Hidden legacy inputs for backward compatibility -->
                             <input type="number" id="gradeRiseFeet" placeholder="0" min="0" class="wide-input" onchange="calculateGradeSlope()">
-                            <span>ft</span>
                             <input type="number" id="gradeRiseInches" placeholder="0" min="0" max="11" class="wide-input" onchange="calculateGradeSlope()">
-                            <span>in</span>
                             <select id="gradeRiseFraction" style="width: 120px;" onchange="calculateGradeSlope()">
                                 <option value="0" selected>0</option>
                                 <option value="0.0625">1/16"</option>
@@ -5181,10 +5307,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         <!-- Run Input -->
                         <div id="gradeRunInput" class="input-row">
                             <label>Run (Horizontal):</label>
+                            <input type="text" id="smartGradeRun" placeholder="Try: 12', 144&quot;, 12 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewGradeRun', updateGradeRunValue)">
+                        </div>
+                        <div id="previewGradeRun" class="input-preview"></div>
+                        <div style="display: none;">
+                            <!-- Hidden legacy inputs for backward compatibility -->
                             <input type="number" id="gradeRunFeet" placeholder="0" min="0" class="wide-input" onchange="calculateGradeSlope()">
-                            <span>ft</span>
                             <input type="number" id="gradeRunInches" placeholder="0" min="0" max="11" class="wide-input" onchange="calculateGradeSlope()">
-                            <span>in</span>
                             <select id="gradeRunFraction" style="width: 120px;" onchange="calculateGradeSlope()">
                                 <option value="0" selected>0</option>
                                 <option value="0.0625">1/16"</option>
@@ -5279,13 +5408,17 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         <div class="tile-input-row">
                             <div class="tile-input-field">
                                 <label>Length</label>
-                                <div class="woodworking-input">
-                                    <input type="number" id="tileLengthFeet" min="0" placeholder="0" style="width: 50px;" oninput="calculateSimpleTiles()">
-                                    <span class="unit">ft</span>
-                                    <input type="number" id="tileLengthInches" min="0" max="11" step="1" placeholder="12" style="width: 50px;" oninput="calculateSimpleTiles()">
-                                    <span class="unit">in</span>
-                                    <select id="tileLengthFraction" style="width: 70px;" onchange="calculateSimpleTiles()">
-                                        <option value="0">-</option>
+                                <input type="text" id="smartTileLength" placeholder="Try: 12&quot;, 1', 12.5&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewTileLength', updateTileLengthValue)">
+                                <div id="previewTileLength" class="input-preview"></div>
+                                <div style="display: none;">
+                                    <!-- Hidden legacy inputs for backward compatibility -->
+                                    <div class="woodworking-input">
+                                        <input type="number" id="tileLengthFeet" min="0" placeholder="0" style="width: 50px;" oninput="calculateSimpleTiles()">
+                                        <span class="unit">ft</span>
+                                        <input type="number" id="tileLengthInches" min="0" max="11" step="1" placeholder="12" style="width: 50px;" oninput="calculateSimpleTiles()">
+                                        <span class="unit">in</span>
+                                        <select id="tileLengthFraction" style="width: 70px;" onchange="calculateSimpleTiles()">
+                                            <option value="0">-</option>
                                         <option value="0.0625">1/16</option>
                                         <option value="0.125">1/8</option>
                                         <option value="0.1875">3/16</option>
@@ -5306,13 +5439,17 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             </div>
                             <div class="tile-input-field">
                                 <label>Width</label>
-                                <div class="woodworking-input">
-                                    <input type="number" id="tileWidthFeet" min="0" placeholder="0" style="width: 50px;" oninput="calculateSimpleTiles()">
-                                    <span class="unit">ft</span>
-                                    <input type="number" id="tileWidthInches" min="0" max="11" step="1" placeholder="6" style="width: 50px;" oninput="calculateSimpleTiles()">
-                                    <span class="unit">in</span>
-                                    <select id="tileWidthFraction" style="width: 70px;" onchange="calculateSimpleTiles()">
-                                        <option value="0">-</option>
+                                <input type="text" id="smartTileWidth" placeholder="Try: 6&quot;, 0.5', 6.25&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewTileWidth', updateTileWidthValue)">
+                                <div id="previewTileWidth" class="input-preview"></div>
+                                <div style="display: none;">
+                                    <!-- Hidden legacy inputs for backward compatibility -->
+                                    <div class="woodworking-input">
+                                        <input type="number" id="tileWidthFeet" min="0" placeholder="0" style="width: 50px;" oninput="calculateSimpleTiles()">
+                                        <span class="unit">ft</span>
+                                        <input type="number" id="tileWidthInches" min="0" max="11" step="1" placeholder="6" style="width: 50px;" oninput="calculateSimpleTiles()">
+                                        <span class="unit">in</span>
+                                        <select id="tileWidthFraction" style="width: 70px;" onchange="calculateSimpleTiles()">
+                                            <option value="0">-</option>
                                         <option value="0.0625">1/16</option>
                                         <option value="0.125">1/8</option>
                                         <option value="0.1875">3/16</option>
@@ -8187,14 +8324,16 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             // Track usage for auto-upgrading
             trackCalculationUsage();
             
-            // Hide both input groups first
+            // Hide both input groups and preview divs first
             document.getElementById('input2GroupFeetInches').style.display = 'none';
             document.getElementById('input2GroupNumber').style.display = 'none';
+            document.getElementById('previewInput2').style.display = 'none';
             
             // Show appropriate input group based on operation
             if (op === '+' || op === '-') {
                 // Addition and subtraction use feet/inches input
                 document.getElementById('input2GroupFeetInches').style.display = 'flex';
+                document.getElementById('previewInput2').style.display = 'block';
             } else if (op === '*' || op === '/') {
                 // Multiplication and division use simple number input
                 document.getElementById('input2GroupNumber').style.display = 'flex';
@@ -8215,18 +8354,26 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         
         function updateCalculation() {
-            // Handle decimal input in beginner mode
-            const decimalInput = document.getElementById('decimalOnlyInput');
-            if (decimalInput && decimalInput.style.display !== 'none' && decimalInput.value) {
-                value1 = parseFloat(decimalInput.value) || 0;
-            } else {
-                value1 = getInputInches('feet1', 'inches1', 'fraction1');
+            // Use smart input values if available, otherwise fall back to legacy inputs
+            let value1 = currentInput1Inches;
+            if (value1 === 0) {
+                // Handle decimal input in beginner mode
+                const decimalInput = document.getElementById('decimalOnlyInput');
+                if (decimalInput && decimalInput.style.display !== 'none' && decimalInput.value) {
+                    value1 = parseFloat(decimalInput.value) || 0;
+                } else {
+                    value1 = getInputInches('feet1', 'inches1', 'fraction1');
+                }
             }
             
             // Get value2 based on operation type
+            let value2 = 0;
             if (currentOperation === '+' || currentOperation === '-') {
-                // For addition/subtraction, use feet/inches input
-                value2 = getInputInches('feet2', 'inches2', 'fraction2');
+                // For addition/subtraction, use smart input if available, otherwise legacy
+                value2 = currentInput2Inches;
+                if (value2 === 0) {
+                    value2 = getInputInches('feet2', 'inches2', 'fraction2');
+                }
             } else if (currentOperation === '*' || currentOperation === '/') {
                 // For multiplication/division, use simple number factor
                 const factorInput = document.getElementById('factor');
@@ -8603,6 +8750,269 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             updateConversionPreview(); // Update conversion preview
         }
         
+        // =====================================================
+        // Smart Input Parser System
+        // =====================================================
+        
+        /**
+         * Universal smart input parser for feet/inches/fractions
+         * @param {string} value - User input string
+         * @returns {object} - {value: inches, display: formatted, isValid: boolean, error: string}
+         */
+        function parseSmartInput(value) {
+            if (!value || typeof value !== 'string') {
+                return { value: 0, display: '0"', isValid: true, error: '' };
+            }
+            
+            value = value.trim();
+            if (value === '') {
+                return { value: 0, display: '0"', isValid: true, error: '' };
+            }
+            
+            // Common patterns for feet/inches input
+            const patterns = [
+                // Feet and inches with fractions: 4' 6 1/2" or 4 ft 6 1/2 in
+                { regex: /^(\d+)(?:\s*['\x27]|\s*ft)\s*(\d+)(?:\s*(\d+)\/(\d+))?\s*(?:["\x22]|\s*in)?$/i, type: 'feet_inches_frac' },
+                // Feet only with fractions: 4' 1/2 or 4 1/2 ft  
+                { regex: /^(\d+)(?:\s*(\d+)\/(\d+))?\s*['\x27]$/i, type: 'feet_frac' },
+                // Just inches with fractions: 54 1/2" or 54.5"
+                { regex: /^(\d+)(?:\.(\d+)|(\d+)\/(\d+))?\s*["\x22]?$/i, type: 'inches_frac' },
+                // Pure fraction: 3/4 or 3/4"
+                { regex: /^(\d+)\/(\d+)\s*["\x22]?$/i, type: 'pure_fraction' },
+                // Decimal feet: 4.5' or 4.5 ft
+                { regex: /^(\d+(?:\.\d+)?)\s*(?:['\x27]|ft)$/i, type: 'decimal_feet' },
+                // Space separated: "4 6 1/2" (feet inches fraction)
+                { regex: /^(\d+)\s+(\d+)(?:\s+(\d+)\/(\d+))?$/i, type: 'space_separated' },
+                // Pure decimal
+                { regex: /^(\d+(?:\.\d+)?)$/i, type: 'decimal' }
+            ];
+            
+            for (const pattern of patterns) {
+                const match = value.match(pattern.regex);
+                if (match) {
+                    try {
+                        const result = parsePattern(match, pattern.type);
+                        if (result.error) {
+                            return result;
+                        }
+                        return {
+                            value: result.inches,
+                            display: inchesToDisplay(result.inches, 'calculator'),
+                            isValid: true,
+                            error: ''
+                        };
+                    } catch (error) {
+                        return {
+                            value: 0,
+                            display: '0"',
+                            isValid: false,
+                            error: 'Invalid input format'
+                        };
+                    }
+                }
+            }
+            
+            return {
+                value: 0,
+                display: '0"',
+                isValid: false,
+                error: 'Unrecognized format. Try: 4\'6", 48", 4 6 1/2, or 48.5'
+            };
+        }
+        
+        /**
+         * Parse specific pattern matches into inches
+         */
+        function parsePattern(match, type) {
+            let inches = 0;
+            
+            switch (type) {
+                case 'feet_inches_frac':
+                    const feet1 = parseInt(match[1]) || 0;
+                    const inch1 = parseInt(match[2]) || 0;
+                    const num1 = parseInt(match[3]) || 0;
+                    const den1 = parseInt(match[4]) || 1;
+                    
+                    // Validate fraction
+                    if (num1 >= den1 && num1 > 0) {
+                        return { error: `Invalid fraction: ${num1}/${den1} (must be less than 1)` };
+                    }
+                    if (den1 > 32) {
+                        return { error: `Invalid fraction: ${num1}/${den1} (max denominator is 32)` };
+                    }
+                    
+                    inches = feet1 * 12 + inch1 + (num1 / den1);
+                    break;
+                    
+                case 'feet_frac':
+                    const feet2 = parseInt(match[1]) || 0;
+                    const num2 = parseInt(match[2]) || 0;
+                    const den2 = parseInt(match[3]) || 1;
+                    
+                    if (num2 >= den2 && num2 > 0) {
+                        return { error: `Invalid fraction: ${num2}/${den2} (must be less than 1)` };
+                    }
+                    if (den2 > 32) {
+                        return { error: `Invalid fraction: ${num2}/${den2} (max denominator is 32)` };
+                    }
+                    
+                    inches = feet2 * 12 + (num2 / den2);
+                    break;
+                    
+                case 'inches_frac':
+                    const inch3 = parseInt(match[1]) || 0;
+                    if (match[2]) {
+                        // Decimal inches
+                        inches = inch3 + (parseInt(match[2]) / Math.pow(10, match[2].length));
+                    } else if (match[3] && match[4]) {
+                        // Fractional inches
+                        const num3 = parseInt(match[3]);
+                        const den3 = parseInt(match[4]);
+                        
+                        if (num3 >= den3) {
+                            return { error: `Invalid fraction: ${num3}/${den3} (must be less than 1)` };
+                        }
+                        if (den3 > 32) {
+                            return { error: `Invalid fraction: ${num3}/${den3} (max denominator is 32)` };
+                        }
+                        
+                        inches = inch3 + (num3 / den3);
+                    } else {
+                        inches = inch3;
+                    }
+                    break;
+                    
+                case 'decimal_feet':
+                    inches = parseFloat(match[1]) * 12;
+                    break;
+                    
+                case 'space_separated':
+                    const feet4 = parseInt(match[1]) || 0;
+                    const inch4 = parseInt(match[2]) || 0;
+                    let fracInches = 0;
+                    
+                    if (match[3] && match[4]) {
+                        const num4 = parseInt(match[3]);
+                        const den4 = parseInt(match[4]);
+                        
+                        if (num4 >= den4) {
+                            return { error: `Invalid fraction: ${num4}/${den4} (must be less than 1)` };
+                        }
+                        if (den4 > 32) {
+                            return { error: `Invalid fraction: ${num4}/${den4} (max denominator is 32)` };
+                        }
+                        
+                        fracInches = num4 / den4;
+                    }
+                    
+                    inches = feet4 * 12 + inch4 + fracInches;
+                    break;
+                    
+                case 'pure_fraction':
+                    const num = parseInt(match[1]);
+                    const den = parseInt(match[2]);
+                    
+                    // Validate fraction
+                    if (den === 0) {
+                        return { error: 'Division by zero is not allowed' };
+                    }
+                    if (den > 32) {
+                        return { error: `Invalid fraction: ${num}/${den} (max denominator is 32)` };
+                    }
+                    
+                    inches = num / den;
+                    break;
+                    
+                case 'decimal':
+                    inches = parseFloat(match[1]);
+                    break;
+            }
+            
+            // Validate reasonable range
+            if (inches < 0) {
+                return { error: 'Measurement cannot be negative' };
+            }
+            if (inches > 9999) {
+                return { error: 'Measurement too large (max 9999 inches)' };
+            }
+            
+            return { inches: inches };
+        }
+        
+        /**
+         * Universal smart input handler with real-time feedback
+         * @param {HTMLElement} inputElement - The input element
+         * @param {string} previewId - ID of the preview div
+         * @param {function} callback - Optional callback when valid input is parsed
+         */
+        function handleSmartInput(inputElement, previewId, callback) {
+            const value = inputElement.value;
+            const previewDiv = document.getElementById(previewId);
+            
+            if (!previewDiv) {
+                console.warn(`Preview element ${previewId} not found`);
+                return;
+            }
+            
+            // Parse the input
+            const result = parseSmartInput(value);
+            
+            // Clear previous states
+            inputElement.classList.remove('valid', 'invalid', 'warning');
+            previewDiv.classList.remove('success', 'warning', 'error');
+            
+            if (!value || value.trim() === '') {
+                // Empty input - hide preview
+                previewDiv.style.display = 'none';
+                return;
+            }
+            
+            // Show preview
+            previewDiv.style.display = 'block';
+            
+            if (result.isValid) {
+                // Valid input
+                inputElement.classList.add('valid');
+                previewDiv.classList.add('success');
+                previewDiv.textContent = `✓ ${result.display}`;
+                
+                // Call callback with parsed value if provided
+                if (callback && typeof callback === 'function') {
+                    callback(result.value, result.display);
+                }
+            } else {
+                // Invalid input
+                inputElement.classList.add('invalid');
+                previewDiv.classList.add('error');
+                previewDiv.textContent = `⚠ ${result.error}`;
+            }
+        }
+        
+        /**
+         * Create a complete smart input setup for any calculator
+         * @param {string} inputId - ID for the input element
+         * @param {string} label - Label text for the input
+         * @param {string} placeholder - Placeholder text
+         * @param {function} callback - Callback when valid input is parsed
+         * @returns {string} - HTML string for the complete input setup
+         */
+        function createSmartInputHTML(inputId, label, placeholder, callback) {
+            const previewId = inputId + 'Preview';
+            
+            return `
+                <div class="input-row">
+                    <label>${label}:</label>
+                    <input type="text" 
+                           id="${inputId}" 
+                           placeholder="${placeholder}" 
+                           class="wide-input smart-input" 
+                           oninput="handleSmartInput(this, '${previewId}', ${callback ? callback.name : 'null'})" 
+                           onchange="handleSmartInput(this, '${previewId}', ${callback ? callback.name : 'null'})">
+                </div>
+                <div id="${previewId}" class="input-preview" style="display: none;"></div>
+            `;
+        }
+        
         // Helper function to get the current calculator value (result, input, or direct input)
         function getCurrentCalculatorValue() {
             const directInput = document.getElementById('directDecimalInput');
@@ -8905,7 +9315,12 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         
         function updateCutValue() {
-            cutValueInches = getInputInches('cutFeet', 'cutInches', 'cutFraction');
+            // Use smart input value if available, otherwise fall back to legacy inputs
+            if (currentCutLengthInches > 0) {
+                cutValueInches = currentCutLengthInches;
+            } else {
+                cutValueInches = getInputInches('cutFeet', 'cutInches', 'cutFraction');
+            }
             const display = cutValueInches > 0 ? inchesToDisplay(cutValueInches, 'cut') : 'Enter measurement above';
             document.getElementById('cutCurrentValue').textContent = display;
         }
@@ -9655,7 +10070,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         
         function addBoard() {
-            const inches = getInputInches('boardFeet', 'boardInches', 'boardFraction');
+            // Use smart input value if available, otherwise fall back to legacy inputs
+            let inches = currentBoardLengthInches;
+            if (inches === 0) {
+                inches = getInputInches('boardFeet', 'boardInches', 'boardFraction');
+            }
             const quantity = parseInt(document.getElementById('boardQuantity')?.value) || 1;
             if (inches <= 0) return;
             
@@ -9676,7 +10095,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         
         function addCut() {
-            const inches = getInputInches('optCutFeet', 'optCutInches', 'optCutFraction');
+            // Use smart input value if available, otherwise fall back to legacy inputs
+            let inches = currentOptCutLengthInches;
+            if (inches === 0) {
+                inches = getInputInches('optCutFeet', 'optCutInches', 'optCutFraction');
+            }
             const quantity = parseInt(document.getElementById('cutQuantity')?.value) || 1;
             if (inches <= 0) return;
             
@@ -10162,9 +10585,22 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             const species = document.getElementById('bfSpecies').value;
             const customSpecies = document.getElementById('bfCustomSpecies').value;
             const price = parseFloat(document.getElementById('bfPrice').value) || 0;
-            const thickness = parseFloat(document.getElementById('bfThickness').value) || 0;
-            const width = parseFloat(document.getElementById('bfWidth').value) || 0;
-            const length = parseFloat(document.getElementById('bfLength').value) || 0;
+            
+            // Use smart input values if available, otherwise fall back to legacy inputs
+            let thickness = currentBfThicknessInches;
+            if (thickness === 0) {
+                thickness = parseFloat(document.getElementById('bfThickness').value) || 0;
+            }
+            
+            let width = currentBfWidthInches;
+            if (width === 0) {
+                width = parseFloat(document.getElementById('bfWidth').value) || 0;
+            }
+            
+            let length = currentBfLengthInches;
+            if (length === 0) {
+                length = parseFloat(document.getElementById('bfLength').value) || 0;
+            }
             const quantity = parseFloat(document.getElementById('bfQuantity').value) || 1;
             const resultDiv = document.getElementById('boardFootResult');
             
@@ -10351,8 +10787,119 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             calculateGoldenRatioNew(); // Recalculate with new mode
         }
 
+        // Smart input callback for Golden Ratio calculator
+        let currentGoldenRatioInches = 0;
+        
+        function updateGoldenRatioValue(inches, display) {
+            currentGoldenRatioInches = inches;
+            calculateGoldenRatioNew();
+        }
+
+        // Smart input callbacks for Shelf & Division Calculator
+        let currentShelfLengthInches = 0;
+        let currentShelfThicknessInches = 0.75; // Default to 3/4"
+
+        function updateShelfLengthValue(inches, display) {
+            currentShelfLengthInches = inches;
+            calculateSpacing();
+        }
+
+        function updateShelfThicknessValue(inches, display) {
+            currentShelfThicknessInches = inches;
+            calculateSpacing();
+        }
+
+        // Smart input callbacks for Basic Calculator
+        let currentInput1Inches = 0;
+        let currentInput2Inches = 0;
+
+        function updateInput1Value(inches, display) {
+            currentInput1Inches = inches;
+            updateCalculation();
+        }
+
+        function updateInput2Value(inches, display) {
+            currentInput2Inches = inches;
+            updateCalculation();
+        }
+
+        // Smart input callbacks for Lumber Shopping Cart
+        let currentBfThicknessInches = 0;
+        let currentBfWidthInches = 0;
+        let currentBfLengthInches = 0;
+
+        function updateBfThicknessValue(inches, display) {
+            currentBfThicknessInches = inches;
+            calculateBoardFeet();
+        }
+
+        function updateBfWidthValue(inches, display) {
+            currentBfWidthInches = inches;
+            calculateBoardFeet();
+        }
+
+        function updateBfLengthValue(inches, display) {
+            currentBfLengthInches = inches;
+            calculateBoardFeet();
+        }
+
+        // Smart input callbacks for Grade/Slope Calculator
+        let currentGradeRiseInches = 0;
+        let currentGradeRunInches = 0;
+
+        function updateGradeRiseValue(inches, display) {
+            currentGradeRiseInches = inches;
+            calculateGradeSlope();
+        }
+
+        function updateGradeRunValue(inches, display) {
+            currentGradeRunInches = inches;
+            calculateGradeSlope();
+        }
+
+        // Smart input callbacks for Tile & Paver Calculator
+        let currentTileLengthInches = 0;
+        let currentTileWidthInches = 0;
+
+        function updateTileLengthValue(inches, display) {
+            currentTileLengthInches = inches;
+            calculateSimpleTiles();
+        }
+
+        function updateTileWidthValue(inches, display) {
+            currentTileWidthInches = inches;
+            calculateSimpleTiles();
+        }
+
+        // Smart input callbacks for Cut Calculator
+        let currentCutLengthInches = 0;
+
+        function updateCutLengthValue(inches, display) {
+            currentCutLengthInches = inches;
+            updateCutValue();
+        }
+
+        // Smart input callbacks for Cut Optimization
+        let currentBoardLengthInches = 0;
+        let currentOptCutLengthInches = 0;
+
+        function updateBoardLengthValue(inches, display) {
+            currentBoardLengthInches = inches;
+            // Note: addBoard() function will read this value when called
+        }
+
+        function updateOptCutLengthValue(inches, display) {
+            currentOptCutLengthInches = inches;
+            // Note: addCut() function will read this value when called
+        }
+
         function calculateGoldenRatioNew() {
-            const input = getInputInches('grFeet', 'grInches', 'grFraction');
+            // Use smart input value if available, otherwise fall back to legacy inputs
+            let input = currentGoldenRatioInches;
+            if (input === 0) {
+                input = getInputInches('grFeet', 'grInches', 'grFraction');
+            }
+            
             const resultDiv = document.getElementById('grResult');
             
             if (input === 0) {
@@ -10387,9 +10934,18 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
 
         function calculateSpacing() {
-            const totalLength = getInputInches('spTotalLengthFeet', 'spTotalLengthInches', 'spTotalLengthFraction');
+            // Use smart input values if available, otherwise fall back to legacy inputs
+            let totalLength = currentShelfLengthInches;
+            if (totalLength === 0) {
+                totalLength = getInputInches('spTotalLengthFeet', 'spTotalLengthInches', 'spTotalLengthFraction');
+            }
+            
             const numShelves = parseInt(document.getElementById('spNumShelves').value) || 0;
-            const thickness = getInputInches('spacingThicknessFeet', 'spacingThicknessInches', 'spacingThicknessFraction');
+            
+            let thickness = currentShelfThicknessInches;
+            if (thickness === 0) {
+                thickness = getInputInches('spacingThicknessFeet', 'spacingThicknessInches', 'spacingThicknessFraction');
+            }
             const resultDiv = document.getElementById('spResult');
             
             if (totalLength === 0 || numShelves === 0) {
@@ -12222,6 +12778,12 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         function setGradeMode(mode) {
             gradeMode = mode;
             
+            // Clear all preview elements when switching modes (clean slate)
+            document.getElementById('previewGradeRise').innerHTML = '';
+            document.getElementById('previewGradeRise').style.display = 'none';
+            document.getElementById('previewGradeRun').innerHTML = '';
+            document.getElementById('previewGradeRun').style.display = 'none';
+            
             // Update button states
             document.querySelectorAll('#gradeCard .calc-mode-selector .mode-btn').forEach(btn => {
                 btn.classList.remove('active');
@@ -12253,17 +12815,22 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         function calculateGradeSlope() {
             let rise = 0, run = 0, percent = 0;
             
-            // Get Rise value (in inches)
-            const riseFeet = parseFloat(document.getElementById('gradeRiseFeet').value) || 0;
-            const riseInches = parseFloat(document.getElementById('gradeRiseInches').value) || 0;
-            const riseFraction = parseFloat(document.getElementById('gradeRiseFraction').value) || 0;
-            rise = (riseFeet * 12) + riseInches + riseFraction;
+            // Use smart input values if available, otherwise fall back to legacy inputs
+            rise = currentGradeRiseInches;
+            if (rise === 0) {
+                const riseFeet = parseFloat(document.getElementById('gradeRiseFeet').value) || 0;
+                const riseInches = parseFloat(document.getElementById('gradeRiseInches').value) || 0;
+                const riseFraction = parseFloat(document.getElementById('gradeRiseFraction').value) || 0;
+                rise = (riseFeet * 12) + riseInches + riseFraction;
+            }
             
-            // Get Run value (in inches)
-            const runFeet = parseFloat(document.getElementById('gradeRunFeet').value) || 0;
-            const runInches = parseFloat(document.getElementById('gradeRunInches').value) || 0;
-            const runFraction = parseFloat(document.getElementById('gradeRunFraction').value) || 0;
-            run = (runFeet * 12) + runInches + runFraction;
+            run = currentGradeRunInches;
+            if (run === 0) {
+                const runFeet = parseFloat(document.getElementById('gradeRunFeet').value) || 0;
+                const runInches = parseFloat(document.getElementById('gradeRunInches').value) || 0;
+                const runFraction = parseFloat(document.getElementById('gradeRunFraction').value) || 0;
+                run = (runFeet * 12) + runInches + runFraction;
+            }
             
             // Get Percentage value
             percent = parseFloat(document.getElementById('gradePercent').value) || 0;
@@ -13494,15 +14061,29 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         // === PRECISION INPUT FUNCTIONS (reusing existing system) ===
 
         function getInputInches(feetId, inchesId, fractionId) {
-            const feet = parseFloat(document.getElementById(feetId).value) || 0;
-            const inches = parseFloat(document.getElementById(inchesId).value) || 0;
-            const fraction = parseFloat(document.getElementById(fractionId).value) || 0;
+            const feetEl = document.getElementById(feetId);
+            const inchesEl = document.getElementById(inchesId);
+            const fractionEl = document.getElementById(fractionId);
+            
+            const feet = feetEl ? (parseFloat(feetEl.value) || 0) : 0;
+            const inches = inchesEl ? (parseFloat(inchesEl.value) || 0) : 0;
+            const fraction = fractionEl ? (parseFloat(fractionEl.value) || 0) : 0;
             return (feet * 12) + inches + fraction;
         }
 
         function updateTileFromDimensions() {
-            currentTileData.tileLength = getInputInches('tileLengthFeet', 'tileLengthInches', 'tileLengthFraction');
-            currentTileData.tileWidth = getInputInches('tileWidthFeet', 'tileWidthInches', 'tileWidthFraction');
+            // Use smart input values if available, otherwise fall back to legacy inputs
+            if (currentTileLengthInches > 0) {
+                currentTileData.tileLength = currentTileLengthInches;
+            } else {
+                currentTileData.tileLength = getInputInches('tileLengthFeet', 'tileLengthInches', 'tileLengthFraction');
+            }
+            
+            if (currentTileWidthInches > 0) {
+                currentTileData.tileWidth = currentTileWidthInches;
+            } else {
+                currentTileData.tileWidth = getInputInches('tileWidthFeet', 'tileWidthInches', 'tileWidthFraction');
+            }
             
             if (currentTileData.tileLength > 0 && currentTileData.tileWidth > 0) {
                 currentTileData.aspectRatio = currentTileData.tileLength / currentTileData.tileWidth;

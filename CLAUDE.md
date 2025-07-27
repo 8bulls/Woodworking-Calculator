@@ -71,6 +71,22 @@ python -m http.server 8000  # For local development server
   - Prefer consistent CSS classes over inline styles for repeated patterns
   - **Form Element Constraints**: All form elements (select, input) in calc cards must use `max-width: 100%; box-sizing: border-box;` to prevent container overflow
 - **Smart Input Standardization**: All measurement inputs should use the smart input system with standardized 450px width that works across all calculator types.
+- **Smart Input Layout Rule**: **CRITICAL** - The preview div (`input-preview`) must be OUTSIDE the `input-row` div to display underneath the input. If placed inside `input-row`, it will display inline to the right instead of below the input.
+  ```html
+  <!-- CORRECT - Preview div outside input-row -->
+  <div class="input-row">
+      <label>Total Length:</label>
+      <input type="text" id="smartInput" class="wide-input" oninput="handleSmartInput(...)">
+  </div>
+  <div id="previewDiv" class="input-preview"></div>
+
+  <!-- INCORRECT - Preview div inside input-row will show inline -->
+  <div class="input-row">
+      <label>Total Length:</label>
+      <input type="text" id="smartInput" class="wide-input" oninput="handleSmartInput(...)">
+      <div id="previewDiv" class="input-preview"></div> <!-- WRONG LOCATION -->
+  </div>
+  ```
 - **Placeholder Text Standards**: 
   - Never use escaped quotes (\") in HTML placeholder attributes - use `&quot;` for quotes in HTML
   - Follow the pattern: `Try: 4'6", 48", 4 6 1/32, 48.5"` showing multiple input formats
