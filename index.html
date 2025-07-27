@@ -4562,79 +4562,95 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             </g>
                         </svg>
                     </div>
-                    <div class="calc-inputs">
-                        <div class="input-row">
-                            <label>Wood Species:</label>
-                            <select id="bfSpecies" onchange="handleSpeciesChange()">
-                                <option value="">Select species...</option>
-                                <option value="White Oak">White Oak</option>
-                                <option value="Red Oak">Red Oak</option>
-                                <option value="Maple">Maple</option>
-                                <option value="Cherry">Cherry</option>
-                                <option value="Walnut">Walnut</option>
-                                <option value="Poplar">Poplar</option>
-                                <option value="Pine">Pine</option>
-                                <option value="Cedar">Cedar</option>
-                                <option value="Mahogany">Mahogany</option>
-                                <option value="Ash">Ash</option>
-                                <option value="Birch">Birch</option>
-                                <option value="Custom">Custom Species</option>
-                            </select>
-                        </div>
-                        <div class="input-row" id="customSpeciesRow" style="display: none;">
-                            <label>Custom Species:</label>
-                            <input type="text" id="bfCustomSpecies" placeholder="Enter species name" oninput="calculateBoardFeet()">
-                        </div>
-                        <div class="input-row">
-                            <label>Price per Board Foot:</label>
-                            <input type="number" id="bfPrice" step="0.01" min="0" placeholder="8.99" oninput="calculateBoardFeet()">
-                            <span class="unit">$/BF</span>
-                        </div>
-                        <div class="input-row">
-                            <label>Thickness:</label>
-                            <input type="text" id="smartBfThickness" placeholder="Try: 3/4&quot;, 1.5&quot;, 1 1/2&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewBfThickness', updateBfThicknessValue)">
-                        </div>
-                        <div id="previewBfThickness" class="input-preview"></div>
-                        <div style="display: none;">
-                            <input type="number" id="bfThickness" step="0.25" min="0.1" placeholder="1" oninput="calculateBoardFeet()">
-                        </div>
-                        <div class="input-row">
-                            <label>Width:</label>
-                            <input type="text" id="smartBfWidth" placeholder="Try: 6&quot;, 5 1/2&quot;, 12.25&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewBfWidth', updateBfWidthValue)">
-                        </div>
-                        <div id="previewBfWidth" class="input-preview"></div>
-                        <div style="display: none;">
-                            <input type="number" id="bfWidth" step="0.25" min="0.1" placeholder="6" oninput="calculateBoardFeet()">
-                        </div>
-                        <div class="input-row">
-                            <label>Length:</label>
-                            <input type="text" id="smartBfLength" placeholder="Try: 8', 96&quot;, 8 0 1/2&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewBfLength', updateBfLengthValue)">
-                        </div>
-                        <div id="previewBfLength" class="input-preview"></div>
-                        <div style="display: none;">
-                            <input type="number" id="bfLength" step="1" min="0.1" placeholder="96" oninput="calculateBoardFeet()">
-                        </div>
-                        <div class="input-row">
-                            <label>Quantity:</label>
-                            <input type="number" id="bfQuantity" min="1" placeholder="1" value="1" oninput="calculateBoardFeet()">
-                            <span class="unit">pieces</span>
-                        </div>
-                    </div>
-                    <div class="calc-result">
-                        <div class="result-display" id="boardFootResult">Enter item details above</div>
-                        <div class="cart-actions">
-                            <button class="btn btn-primary btn-sm" onclick="addToLumberCart()">Add to Cart</button>
-                            <button class="btn btn-secondary btn-sm" onclick="clearBoardFootForm()">Clear Form</button>
+                    <!-- Species and Pricing Section -->
+                    <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Species & Pricing</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                            <div style="flex: 1; min-width: 250px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Wood Species:</label>
+                                <select id="bfSpecies" onchange="handleSpeciesChange()" style="width: 100%; padding: 12px;">
+                                    <option value="">Select species...</option>
+                                    <option value="White Oak">White Oak</option>
+                                    <option value="Red Oak">Red Oak</option>
+                                    <option value="Maple">Maple</option>
+                                    <option value="Cherry">Cherry</option>
+                                    <option value="Walnut">Walnut</option>
+                                    <option value="Poplar">Poplar</option>
+                                    <option value="Pine">Pine</option>
+                                    <option value="Cedar">Cedar</option>
+                                    <option value="Mahogany">Mahogany</option>
+                                    <option value="Ash">Ash</option>
+                                    <option value="Birch">Birch</option>
+                                    <option value="Custom">Custom Species</option>
+                                </select>
+                                <div id="customSpeciesRow" style="display: none; margin-top: 10px;">
+                                    <input type="text" id="bfCustomSpecies" placeholder="Enter custom species name" oninput="calculateBoardFeet()" style="width: 100%; padding: 12px;">
+                                </div>
+                            </div>
+                            <div style="flex: 1; min-width: 200px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Price per Board Foot:</label>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="number" id="bfPrice" step="0.01" min="0" placeholder="8.99" oninput="calculateBoardFeet()" style="width: 100%; padding: 12px;">
+                                    <span style="font-weight: 600; color: var(--text-secondary);">$/BF</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Cart Display Section -->
-                    <div class="cart-section">
-                        <div id="lumberCartDisplay" class="cart-display">
+                    <!-- Dimensions Section -->
+                    <div class="calc-inputs" style="background: var(--surface-color); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Board Dimensions</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Thickness:</label>
+                                <input type="text" id="smartBfThickness" placeholder="Try: 3/4&quot;, 1.5&quot;, 1 1/2&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewBfThickness', updateBfThicknessValue)" style="padding: 12px;">
+                                <div id="previewBfThickness" class="input-preview"></div>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Width:</label>
+                                <input type="text" id="smartBfWidth" placeholder="Try: 6&quot;, 5 1/2&quot;, 12.25&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewBfWidth', updateBfWidthValue)" style="padding: 12px;">
+                                <div id="previewBfWidth" class="input-preview"></div>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 2fr 60px; gap: 15px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Length:</label>
+                                <input type="text" id="smartBfLength" placeholder="Try: 8', 96&quot;, 8 0 1/2&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewBfLength', updateBfLengthValue)" style="padding: 12px;">
+                                <div id="previewBfLength" class="input-preview"></div>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Qty:</label>
+                                <input type="number" id="bfQuantity" min="1" placeholder="1" value="1" oninput="calculateBoardFeet()" style="width: 100%; padding: 12px;">
+                            </div>
+                        </div>
+                        <div style="display: none;">
+                            <!-- Hidden legacy inputs -->
+                            <input type="number" id="bfThickness" step="0.25" min="0.1" placeholder="1" oninput="calculateBoardFeet()">
+                            <input type="number" id="bfWidth" step="0.25" min="0.1" placeholder="6" oninput="calculateBoardFeet()">
+                            <input type="number" id="bfLength" step="1" min="0.1" placeholder="96" oninput="calculateBoardFeet()">
+                        </div>
+                    </div>
+                    
+                    <!-- Calculation Result -->
+                    <div class="calc-result" style="margin-bottom: 20px;">
+                        <div class="result-display" id="boardFootResult" style="padding: 20px; background: #f8f9fa; border-radius: 8px; margin-bottom: 15px;">Enter item details above</div>
+                        <div class="cart-actions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <button class="btn btn-primary" onclick="addToLumberCart()" style="padding: 12px; font-size: 16px;">🛒 Add to Cart</button>
+                            <button class="btn btn-secondary" onclick="clearBoardFootForm()" style="padding: 12px; font-size: 16px;">Clear Form</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Shopping Cart Section -->
+                    <div class="cart-section" style="background: var(--surface-color); border-radius: 12px; padding: 20px;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px; display: flex; justify-content: space-between; align-items: center;">
+                            <span id="cartHeaderTitle">🛒 Shopping Cart</span>
+                            <button class="btn btn-secondary btn-sm" onclick="clearLumberCart()" id="clearCartBtn" style="padding: 6px 12px; display: none;">Clear Cart</button>
+                        </h4>
+                        <div id="lumberCartDisplay" class="cart-display" style="background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 15px; max-height: 300px; overflow-y: auto;">
                             <div class="result-placeholder">No items in cart</div>
                         </div>
-                        <div class="cart-bottom-actions">
-                            <button class="btn btn-success btn-sm" onclick="saveLumberCartToProject()" id="saveCartBtn" disabled>Save Cart to Project</button>
+                        <div class="cart-bottom-actions" style="text-align: center;">
+                            <button class="btn btn-success" onclick="saveLumberCartToProject()" id="saveCartBtn" disabled style="padding: 12px 24px; font-size: 16px;">💾 Save Cart to Project</button>
                         </div>
                     </div>
                 </div>
@@ -11939,22 +11955,64 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
 
         function clearBoardFootForm() {
+            // Clear dropdowns and inputs
             document.getElementById('bfSpecies').value = '';
             document.getElementById('bfCustomSpecies').value = '';
             document.getElementById('bfPrice').value = '';
-            document.getElementById('bfThickness').value = '';
-            document.getElementById('bfWidth').value = '';
-            document.getElementById('bfLength').value = '';
             document.getElementById('bfQuantity').value = '1';
             document.getElementById('customSpeciesRow').style.display = 'none';
             
+            // Clear smart inputs
+            document.getElementById('smartBfThickness').value = '';
+            document.getElementById('smartBfWidth').value = '';
+            document.getElementById('smartBfLength').value = '';
+            
+            // Clear preview displays
+            document.getElementById('previewBfThickness').innerHTML = '';
+            document.getElementById('previewBfWidth').innerHTML = '';
+            document.getElementById('previewBfLength').innerHTML = '';
+            
+            // Clear legacy inputs
+            document.getElementById('bfThickness').value = '';
+            document.getElementById('bfWidth').value = '';
+            document.getElementById('bfLength').value = '';
+            
+            // Reset smart input values
+            currentBfThicknessInches = 0;
+            currentBfWidthInches = 0;
+            currentBfLengthInches = 0;
+            
             // Clear result display
             document.getElementById('boardFootResult').innerHTML = '<div class="result-placeholder">Enter item details above</div>';
+            
+            // Update diagram
+            updateBoardDiagram(0, 0, 0, 0);
         }
 
         function updateCartDisplay() {
             const cartContainer = document.getElementById('lumberCartDisplay');
+            const cartHeader = document.getElementById('cartHeaderTitle');
+            const clearBtn = document.getElementById('clearCartBtn');
+            const saveBtn = document.getElementById('saveCartBtn');
+            
             if (!cartContainer) return;
+            
+            // Update header with item count
+            if (cartHeader) {
+                cartHeader.textContent = lumberCart.length === 0 
+                    ? '🛒 Shopping Cart' 
+                    : `🛒 Shopping Cart (${lumberCart.length} item${lumberCart.length !== 1 ? 's' : ''})`;
+            }
+            
+            // Show/hide clear button
+            if (clearBtn) {
+                clearBtn.style.display = lumberCart.length === 0 ? 'none' : 'block';
+            }
+            
+            // Enable/disable save button
+            if (saveBtn) {
+                saveBtn.disabled = lumberCart.length === 0;
+            }
             
             if (lumberCart.length === 0) {
                 cartContainer.innerHTML = '<div class="result-placeholder">No items in cart</div>';
@@ -11964,44 +12022,37 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             let totalBoardFeet = 0;
             let totalCost = 0;
             
-            let cartHTML = `
-                <div class="cart-header">
-                    <h4>Shopping Cart (${lumberCart.length} item${lumberCart.length !== 1 ? 's' : ''})</h4>
-                    <button class="btn btn-secondary btn-sm" onclick="clearLumberCart()">Clear Cart</button>
-                </div>
-                <div class="cart-items">
-            `;
+            let cartHTML = '';
             
             lumberCart.forEach(item => {
                 totalBoardFeet += item.boardFeet;
                 totalCost += item.lineTotal;
                 
                 cartHTML += `
-                    <div class="cart-item">
-                        <div class="cart-item-header">
-                            <strong>${item.species}</strong>
-                            <button class="btn-remove" onclick="removeFromLumberCart(${item.id})" title="Remove item">×</button>
+                    <div class="cart-item" style="background: #f8f9fa; padding: 12px; margin-bottom: 10px; border-radius: 6px;">
+                        <div class="cart-item-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <strong style="color: var(--primary-color);">${item.species}</strong>
+                            <button onclick="removeFromLumberCart(${item.id})" style="background: #dc3545; color: white; border: none; border-radius: 3px; padding: 4px 10px; cursor: pointer; font-weight: bold;">×</button>
                         </div>
-                        <div class="cart-item-details">
+                        <div class="cart-item-details" style="font-size: 14px; color: #666; margin-bottom: 4px;">
                             ${item.quantity} pc${item.quantity !== 1 ? 's' : ''} × ${item.thickness}" × ${item.width}" × ${item.length}"
                         </div>
-                        <div class="cart-item-pricing">
-                            ${item.boardFeet.toFixed(3)} BF × $${item.pricePerBF.toFixed(2)}/BF = <strong>$${item.lineTotal.toFixed(2)}</strong>
+                        <div class="cart-item-pricing" style="font-size: 14px;">
+                            ${item.boardFeet.toFixed(3)} BF × $${item.pricePerBF.toFixed(2)}/BF = <strong style="color: var(--primary-color);">$${item.lineTotal.toFixed(2)}</strong>
                         </div>
                     </div>
                 `;
             });
             
             cartHTML += `
-                </div>
-                <div class="cart-summary">
-                    <div class="summary-row">
-                        <span>Total Board Feet:</span>
+                <div class="cart-summary" style="background: #e8f5e9; border: 2px solid #4CAF50; border-radius: 6px; padding: 15px; margin-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="font-weight: 600;">Total Board Feet:</span>
                         <strong>${totalBoardFeet.toFixed(3)} BF</strong>
                     </div>
-                    <div class="summary-row">
-                        <span>Total Cost:</span>
-                        <strong>$${totalCost.toFixed(2)}</strong>
+                    <div style="display: flex; justify-content: space-between; font-size: 18px;">
+                        <span style="font-weight: 600;">Total Cost:</span>
+                        <strong style="color: var(--primary-color);">$${totalCost.toFixed(2)}</strong>
                     </div>
                 </div>
             `;
