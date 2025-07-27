@@ -312,28 +312,53 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         .header-section {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
             margin-bottom: 20px;
+            padding: 20px 0;
+            background: var(--surface-color);
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        .header-top-row .dad-joke-btn {
+            position: absolute;
+            left: 20px;
+        }
+        
+        .header-top-row .help-btn:not(.dad-joke-btn) {
+            position: absolute;
+            right: 20px;
         }
         
         h1 {
             color: var(--primary-color);
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
             margin: 0;
             transition: var(--theme-transition);
+            white-space: nowrap;
+            text-align: center;
         }
         
         .help-btn {
             background: var(--secondary-color);
             border: 2px solid var(--primary-color);
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 36px;
+            height: 36px;
             color: var(--primary-color);
             font-weight: bold;
-            font-size: 16px;
+            font-size: 18px;
             cursor: pointer;
             transition: var(--theme-transition);
             display: flex;
@@ -350,30 +375,36 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         .header-controls {
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 15px;
         }
         
-        .theme-selector select {
-            padding: 6px 10px;
+        .theme-selector select,
+        .mode-selector select {
+            padding: 8px 12px;
             border: 2px solid var(--border-color);
             border-radius: 8px;
             background: var(--background-color);
-            color: var(--primary-color);
-            font-size: 12px;
-            font-weight: bold;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
             transition: var(--theme-transition);
-            min-width: 90px;
+            min-width: 140px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         
-        .theme-selector select:focus {
+        .theme-selector select:focus,
+        .mode-selector select:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 5px rgba(0,0,0,0.2);
         }
         
-        .theme-selector select:hover {
-            border-color: var(--primary-light);
+        .theme-selector select:hover,
+        .mode-selector select:hover {
+            border-color: var(--primary-color);
+            background: var(--surface-color);
         }
         
         .tab-buttons {
@@ -3920,7 +3951,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
          ---------------------------------------------------------------- -->
     <div class="container">
         <div class="header-section">
-            <h1>WorkShop Pro Calculator</h1>
+            <div class="header-top-row">
+                <button class="help-btn dad-joke-btn" onclick="fetchDadJoke()" title="Groan Zone - Dad Jokes">🙄</button>
+                <h1>WorkShop Pro Calculator</h1>
+                <button class="help-btn" onclick="showHelp()" title="Help">?</button>
+            </div>
             <div class="header-controls">
                 <div class="theme-selector">
                     <select id="themeSelect" onchange="changeTheme(this.value)" title="Choose Theme">
@@ -3935,16 +3970,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         <option value="noob">🟢 Noob</option>
                     </select>
                 </div>
-                <div class="mode-toggle" style="display: flex; align-items: center; margin-right: 10px;">
-                    <label style="margin-right: 5px; font-size: 12px;">Mode:</label>
-                    <select id="uiModeSelect" onchange="updateUIMode(this.value)" style="padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--background-color); color: var(--text-primary); font-size: 12px;">
-                        <option value="beginner">Beginner</option>
-                        <option value="simple">Simple</option>
-                        <option value="advanced">Advanced</option>
+                <div class="mode-selector">
+                    <select id="uiModeSelect" onchange="updateUIMode(this.value)" title="Choose Mode">
+                        <option value="basic">Basic</option>
+                        <option value="standard">Standard</option>
+                        <option value="project">Project</option>
                     </select>
                 </div>
-                <button class="help-btn" onclick="showHelp()" title="Help">?</button>
-                <button class="help-btn" onclick="fetchDadJoke()" title="Groan Zone - Dad Jokes">🙄</button>
             </div>
         </div>
         
@@ -6180,7 +6212,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         // Centralized UI configuration
         const uiConfig = {
-            mode: localStorage.getItem('uiMode') || getDefaultMode(), // 'beginner', 'simple', or 'advanced'
+            mode: localStorage.getItem('uiMode') || 'standard', // 'basic', 'standard', or 'project'
             defaultCollapsed: true,
             categories: {
                 measurement: ['spacing', 'angle', 'grade'],
@@ -6188,29 +6220,27 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 reference: ['goldenRatio', 'screw']
             },
             modes: {
-                beginner: {
-                    showTabs: false,
-                    availableOperations: ['+', '-'],
-                    inputMethod: 'decimal', // 'decimal', 'feet-inches'
-                    memoryButtons: false,
-                    conversions: false,
-                    precision: false,
-                    history: false,
-                    saveToProject: false,
-                    maxCalculations: 5 // upgrade to simple after this
-                },
-                simple: {
-                    showTabs: ['calculator', 'projects'],
+                basic: {
+                    showTabs: ['calculator'],
                     availableOperations: ['+', '-', '*', '/'],
                     inputMethod: 'feet-inches',
                     memoryButtons: false,
                     conversions: true,
-                    precision: false,
+                    precision: true,
                     history: true,
-                    saveToProject: true,
-                    maxCalculations: 20 // upgrade to advanced after this
+                    saveToProject: false
                 },
-                advanced: {
+                standard: {
+                    showTabs: ['calculator', 'cutCalculator', 'specialty'],
+                    availableOperations: ['+', '-', '*', '/'],
+                    inputMethod: 'feet-inches',
+                    memoryButtons: true,
+                    conversions: true,
+                    precision: true,
+                    history: true,
+                    saveToProject: false
+                },
+                project: {
                     showTabs: ['calculator', 'cutCalculator', 'specialty', 'projects'],
                     availableOperations: ['+', '-', '*', '/'],
                     inputMethod: 'feet-inches',
@@ -6218,8 +6248,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     conversions: true,
                     precision: true,
                     history: true,
-                    saveToProject: true,
-                    maxCalculations: Infinity
+                    saveToProject: true
                 }
             },
             visibility: {
@@ -6239,50 +6268,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         };
         
         // Determine default mode based on user experience
-        function getDefaultMode() {
-            const calculations = parseInt(localStorage.getItem('calculationsPerformed')) || 0;
-            const savedMode = localStorage.getItem('uiMode');
-            
-            // Respect user's explicit choice
-            if (savedMode) return savedMode;
-            
-            // Auto-assign based on usage
-            if (calculations === 0) return 'beginner';
-            if (calculations < 5) return 'beginner';
-            if (calculations < 20) return 'simple';
-            return 'advanced';
-        }
         
-        // Track usage for auto-upgrading
-        function trackCalculationUsage() {
-            uiConfig.stats.calculationsPerformed++;
-            localStorage.setItem('calculationsPerformed', uiConfig.stats.calculationsPerformed.toString());
-            
-            // Auto-upgrade if appropriate
-            const currentMode = uiConfig.mode;
-            const modeConfig = uiConfig.modes[currentMode];
-            
-            if (uiConfig.stats.calculationsPerformed >= modeConfig.maxCalculations) {
-                if (currentMode === 'beginner') {
-                    suggestModeUpgrade('simple');
-                } else if (currentMode === 'simple') {
-                    suggestModeUpgrade('advanced');
-                }
-            }
-        }
-        
-        // Suggest mode upgrade with user notification
-        function suggestModeUpgrade(newMode) {
-            const upgradeMessages = {
-                simple: "🎉 You're getting the hang of this! Want to unlock more tools?",
-                advanced: "⚡ Ready for the full power? Switch to Advanced Mode for all features!"
-            };
-            
-            if (confirm(upgradeMessages[newMode] + "\n\nSwitch to " + newMode.charAt(0).toUpperCase() + newMode.slice(1) + " Mode?")) {
-                updateUIMode(newMode);
-                showNotification(`Upgraded to ${newMode.charAt(0).toUpperCase() + newMode.slice(1)} Mode!`, 'success');
-            }
-        }
         
         // Update visibility based on mode
         function updateUIMode(mode) {
@@ -6329,14 +6315,14 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             const advancedCalcs = calculatorRegistry.calculators.filter(calc => calc.advanced);
             advancedCalcs.forEach(calc => {
                 if (calc.element) {
-                    calc.element.style.display = uiConfig.mode === 'advanced' ? 'block' : 'none';
+                    calc.element.style.display = uiConfig.mode === 'project' ? 'block' : 'none';
                 }
             });
             
-            // Update help sections visibility
+            // Help button is always visible now
             const helpBtn = document.querySelector('button[onclick="showHelp()"]');
             if (helpBtn) {
-                helpBtn.style.display = uiConfig.mode === 'advanced' ? 'inline-block' : 'none';
+                helpBtn.style.display = 'inline-block';
             }
             
             // Show/hide "Show More Tools" section
@@ -6354,10 +6340,10 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         // Apply mode-specific calculator interface changes
         function applyCalculatorMode(modeConfig) {
-            // Show/hide beginner welcome message
+            // Remove beginner welcome message since we don't have beginner mode anymore
             const beginnerWelcome = document.getElementById('beginnerWelcome');
             if (beginnerWelcome) {
-                beginnerWelcome.style.display = uiConfig.mode === 'beginner' ? 'block' : 'none';
+                beginnerWelcome.style.display = 'none';
             }
             
             // Show/hide precision selector
@@ -6409,6 +6395,21 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             
             // Handle input method
             applyInputMethod(modeConfig.inputMethod);
+            
+            // Hide/show all save to project buttons throughout the app
+            const saveToProjectButtons = document.querySelectorAll('button[onclick*="saveToProject"], button[onclick*="Project"]');
+            saveToProjectButtons.forEach(btn => {
+                // Skip if it's the main save button already handled above
+                if (!btn.classList.contains('calc-btn')) {
+                    btn.style.display = modeConfig.saveToProject ? 'inline-block' : 'none';
+                }
+            });
+            
+            // Hide/show global project selector
+            const globalProjectSelector = document.getElementById('globalProjectSelector');
+            if (globalProjectSelector) {
+                globalProjectSelector.style.display = modeConfig.saveToProject ? 'block' : 'none';
+            }
         }
         
         // Apply input method (decimal vs feet-inches)
@@ -8338,10 +8339,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         // New calculator functions
         function setOperation(op) {
             currentOperation = op;
-            
-            // Track usage for auto-upgrading
-            trackCalculationUsage();
-            
             // Hide both input groups and preview divs first
             document.getElementById('input2GroupFeetInches').style.display = 'none';
             document.getElementById('input2GroupNumber').style.display = 'none';
