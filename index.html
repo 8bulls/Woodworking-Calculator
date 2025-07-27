@@ -1218,7 +1218,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         .calc-equation {
             font-size: 16px;
-            color: var(--secondary-color);
+            color: #ccc;
             min-height: 24px;
             margin-bottom: 5px;
         }
@@ -4072,7 +4072,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             <!-- Input 2 for Multiplication/Division (simple number) -->
             <div class="input-group" id="input2GroupNumber" style="display: none;">
                 <label>Factor:</label>
-                <input type="number" id="factor" placeholder="2" min="0" step="0.1" class="wide-input" onchange="updateCalculation()" style="width: 150px;">
+                <input type="number" id="factor" placeholder="" min="0" step="0.1" class="wide-input" onchange="updateCalculation()" style="width: 150px;">
                 <span style="color: #666; font-size: 12px; margin-left: 5px;">(multiply/divide by this number)</span>
             </div>
             
@@ -4086,21 +4086,16 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             </div>
             
             <div class="conversion-section">
-                <h4 style="color: var(--primary-color); margin-bottom: 10px;">Quick Conversions</h4>
-                <div class="conversion-input-row">
-                    <label>Direct Input:</label>
-                    <input type="number" id="directDecimalInput" placeholder="37.625" step="0.001" class="wide-input" onchange="handleDirectInput()">
-                    <span>inches</span>
-                    <button class="btn btn-primary" onclick="convertDirectInput()">Convert</button>
-                </div>
-                <div id="conversionPreview" class="conversion-preview">
-                    Convert: <span id="conversionValue">Enter a value or calculate</span>
-                </div>
-                <div class="conversion-grid">
-                    <button class="btn btn-secondary" onclick="convertToDecimal()">→ Decimal</button>
-                    <button class="btn btn-secondary" onclick="convertToFraction()">→ Fraction</button>
-                    <button class="btn btn-secondary" onclick="convertToFeet()">→ Decimal Feet</button>
-                    <button class="btn btn-secondary" onclick="convertToInches()">→ Total Inches</button>
+                <h4 style="color: var(--primary-color); margin-bottom: 10px; cursor: pointer;" onclick="toggleConversions()">Quick Conversions <span id="conversionToggle">▼</span></h4>
+                <div id="conversionContent">
+                    <div id="conversionPreview" class="conversion-preview">
+                        Convert: <span id="conversionValue">Enter a value or calculate</span>
+                    </div>
+                    <div class="conversion-grid">
+                        <button class="btn btn-secondary" onclick="convertToDecimal()">→ Decimal "</button>
+                        <button class="btn btn-secondary" onclick="convertToFeet()">→ Decimal '</button>
+                        <button class="btn btn-secondary" onclick="convertToMetric()">→ Metric</button>
+                    </div>
                 </div>
             </div>
             
@@ -6225,7 +6220,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     availableOperations: ['+', '-', '*', '/'],
                     inputMethod: 'feet-inches',
                     memoryButtons: false,
-                    conversions: true,
+                    conversions: 'collapsed',
                     precision: true,
                     history: true,
                     saveToProject: false
@@ -6383,8 +6378,25 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             
             // Show/hide conversion section
             const conversionSection = document.querySelector('.conversion-section');
+            const conversionContent = document.getElementById('conversionContent');
+            const conversionToggle = document.getElementById('conversionToggle');
+            
             if (conversionSection) {
-                conversionSection.style.display = modeConfig.conversions ? 'block' : 'none';
+                if (modeConfig.conversions === 'collapsed') {
+                    conversionSection.style.display = 'block';
+                    if (conversionContent) {
+                        conversionContent.style.display = 'none';
+                        if (conversionToggle) conversionToggle.textContent = '▶';
+                    }
+                } else if (modeConfig.conversions === true) {
+                    conversionSection.style.display = 'block';
+                    if (conversionContent) {
+                        conversionContent.style.display = 'block';
+                        if (conversionToggle) conversionToggle.textContent = '▼';
+                    }
+                } else {
+                    conversionSection.style.display = 'none';
+                }
             }
             
             // Show/hide history
@@ -8147,12 +8159,22 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             if (tabName === 'calculator' || !tabName) {
                 precision = parseInt(document.getElementById('precision')?.value || 16);
                 fractionSelects = ['fraction1', 'fraction2', 'grFraction', 'singleBoardWidthFraction', 'singleInputLengthFraction', 'frameMaterialWidthFraction', 'frameWidthFraction', 'frameHeightFraction', 'framePolygonFraction', 'spTotalLengthFraction', 'spacingThicknessFraction'];
+                
+                // Update calculator display with new precision
+                updateCalculation();
+                updateConversionPreview();
             } else if (tabName === 'cut') {
                 precision = parseInt(document.getElementById('cutPrecision')?.value || 16);
                 fractionSelects = ['cutFraction', 'boardFraction', 'optCutFraction'];
+                
+                // Update cut calculator displays
+                if (typeof calculateCuts === 'function') calculateCuts();
             } else if (tabName === 'optimizer') {
                 precision = parseInt(document.getElementById('optPrecision')?.value || 16);
                 fractionSelects = ['boardFraction', 'optCutFraction'];
+                
+                // Update optimizer displays
+                if (typeof calculateCuts === 'function') calculateCuts();
             } else if (tabName === 'edit') {
                 // Special case for edit modal - use optimizer precision
                 precision = parseInt(document.getElementById('optPrecision')?.value || 16);
@@ -8352,11 +8374,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             } else if (op === '*' || op === '/') {
                 // Multiplication and division use simple number input
                 document.getElementById('input2GroupNumber').style.display = 'flex';
-                // Set default factor if empty
-                const factorInput = document.getElementById('factor');
-                if (!factorInput.value) {
-                    factorInput.value = op === '*' ? '2' : '2';
-                }
+                // Factor input starts blank - no default value
             }
             
             // Update button highlighting
@@ -8659,111 +8677,87 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         function convertToDecimal() {
             const inches = getCurrentCalculatorValue();
             if (inches === 0) {
-                showNotification('No value to convert. Enter a decimal value or perform a calculation first.', 'warning');
+                showNotification('No value to convert. Enter a value or perform a calculation first.', 'warning');
                 return;
             }
             const decimal = inches.toFixed(4);
-            const source = (lastDirectInputUpdate > lastCalculatorUpdate && document.getElementById('directDecimalInput').value) ? 'direct input' : 'calculator';
             addToCalcHistory({
                 equation: `${inchesToDisplay(inches)} → ${decimal}"`,
                 result: inches,
                 timestamp: new Date().toLocaleTimeString(),
                 type: 'conversion'
             });
+            showNotification(`Converted: ${inchesToDisplay(inches)} = ${decimal}"`);
         }
         
-        function convertToFraction() {
-            const inches = getCurrentCalculatorValue();
-            if (inches === 0) {
-                showNotification('No value to convert. Enter a decimal value or perform a calculation first.', 'warning');
-                return;
-            }
-            const fraction = inchesToDisplay(inches);
-            const source = (lastDirectInputUpdate > lastCalculatorUpdate && document.getElementById('directDecimalInput').value) ? 'direct input' : 'calculator';
-            addToCalcHistory({
-                equation: `${inches.toFixed(4)}" → ${fraction}`,
-                result: inches,
-                timestamp: new Date().toLocaleTimeString(),
-                type: 'conversion'
-            });
-        }
         
         function convertToFeet() {
             const inches = getCurrentCalculatorValue();
             if (inches === 0) {
-                showNotification('No value to convert. Enter a decimal value or perform a calculation first.', 'warning');
+                showNotification('No value to convert. Enter a value or perform a calculation first.', 'warning');
                 return;
             }
             const feet = (inches / 12).toFixed(4);
-            const source = (lastDirectInputUpdate > lastCalculatorUpdate && document.getElementById('directDecimalInput').value) ? 'direct input' : 'calculator';
             addToCalcHistory({
-                equation: `${inchesToDisplay(inches)} → ${feet} ft`,
+                equation: `${inchesToDisplay(inches)} → ${feet}'`,
                 result: inches,
                 timestamp: new Date().toLocaleTimeString(),
                 type: 'conversion'
             });
+            showNotification(`Converted: ${inchesToDisplay(inches)} = ${feet}'`);
         }
         
-        function convertToInches() {
+        function convertToMetric() {
             const inches = getCurrentCalculatorValue();
             if (inches === 0) {
-                showNotification('No value to convert. Enter a decimal value or perform a calculation first.', 'warning');
+                showNotification('No value to convert. Enter a value or perform a calculation first.', 'warning');
                 return;
             }
-            const totalInches = inches.toFixed(4);
-            const source = (lastDirectInputUpdate > lastCalculatorUpdate && document.getElementById('directDecimalInput').value) ? 'direct input' : 'calculator';
+            
+            const mm = inches * 25.4;
+            let metricDisplay, unit;
+            
+            if (mm >= 1000) {
+                // Use meters for large values
+                const meters = (mm / 1000).toFixed(3);
+                metricDisplay = meters;
+                unit = 'm';
+            } else if (mm >= 10) {
+                // Use centimeters for medium values
+                const cm = (mm / 10).toFixed(2);
+                metricDisplay = cm;
+                unit = 'cm';
+            } else {
+                // Use millimeters for small values
+                metricDisplay = mm.toFixed(2);
+                unit = 'mm';
+            }
+            
             addToCalcHistory({
-                equation: `${inchesToDisplay(inches)} → ${totalInches}"`,
+                equation: `${inchesToDisplay(inches)} → ${metricDisplay}${unit}`,
                 result: inches,
                 timestamp: new Date().toLocaleTimeString(),
                 type: 'conversion'
             });
+            showNotification(`Converted: ${inchesToDisplay(inches)} = ${metricDisplay}${unit}`);
         }
         
-        // Direct decimal input conversion functions
-        function handleDirectInput() {
-            const directInput = document.getElementById('directDecimalInput');
-            const conversionValueSpan = document.getElementById('conversionValue');
+        // Toggle conversion section visibility
+        function toggleConversions() {
+            const conversionContent = document.getElementById('conversionContent');
+            const conversionToggle = document.getElementById('conversionToggle');
             
-            if (directInput.value && !isNaN(directInput.value)) {
-                const inches = parseFloat(directInput.value);
-                conversionValueSpan.textContent = `${inches.toFixed(3)}" (from direct input)`;
-                lastDirectInputUpdate = Date.now(); // Mark direct input as most recent
-                lastConversionSource = 'direct';
-            } else {
-                updateConversionPreview(); // Fall back to calculator value
+            if (conversionContent && conversionToggle) {
+                if (conversionContent.style.display === 'none') {
+                    conversionContent.style.display = 'block';
+                    conversionToggle.textContent = '▼';
+                } else {
+                    conversionContent.style.display = 'none';
+                    conversionToggle.textContent = '▶';
+                }
             }
         }
         
-        function convertDirectInput() {
-            const directInput = document.getElementById('directDecimalInput');
-            const inches = parseFloat(directInput.value);
-            
-            if (!directInput.value || isNaN(inches)) {
-                showNotification('Please enter a valid decimal value in inches', 'warning');
-                return;
-            }
-            
-            // Convert to feet/inches/fraction format at current precision
-            const fraction = inchesToDisplay(inches);
-            
-            // Add to history
-            addToCalcHistory({
-                equation: `${inches}" → ${fraction}`,
-                result: inches,
-                timestamp: new Date().toLocaleTimeString(),
-                type: 'direct_conversion'
-            });
-            
-            
-            // Mark direct input as most recent action
-            lastDirectInputUpdate = Date.now();
-            lastConversionSource = 'direct';
-            
-            // Set this as the current calculator value for further conversions
-            currentValueInches = inches;
-            updateConversionPreview(); // Update conversion preview
-        }
         
         // =====================================================
         // Smart Input Parser System
@@ -9030,33 +9024,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         // Helper function to get the current calculator value (result, input, or direct input)
         function getCurrentCalculatorValue() {
-            const directInput = document.getElementById('directDecimalInput');
-            const hasDirectInput = directInput && directInput.value && !isNaN(directInput.value);
-            const hasCalculatorResult = currentValueInches > 0;
-            
-            // If both direct input and calculator result exist, use the most recent one
-            if (hasDirectInput && hasCalculatorResult) {
-                // Use timestamps to determine which was most recent
-                if (lastDirectInputUpdate > lastCalculatorUpdate) {
-                    return parseFloat(directInput.value);
-                } else {
-                    return currentValueInches;
-                }
-            }
-            
-            // If only direct input exists, use it
-            if (hasDirectInput) {
-                return parseFloat(directInput.value);
-            }
-            
-            // If only calculator result exists, use it
-            if (hasCalculatorResult) {
+            // Priority: 1) Calculator result, 2) Input 1 value
+            if (currentValueInches > 0) {
                 return currentValueInches;
             }
             
-            // Otherwise, use input 1 if it has a value
-            if (value1 > 0) {
-                return value1;
+            if (currentInput1Inches > 0) {
+                return currentInput1Inches;
             }
             
             // No value available
@@ -9068,12 +9042,20 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             const conversionValueSpan = document.getElementById('conversionValue');
             if (!conversionValueSpan) return;
             
-            const inches = getCurrentCalculatorValue();
+            // Priority: 1) Calculator result, 2) Input 1 value
+            let inches = 0;
+            let source = '';
+            
+            // Check if we have a calculator result
+            if (currentValueInches > 0) {
+                inches = currentValueInches;
+                source = 'calculator result';
+            } else if (currentInput1Inches > 0) {
+                inches = currentInput1Inches;
+                source = 'input 1';
+            }
+            
             if (inches > 0) {
-                const directInput = document.getElementById('directDecimalInput');
-                const isFromDirect = (lastDirectInputUpdate > lastCalculatorUpdate && directInput.value && !isNaN(directInput.value));
-                const source = isFromDirect ? 'direct input' : 'calculator';
-                
                 conversionValueSpan.textContent = `${inchesToDisplay(inches)} (from ${source})`;
                 conversionValueSpan.parentElement.style.opacity = '1';
             } else {
