@@ -6508,13 +6508,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             // Handle calculator interface elements
             applyCalculatorMode(modeConfig);
             
-            // Hide advanced calculators based on mode
-            const advancedCalcs = calculatorRegistry.calculators.filter(calc => calc.advanced);
-            advancedCalcs.forEach(calc => {
-                if (calc.element) {
-                    calc.element.style.display = uiConfig.mode === 'project' ? 'block' : 'none';
-                }
-            });
+            // All calculators are available in both Standard and Project modes
+            // The only difference is the save to project functionality
             
             // Help button is always visible now
             const helpBtn = document.querySelector('button[onclick="showHelp()"]');
