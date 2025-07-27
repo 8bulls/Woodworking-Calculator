@@ -5641,13 +5641,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div class="calc-card-content" id="tileContent">
                     <div class="calc-description">Calculate tile quantities, costs, and visualize patterns for flooring projects</div>
                     
-                    <!-- Simplified Tile Calculator -->
-                    <div class="input-section">
-                        <h3>Tile Dimensions</h3>
-                        <div class="tile-input-row">
-                            <div class="tile-input-field">
-                                <label>Length</label>
-                                <input type="text" id="smartTileLength" placeholder="Try: 12&quot;, 1', 12.5&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewTileLength', updateTileLengthValue)">
+                    <!-- Tile Dimensions Panel -->
+                    <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Tile Specifications</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Tile Length:</label>
+                                <input type="text" id="smartTileLength" placeholder="Try: 12&quot;, 1', 12.5&quot;" class="wide-input" oninput="handleSmartInput(this, 'previewTileLength', updateTileLengthValue)" style="padding: 12px;">
                                 <div id="previewTileLength" class="input-preview"></div>
                                 <div style="display: none;">
                                     <!-- Hidden legacy inputs for backward compatibility -->
@@ -5676,9 +5676,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                     </select>
                                 </div>
                             </div>
-                            <div class="tile-input-field">
-                                <label>Width</label>
-                                <input type="text" id="smartTileWidth" placeholder="Try: 6&quot;, 0.5', 6.25&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewTileWidth', updateTileWidthValue)">
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Tile Width:</label>
+                                <input type="text" id="smartTileWidth" placeholder="Try: 6&quot;, 0.5', 6.25&quot;" class="wide-input" oninput="handleSmartInput(this, 'previewTileWidth', updateTileWidthValue)" style="padding: 12px;">
                                 <div id="previewTileWidth" class="input-preview"></div>
                                 <div style="display: none;">
                                     <!-- Hidden legacy inputs for backward compatibility -->
@@ -5708,30 +5708,63 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Layout Configuration -->
-                    <div class="input-section">
-                        <h3>Layout Configuration</h3>
-                        <div class="input-row">
-                            <label for="groutSpacing">Grout Spacing:</label>
-                            <select id="groutSpacing" onchange="calculateSimpleTiles()">
+                        
+                        <!-- Grout Spacing -->
+                        <div style="margin-top: 15px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Grout Spacing:</label>
+                            <select id="groutSpacing" onchange="toggleCustomGrout(); calculateSimpleTiles()" style="width: 100%; padding: 12px;">
                                 <option value="0">None</option>
                                 <option value="0.0625">1/16"</option>
-                                <option value="0.125">1/8"</option>
+                                <option value="0.125" selected>1/8" (Standard)</option>
                                 <option value="0.1875">3/16"</option>
                                 <option value="0.25">1/4"</option>
-                                <option value="custom">Custom</option>
+                                <option value="custom">Custom Size</option>
                             </select>
+                            <div id="customGroutRow" style="display: none; margin-top: 10px;">
+                                <input type="number" id="customGrout" step="0.01" min="0" placeholder="0.125" oninput="calculateSimpleTiles()" style="width: 100%; padding: 12px;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project Area Panel -->
+                    <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Project Area</h4>
+                        
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px; margin-bottom: 15px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Total Square Footage:</label>
+                                <input type="number" id="projectSqFt" step="0.1" min="0" placeholder="100" oninput="calculateSimpleTiles()" style="width: 100%; padding: 12px;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Waste Factor:</label>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="range" id="wasteFactor" min="5" max="20" value="10" oninput="updateWasteDisplay(); calculateSimpleTiles()" style="flex: 1;">
+                                    <span id="wasteDisplay" style="font-weight: 600; color: var(--text-secondary); min-width: 40px;">10%</span>
+                                </div>
+                            </div>
                         </div>
                         
-                        <div class="input-row" id="customGroutRow" style="display: none;">
-                            <label for="customGrout">Custom Spacing (inches):</label>
-                            <input type="number" id="customGrout" step="0.01" min="0" placeholder="0.125" oninput="calculateSimpleTiles()">
+                        <!-- Pattern Offset -->
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Pattern Offset (for staggered layout):</label>
+                            <select id="tileOffsetSelect" onchange="updateTileOffset()" style="width: 100%; padding: 12px;">
+                                <option value="0">None (Stack Bond)</option>
+                                <option value="0.5">1/2 Tile (Running Bond)</option>
+                                <option value="0.333">1/3 Tile</option>
+                                <option value="0.25">1/4 Tile</option>
+                                <option value="custom">Custom Offset</option>
+                            </select>
+                            <div id="customOffsetRow" style="display: none; margin-top: 10px;">
+                                <input type="text" id="smartTileOffset" placeholder="Try: 6&quot;, 0.5', 50%" class="wide-input" oninput="handleSmartInput(this, 'previewTileOffset', updateTileOffsetValue)" style="padding: 12px;">
+                                <div id="previewTileOffset" class="input-preview"></div>
+                            </div>
+                            <div id="offsetError" class="error-message" style="display: none; color: #dc3545; font-size: 12px; margin-top: 4px;">
+                                Offset cannot exceed tile length
+                            </div>
                         </div>
-
-                        <div class="input-row">
-                            <label for="tileOffset">Offset:</label>
+                        
+                        <!-- Hidden legacy offset inputs -->
+                        <div style="display: none;">
                             <div class="woodworking-input">
                                 <input type="number" id="tileOffsetFeet" min="0" placeholder="0" style="width: 50px;" oninput="calculateSimpleTiles()">
                                 <span class="unit">ft</span>
@@ -5756,18 +5789,16 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                     <option value="0.9375">15/16</option>
                                 </select>
                             </div>
-                            <div id="offsetError" class="error-message" style="display: none; color: #dc3545; font-size: 12px; margin-top: 4px;">
-                                Offset cannot exceed tile length
-                            </div>
                         </div>
                     </div>
                     
-                    <!-- Cost Configuration -->
-                    <div class="input-section">
-                        <h3>Cost Information</h3>
-                        <div class="input-row">
-                            <label for="tileCostMethod">Pricing Method:</label>
-                            <select id="tileCostMethod" onchange="toggleCostInputs(); calculateSimpleTiles()">
+                    <!-- Cost Configuration Panel -->
+                    <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Cost Information</h4>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Pricing Method:</label>
+                            <select id="tileCostMethod" onchange="toggleCostInputs(); calculateSimpleTiles()" style="width: 100%; padding: 12px;">
                                 <option value="per-tile">Per Tile</option>
                                 <option value="per-sqft" selected>Per Square Foot</option>
                                 <option value="per-box">Per Box/Case</option>
@@ -5809,73 +5840,56 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             <input type="number" id="additionalCosts" step="0.01" min="0" placeholder="0.00" oninput="calculateSimpleTiles()">
                             <span class="unit">$ (grout, adhesive, etc.)</span>
                         </div>
-                    </div>
-
-                    <!-- Project Details -->
-                    <div class="input-section">
-                        <h3>Project Details</h3>
-                        <div class="input-row">
-                            <label for="projectSqFt">Total Square Footage:</label>
-                            <input type="number" id="projectSqFt" step="0.1" min="0" placeholder="100" oninput="calculateSimpleTiles()">
-                            <span class="unit">sq ft</span>
-                        </div>
                         
-                        <div class="input-row">
-                            <label for="wasteFactor">Waste Factor:</label>
-                            <input type="range" id="wasteFactor" min="5" max="20" value="10" oninput="updateWasteDisplay(); calculateSimpleTiles()">
-                            <span class="unit" id="wasteDisplay">10%</span>
+                        <!-- Clear Button -->
+                        <div style="text-align: right; margin-top: 15px;">
+                            <button class="btn btn-secondary" onclick="clearTileCalculator()" style="padding: 10px 20px;">Clear All</button>
                         </div>
                     </div>
 
-                    <!-- Advanced Options (Expandable) -->
-                    <div class="input-section">
-                        <div class="advanced-options-header" onclick="toggleAdvancedOptions()" style="cursor: pointer;">
-                            <h3 style="display: inline;">Advanced Options</h3>
-                            <span id="advancedToggle" style="margin-left: 10px; font-size: 12px; color: #666;">▲ Hide</span>
-                        </div>
-                        <div id="advancedOptions" style="display: block;">
-                            <div class="input-row">
-                                <label for="tileThickness">Tile Thickness (for grout calc):</label>
-                                <select id="tileThickness" onchange="calculateSimpleTiles()">
-                                    <option value="0.125">1/8"</option>
-                                    <option value="0.1875">3/16"</option>
-                                    <option value="0.25" selected>1/4" (standard)</option>
-                                    <option value="0.3125">5/16"</option>
-                                    <option value="0.375">3/8"</option>
-                                    <option value="0.5">1/2"</option>
-                                    <option value="0.625">5/8"</option>
-                                    <option value="0.75">3/4"</option>
-                                    <option value="1">1"</option>
-                                </select>
-                            </div>
-                            
-                            <div class="input-row">
-                                <label for="roomPerimeter">Room Perimeter (for accurate cuts):</label>
-                                <input type="number" id="roomPerimeter" step="0.1" min="0" placeholder="Total wall length" oninput="calculateSimpleTiles()">
-                                <span class="unit">linear feet</span>
+                    <!-- Advanced Options Panel -->
+                    <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px; cursor: pointer;" onclick="toggleAdvancedOptions()">
+                            Advanced Options <span id="advancedToggle" style="font-size: 12px; color: #666;">▼</span>
+                        </h4>
+                        <div id="advancedOptions" style="display: none;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Tile Thickness (for grout calc):</label>
+                                    <select id="tileThickness" onchange="calculateSimpleTiles()" style="width: 100%; padding: 12px;">
+                                        <option value="0.125">1/8"</option>
+                                        <option value="0.1875">3/16"</option>
+                                        <option value="0.25" selected>1/4" (standard)</option>
+                                        <option value="0.3125">5/16"</option>
+                                        <option value="0.375">3/8"</option>
+                                        <option value="0.5">1/2"</option>
+                                        <option value="0.625">5/8"</option>
+                                        <option value="0.75">3/4"</option>
+                                        <option value="1">1"</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Room Perimeter (for cuts):</label>
+                                    <input type="number" id="roomPerimeter" step="0.1" min="0" placeholder="Total wall length" oninput="calculateSimpleTiles()" style="width: 100%; padding: 12px;">
+                                </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Results Section -->
+                    <div class="calc-result" style="margin-bottom: 20px;">
+                        <div class="result-display" id="tileResults" style="padding: 20px; background: #f8f9fa; border-radius: 8px; margin-bottom: 15px;">
+                            Enter tile dimensions and project area to calculate
+                        </div>
+                        <button class="btn btn-success" onclick="saveSimpleTileProject()" style="padding: 12px 24px; font-size: 16px;">💾 Save to Project</button>
+                    </div>
+                    
                     <!-- Tile Layout Preview -->
-                    <div class="input-section">
-                        <h3>Layout Preview</h3>
-                        <div id="tilePreview" class="tile-preview">
+                    <div class="calc-visual">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Layout Preview</h4>
+                        <div id="tilePreview" class="tile-preview" style="background: #f8f9fa; border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; min-height: 200px;">
                             <!-- Simple tile grid will be generated here -->
                         </div>
-                    </div>
-
-                    <!-- Results -->
-                    <div class="result-section">
-                        <h3>Results</h3>
-                        <div id="tileResults" class="tile-results">
-                            <!-- Results will be calculated and displayed here -->
-                        </div>
-                    </div>
-
-                    <!-- Save to Project -->
-                    <div class="save-section">
-                        <button class="btn btn-success btn-sm" onclick="saveSimpleTileProject()">Save to Project</button>
                     </div>
                 </div>
             </div>
@@ -11347,6 +11361,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         // Smart input callbacks for Tile & Paver Calculator
         let currentTileLengthInches = 0;
         let currentTileWidthInches = 0;
+        let currentTileOffsetInches = 0;
 
         function updateTileLengthValue(inches, display) {
             currentTileLengthInches = inches;
@@ -11355,6 +11370,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
 
         function updateTileWidthValue(inches, display) {
             currentTileWidthInches = inches;
+            calculateSimpleTiles();
+        }
+        
+        function updateTileOffsetValue(inches, display) {
+            currentTileOffsetInches = inches;
             calculateSimpleTiles();
         }
 
@@ -15445,6 +15465,91 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             const offsetInches = parseFloat(document.getElementById('tileOffsetInches').value) || 0;
             const offsetFraction = parseFloat(document.getElementById('tileOffsetFraction').value) || 0;
             return offsetFeet * 12 + offsetInches + offsetFraction;
+        }
+
+        function updateTileOffset() {
+            const offsetSelect = document.getElementById('tileOffsetSelect');
+            const customRow = document.getElementById('customOffsetRow');
+            
+            if (offsetSelect.value === 'custom') {
+                customRow.style.display = 'block';
+            } else {
+                customRow.style.display = 'none';
+            }
+            
+            // Auto-recalculate when offset changes
+            calculateSimpleTiles();
+        }
+        
+        function toggleCustomGrout() {
+            const groutSelect = document.getElementById('groutSpacing');
+            const customRow = document.getElementById('customGroutRow');
+            
+            if (groutSelect.value === 'custom') {
+                customRow.style.display = 'block';
+            } else {
+                customRow.style.display = 'none';
+            }
+        }
+
+        function clearTileCalculator() {
+            // Clear smart inputs
+            document.getElementById('smartTileLength').value = '';
+            document.getElementById('smartTileWidth').value = '';
+            document.getElementById('smartProjectArea').value = '';
+            document.getElementById('previewTileLength').textContent = '';
+            document.getElementById('previewTileWidth').textContent = '';
+            document.getElementById('previewProjectArea').textContent = '';
+            
+            // Clear tile dimensions (legacy)
+            document.getElementById('tileLengthFeet').value = '';
+            document.getElementById('tileLengthInches').value = '';
+            document.getElementById('tileLengthFraction').value = '0';
+            document.getElementById('tileWidthFeet').value = '';
+            document.getElementById('tileWidthInches').value = '';
+            document.getElementById('tileWidthFraction').value = '0';
+            
+            // Clear project area
+            document.getElementById('projectSqFt').value = '';
+            document.getElementById('wasteFactor').value = '10';
+            document.getElementById('wasteDisplay').textContent = '10%';
+            
+            // Reset options
+            document.getElementById('groutSpacing').value = '0.125';
+            document.getElementById('customGrout').value = '';
+            document.getElementById('customGroutRow').style.display = 'none';
+            document.getElementById('tileOffsetSelect').value = '0';
+            document.getElementById('smartTileOffset').value = '';
+            document.getElementById('previewTileOffset').textContent = '';
+            document.getElementById('customOffsetRow').style.display = 'none';
+            
+            // Clear cost fields
+            document.getElementById('tileCostMethod').value = 'per-sqft';
+            document.getElementById('costPerTile').value = '';
+            document.getElementById('costPerSqFt').value = '';
+            document.getElementById('costPerBox').value = '';
+            document.getElementById('tilesPerBox').value = '';
+            document.getElementById('sqFtPerBox').value = '';
+            document.getElementById('additionalCosts').value = '';
+            // Reset visibility
+            document.getElementById('perTileRow').style.display = 'none';
+            document.getElementById('perSqFtRow').style.display = 'block';
+            document.getElementById('perBoxRow').style.display = 'none';
+            document.getElementById('tilesPerBoxRow').style.display = 'none';
+            document.getElementById('sqFtPerBoxRow').style.display = 'none';
+            
+            // Clear advanced options
+            document.getElementById('tileThickness').value = '0.25';
+            document.getElementById('roomPerimeter').value = '';
+            
+            // Clear results
+            document.getElementById('tileResults').innerHTML = 'Enter tile dimensions and project area to calculate';
+            document.getElementById('tilePreview').innerHTML = '';
+            
+            // Clear smart input state
+            if (typeof currentTileLengthInches !== 'undefined') currentTileLengthInches = 0;
+            if (typeof currentTileWidthInches !== 'undefined') currentTileWidthInches = 0;
+            if (typeof currentProjectAreaSqFt !== 'undefined') currentProjectAreaSqFt = 0;
         }
 
         function validateOffset() {
