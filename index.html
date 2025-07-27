@@ -5644,8 +5644,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <!-- Tile Dimensions Panel -->
                     <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
                         <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Tile Specifications</h4>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                            <div style="flex: 1; min-width: 200px;">
                                 <label style="display: block; margin-bottom: 8px; font-weight: 600;">Tile Length:</label>
                                 <input type="text" id="smartTileLength" placeholder="Try: 12&quot;, 1', 12.5&quot;" class="wide-input" oninput="handleSmartInput(this, 'previewTileLength', updateTileLengthValue)" style="padding: 12px;">
                                 <div id="previewTileLength" class="input-preview"></div>
@@ -5676,7 +5676,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                     </select>
                                 </div>
                             </div>
-                            <div>
+                            <div style="flex: 1; min-width: 200px;">
                                 <label style="display: block; margin-bottom: 8px; font-weight: 600;">Tile Width:</label>
                                 <input type="text" id="smartTileWidth" placeholder="Try: 6&quot;, 0.5', 6.25&quot;" class="wide-input" oninput="handleSmartInput(this, 'previewTileWidth', updateTileWidthValue)" style="padding: 12px;">
                                 <div id="previewTileWidth" class="input-preview"></div>
@@ -5730,12 +5730,12 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
                         <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Project Area</h4>
                         
-                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px; margin-bottom: 15px;">
-                            <div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;">
+                            <div style="flex: 2; min-width: 150px;">
                                 <label style="display: block; margin-bottom: 8px; font-weight: 600;">Total Square Footage:</label>
                                 <input type="number" id="projectSqFt" step="0.1" min="0" placeholder="100" oninput="calculateSimpleTiles()" style="width: 100%; padding: 12px;">
                             </div>
-                            <div>
+                            <div style="flex: 1; min-width: 150px;">
                                 <label style="display: block; margin-bottom: 8px; font-weight: 600;">Waste Factor:</label>
                                 <div style="display: flex; align-items: center; gap: 10px;">
                                     <input type="range" id="wasteFactor" min="5" max="20" value="10" oninput="updateWasteDisplay(); calculateSimpleTiles()" style="flex: 1;">
@@ -5853,8 +5853,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             Advanced Options <span id="advancedToggle" style="font-size: 12px; color: #666;">▼</span>
                         </h4>
                         <div id="advancedOptions" style="display: none;">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                                <div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                                <div style="flex: 1; min-width: 200px;">
                                     <label style="display: block; margin-bottom: 8px; font-weight: 600;">Tile Thickness (for grout calc):</label>
                                     <select id="tileThickness" onchange="calculateSimpleTiles()" style="width: 100%; padding: 12px;">
                                         <option value="0.125">1/8"</option>
@@ -5868,7 +5868,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                         <option value="1">1"</option>
                                     </select>
                                 </div>
-                                <div>
+                                <div style="flex: 1; min-width: 200px;">
                                     <label style="display: block; margin-bottom: 8px; font-weight: 600;">Room Perimeter (for cuts):</label>
                                     <input type="number" id="roomPerimeter" step="0.1" min="0" placeholder="Total wall length" oninput="calculateSimpleTiles()" style="width: 100%; padding: 12px;">
                                 </div>
@@ -15445,17 +15445,29 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         }
 
         function getTileDimensions() {
-            // Get tile length
-            const lengthFeet = parseFloat(document.getElementById('tileLengthFeet').value) || 0;
-            const lengthInches = parseFloat(document.getElementById('tileLengthInches').value) || 0;
-            const lengthFraction = parseFloat(document.getElementById('tileLengthFraction').value) || 0;
-            const tileLength = lengthFeet * 12 + lengthInches + lengthFraction;
+            // Prefer smart input values if available
+            let tileLength = 0;
+            let tileWidth = 0;
             
-            // Get tile width
-            const widthFeet = parseFloat(document.getElementById('tileWidthFeet').value) || 0;
-            const widthInches = parseFloat(document.getElementById('tileWidthInches').value) || 0;
-            const widthFraction = parseFloat(document.getElementById('tileWidthFraction').value) || 0;
-            const tileWidth = widthFeet * 12 + widthInches + widthFraction;
+            if (typeof currentTileLengthInches !== 'undefined' && currentTileLengthInches > 0) {
+                tileLength = currentTileLengthInches;
+            } else {
+                // Fall back to legacy inputs
+                const lengthFeet = parseFloat(document.getElementById('tileLengthFeet').value) || 0;
+                const lengthInches = parseFloat(document.getElementById('tileLengthInches').value) || 0;
+                const lengthFraction = parseFloat(document.getElementById('tileLengthFraction').value) || 0;
+                tileLength = lengthFeet * 12 + lengthInches + lengthFraction;
+            }
+            
+            if (typeof currentTileWidthInches !== 'undefined' && currentTileWidthInches > 0) {
+                tileWidth = currentTileWidthInches;
+            } else {
+                // Fall back to legacy inputs
+                const widthFeet = parseFloat(document.getElementById('tileWidthFeet').value) || 0;
+                const widthInches = parseFloat(document.getElementById('tileWidthInches').value) || 0;
+                const widthFraction = parseFloat(document.getElementById('tileWidthFraction').value) || 0;
+                tileWidth = widthFeet * 12 + widthInches + widthFraction;
+            }
             
             return { length: tileLength, width: tileWidth };
         }
@@ -15592,13 +15604,14 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             const tileThickness = parseFloat(document.getElementById('tileThickness').value) || 0.25;
             const roomPerimeter = parseFloat(document.getElementById('roomPerimeter').value) || 0;
 
-            if (projectSqFt <= 0) {
-                document.getElementById('tileResults').innerHTML = '<p>Enter project square footage to see results.</p>';
+            // Check if we have valid dimensions
+            if (dimensions.length <= 0 || dimensions.width <= 0) {
+                document.getElementById('tileResults').innerHTML = '<p style="color: #007bff;">Enter valid tile dimensions to see calculations.</p>';
                 return;
             }
 
-            if (dimensions.length <= 0 || dimensions.width <= 0) {
-                document.getElementById('tileResults').innerHTML = '<p>Enter valid tile dimensions to see calculations.</p>';
+            if (projectSqFt <= 0) {
+                document.getElementById('tileResults').innerHTML = '<p>Enter project square footage to see results.</p>';
                 return;
             }
 
