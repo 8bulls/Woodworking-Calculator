@@ -589,7 +589,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         #smartTileLength,
         #smartTileWidth,
         .wide-input {
-            width: 450px;
+            width: 100%;
             max-width: 450px;
         }
 
@@ -4200,44 +4200,51 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             
             <!-- Equal Division Mode Content -->
             <div id="equalDivisionContent" class="mode-content">
-                <div class="settings-row">
-                    <label>Precision:</label>
-                    <select id="cutPrecision" onchange="updatePrecision('cut')">
-                        <option value="32">1/32"</option>
-                        <option value="16" selected>1/16"</option>
-                        <option value="8">1/8"</option>
-                        <option value="4">1/4"</option>
-                        <option value="2">1/2"</option>
-                        <option value="1">1"</option>
-                    </select>
+                <!-- Settings Panel -->
+                <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                        <!-- Left Column -->
+                        <div style="flex: 1; min-width: 250px;">
+                            <div class="settings-row" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Precision:</label>
+                                <select id="cutPrecision" onchange="updatePrecision('cut')" class="wide-input" style="width: 100%;">
+                                    <option value="32">1/32"</option>
+                                    <option value="16" selected>1/16"</option>
+                                    <option value="8">1/8"</option>
+                                    <option value="4">1/4"</option>
+                                    <option value="2">1/2"</option>
+                                    <option value="1">1"</option>
+                                </select>
+                            </div>
+                            
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div style="flex: 1; min-width: 250px;">
+                            <div class="settings-row" id="cutKerfRow" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Kerf Width:</label>
+                                <select id="cutKerf" class="wide-input" style="width: 100%;" onchange="updateKerfDiagram()">
+                                    <option value="0">None</option>
+                                    <option value="0.0625">1/16"</option>
+                                    <option value="0.09375">3/32"</option>
+                                    <option value="0.125" selected>1/8"</option>
+                                    <option value="0.1875">3/16"</option>
+                                </select>
+                            </div>
+                            
+                            <div class="settings-row" id="cutSideRow">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Cut Side:</label>
+                                <select id="cutSide" onchange="updateKerfDiagram()" class="wide-input" style="width: 100%;">
+                                    <option value="left">Left Side</option>
+                                    <option value="right">Right Side</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             
-            <div class="settings-row">
-                <label>
-                    <input type="checkbox" id="cutKerfEnabled" checked onchange="toggleKerfDisplay()"> 
-                    Kerf Compensation
-                </label>
-            </div>
-            
-            <div class="settings-row" id="cutKerfRow">
-                <label>Kerf:</label>
-                <select id="cutKerf">
-                    <option value="0.0625">1/16"</option>
-                    <option value="0.09375">3/32"</option>
-                    <option value="0.125" selected>1/8"</option>
-                    <option value="0.1875">3/16"</option>
-                </select>
-            </div>
-            
-            <div class="settings-row">
-                <label>Cut Side of Mark:</label>
-                <select id="cutSide" onchange="updateKerfDiagram()">
-                    <option value="left">Left Side</option>
-                    <option value="right">Right Side</option>
-                </select>
-            </div>
-            
-            <div class="kerf-diagram" id="kerfDiagram" style="display: none;">
+            <!-- Kerf Visualization -->
+            <div class="kerf-diagram" id="kerfDiagram" style="display: none; background: var(--surface-color); border-radius: 12px; margin-bottom: 20px;">
                 <svg width="100%" height="150" viewBox="0 0 400 150" style="max-width: 400px; margin: 0 auto; display: block;">
                     <!-- Grid pattern background -->
                     <defs>
@@ -4285,47 +4292,60 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 </svg>
             </div>
             
-            <div class="input-group">
-                <label>Board Length:</label>
-                <input type="text" id="smartCutLength" placeholder="Try: 8', 96&quot;, 8 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewCutLength', updateCutLengthValue)">
-            </div>
-            <div id="previewCutLength" class="input-preview"></div>
-            <div style="display: none;">
-                <!-- Hidden legacy inputs for backward compatibility -->
-                <input type="number" id="cutFeet" placeholder="0" min="0" class="wide-input" onchange="updateCutValue()">
-                <input type="number" id="cutInches" placeholder="0" min="0" max="11" class="wide-input" onchange="updateCutValue()">
-                <select id="cutFraction" style="width: 120px;" onchange="updateCutValue()">
-                    <option value="0">0</option>
-                </select>
-            </div>
-            
-            <div class="current-value" id="cutCurrentValue">
-                Enter measurement above
-            </div>
-            
-            <div class="division-controls">
+            <!-- Board Input Section -->
+            <div class="calc-section" style="margin-bottom: 25px;">
                 <div class="input-group">
-                    <label>Divide into:</label>
-                    <select id="divisionSelect" class="wide-input" onchange="performDivision()">
-                        <option value="">Select division...</option>
-                        <option value="2">Half (2 pieces)</option>
-                        <option value="3">Thirds (3 pieces)</option>
-                        <option value="4">Fourths (4 pieces)</option>
-                        <option value="5">Fifths (5 pieces)</option>
-                        <option value="6">Sixths (6 pieces)</option>
-                        <option value="8">Eighths (8 pieces)</option>
+                    <label style="display: block; margin-bottom: 10px; font-weight: 600; font-size: 16px; color: var(--primary-color);">Board Length:</label>
+                    <input type="text" id="smartCutLength" placeholder="Try: 8', 96&quot;, 8 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewCutLength', updateCutLengthValue)" style="font-size: 18px; padding: 15px;">
+                </div>
+                <div id="previewCutLength" class="input-preview"></div>
+                <div style="display: none;">
+                    <!-- Hidden legacy inputs for backward compatibility -->
+                    <input type="number" id="cutFeet" placeholder="0" min="0" class="wide-input" onchange="updateCutValue()">
+                    <input type="number" id="cutInches" placeholder="0" min="0" max="11" class="wide-input" onchange="updateCutValue()">
+                    <select id="cutFraction" style="width: 120px;" onchange="updateCutValue()">
+                        <option value="0">0</option>
                     </select>
                 </div>
+            </div>
+            
+            <!-- Division Controls -->
+            <div class="division-controls calc-section" style="background: var(--surface-color); border-radius: 12px; padding: 20px; margin-bottom: 25px;">
+                <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Division Options</h4>
                 
-                <div class="input-group" style="margin-top: 10px;">
-                    <label>Custom pieces:</label>
-                    <input type="number" id="customPieces" placeholder="# pieces" min="2" max="20" class="wide-input" onchange="performCustomDivision()">
-                    <button class="btn btn-secondary" onclick="clearCut()">Clear</button>
+                <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: end;">
+                    <div class="input-group">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Quick Division:</label>
+                        <select id="divisionSelect" class="wide-input" onchange="performDivision()" style="padding: 12px;">
+                            <option value="">Select division...</option>
+                            <option value="2">Half (2 pieces)</option>
+                            <option value="3">Thirds (3 pieces)</option>
+                            <option value="4">Fourths (4 pieces)</option>
+                            <option value="5">Fifths (5 pieces)</option>
+                            <option value="6">Sixths (6 pieces)</option>
+                            <option value="8">Eighths (8 pieces)</option>
+                        </select>
+                    </div>
+                    
+                    <div style="text-align: center; padding: 0 10px; color: var(--text-secondary); font-weight: 600;">OR</div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: end; margin-top: 15px;">
+                    <div class="input-group">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Custom Division:</label>
+                        <input type="number" id="customPieces" placeholder="Enter number of pieces" min="2" max="20" class="wide-input" onchange="performCustomDivision()" style="padding: 12px;">
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="clearCut()" style="padding: 12px 24px; height: fit-content;">Clear All</button>
                 </div>
             </div>
             
-                <div class="history" id="cutHistory">
-                    <!-- Results will appear here -->
+                <!-- Results Section -->
+                <div class="results-section">
+                    <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Cut Results</h4>
+                    <div class="history" id="cutHistory" style="max-height: 400px; overflow-y: auto;">
+                        <!-- Results will appear here -->
+                    </div>
                 </div>
             </div>
             
@@ -9563,8 +9583,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 return;
             }
             
-            const kerfEnabled = document.getElementById('cutKerfEnabled')?.checked;
-            const kerf = kerfEnabled ? parseFloat(document.getElementById('cutKerf')?.value || 0.125) : 0;
+            const kerfValue = parseFloat(document.getElementById('cutKerf')?.value || 0);
+            const kerf = kerfValue;
             const cutSide = document.getElementById('cutSide')?.value || 'left';
             const totalKerf = kerf * (pieces - 1);
             const pieceLength = (cutValueInches - totalKerf) / pieces;
@@ -9644,8 +9664,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         
         function generateVisualBoard(totalLength, cutMarks, pieces, pieceLength) {
-            const kerfEnabled = document.getElementById('cutKerfEnabled')?.checked;
-            const kerf = kerfEnabled ? parseFloat(document.getElementById('cutKerf')?.value || 0.125) : 0;
+            const kerfValue = parseFloat(document.getElementById('cutKerf')?.value || 0);
+            const kerf = kerfValue;
             const cutSide = document.getElementById('cutSide')?.value || 'left';
             
             // Generate cut marks and kerf cutouts positioned proportionally
@@ -9742,29 +9762,24 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         
         function toggleKerfDisplay() {
-            const cutKerfEnabled = document.getElementById('cutKerfEnabled')?.checked;
-            const optKerfEnabled = document.getElementById('optKerfEnabled')?.checked;
-            
-            const cutKerfRow = document.getElementById('cutKerfRow');
-            const optKerfRow = document.getElementById('optKerfRow');
-            
-            if (cutKerfRow) {
-                cutKerfRow.style.display = cutKerfEnabled ? 'flex' : 'none';
-            }
-            if (optKerfRow) {
-                optKerfRow.style.display = optKerfEnabled ? 'flex' : 'none';
-            }
-            
+            // Function no longer needed as kerf dropdown always visible
             updateKerfDiagram();
         }
         
         function updateKerfDiagram() {
-            const kerfEnabled = document.getElementById('cutKerfEnabled')?.checked;
+            const kerfValue = parseFloat(document.getElementById('cutKerf')?.value || 0);
+            const kerfEnabled = kerfValue > 0;
             const cutSide = document.getElementById('cutSide')?.value || 'right';
             const diagram = document.getElementById('kerfDiagram');
             const kerfArea = document.getElementById('kerfAreaSvg');
             const kerfLabel = document.getElementById('kerfLabelSvg');
-            const kerfWidth = parseFloat(document.getElementById('cutKerfSize')?.value || 0.125);
+            const kerfWidth = kerfValue;
+            const cutSideRow = document.getElementById('cutSideRow');
+            
+            // Show/hide cut side dropdown based on kerf selection
+            if (cutSideRow) {
+                cutSideRow.style.display = kerfEnabled ? 'block' : 'none';
+            }
             
             if (diagram) {
                 diagram.style.display = kerfEnabled ? 'flex' : 'none';
@@ -9994,12 +10009,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     optPrecision.value = cutPrecision;
                 }
                 
-                // Synchronize kerf settings
-                const cutKerfEnabled = document.getElementById('cutKerfEnabled')?.checked;
-                const optKerfEnabled = document.getElementById('optKerfEnabled');
-                if (optKerfEnabled) {
-                    optKerfEnabled.checked = cutKerfEnabled;
-                }
+                // Synchronize kerf settings between modes
                 
                 const cutKerf = document.getElementById('cutKerf')?.value;
                 const optKerf = document.getElementById('optKerf');
@@ -17665,6 +17675,9 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             updatePrecision('calculator');
             updatePrecision('cut');
             updatePrecision('optimizer');
+            
+            // Initialize kerf diagram state
+            updateKerfDiagram();
             updateWoodworkingFractions(); // Ensure woodworking fractions are initialized
             toggleKerfDisplay();
             
