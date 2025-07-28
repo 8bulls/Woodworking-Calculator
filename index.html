@@ -4998,7 +4998,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                 
                                 <div style="flex: 1; min-width: 200px;">
                                     <label style="display: block; margin-bottom: 8px; font-weight: 600;">Cut Type:</label>
-                                    <select id="singleCutType" onchange="calculateSingleMiter()" style="width: 100%; padding: 12px;">
+                                    <select id="singleCutType" oninput="calculateSingleMiter()" style="width: 100%; padding: 12px;">
                                         <option value="one-sided">One-sided (cut one end only)</option>
                                         <option value="dual-sided">Dual-sided (cut both ends)</option>
                                     </select>
@@ -5011,9 +5011,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             </div>
                             <div style="display: none;">
                                 <!-- Hidden legacy inputs for backward compatibility -->
-                                <input type="number" id="singleBoardWidthFeet" placeholder="0" min="0" class="wide-input" onchange="calculateSingleMiter()">
-                                <input type="number" id="singleBoardWidthInches" placeholder="3" min="0" max="11" class="wide-input" onchange="calculateSingleMiter()">
-                                <select id="singleBoardWidthFraction" style="width: 120px;" onchange="calculateSingleMiter()">
+                                <input type="number" id="singleBoardWidthFeet" placeholder="0" min="0" class="wide-input" oninput="calculateSingleMiter()">
+                                <input type="number" id="singleBoardWidthInches" placeholder="3" min="0" max="11" class="wide-input" oninput="calculateSingleMiter()">
+                                <select id="singleBoardWidthFraction" style="width: 120px;" oninput="calculateSingleMiter()">
                                     <option value="0" selected>0</option>
                                     <option value="0.0625">1/16"</option>
                                     <option value="0.125">1/8"</option>
@@ -5034,7 +5034,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             </div>
                             <div style="margin-top: 15px;">
                                 <label style="display: block; margin-bottom: 8px; font-weight: 600;">Known Side:</label>
-                                <select id="singleKnownSide" onchange="calculateSingleMiter()" style="width: 100%; padding: 12px;">
+                                <select id="singleKnownSide" oninput="calculateSingleMiter()" style="width: 100%; padding: 12px;">
                                     <option value="long">Long side (back)</option>
                                     <option value="short">Short side (front)</option>
                                 </select>
@@ -5053,9 +5053,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         
                         <div style="display: none;">
                                 <!-- Hidden legacy inputs for backward compatibility -->
-                                <input type="number" id="singleInputLengthFeet" placeholder="1" min="0" class="wide-input" onchange="calculateSingleMiter()">
-                                <input type="number" id="singleInputLengthInches" placeholder="0" min="0" max="11" class="wide-input" onchange="calculateSingleMiter()">
-                                <select id="singleInputLengthFraction" style="width: 120px;" onchange="calculateSingleMiter()">
+                                <input type="number" id="singleInputLengthFeet" placeholder="1" min="0" class="wide-input" oninput="calculateSingleMiter()">
+                                <input type="number" id="singleInputLengthInches" placeholder="0" min="0" max="11" class="wide-input" oninput="calculateSingleMiter()">
+                                <select id="singleInputLengthFraction" style="width: 120px;" oninput="calculateSingleMiter()">
                                     <option value="0" selected>0</option>
                                     <option value="0.0625">1/16"</option>
                                     <option value="0.125">1/8"</option>
@@ -5078,14 +5078,14 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     </div>
                     
                     <!-- Frame Builder Mode Inputs -->
-                    <div id="frameMiterInputs" class="mode-content" style="display: none;">
+                    <div id="frameMiterInputs" class="mode-content" style="display: block;">
                         <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
                             <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Frame Configuration</h4>
                             
                             <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;">
                                 <div style="flex: 1; min-width: 200px;">
                                     <label style="display: block; margin-bottom: 8px; font-weight: 600;">Frame Shape:</label>
-                                    <select id="frameShapeSides" onchange="updateFrameDimensionLabels(); calculateFrameBuilder()" style="width: 100%; padding: 12px;">
+                                    <select id="frameShapeSides" oninput="updateFrameDimensionLabels(); calculateFrameBuilder()" style="width: 100%; padding: 12px;">
                                         <option value="4" selected>Rectangle/Square</option>
                                         <option value="3">Triangle</option>
                                         <option value="6">Hexagon</option>
@@ -5097,7 +5097,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                 
                                 <div style="flex: 1; min-width: 200px;">
                                     <label style="display: block; margin-bottom: 8px; font-weight: 600;">Target Dimensions:</label>
-                                    <select id="frameDimensionType" onchange="updateFrameDimensionLabels(); calculateFrameBuilder()" style="width: 100%; padding: 12px;">
+                                    <select id="frameDimensionType" oninput="updateFrameDimensionLabels(); calculateFrameBuilder()" style="width: 100%; padding: 12px;">
                                         <option value="inside" selected>Inside Dimensions (opening size)</option>
                                         <option value="outside">Outside Dimensions (frame outer edge)</option>
                                     </select>
@@ -5111,9 +5111,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             </div>
                             <div style="display: none;">
                                 <!-- Hidden legacy inputs for backward compatibility -->
-                                <input type="number" id="frameMaterialWidthFeet" placeholder="0" min="0" class="wide-input" onchange="calculateFrameBuilder()">
-                                <input type="number" id="frameMaterialWidthInches" placeholder="2" min="0" max="11" class="wide-input" onchange="calculateFrameBuilder()">
-                                <select id="frameMaterialWidthFraction" style="width: 120px;" onchange="calculateFrameBuilder()">
+                                <input type="number" id="frameMaterialWidthFeet" placeholder="0" min="0" class="wide-input" oninput="calculateFrameBuilder()">
+                                <input type="number" id="frameMaterialWidthInches" placeholder="2" min="0" max="11" class="wide-input" oninput="calculateFrameBuilder()">
+                                <select id="frameMaterialWidthFraction" style="width: 120px;" oninput="calculateFrameBuilder()">
                                     <option value="0" selected>0</option>
                                     <option value="0.0625">1/16"</option>
                                     <option value="0.125">1/8"</option>
@@ -5147,9 +5147,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                 <div id="previewFrameWidth" class="input-preview"></div>
                                 <div style="display: none;">
                                     <!-- Hidden legacy inputs for backward compatibility -->
-                                    <input type="number" id="frameWidthFeet" placeholder="0" min="0" class="wide-input" onchange="calculateFrameBuilder()">
-                                    <input type="number" id="frameWidthInches" placeholder="8" min="0" max="11" class="wide-input" onchange="calculateFrameBuilder()">
-                                    <select id="frameWidthFraction" style="width: 120px;" onchange="calculateFrameBuilder()">
+                                    <input type="number" id="frameWidthFeet" placeholder="0" min="0" class="wide-input" oninput="calculateFrameBuilder()">
+                                    <input type="number" id="frameWidthInches" placeholder="8" min="0" max="11" class="wide-input" oninput="calculateFrameBuilder()">
+                                    <select id="frameWidthFraction" style="width: 120px;" oninput="calculateFrameBuilder()">
                                         <option value="0" selected>0</option>
                                         <option value="0.0625">1/16"</option>
                                         <option value="0.125">1/8"</option>
@@ -5175,9 +5175,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                 <div id="previewFrameHeight" class="input-preview"></div>
                                 <div style="display: none;">
                                     <!-- Hidden legacy inputs for backward compatibility -->
-                                    <input type="number" id="frameHeightFeet" placeholder="0" min="0" class="wide-input" onchange="calculateFrameBuilder()">
-                                    <input type="number" id="frameHeightInches" placeholder="10" min="0" max="11" class="wide-input" onchange="calculateFrameBuilder()">
-                                    <select id="frameHeightFraction" style="width: 120px;" onchange="calculateFrameBuilder()">
+                                    <input type="number" id="frameHeightFeet" placeholder="0" min="0" class="wide-input" oninput="calculateFrameBuilder()">
+                                    <input type="number" id="frameHeightInches" placeholder="10" min="0" max="11" class="wide-input" oninput="calculateFrameBuilder()">
+                                    <select id="frameHeightFraction" style="width: 120px;" oninput="calculateFrameBuilder()">
                                         <option value="0" selected>0</option>
                                         <option value="0.0625">1/16"</option>
                                         <option value="0.125">1/8"</option>
@@ -5207,9 +5207,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                 <div id="previewFramePolygon" class="input-preview"></div>
                                 <div style="display: none;">
                                     <!-- Hidden legacy inputs for backward compatibility -->
-                                    <input type="number" id="framePolygonFeet" placeholder="0" min="0" class="wide-input" onchange="calculateFrameBuilder()">
-                                    <input type="number" id="framePolygonInches" placeholder="12" min="0" max="11" class="wide-input" onchange="calculateFrameBuilder()">
-                                    <select id="framePolygonFraction" style="width: 120px;" onchange="calculateFrameBuilder()">
+                                    <input type="number" id="framePolygonFeet" placeholder="0" min="0" class="wide-input" oninput="calculateFrameBuilder()">
+                                    <input type="number" id="framePolygonInches" placeholder="12" min="0" max="11" class="wide-input" oninput="calculateFrameBuilder()">
+                                    <select id="framePolygonFraction" style="width: 120px;" oninput="calculateFrameBuilder()">
                                         <option value="0" selected>0</option>
                                         <option value="0.0625">1/16"</option>
                                         <option value="0.125">1/8"</option>
@@ -5244,8 +5244,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     </div>
                 </div>
             </div>
-
-            <!-- Screw & Pilot Hole Calculator -->
             <div class="calc-card" id="screwCard">
                 <div class="calc-card-header" onclick="toggleCalcCard('screw')">
                     <span class="calc-icon">🔩</span>
@@ -12049,13 +12047,18 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         // Removed old polygon calculateMiterAngle function
 
         function updateMiterDiagram() {
+            console.log('updateMiterDiagram called, currentMiterMode:', currentMiterMode);
             const container = document.getElementById('angleDiagramContainer');
-            if (!container) return;
+            if (!container) {
+                console.error('No diagram container found!');
+                return;
+            }
             
             if (currentMiterMode === 'frame') {
                 const sides = parseInt(document.getElementById('frameShapeSides').value) || 4;
                 const interiorAngle = ((sides - 2) * 180) / sides;
                 const miterAngle = (180 - interiorAngle) / 2;
+                console.log('Calling updateFrameDiagram with:', { sides, miterAngle });
                 updateFrameDiagram(container, sides, miterAngle);
             } else if (currentMiterMode === 'single') {
                 updateSingleBoardDiagram(container);
@@ -12068,7 +12071,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             const height = 300;
             const centerX = width / 2;
             const centerY = height / 2;
-            const radius = 120;
+            const radius = Math.min(width * 0.4, height * 0.4);
             
             // Calculate polygon points
             let points = [];
@@ -12117,40 +12120,104 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     }).join('')}
                     
                     <!-- Labels -->
-                    <text x="${centerX}" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--primary-color)">
-                        ${sides} Sides
+                    <text x="${centerX}" y="25" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--primary-color)">
+                        ${sides}-Sided Polygon
                     </text>
-                    <text x="${centerX}" y="${height - 20}" text-anchor="middle" font-size="16" fill="#666">
-                        Miter Angle: ${miterAngle.toFixed(1)}°
+                    <text x="${centerX}" y="${height - 40}" text-anchor="middle" font-size="18" fill="#dc3545" font-weight="bold">
+                        Miter: ${miterAngle.toFixed(1)}° | Interior: ${((sides - 2) * 180 / sides).toFixed(1)}°
+                    </text>
+                    <text x="${centerX}" y="${height - 18}" text-anchor="middle" font-size="16" fill="#666">
+                        Saw Setting: ${(90 - miterAngle).toFixed(1)}° | Pieces: ${sides}
                     </text>
                 </svg>
             `;
         }
 
         function updateFrameDiagram(container, sides, miterAngle) {
+            console.log('updateFrameDiagram called with:', { container, sides, miterAngle });
             const width = 600;
             const height = 300;
             const centerX = width / 2;
             const centerY = height / 2;
-            const outerRadius = 140;
-            const innerRadius = 100;
+            // Make frame fill most of the available space - use 80% of height
+            const maxRadius = height * 0.4;  // 40% of 300 = 120
+            const outerRadius = maxRadius;
+            const innerRadius = outerRadius * 0.7;  // Thicker frame material
+            console.log('Radius values:', { maxRadius, outerRadius, innerRadius });
+            
+            // Get frame dimensions from inputs
+            const frameResult = document.getElementById('frameBuilderResult');
+            let materialLength = '';
+            let cutListInfo = '';
+            let frameWidth = '';
+            let frameHeight = '';
+            
+            // Dimensions will be calculated below
+            
+            if (frameResult && frameResult.innerHTML.includes('result-value')) {
+                const resultText = frameResult.innerText || frameResult.textContent;
+                const lengthMatch = resultText.match(/(\d+['"\s\d\/]+) of material/);
+                if (lengthMatch) materialLength = lengthMatch[1];
+                const piecesMatch = resultText.match(/(\d+) pieces/);
+                if (piecesMatch) cutListInfo = `${piecesMatch[1]} pieces`;
+            }
             
             // Calculate polygon points for outer and inner
             let outerPoints = [];
             let innerPoints = [];
-            for (let i = 0; i < sides; i++) {
-                const angle = (i * 2 * Math.PI) / sides - Math.PI / 2;
-                outerPoints.push({
-                    x: centerX + outerRadius * Math.cos(angle),
-                    y: centerY + outerRadius * Math.sin(angle)
-                });
-                innerPoints.push({
-                    x: centerX + innerRadius * Math.cos(angle),
-                    y: centerY + innerRadius * Math.sin(angle)
-                });
+            
+            // For rectangles, adjust aspect ratio based on actual dimensions
+            let widthScale = 1;
+            let heightScale = 1;
+            let totalWidthInches = 0;
+            let totalHeightInches = 0;
+            
+            if (sides === 4) {
+                const widthFeet = parseInt(document.getElementById('frameWidthFeet').value) || 0;
+                const widthInches = parseInt(document.getElementById('frameWidthInches').value) || 0;
+                const widthFraction = parseFloat(document.getElementById('frameWidthFraction').value) || 0;
+                const heightFeet = parseInt(document.getElementById('frameHeightFeet').value) || 0;
+                const heightInches = parseInt(document.getElementById('frameHeightInches').value) || 0;
+                const heightFraction = parseFloat(document.getElementById('frameHeightFraction').value) || 0;
+                
+                totalWidthInches = widthFeet * 12 + widthInches + widthFraction;
+                totalHeightInches = heightFeet * 12 + heightInches + heightFraction;
+                
+                if (totalWidthInches > 0) frameWidth = inchesToFeet(totalWidthInches);
+                if (totalHeightInches > 0) frameHeight = inchesToFeet(totalHeightInches);
             }
             
-            container.innerHTML = `
+            if (sides === 4 && totalWidthInches > 0 && totalHeightInches > 0) {
+                const aspectRatio = totalWidthInches / totalHeightInches;
+                if (aspectRatio > 1) {
+                    heightScale = 1 / aspectRatio;
+                } else {
+                    widthScale = aspectRatio;
+                }
+            }
+            
+            for (let i = 0; i < sides; i++) {
+                // Rotate by 90 degrees for frames (add Math.PI/2)
+                const angle = (i * 2 * Math.PI) / sides - Math.PI / 2 + (sides === 4 ? Math.PI / 4 : 0);
+                const cosAngle = Math.cos(angle);
+                const sinAngle = Math.sin(angle);
+                
+                // Apply aspect ratio scaling for rectangles
+                const xScale = sides === 4 ? widthScale : 1;
+                const yScale = sides === 4 ? heightScale : 1;
+                
+                const outerX = centerX + outerRadius * cosAngle * xScale;
+                const outerY = centerY + outerRadius * sinAngle * yScale;
+                const innerX = centerX + innerRadius * cosAngle * xScale;
+                const innerY = centerY + innerRadius * sinAngle * yScale;
+                
+                console.log(`Point ${i}: outer(${outerX.toFixed(1)}, ${outerY.toFixed(1)}), inner(${innerX.toFixed(1)}, ${innerY.toFixed(1)})`);
+                
+                outerPoints.push({ x: outerX, y: outerY });
+                innerPoints.push({ x: innerX, y: innerY });
+            }
+            
+            const svgContent = `
                 <svg width="100%" height="300" viewBox="0 0 ${width} ${height}" style="max-width: 600px; margin: 0 auto; display: block;">
                     <defs>
                         <pattern id="frameGrid" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -12182,27 +12249,71 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         `;
                     }).join('')}
                     
-                    <!-- Miter lines -->
+                    <!-- Miter lines and angle annotations -->
                     ${outerPoints.map((outerP, i) => {
                         const innerP = innerPoints[i];
+                        const midX = (outerP.x + innerP.x) / 2;
+                        const midY = (outerP.y + innerP.y) / 2;
+                        const offsetX = (outerP.x - centerX) * 0.15;
+                        const offsetY = (outerP.y - centerY) * 0.15;
                         return `
                             <line x1="${outerP.x}" y1="${outerP.y}" 
                                   x2="${innerP.x}" y2="${innerP.y}" 
                                   stroke="#dc3545" 
-                                  stroke-width="1.5" 
-                                  stroke-dasharray="3,2"/>
+                                  stroke-width="2" 
+                                  stroke-dasharray="4,2"/>
+                            ${i < 2 ? `<text x="${midX + offsetX}" y="${midY + offsetY}" 
+                                  text-anchor="middle" font-size="14" fill="#dc3545" font-weight="bold">
+                                ${miterAngle.toFixed(0)}°
+                            </text>` : ''}
                         `;
                     }).join('')}
                     
+                    <!-- Add dimension lines for rectangles -->
+                    ${sides === 4 && frameWidth ? `
+                        <!-- Width dimension -->
+                        <line x1="${outerPoints[3].x}" y1="${outerPoints[3].y + 15}" 
+                              x2="${outerPoints[2].x}" y2="${outerPoints[2].y + 15}" 
+                              stroke="#666" stroke-width="1"/>
+                        <line x1="${outerPoints[3].x}" y1="${outerPoints[3].y + 10}" 
+                              x2="${outerPoints[3].x}" y2="${outerPoints[3].y + 20}" 
+                              stroke="#666" stroke-width="1"/>
+                        <line x1="${outerPoints[2].x}" y1="${outerPoints[2].y + 10}" 
+                              x2="${outerPoints[2].x}" y2="${outerPoints[2].y + 20}" 
+                              stroke="#666" stroke-width="1"/>
+                        <text x="${(outerPoints[2].x + outerPoints[3].x) / 2}" y="${outerPoints[2].y + 30}" 
+                              text-anchor="middle" font-size="16" fill="#666">${frameWidth}</text>
+                        
+                        <!-- Height dimension -->
+                        <line x1="${outerPoints[2].x + 15}" y1="${outerPoints[2].y}" 
+                              x2="${outerPoints[1].x + 15}" y2="${outerPoints[1].y}" 
+                              stroke="#666" stroke-width="1"/>
+                        <line x1="${outerPoints[2].x + 10}" y1="${outerPoints[2].y}" 
+                              x2="${outerPoints[2].x + 20}" y2="${outerPoints[2].y}" 
+                              stroke="#666" stroke-width="1"/>
+                        <line x1="${outerPoints[1].x + 10}" y1="${outerPoints[1].y}" 
+                              x2="${outerPoints[1].x + 20}" y2="${outerPoints[1].y}" 
+                              stroke="#666" stroke-width="1"/>
+                        <text x="${outerPoints[1].x + 30}" y="${(outerPoints[1].y + outerPoints[2].y) / 2 + 5}" 
+                              text-anchor="start" font-size="16" fill="#666">${frameHeight}</text>
+                    ` : ''}
+                    
                     <!-- Labels -->
-                    <text x="${centerX}" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--primary-color)">
+                    <text x="${centerX}" y="25" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--primary-color)">
                         ${sides === 4 ? 'Rectangle Frame' : sides === 3 ? 'Triangle Frame' : sides + '-Sided Frame'}
                     </text>
-                    <text x="${centerX}" y="${height - 20}" text-anchor="middle" font-size="16" fill="#666">
-                        Miter Angle: ${miterAngle.toFixed(1)}°
+                    <text x="${centerX}" y="${height - 25}" text-anchor="middle" font-size="18" fill="#666">
+                        ${materialLength ? `Material: ${materialLength}` : ''} ${materialLength && cutListInfo ? '|' : ''} ${cutListInfo}
+                    </text>
+                    <text x="${centerX}" y="${height - 8}" text-anchor="middle" font-size="14" fill="#999">
+                        Miter: ${miterAngle.toFixed(1)}° | Saw: ${(90 - miterAngle).toFixed(1)}°
                     </text>
                 </svg>
             `;
+            
+            // ACTUALLY SET THE CONTENT!
+            container.innerHTML = svgContent;
+            console.log('Container innerHTML set, length:', container.innerHTML.length);
         }
 
         function updateSingleBoardDiagram(container) {
@@ -12210,10 +12321,21 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             const boardWidth = currentSingleBoardWidthInches || 3;
             const cutType = document.getElementById('singleCutType').value;
             
+            // Get calculation results
+            const resultDiv = document.getElementById('singleMiterResult');
+            let longPoint = '', shortPoint = '';
+            if (resultDiv && resultDiv.innerHTML.includes('result-value')) {
+                const resultText = resultDiv.innerText || resultDiv.textContent;
+                const longMatch = resultText.match(/Long point: ([^\n]+)/);
+                const shortMatch = resultText.match(/Short point: ([^\n]+)/);
+                if (longMatch) longPoint = longMatch[1];
+                if (shortMatch) shortPoint = shortMatch[1];
+            }
+            
             const width = 600;
             const height = 300;
-            const boardLength = 420;
-            const boardHeight = Math.min(100, Math.max(50, boardWidth * 15));
+            const boardLength = width * 0.8;
+            const boardHeight = Math.min(height * 0.35, Math.max(60, boardWidth * 20));
             const centerX = width / 2;
             const centerY = height / 2;
             
@@ -12279,12 +12401,15 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     </g>
                     
                     <!-- Labels -->
-                    <text x="${centerX}" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--primary-color)">
+                    <text x="${centerX}" y="25" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--primary-color)">
                         ${cutType === 'dual-sided' ? 'Dual-Sided' : 'Single-Sided'} Miter Cut
                     </text>
-                    <text x="${centerX}" y="${height - 20}" text-anchor="middle" font-size="16" fill="#666">
-                        Miter Angle: ${angle}° | Board Width: ${boardWidth}"
+                    <text x="${centerX}" y="${height - 40}" text-anchor="middle" font-size="18" fill="#dc3545" font-weight="bold">
+                        Miter: ${angle}° | Saw Setting: ${(90 - angle).toFixed(1)}°
                     </text>
+                    ${longPoint || shortPoint ? `<text x="${centerX}" y="${height - 18}" text-anchor="middle" font-size="16" fill="#666">
+                        ${longPoint ? `Long: ${longPoint}` : ''} ${longPoint && shortPoint ? '|' : ''} ${shortPoint ? `Short: ${shortPoint}` : ''}
+                    </text>` : ''}
                 </svg>
             `;
         }
@@ -12520,18 +12645,12 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             showSaveToProjectModal('Golden Ratio Calculator', data, 'goldenDiagramContainer');
         }
 
-        function setAngleSides(sides) {
-            document.getElementById('maSides').value = sides;
-            calculateMiterAngle();
-        }
+        // Removed setAngleSides function (polygon mode removed)
 
         let currentMiterMode = 'frame'; // Default mode: frame builder
         
         function clearMiterCalculator(mode) {
-            if (mode === 'polygon') {
-                document.getElementById('maSides').value = '4';
-                calculateMiterAngle();
-            } else if (mode === 'single') {
+            if (mode === 'single') {
                 document.getElementById('singleMiterAngle').value = '';
                 document.getElementById('smartSingleBoardWidth').value = '';
                 document.getElementById('previewSingleBoardWidth').textContent = '';
@@ -12773,6 +12892,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         function updateFrameDimensionLabels() {
             const dimensionType = document.getElementById('frameDimensionType').value;
             const sides = parseInt(document.getElementById('frameShapeSides').value);
+            
+            // Update diagram immediately when shape changes
+            updateMiterDiagram();
             
             // Update labels based on inside/outside selection
             if (sides === 4) {
@@ -18491,7 +18613,6 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             updateConversionPreview();
             
             // Initialize diagrams
-            calculateMiterAngle(); // Initialize the miter angle diagram
             
             // Auto-save on input changes removed - now using manual "Save to Project" workflow
             
