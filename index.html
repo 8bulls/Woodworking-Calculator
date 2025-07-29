@@ -550,6 +550,81 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             color: var(--text-on-primary);
         }
         
+        /* Mobile header fixes */
+        @media (max-width: 600px) {
+            .header-top-row {
+                padding: 0 10px;
+            }
+            
+            .header-top-row .dad-joke-btn {
+                left: 10px;
+                font-size: 20px;
+                padding: 5px;
+            }
+            
+            .header-top-row .help-btn:not(.dad-joke-btn) {
+                right: 10px;
+                font-size: 16px;
+                padding: 6px 10px;
+            }
+            
+            h1 {
+                font-size: 20px;
+                padding: 0 50px; /* Space for buttons */
+            }
+            
+            .header-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .theme-selector, .mode-selector {
+                width: 100%;
+            }
+            
+            .theme-selector select, .mode-selector select {
+                width: 100%;
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 18px;
+                padding: 0 45px;
+            }
+            
+            .header-top-row .dad-joke-btn {
+                font-size: 18px;
+                padding: 4px;
+            }
+            
+            .header-top-row .help-btn:not(.dad-joke-btn) {
+                font-size: 14px;
+                padding: 5px 8px;
+            }
+        }
+        
+        @media (max-width: 380px) {
+            h1 {
+                font-size: 16px;
+                line-height: 1.2;
+                padding: 0 40px;
+            }
+            
+            .header-top-row .dad-joke-btn {
+                font-size: 16px;
+                left: 5px;
+            }
+            
+            .header-top-row .help-btn:not(.dad-joke-btn) {
+                right: 5px;
+                padding: 4px 6px;
+                font-size: 12px;
+            }
+        }
+        
         .tab-content {
             display: none;
         }
