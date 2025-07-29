@@ -14803,17 +14803,37 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 if (rails.length > 0) {
                     railMarkingGuide = `
                         <div class="divider-marks" style="margin-top: 15px;">
-                            <div class="marks-header" style="font-weight: bold; margin-bottom: 8px; color: var(--primary-color);">
-                                📐 Rail Marking Guide (from ${cabinetLayoutDirection === 'bottom-up' ? 'bottom' : 'top'}):
+                            <div class="marks-header" style="font-weight: bold; margin-bottom: 10px; color: var(--primary-color); font-size: 14px;">
+                                📐 Rail Marking Guide (measuring from ${cabinetLayoutDirection === 'bottom-up' ? 'bottom' : 'top'})
                             </div>
-                            ${rails.map(rail => `
-                                <div class="divider-mark-row" style="margin-bottom: 6px; padding: 5px; background: #f8f9fa; border-radius: 4px;">
-                                    <span class="divider-label" style="font-weight: 600; min-width: 60px; display: inline-block;">Rail ${rail.number}:</span>
-                                    <span class="mark-left" style="margin: 0 10px;">Bottom edge at ${inchesToDisplay(cabinetLayoutDirection === 'bottom-up' ? rail.bottom : currentCabinetHeightInches - rail.top)}</span>
-                                    <span class="mark-center" style="margin: 0 10px;">Center at ${inchesToDisplay(cabinetLayoutDirection === 'bottom-up' ? rail.bottom + rail.thickness/2 : currentCabinetHeightInches - (rail.bottom + rail.thickness/2))}</span>
-                                    <span class="mark-right">Top edge at ${inchesToDisplay(cabinetLayoutDirection === 'bottom-up' ? rail.top : currentCabinetHeightInches - rail.bottom)}</span>
-                                </div>
-                            `).join('')}
+                            <div style="display: grid; gap: 10px;">
+                                ${rails.map(rail => {
+                                    const bottomMark = cabinetLayoutDirection === 'bottom-up' ? rail.bottom : currentCabinetHeightInches - rail.top;
+                                    const centerMark = cabinetLayoutDirection === 'bottom-up' ? rail.bottom + rail.thickness/2 : currentCabinetHeightInches - (rail.bottom + rail.thickness/2);
+                                    const topMark = cabinetLayoutDirection === 'bottom-up' ? rail.top : currentCabinetHeightInches - rail.bottom;
+                                    
+                                    return `
+                                    <div style="background: #f8f9fa; border-radius: 8px; padding: 12px; border: 1px solid #e0e0e0;">
+                                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                                            <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: var(--primary-color); color: white; border-radius: 50%; font-size: 12px; font-weight: bold;">
+                                                ${rail.number}
+                                            </span>
+                                            <span style="font-weight: 600; color: var(--primary-color); font-size: 13px;">
+                                                Mark ${rail.number} - Rail ${rail.number}
+                                            </span>
+                                        </div>
+                                        <div style="display: grid; grid-template-columns: auto 1fr; gap: 6px 15px; font-size: 12px;">
+                                            <span style="color: #666;">Bottom:</span>
+                                            <span style="font-weight: 500;">${inchesToDisplay(bottomMark)}</span>
+                                            <span style="color: #666;">Center:</span>
+                                            <span style="font-weight: 500; color: var(--primary-color);">${inchesToDisplay(centerMark)}</span>
+                                            <span style="color: #666;">Top:</span>
+                                            <span style="font-weight: 500;">${inchesToDisplay(topMark)}</span>
+                                        </div>
+                                    </div>
+                                    `;
+                                }).join('')}
+                            </div>
                         </div>
                     `;
                 }
@@ -15204,30 +15224,18 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     </text>
                 `;
                 
-                // Add dimension line from bottom/top
-                const dimX = offsetX + cabinetPixelWidth + 20;
-                let dimStartY, dimEndY, dimLabel;
+                // Add simple mark designator
+                const markX = offsetX + cabinetPixelWidth + 20;
+                const markY = railY + railHeight/2;
                 
-                if (layoutData.layoutDirection === 'bottom-up') {
-                    // Measure from bottom
-                    dimStartY = offsetY + cabinetPixelHeight;
-                    dimEndY = railY + railHeight/2;
-                    dimLabel = inchesToDisplay(rail.bottom + rail.thickness/2);
-                } else {
-                    // Measure from top
-                    dimStartY = offsetY;
-                    dimEndY = railY + railHeight/2;
-                    dimLabel = inchesToDisplay(layoutData.cabinetHeight - (rail.bottom + rail.thickness/2));
-                }
-                
-                // Dimension line
+                // Simple mark indicator
                 dimensionLines += `
-                    <line x1="${dimX}" y1="${dimStartY}" x2="${dimX}" y2="${dimEndY}" 
-                          stroke="#666" stroke-width="1" marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
-                    <text x="${dimX + 15}" y="${(dimStartY + dimEndY)/2 + 4}" 
-                          font-size="10" fill="#666" text-anchor="start">
-                        ${dimLabel}
+                    <circle cx="${markX}" cy="${markY}" r="12" fill="var(--primary-color)" opacity="0.9"/>
+                    <text x="${markX}" y="${markY + 4}" text-anchor="middle" font-size="11" fill="white" font-weight="bold">
+                        ${rail.number}
                     </text>
+                    <line x1="${offsetX + cabinetPixelWidth}" y1="${markY}" x2="${markX - 12}" y2="${markY}" 
+                          stroke="var(--primary-color)" stroke-width="1" stroke-dasharray="2,2" opacity="0.5"/>
                 `;
                 
                 // Rail thickness dimension
@@ -15258,20 +15266,6 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                           fill="#f0f0f0" stroke="none" opacity="0.3"/>
                 `;
                 
-                // Drawer height dimension on the right
-                const heightX = offsetX + cabinetPixelWidth + 50;
-                dimensionLines += `
-                    <line x1="${heightX}" y1="${drawerY}" x2="${heightX}" y2="${drawerY + drawerHeight}" 
-                          stroke="#999" stroke-width="1"/>
-                    <line x1="${heightX - 3}" y1="${drawerY}" x2="${heightX + 3}" y2="${drawerY}" 
-                          stroke="#999" stroke-width="1"/>
-                    <line x1="${heightX - 3}" y1="${drawerY + drawerHeight}" x2="${heightX + 3}" y2="${drawerY + drawerHeight}" 
-                          stroke="#999" stroke-width="1"/>
-                    <text x="${heightX + 5}" y="${drawerY + drawerHeight/2 + 3}" 
-                          font-size="9" fill="#999" text-anchor="start">
-                        Opening ${drawer.number}: ${inchesToDisplay(drawer.height)}
-                    </text>
-                `;
             });
             
             // Add all dimension lines
