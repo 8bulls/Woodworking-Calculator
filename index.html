@@ -4285,15 +4285,45 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         <!-- Specialty Calculators Tab -->
         <div id="specialty" class="tab-content">
+            <!-- Recently Used Calculators -->
+            <div id="recentCalculatorsSection" class="settings-panel" style="background: #f8f9fa; border-radius: 8px; padding: 12px 15px; margin-bottom: 15px;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span style="color: var(--primary-color); font-size: 14px; font-weight: 600; white-space: nowrap;">⚡ Recent:</span>
+                    <div id="recentCalculatorsGrid" style="display: flex; gap: 10px; flex-wrap: wrap; flex: 1;">
+                        <!-- Recent calculator cards will be dynamically generated here -->
+                    </div>
+                    <div id="noRecentCalculators" style="color: #999; font-size: 13px; font-style: italic;">
+                        Use calculators to see quick access here
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Search Box -->
+            <div style="margin-bottom: 15px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                <div style="position: relative;">
+                    <input type="text" id="calcSearchInput" placeholder="Search calculators..." 
+                           style="width: 100%; padding: 10px 40px 10px 15px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 15px;"
+                           oninput="filterCalculators()">
+                    <button onclick="clearCalculatorSearch()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #666; font-size: 16px;">✕</button>
+                </div>
+            </div>
+            
             <!-- Expand/Collapse All Controls -->
-            <div id="expandCollapseControls" style="text-align: center; margin-bottom: 20px; padding: 15px; background: var(--surface-color); border-radius: 8px;">
-                <button class="btn btn-secondary" onclick="expandAllCalculators()" style="margin-right: 10px;">
+            <div id="expandCollapseControls" style="text-align: center; margin-bottom: 15px; padding: 10px; background: var(--surface-color); border-radius: 8px;">
+                <button class="btn btn-sm btn-secondary" onclick="expandAllCalculators()" style="margin-right: 10px; padding: 6px 12px; font-size: 13px;">
                     📖 Expand All
                 </button>
-                <button class="btn btn-secondary" onclick="collapseAllCalculators()">
+                <button class="btn btn-sm btn-secondary" onclick="collapseAllCalculators()" style="padding: 6px 12px; font-size: 13px;">
                     📚 Collapse All
                 </button>
             </div>
+            
+            <!-- Materials & Shopping Category -->
+            <div class="calc-category-header" style="background: #e3f2fd; padding: 12px 20px; margin: 20px 0 15px 0; border-radius: 8px; border-left: 4px solid var(--primary-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCategory('materials')">
+                <h3 style="margin: 0; color: var(--primary-color); font-size: 18px; font-weight: 600;">📦 Materials & Shopping</h3>
+                <span class="category-arrow" id="materials-arrow">▶</span>
+            </div>
+            <div class="calc-category-content" id="materials-content" style="display: none;">
             
             <!-- Board Foot Calculator -->
             <div class="calc-card" id="boardFootCard">
@@ -4448,6 +4478,15 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     </div>
                 </div>
             </div>
+            
+            </div> <!-- End Materials & Shopping Category -->
+            
+            <!-- Measurements & Layout Category -->
+            <div class="calc-category-header" style="background: #e3f2fd; padding: 12px 20px; margin: 20px 0 15px 0; border-radius: 8px; border-left: 4px solid var(--primary-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCategory('measurements')">
+                <h3 style="margin: 0; color: var(--primary-color); font-size: 18px; font-weight: 600;">📏 Measurements & Layout</h3>
+                <span class="category-arrow" id="measurements-arrow">▶</span>
+            </div>
+            <div class="calc-category-content" id="measurements-content" style="display: none;">
 
             <!-- Golden Ratio Calculator -->
             <div class="calc-card" id="goldenRatioCard">
@@ -4690,6 +4729,15 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     </div>
                 </div>
             </div>
+            
+            </div> <!-- End Measurements & Layout Category -->
+            
+            <!-- Angles & Joinery Category -->
+            <div class="calc-category-header" style="background: #e3f2fd; padding: 12px 20px; margin: 20px 0 15px 0; border-radius: 8px; border-left: 4px solid var(--primary-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCategory('angles')">
+                <h3 style="margin: 0; color: var(--primary-color); font-size: 18px; font-weight: 600;">🔧 Angles & Joinery</h3>
+                <span class="category-arrow" id="angles-arrow">▶</span>
+            </div>
+            <div class="calc-category-content" id="angles-content" style="display: none;">
 
             <!-- Miter Angle Calculator -->
             <div class="calc-card" id="angleCard">
@@ -5234,6 +5282,15 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     </div>
                 </div>
             </div>
+            
+            </div> <!-- End Angles & Joinery Category -->
+            
+            <!-- Construction Category -->
+            <div class="calc-category-header" style="background: #e3f2fd; padding: 12px 20px; margin: 20px 0 15px 0; border-radius: 8px; border-left: 4px solid var(--primary-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCategory('construction')">
+                <h3 style="margin: 0; color: var(--primary-color); font-size: 18px; font-weight: 600;">🏗️ Construction</h3>
+                <span class="category-arrow" id="construction-arrow">▶</span>
+            </div>
+            <div class="calc-category-content" id="construction-content" style="display: none;">
 
             <!-- Grade/Slope Calculator -->
             <div class="calc-card" id="gradeCard">
@@ -6085,6 +6142,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     </div>
                 </div>
             </div>
+            
+            </div> <!-- End Construction Category -->
         </div> <!-- End of specialty tab-content -->
 
         <!-- Projects Tab -->
@@ -11315,6 +11374,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 if (uiConfig.preferences.rememberCollapsedState) {
                     localStorage.setItem(`calc-${cardType}-collapsed`, 'false');
                 }
+                // Track calculator usage when expanded
+                trackCalculatorUsage(cardType);
             } else {
                 content.style.display = 'none';
                 arrow.textContent = '▼';
@@ -11338,6 +11399,181 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         
         // Expand/Collapse All Functions
+        // Calculator tracking and filtering functions
+        function trackCalculatorUsage(calcId) {
+            // Get calculator info
+            const calcInfo = getCalculatorInfo(calcId);
+            if (!calcInfo) return;
+            
+            // Get recent calculators from localStorage
+            let recentCalcs = JSON.parse(localStorage.getItem('recentCalculators') || '[]');
+            
+            // Remove if already exists (to move to front)
+            recentCalcs = recentCalcs.filter(id => id !== calcId);
+            
+            // Add to front
+            recentCalcs.unshift(calcId);
+            
+            // Keep only last 3
+            recentCalcs = recentCalcs.slice(0, 3);
+            
+            // Save to localStorage
+            localStorage.setItem('recentCalculators', JSON.stringify(recentCalcs));
+            
+            // Update UI
+            updateRecentCalculators();
+        }
+        
+        function getCalculatorInfo(calcId) {
+            const calculatorMap = {
+                'boardFoot': { name: 'Lumber Shopping Cart', icon: '📏' },
+                'goldenRatio': { name: 'Golden Ratio Calculator', icon: '✨' },
+                'spacing': { name: 'Shelf & Division Calculator', icon: '📐' },
+                'angle': { name: 'Miter Angle Calculator', icon: '📐' },
+                'screw': { name: 'Screw & Pilot Hole Calculator', icon: '🔩' },
+                'grade': { name: 'Grade/Slope Calculator', icon: '📐' },
+                'tile': { name: 'Tile & Paver Calculator', icon: '🔲' },
+                'cutCalc': { name: 'Cut Calculator', icon: '✂️' },
+                'woodSpecies': { name: 'Wood Species Database', icon: '🌳' }
+            };
+            return calculatorMap[calcId];
+        }
+        
+        function updateRecentCalculators() {
+            const recentCalcs = JSON.parse(localStorage.getItem('recentCalculators') || '[]');
+            const grid = document.getElementById('recentCalculatorsGrid');
+            const noRecent = document.getElementById('noRecentCalculators');
+            
+            if (recentCalcs.length === 0) {
+                grid.style.display = 'none';
+                noRecent.style.display = 'block';
+            } else {
+                grid.style.display = 'flex';
+                noRecent.style.display = 'none';
+                
+                grid.innerHTML = recentCalcs.map(calcId => {
+                    const info = getCalculatorInfo(calcId);
+                    if (!info) return '';
+                    
+                    return `
+                        <div class="recent-calc-card" style="background: white; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px;"
+                             onclick="jumpToCalculator('${calcId}')"
+                             onmouseover="this.style.borderColor='var(--primary-color)'; this.style.backgroundColor='var(--surface-color)'"
+                             onmouseout="this.style.borderColor='var(--border-color)'; this.style.backgroundColor='white'">
+                            <span style="font-size: 16px;">${info.icon}</span>
+                            <span style="font-size: 13px; color: var(--text-primary);">${info.name}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+        
+        function jumpToCalculator(calcId) {
+            // Find and scroll to calculator
+            const calcCard = document.getElementById(calcId + 'Card');
+            if (calcCard) {
+                // First, expand the category if it's collapsed
+                const categoryContent = calcCard.closest('.calc-category-content');
+                if (categoryContent && categoryContent.style.display === 'none') {
+                    const categoryId = categoryContent.id.replace('-content', '');
+                    toggleCategory(categoryId);
+                }
+                
+                // Scroll to calculator
+                setTimeout(() => {
+                    calcCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+                
+                // Expand calculator
+                const content = document.getElementById(calcId + 'Content');
+                const arrow = document.querySelector(`#${calcId}Card .calc-arrow`);
+                if (content && content.style.display !== 'block') {
+                    content.style.display = 'block';
+                    arrow.textContent = '▲';
+                }
+                
+                // Brief highlight effect
+                calcCard.style.transition = 'background-color 0.3s';
+                calcCard.style.backgroundColor = 'var(--primary-color-light)';
+                setTimeout(() => {
+                    calcCard.style.backgroundColor = '';
+                }, 1000);
+            }
+        }
+        
+        function filterCalculators() {
+            const searchTerm = document.getElementById('calcSearchInput').value.toLowerCase();
+            const calcCards = document.querySelectorAll('.calc-card');
+            const categoryHeaders = document.querySelectorAll('.calc-category-header');
+            const categoryContents = document.querySelectorAll('.calc-category-content');
+            
+            if (!searchTerm) {
+                // Show all calculators and headers, but keep categories collapsed
+                calcCards.forEach(card => card.style.display = 'block');
+                categoryHeaders.forEach(header => header.style.display = 'flex');
+            } else {
+                // Expand all categories for search
+                categoryContents.forEach(content => {
+                    content.style.display = 'block';
+                    const categoryId = content.id.replace('-content', '');
+                    const arrow = document.getElementById(categoryId + '-arrow');
+                    if (arrow) arrow.textContent = '▼';
+                });
+                
+                // Filter based on search
+                calcCards.forEach(card => {
+                    const title = card.querySelector('.calc-title')?.textContent.toLowerCase() || '';
+                    const description = card.querySelector('.calc-description')?.textContent.toLowerCase() || '';
+                    
+                    if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Hide empty categories
+                categoryContents.forEach(content => {
+                    const calcCardsInCategory = content.querySelectorAll('.calc-card');
+                    let hasVisibleCalc = false;
+                    
+                    calcCardsInCategory.forEach(card => {
+                        if (card.style.display !== 'none') {
+                            hasVisibleCalc = true;
+                        }
+                    });
+                    
+                    const categoryId = content.id.replace('-content', '');
+                    const header = content.previousElementSibling;
+                    
+                    if (!hasVisibleCalc) {
+                        header.style.display = 'none';
+                        content.style.display = 'none';
+                    } else {
+                        header.style.display = 'flex';
+                    }
+                });
+            }
+        }
+        
+        function clearCalculatorSearch() {
+            document.getElementById('calcSearchInput').value = '';
+            filterCalculators();
+        }
+        
+        function toggleCategory(categoryId) {
+            const content = document.getElementById(categoryId + '-content');
+            const arrow = document.getElementById(categoryId + '-arrow');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                arrow.textContent = '▼';
+            } else {
+                content.style.display = 'none';
+                arrow.textContent = '▶';
+            }
+        }
+        
         function expandAllCalculators() {
             calculatorRegistry.calculators.forEach(calc => {
                 calc.expand();
@@ -19129,6 +19365,9 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             
             // Initialize projects dashboard
             updateProjectsDashboard();
+            
+            // Initialize recent calculators
+            updateRecentCalculators();
             
             // Debug function for Wood Species visibility
             window.debugWoodSpecies = function() {
