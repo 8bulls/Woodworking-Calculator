@@ -4805,6 +4805,187 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 </div>
             </div>
             
+            <!-- Cabinet Drawer & Face Frame Layout Calculator -->
+            <div class="calc-card" id="cabinetDrawerCard">
+                <div class="calc-card-header" onclick="toggleCalcCard('cabinetDrawer')">
+                    <span class="calc-icon">🗄️</span>
+                    <span class="calc-title">Cabinet Drawer & Face Frame Layout</span>
+                    <span class="calc-arrow">▼</span>
+                </div>
+                <div class="calc-card-content" id="cabinetDrawerContent">
+                    <div class="calc-description">Design drawer fronts and face frame rails for inset and overlay cabinetry</div>
+                    
+                    <!-- Visual Preview Panel -->
+                    <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Visual Preview</h4>
+                        <div class="calc-visual" id="cabinetDiagramContainer">
+                            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                                <!-- Front View -->
+                                <div style="text-align: center;">
+                                    <h5 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 14px;">Front View</h5>
+                                    <svg id="cabinetFrontView" width="300" height="400" viewBox="0 0 300 400" style="border: 1px solid #ddd; border-radius: 4px; background: white;">
+                                        <defs>
+                                            <pattern id="drawerWood" patternUnits="userSpaceOnUse" width="60" height="30">
+                                                <rect width="60" height="30" fill="#D2691E"/>
+                                                <path d="M0,5 Q15,3 30,5 T60,5" stroke="#BC611A" stroke-width="0.8" fill="none"/>
+                                                <path d="M0,15 Q10,12 20,15 T60,15" stroke="#C86A1C" stroke-width="1" fill="none"/>
+                                                <path d="M0,25 Q20,22 40,25 T60,25" stroke="#BC611A" stroke-width="0.9" fill="none"/>
+                                            </pattern>
+                                            <pattern id="railWood" patternUnits="userSpaceOnUse" width="60" height="20">
+                                                <rect width="60" height="20" fill="#8B4513"/>
+                                                <path d="M0,5 Q15,4 30,5 T60,5" stroke="#7A3A0F" stroke-width="0.8" fill="none"/>
+                                                <path d="M0,15 Q20,14 40,15 T60,15" stroke="#7A3A0F" stroke-width="0.8" fill="none"/>
+                                            </pattern>
+                                        </defs>
+                                        <!-- Cabinet outline -->
+                                        <rect x="20" y="20" width="260" height="360" fill="none" stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+                                        <text x="150" y="200" text-anchor="middle" font-size="14" fill="#999">
+                                            Configure cabinet to see layout
+                                        </text>
+                                    </svg>
+                                </div>
+                                <!-- Side View -->
+                                <div style="text-align: center;">
+                                    <h5 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 14px;">Side Profile</h5>
+                                    <svg id="cabinetSideView" width="200" height="400" viewBox="0 0 200 400" style="border: 1px solid #ddd; border-radius: 4px; background: white;">
+                                        <!-- Cabinet side outline -->
+                                        <rect x="50" y="20" width="100" height="360" fill="none" stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+                                        <text x="100" y="200" text-anchor="middle" font-size="14" fill="#999">
+                                            Side profile
+                                        </text>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Calculator Inputs -->
+                    <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Cabinet Configuration</h4>
+                        
+                        <!-- Cabinet Dimensions -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Opening Height:</label>
+                                <input type="text" id="smartCabinetHeight" placeholder="Try: 30&quot;, 2'6&quot;, 762mm" class="wide-input" 
+                                       oninput="handleSmartInput(this, 'previewCabinetHeight', updateCabinetHeightValue)" style="padding: 12px;">
+                                <div id="previewCabinetHeight" class="input-preview"></div>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Opening Width:</label>
+                                <input type="text" id="smartCabinetWidth" placeholder="Try: 24&quot;, 2', 610mm" class="wide-input" 
+                                       oninput="handleSmartInput(this, 'previewCabinetWidth', updateCabinetWidthValue)" style="padding: 12px;">
+                                <div id="previewCabinetWidth" class="input-preview"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Frame Style Selection -->
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Frame Style:</label>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="mode-btn active" onclick="setFrameStyle('inset')" id="frameStyleInset" style="flex: 1;">Inset</button>
+                                <button class="mode-btn" onclick="setFrameStyle('overlay')" id="frameStyleOverlay" style="flex: 1;">Overlay</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Drawer Configuration Mode -->
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Drawer Heights:</label>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="mode-btn active" onclick="setCabinetDrawerMode('equal')" id="drawerModeEqual" style="flex: 1;">Equal Heights</button>
+                                <button class="mode-btn" onclick="setCabinetDrawerMode('custom')" id="drawerModeCustom" style="flex: 1;">Custom Heights</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Equal Mode Input -->
+                        <div id="equalDrawerInput" style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Number of Drawers:</label>
+                            <input type="number" id="numDrawers" min="1" max="10" value="3" 
+                                   oninput="calculateCabinetLayout()" style="width: 100px; padding: 12px;">
+                        </div>
+                        
+                        <!-- Custom Mode Input -->
+                        <div id="customDrawerInput" style="display: none; margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Custom Drawer Heights:</label>
+                            <div id="customDrawerList" style="margin-bottom: 10px;">
+                                <!-- Dynamic drawer inputs will be added here -->
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="addCustomDrawer()">+ Add Drawer</button>
+                        </div>
+                        
+                        <!-- Inset Settings -->
+                        <div id="insetSettings" style="margin-bottom: 20px;">
+                            <h5 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 14px;">Reveal Settings (Inset)</h5>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 5px; font-size: 13px;">Horizontal Reveal:</label>
+                                    <input type="text" id="smartHorizontalReveal" placeholder="1/8&quot; typical" class="wide-input" 
+                                           value="0.125" oninput="handleSmartInput(this, 'previewHReveal', updateHorizontalRevealValue)" style="padding: 10px;">
+                                    <div id="previewHReveal" class="input-preview"></div>
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 5px; font-size: 13px;">Vertical Reveal:</label>
+                                    <input type="text" id="smartVerticalReveal" placeholder="1/8&quot; typical" class="wide-input" 
+                                           value="0.125" oninput="handleSmartInput(this, 'previewVReveal', updateVerticalRevealValue)" style="padding: 10px;">
+                                    <div id="previewVReveal" class="input-preview"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Overlay Settings -->
+                        <div id="overlaySettings" style="display: none; margin-bottom: 20px;">
+                            <h5 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 14px;">Overlay Settings</h5>
+                            <label style="display: block; margin-bottom: 5px; font-size: 13px;">Overlay Amount:</label>
+                            <input type="text" id="smartOverlayAmount" placeholder="3/4&quot; typical" class="wide-input" 
+                                   value="0.75" oninput="handleSmartInput(this, 'previewOverlay', updateOverlayAmountValue)" style="padding: 10px;">
+                            <div id="previewOverlay" class="input-preview"></div>
+                        </div>
+                        
+                        <!-- Rail Settings -->
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Face Frame Rail Thickness:</label>
+                            <select id="railThicknessSelect" onchange="updateRailThickness()" style="width: 100%; padding: 12px; margin-bottom: 10px;">
+                                <option value="0">No Rails (Drawer fronts only)</option>
+                                <option value="0.75">3/4" Rails</option>
+                                <option value="1.5" selected>1-1/2" Rails (Standard)</option>
+                                <option value="2.0">2" Rails</option>
+                                <option value="custom">Custom Thickness</option>
+                            </select>
+                            <div id="customRailRow" style="display: none;">
+                                <input type="text" id="smartRailThickness" placeholder="Try: 1.5&quot;, 38mm" class="wide-input" 
+                                       oninput="handleSmartInput(this, 'previewRailThickness', updateRailThicknessValue)" style="padding: 12px;">
+                                <div id="previewRailThickness" class="input-preview"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Layout Direction -->
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Layout Direction:</label>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="mode-btn active" onclick="setLayoutDirection('bottom-up')" id="layoutBottomUp" style="flex: 1;">Bottom-Up</button>
+                                <button class="mode-btn" onclick="setLayoutDirection('top-down')" id="layoutTopDown" style="flex: 1;">Top-Down</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Clear Button -->
+                        <div style="text-align: right;">
+                            <button class="btn btn-secondary" onclick="clearCabinetCalculator()" style="padding: 10px 20px;">Clear All</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Results Section -->
+                    <div class="calc-result" style="margin-top: 20px;">
+                        <div class="result-display" id="cabinetResult" style="padding: 20px; background: #f8f9fa; border-radius: 8px; margin-bottom: 15px;">
+                            <div class="result-placeholder">Enter cabinet dimensions to calculate layout</div>
+                        </div>
+                        <div id="cabinetCutList" style="display: none; padding: 20px; background: #f8f9fa; border-radius: 8px; margin-bottom: 15px;">
+                            <!-- Cut list will be populated here -->
+                        </div>
+                        <button class="btn btn-success" onclick="saveCabinetToProject()" style="padding: 12px 24px; font-size: 16px;">💾 Save to Project</button>
+                    </div>
+                </div>
+            </div>
+            
             </div> <!-- End Measurements & Layout Category -->
             
             <!-- Angles & Joinery Category -->
@@ -14328,6 +14509,739 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 },
                 preview: previewContent,
                 diagramContainerId: 'spacingContent'
+            };
+            
+            showSaveToProjectModal(saveData);
+        }
+
+        // ============================================================================
+        // CABINET DRAWER & FACE FRAME LAYOUT CALCULATOR
+        // ============================================================================
+        
+        // Global variables for Cabinet Calculator
+        let currentCabinetHeightInches = 0;
+        let currentCabinetWidthInches = 0;
+        let currentHorizontalRevealInches = 0.125; // Default 1/8"
+        let currentVerticalRevealInches = 0.125;   // Default 1/8"
+        let currentOverlayAmountInches = 0.75;     // Default 3/4"
+        let currentRailThicknessInches = 1.5;      // Default 1.5"
+        let cabinetFrameStyle = 'inset';           // 'inset' or 'overlay'
+        let cabinetDrawerMode = 'equal';           // 'equal' or 'custom'
+        let cabinetLayoutDirection = 'bottom-up';  // 'bottom-up' or 'top-down'
+        let customDrawerHeights = [];              // Array of custom drawer heights
+        
+        // Smart input callback functions
+        function updateCabinetHeightValue(inches, display) {
+            currentCabinetHeightInches = inches;
+            calculateCabinetLayout();
+        }
+        
+        function updateCabinetWidthValue(inches, display) {
+            currentCabinetWidthInches = inches;
+            calculateCabinetLayout();
+        }
+        
+        function updateHorizontalRevealValue(inches, display) {
+            currentHorizontalRevealInches = inches;
+            calculateCabinetLayout();
+        }
+        
+        function updateVerticalRevealValue(inches, display) {
+            currentVerticalRevealInches = inches;
+            calculateCabinetLayout();
+        }
+        
+        function updateOverlayAmountValue(inches, display) {
+            currentOverlayAmountInches = inches;
+            calculateCabinetLayout();
+        }
+        
+        function updateRailThicknessValue(inches, display) {
+            currentRailThicknessInches = inches;
+            calculateCabinetLayout();
+        }
+        
+        // Mode switching functions
+        function setFrameStyle(style) {
+            cabinetFrameStyle = style;
+            
+            // Update button states
+            document.getElementById('frameStyleInset').classList.toggle('active', style === 'inset');
+            document.getElementById('frameStyleOverlay').classList.toggle('active', style === 'overlay');
+            
+            // Show/hide relevant settings
+            document.getElementById('insetSettings').style.display = style === 'inset' ? 'block' : 'none';
+            document.getElementById('overlaySettings').style.display = style === 'overlay' ? 'block' : 'none';
+            
+            // Clear preview elements when switching modes
+            document.querySelectorAll('#cabinetDrawerContent .input-preview').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            calculateCabinetLayout();
+        }
+        
+        function setCabinetDrawerMode(mode) {
+            cabinetDrawerMode = mode;
+            
+            // Update button states
+            document.getElementById('drawerModeEqual').classList.toggle('active', mode === 'equal');
+            document.getElementById('drawerModeCustom').classList.toggle('active', mode === 'custom');
+            
+            // Show/hide relevant inputs
+            document.getElementById('equalDrawerInput').style.display = mode === 'equal' ? 'block' : 'none';
+            document.getElementById('customDrawerInput').style.display = mode === 'custom' ? 'block' : 'none';
+            
+            // Initialize custom drawer list if switching to custom mode
+            if (mode === 'custom' && customDrawerHeights.length === 0) {
+                // Add default 3 drawers
+                customDrawerHeights = [6, 8, 10]; // Example: 6", 8", 10" drawers
+                updateCustomDrawerList();
+            }
+            
+            calculateCabinetLayout();
+        }
+        
+        function setLayoutDirection(direction) {
+            cabinetLayoutDirection = direction;
+            
+            // Update button states
+            document.getElementById('layoutBottomUp').classList.toggle('active', direction === 'bottom-up');
+            document.getElementById('layoutTopDown').classList.toggle('active', direction === 'top-down');
+            
+            calculateCabinetLayout();
+        }
+        
+        // Rail thickness handling
+        function updateRailThickness() {
+            const select = document.getElementById('railThicknessSelect');
+            const customRow = document.getElementById('customRailRow');
+            
+            if (select.value === 'custom') {
+                customRow.style.display = 'block';
+            } else {
+                customRow.style.display = 'none';
+                currentRailThicknessInches = parseFloat(select.value) || 0;
+                calculateCabinetLayout();
+            }
+        }
+        
+        // Custom drawer management
+        function addCustomDrawer() {
+            const defaultHeight = 6; // Default 6" drawer
+            customDrawerHeights.push(defaultHeight);
+            updateCustomDrawerList();
+            calculateCabinetLayout();
+        }
+        
+        function removeCustomDrawer(index) {
+            customDrawerHeights.splice(index, 1);
+            updateCustomDrawerList();
+            calculateCabinetLayout();
+        }
+        
+        function updateCustomDrawerHeight(index, value) {
+            const inches = parseFloat(value) || 0;
+            if (inches > 0) {
+                customDrawerHeights[index] = inches;
+                calculateCabinetLayout();
+            }
+        }
+        
+        function updateCustomDrawerList() {
+            const listDiv = document.getElementById('customDrawerList');
+            
+            if (customDrawerHeights.length === 0) {
+                listDiv.innerHTML = '<p style="color: #666; font-style: italic;">No drawers added. Click "+ Add Drawer" to start.</p>';
+                return;
+            }
+            
+            listDiv.innerHTML = customDrawerHeights.map((height, index) => `
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <span style="min-width: 80px; font-weight: 600;">Drawer ${index + 1}:</span>
+                    <input type="number" value="${height}" min="1" step="0.125" 
+                           oninput="updateCustomDrawerHeight(${index}, this.value)"
+                           style="width: 100px; padding: 8px;">
+                    <span style="color: #666;">inches</span>
+                    <button class="btn btn-sm" onclick="removeCustomDrawer(${index})" 
+                            style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                        Remove
+                    </button>
+                </div>
+            `).join('');
+        }
+        
+        // Main calculation function
+        function calculateCabinetLayout() {
+            const resultDiv = document.getElementById('cabinetResult');
+            const cutListDiv = document.getElementById('cabinetCutList');
+            
+            // Validate inputs
+            if (currentCabinetHeightInches <= 0 || currentCabinetWidthInches <= 0) {
+                resultDiv.innerHTML = '<div class="result-placeholder">Enter cabinet opening dimensions</div>';
+                cutListDiv.style.display = 'none';
+                updateCabinetDiagrams(null);
+                return;
+            }
+            
+            let drawerData = [];
+            let railData = [];
+            let validationError = null;
+            
+            // Calculate based on mode
+            if (cabinetDrawerMode === 'equal') {
+                const numDrawers = parseInt(document.getElementById('numDrawers').value) || 3;
+                
+                // Calculate drawer dimensions
+                const drawerWidth = cabinetFrameStyle === 'inset' ? 
+                    currentCabinetWidthInches - (2 * currentHorizontalRevealInches) :
+                    currentCabinetWidthInches + (2 * currentOverlayAmountInches);
+                
+                // Calculate available height and drawer height
+                let availableHeight, drawerHeight;
+                
+                if (cabinetFrameStyle === 'inset') {
+                    // Inset: Account for reveals and rails
+                    const totalVerticalReveals = (numDrawers + 1) * currentVerticalRevealInches;
+                    const totalRails = (numDrawers - 1) * currentRailThicknessInches;
+                    availableHeight = currentCabinetHeightInches - totalVerticalReveals - totalRails;
+                    
+                    if (availableHeight <= 0) {
+                        validationError = 'Not enough space for drawers with current reveal and rail settings';
+                    } else {
+                        drawerHeight = availableHeight / numDrawers;
+                    }
+                } else {
+                    // Overlay: Rails still take space, but drawers overlap
+                    const totalRails = (numDrawers - 1) * currentRailThicknessInches;
+                    availableHeight = currentCabinetHeightInches - totalRails;
+                    
+                    if (availableHeight <= 0) {
+                        validationError = 'Not enough space for drawers with current rail settings';
+                    } else {
+                        const baseHeight = availableHeight / numDrawers;
+                        drawerHeight = baseHeight + (2 * currentOverlayAmountInches);
+                    }
+                }
+                
+                // Generate drawer data
+                if (!validationError) {
+                    for (let i = 0; i < numDrawers; i++) {
+                        drawerData.push({
+                            number: i + 1,
+                            width: drawerWidth,
+                            height: drawerHeight
+                        });
+                    }
+                }
+                
+            } else {
+                // Custom mode
+                if (customDrawerHeights.length === 0) {
+                    validationError = 'Add at least one drawer';
+                } else {
+                    const numDrawers = customDrawerHeights.length;
+                    
+                    // Validate total height
+                    const totalCustomHeight = customDrawerHeights.reduce((sum, h) => sum + h, 0);
+                    
+                    if (cabinetFrameStyle === 'inset') {
+                        const totalVerticalReveals = (numDrawers + 1) * currentVerticalRevealInches;
+                        const totalRails = (numDrawers - 1) * currentRailThicknessInches;
+                        const requiredHeight = totalCustomHeight + totalVerticalReveals + totalRails;
+                        
+                        if (requiredHeight > currentCabinetHeightInches) {
+                            validationError = `Total height (${inchesToDisplay(requiredHeight)}) exceeds cabinet opening (${inchesToDisplay(currentCabinetHeightInches)})`;
+                        }
+                    } else {
+                        // For overlay, need to account for overlaps
+                        const totalRails = (numDrawers - 1) * currentRailThicknessInches;
+                        const netDrawerHeight = totalCustomHeight - ((numDrawers - 1) * 2 * currentOverlayAmountInches);
+                        const requiredHeight = netDrawerHeight + totalRails;
+                        
+                        if (requiredHeight > currentCabinetHeightInches) {
+                            validationError = `Total height with overlays exceeds cabinet opening`;
+                        }
+                    }
+                    
+                    // Generate drawer data
+                    if (!validationError) {
+                        const drawerWidth = cabinetFrameStyle === 'inset' ? 
+                            currentCabinetWidthInches - (2 * currentHorizontalRevealInches) :
+                            currentCabinetWidthInches + (2 * currentOverlayAmountInches);
+                        
+                        customDrawerHeights.forEach((height, i) => {
+                            drawerData.push({
+                                number: i + 1,
+                                width: drawerWidth,
+                                height: cabinetFrameStyle === 'overlay' ? height + (2 * currentOverlayAmountInches) : height
+                            });
+                        });
+                    }
+                }
+            }
+            
+            // Display results or error
+            if (validationError) {
+                resultDiv.innerHTML = `<div class="result-warning">${validationError}</div>`;
+                cutListDiv.style.display = 'none';
+                updateCabinetDiagrams(null);
+                return;
+            }
+            
+            // Calculate rail positions and generate cut list
+            const layoutData = calculateRailPositions(drawerData);
+            
+            // Display results
+            const frameTypeDisplay = cabinetFrameStyle.charAt(0).toUpperCase() + cabinetFrameStyle.slice(1);
+            const modeDisplay = cabinetDrawerMode === 'equal' ? 'Equal Heights' : 'Custom Heights';
+            
+            resultDiv.innerHTML = `
+                <div class="result-value">${frameTypeDisplay} Cabinet - ${drawerData.length} Drawers (${modeDisplay})</div>
+                <div class="result-summary">
+                    <div class="summary-row">
+                        <span class="summary-label">Cabinet Opening:</span>
+                        <span class="summary-value">${inchesToDisplay(currentCabinetWidthInches)} W × ${inchesToDisplay(currentCabinetHeightInches)} H</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Drawer Fronts:</span>
+                        <span class="summary-value">${inchesToDisplay(drawerData[0].width)} W × Various Heights</span>
+                    </div>
+                    ${currentRailThicknessInches > 0 ? `
+                    <div class="summary-row">
+                        <span class="summary-label">Rails:</span>
+                        <span class="summary-value">${drawerData.length - 1} rails @ ${inchesToDisplay(currentRailThicknessInches)} thick</span>
+                    </div>` : ''}
+                    <div class="summary-row">
+                        <span class="summary-label">Layout:</span>
+                        <span class="summary-value">${cabinetLayoutDirection === 'bottom-up' ? 'Bottom-Up' : 'Top-Down'}</span>
+                    </div>
+                </div>
+            `;
+            
+            // Generate cut list
+            let cutListHTML = `
+                <h4 style="margin: 0 0 15px 0; color: var(--primary-color);">Cut List</h4>
+                <div style="background: white; border: 1px solid #ddd; border-radius: 4px; padding: 15px;">
+                    <h5 style="margin: 0 0 10px 0; color: #333;">Drawer Fronts:</h5>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #ddd;">
+                                <th style="text-align: left; padding: 8px;">Item</th>
+                                <th style="text-align: left; padding: 8px;">Quantity</th>
+                                <th style="text-align: left; padding: 8px;">Width</th>
+                                <th style="text-align: left; padding: 8px;">Height</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            drawerData.forEach(drawer => {
+                cutListHTML += `
+                    <tr>
+                        <td style="padding: 8px;">Drawer ${drawer.number}</td>
+                        <td style="padding: 8px;">1</td>
+                        <td style="padding: 8px;">${inchesToDisplay(drawer.width)}</td>
+                        <td style="padding: 8px;">${inchesToDisplay(drawer.height)}</td>
+                    </tr>
+                `;
+            });
+            
+            cutListHTML += `
+                        </tbody>
+                    </table>
+            `;
+            
+            if (currentRailThicknessInches > 0 && drawerData.length > 1) {
+                cutListHTML += `
+                    <h5 style="margin: 20px 0 10px 0; color: #333;">Face Frame Rails:</h5>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #ddd;">
+                                <th style="text-align: left; padding: 8px;">Item</th>
+                                <th style="text-align: left; padding: 8px;">Quantity</th>
+                                <th style="text-align: left; padding: 8px;">Width</th>
+                                <th style="text-align: left; padding: 8px;">Thickness</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 8px;">Horizontal Rails</td>
+                                <td style="padding: 8px;">${drawerData.length - 1}</td>
+                                <td style="padding: 8px;">${inchesToDisplay(currentCabinetWidthInches)}</td>
+                                <td style="padding: 8px;">${inchesToDisplay(currentRailThicknessInches)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+            }
+            
+            cutListHTML += `
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd;">
+                        <strong>Notes:</strong>
+                        <ul style="margin: 5px 0 0 20px;">
+                            <li>All dimensions are finished sizes</li>
+                            ${cabinetFrameStyle === 'overlay' ? '<li>Drawer fronts include overlay on all edges</li>' : ''}
+                            ${cabinetFrameStyle === 'inset' ? '<li>Drawer fronts sized for ' + inchesToDisplay(currentHorizontalRevealInches) + ' reveals</li>' : ''}
+                            <li>Add edgebanding or finish as required</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            cutListDiv.innerHTML = cutListHTML;
+            cutListDiv.style.display = 'block';
+            
+            // Update visual diagrams
+            updateCabinetDiagrams(layoutData);
+        }
+        
+        // Calculate rail positions and drawer layout
+        function calculateRailPositions(drawerData) {
+            const positions = [];
+            let currentPosition = 0;
+            
+            if (cabinetLayoutDirection === 'bottom-up') {
+                // Start from bottom
+                drawerData.forEach((drawer, index) => {
+                    // Add reveal/space before drawer
+                    if (cabinetFrameStyle === 'inset') {
+                        currentPosition += currentVerticalRevealInches;
+                    }
+                    
+                    // Record drawer position
+                    const drawerBottom = currentPosition;
+                    const drawerTop = currentPosition + drawer.height;
+                    
+                    positions.push({
+                        type: 'drawer',
+                        number: drawer.number,
+                        bottom: drawerBottom,
+                        top: drawerTop,
+                        height: drawer.height,
+                        width: drawer.width
+                    });
+                    
+                    currentPosition = drawerTop;
+                    
+                    // Add rail if not last drawer
+                    if (index < drawerData.length - 1 && currentRailThicknessInches > 0) {
+                        if (cabinetFrameStyle === 'inset') {
+                            currentPosition += currentVerticalRevealInches;
+                        }
+                        
+                        const railBottom = currentPosition;
+                        const railTop = currentPosition + currentRailThicknessInches;
+                        
+                        positions.push({
+                            type: 'rail',
+                            number: index + 1,
+                            bottom: railBottom,
+                            top: railTop,
+                            thickness: currentRailThicknessInches
+                        });
+                        
+                        currentPosition = railTop;
+                    }
+                });
+            } else {
+                // Top-down layout
+                currentPosition = currentCabinetHeightInches;
+                
+                // Work backwards through drawers
+                for (let i = drawerData.length - 1; i >= 0; i--) {
+                    const drawer = drawerData[i];
+                    
+                    // Add reveal/space before drawer
+                    if (cabinetFrameStyle === 'inset') {
+                        currentPosition -= currentVerticalRevealInches;
+                    }
+                    
+                    // Record drawer position
+                    const drawerTop = currentPosition;
+                    const drawerBottom = currentPosition - drawer.height;
+                    
+                    positions.unshift({
+                        type: 'drawer',
+                        number: drawer.number,
+                        bottom: drawerBottom,
+                        top: drawerTop,
+                        height: drawer.height,
+                        width: drawer.width
+                    });
+                    
+                    currentPosition = drawerBottom;
+                    
+                    // Add rail if not first drawer
+                    if (i > 0 && currentRailThicknessInches > 0) {
+                        if (cabinetFrameStyle === 'inset') {
+                            currentPosition -= currentVerticalRevealInches;
+                        }
+                        
+                        const railTop = currentPosition;
+                        const railBottom = currentPosition - currentRailThicknessInches;
+                        
+                        positions.unshift({
+                            type: 'rail',
+                            number: i,
+                            bottom: railBottom,
+                            top: railTop,
+                            thickness: currentRailThicknessInches
+                        });
+                        
+                        currentPosition = railBottom;
+                    }
+                }
+            }
+            
+            return {
+                positions: positions,
+                cabinetHeight: currentCabinetHeightInches,
+                cabinetWidth: currentCabinetWidthInches,
+                frameStyle: cabinetFrameStyle,
+                reveals: {
+                    horizontal: currentHorizontalRevealInches,
+                    vertical: currentVerticalRevealInches
+                },
+                overlay: currentOverlayAmountInches
+            };
+        }
+        
+        // Update SVG diagrams
+        function updateCabinetDiagrams(layoutData) {
+            const frontView = document.getElementById('cabinetFrontView');
+            const sideView = document.getElementById('cabinetSideView');
+            
+            if (!frontView || !sideView) return;
+            
+            if (!layoutData) {
+                // Reset to empty state
+                frontView.innerHTML = `
+                    <rect x="20" y="20" width="260" height="360" fill="none" stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="150" y="200" text-anchor="middle" font-size="14" fill="#999">
+                        Configure cabinet to see layout
+                    </text>
+                `;
+                sideView.innerHTML = `
+                    <rect x="50" y="20" width="100" height="360" fill="none" stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="100" y="200" text-anchor="middle" font-size="14" fill="#999">
+                        Side profile
+                    </text>
+                `;
+                return;
+            }
+            
+            // Front view
+            const svgWidth = 300;
+            const svgHeight = 400;
+            const margin = 30;
+            const drawableWidth = svgWidth - (2 * margin);
+            const drawableHeight = svgHeight - (2 * margin);
+            
+            // Scale to fit
+            const scale = Math.min(
+                drawableWidth / layoutData.cabinetWidth,
+                drawableHeight / layoutData.cabinetHeight
+            ) * 0.9;
+            
+            const cabinetPixelWidth = layoutData.cabinetWidth * scale;
+            const cabinetPixelHeight = layoutData.cabinetHeight * scale;
+            const offsetX = (svgWidth - cabinetPixelWidth) / 2;
+            const offsetY = (svgHeight - cabinetPixelHeight) / 2;
+            
+            let frontContent = `
+                <defs>
+                    <pattern id="drawerWood" patternUnits="userSpaceOnUse" width="60" height="30">
+                        <rect width="60" height="30" fill="#D2691E"/>
+                        <path d="M0,5 Q15,3 30,5 T60,5" stroke="#BC611A" stroke-width="0.8" fill="none"/>
+                        <path d="M0,15 Q10,12 20,15 T60,15" stroke="#C86A1C" stroke-width="1" fill="none"/>
+                        <path d="M0,25 Q20,22 40,25 T60,25" stroke="#BC611A" stroke-width="0.9" fill="none"/>
+                    </pattern>
+                    <pattern id="railWood" patternUnits="userSpaceOnUse" width="60" height="20">
+                        <rect width="60" height="20" fill="#8B4513"/>
+                        <path d="M0,5 Q15,4 30,5 T60,5" stroke="#7A3A0F" stroke-width="0.8" fill="none"/>
+                        <path d="M0,15 Q20,14 40,15 T60,15" stroke="#7A3A0F" stroke-width="0.8" fill="none"/>
+                    </pattern>
+                </defs>
+            `;
+            
+            // Draw cabinet opening
+            frontContent += `<rect x="${offsetX}" y="${offsetY}" width="${cabinetPixelWidth}" height="${cabinetPixelHeight}" 
+                            fill="none" stroke="#333" stroke-width="2"/>`;
+            
+            // Draw components
+            layoutData.positions.forEach(item => {
+                const y = offsetY + (layoutData.cabinetHeight - item.top) * scale;
+                const height = item.height * scale;
+                
+                if (item.type === 'drawer') {
+                    let x, width;
+                    
+                    if (layoutData.frameStyle === 'inset') {
+                        x = offsetX + (layoutData.reveals.horizontal * scale);
+                        width = (layoutData.cabinetWidth - 2 * layoutData.reveals.horizontal) * scale;
+                    } else {
+                        // Overlay
+                        x = offsetX - (layoutData.overlay * scale);
+                        width = (layoutData.cabinetWidth + 2 * layoutData.overlay) * scale;
+                    }
+                    
+                    frontContent += `
+                        <rect x="${x}" y="${y}" width="${width}" height="${height}" 
+                              fill="url(#drawerWood)" stroke="#8B4513" stroke-width="1.5"/>
+                        <text x="${x + width/2}" y="${y + height/2 + 5}" text-anchor="middle" 
+                              font-size="12" fill="white" font-weight="bold">D${item.number}</text>
+                    `;
+                } else if (item.type === 'rail') {
+                    const railY = offsetY + (layoutData.cabinetHeight - item.top) * scale;
+                    const railHeight = item.thickness * scale;
+                    
+                    frontContent += `
+                        <rect x="${offsetX}" y="${railY}" width="${cabinetPixelWidth}" height="${railHeight}" 
+                              fill="url(#railWood)" stroke="#654321" stroke-width="1"/>
+                    `;
+                }
+            });
+            
+            // Add dimensions
+            frontContent += `
+                <text x="${offsetX + cabinetPixelWidth + 10}" y="${offsetY + cabinetPixelHeight/2}" 
+                      font-size="11" fill="#666" transform="rotate(-90, ${offsetX + cabinetPixelWidth + 10}, ${offsetY + cabinetPixelHeight/2})">
+                    ${inchesToDisplay(layoutData.cabinetHeight)}
+                </text>
+                <text x="${offsetX + cabinetPixelWidth/2}" y="${offsetY + cabinetPixelHeight + 20}" 
+                      text-anchor="middle" font-size="11" fill="#666">
+                    ${inchesToDisplay(layoutData.cabinetWidth)}
+                </text>
+            `;
+            
+            frontView.innerHTML = frontContent;
+            
+            // Side view
+            updateCabinetSideView(layoutData, sideView);
+        }
+        
+        function updateCabinetSideView(layoutData, sideView) {
+            const svgWidth = 200;
+            const svgHeight = 400;
+            const cabinetDepth = 24; // Standard cabinet depth
+            const scale = 300 / layoutData.cabinetHeight; // Match front view scale
+            
+            const cabinetPixelHeight = layoutData.cabinetHeight * scale;
+            const cabinetPixelDepth = cabinetDepth * scale * 0.5; // Compress depth for visibility
+            const offsetX = (svgWidth - cabinetPixelDepth) / 2;
+            const offsetY = (svgHeight - cabinetPixelHeight) / 2;
+            
+            let sideContent = `<g>`;
+            
+            // Cabinet box
+            sideContent += `
+                <rect x="${offsetX}" y="${offsetY}" width="${cabinetPixelDepth}" height="${cabinetPixelHeight}" 
+                      fill="#f5f5f5" stroke="#333" stroke-width="2"/>
+            `;
+            
+            // Show drawer profiles
+            if (layoutData.frameStyle === 'overlay') {
+                // Show overlay projection
+                const overlayPixels = layoutData.overlay * scale;
+                
+                layoutData.positions.filter(p => p.type === 'drawer').forEach(drawer => {
+                    const y = offsetY + (layoutData.cabinetHeight - drawer.top) * scale;
+                    const height = drawer.height * scale;
+                    
+                    // Drawer front with overlay
+                    sideContent += `
+                        <rect x="${offsetX - overlayPixels}" y="${y - overlayPixels}" 
+                              width="${cabinetPixelDepth + overlayPixels}" height="${height + 2 * overlayPixels}" 
+                              fill="#D2691E" stroke="#8B4513" stroke-width="1" opacity="0.9"/>
+                    `;
+                });
+                
+                // Label
+                sideContent += `
+                    <text x="${offsetX - 10}" y="${offsetY - 10}" text-anchor="middle" font-size="12" fill="#666">
+                        Overlay: ${inchesToDisplay(layoutData.overlay)}
+                    </text>
+                `;
+            } else {
+                // Inset - show reveal gaps
+                sideContent += `
+                    <text x="${offsetX + cabinetPixelDepth/2}" y="${offsetY - 10}" text-anchor="middle" font-size="12" fill="#666">
+                        Inset Style
+                    </text>
+                `;
+            }
+            
+            sideContent += `</g>`;
+            sideView.innerHTML = sideContent;
+        }
+        
+        // Clear function
+        function clearCabinetCalculator() {
+            // Reset all inputs
+            document.getElementById('smartCabinetHeight').value = '';
+            document.getElementById('smartCabinetWidth').value = '';
+            document.getElementById('numDrawers').value = '3';
+            document.getElementById('smartHorizontalReveal').value = '0.125';
+            document.getElementById('smartVerticalReveal').value = '0.125';
+            document.getElementById('smartOverlayAmount').value = '0.75';
+            document.getElementById('railThicknessSelect').value = '1.5';
+            
+            // Reset variables
+            currentCabinetHeightInches = 0;
+            currentCabinetWidthInches = 0;
+            currentHorizontalRevealInches = 0.125;
+            currentVerticalRevealInches = 0.125;
+            currentOverlayAmountInches = 0.75;
+            currentRailThicknessInches = 1.5;
+            customDrawerHeights = [];
+            
+            // Reset to defaults
+            setFrameStyle('inset');
+            setCabinetDrawerMode('equal');
+            setLayoutDirection('bottom-up');
+            
+            // Clear custom drawer list
+            updateCustomDrawerList();
+            
+            // Clear all preview elements
+            document.querySelectorAll('#cabinetDrawerContent .input-preview').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Clear results
+            document.getElementById('cabinetResult').innerHTML = '<div class="result-placeholder">Enter cabinet dimensions to calculate layout</div>';
+            document.getElementById('cabinetCutList').style.display = 'none';
+            
+            // Reset diagrams
+            updateCabinetDiagrams(null);
+        }
+        
+        // Save to project function
+        function saveCabinetToProject() {
+            if (currentCabinetHeightInches <= 0 || currentCabinetWidthInches <= 0) {
+                showNotification('Calculate layout first', 'warning');
+                return;
+            }
+            
+            // Get current layout data
+            const numDrawers = cabinetDrawerMode === 'equal' ? 
+                parseInt(document.getElementById('numDrawers').value) || 3 :
+                customDrawerHeights.length;
+            
+            const frameType = cabinetFrameStyle.charAt(0).toUpperCase() + cabinetFrameStyle.slice(1);
+            const modeType = cabinetDrawerMode === 'equal' ? 'Equal Heights' : 'Custom Heights';
+            
+            const equation = `${frameType} cabinet ${inchesToDisplay(currentCabinetWidthInches)} × ${inchesToDisplay(currentCabinetHeightInches)} with ${numDrawers} drawers`;
+            const result = `${numDrawers} drawer fronts + ${numDrawers - 1} rails`;
+            
+            const saveData = {
+                tool: 'Cabinet Drawer & Face Frame Layout',
+                equation: equation,
+                result: result,
+                details: document.getElementById('cabinetResult').innerHTML + '\n\n' + document.getElementById('cabinetCutList').innerHTML,
+                timestamp: new Date().toISOString(),
+                diagramContainerId: 'cabinetDiagramContainer'
             };
             
             showSaveToProjectModal(saveData);
