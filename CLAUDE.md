@@ -267,3 +267,40 @@ When making significant changes, follow this pattern:
 - **Incremental Testing**: Test after every significant change, not after multiple changes
 - **Error Recovery**: If errors appear, stop immediately - don't try to fix by adding more changes
 - **Syntax Validation**: For JavaScript changes, use a linter or online validator before saving
+
+### Version Control Safety
+- **NEVER commit without explicit user permission** - Always ask "Should I commit these changes?" before running git commit
+- **Recommend commits before risky changes** - Before making structural changes, suggest: "I recommend committing the current working state before proceeding with [describe risky change]"
+- **Staged commits for major features** - When working on complex features:
+  1. Commit the working baseline first
+  2. Make incremental changes with testing
+  3. Commit each successful milestone
+  4. Never combine multiple major changes in one session
+
+### Preventing File Structure Corruption
+- **Section Integrity Checks**: Before and after major edits, verify the three-section structure:
+  ```bash
+  # Verify section markers are in correct order
+  grep -n "SECTION.*:" index.html
+  # Should show: 1. CSS, 2. HTML, 3. JavaScript in that order
+  ```
+- **Never insert code between sections** - JavaScript must stay in Section 3, never between CSS and HTML
+- **Line count monitoring** - Check file size before/after changes:
+  ```bash
+  wc -l index.html  # Should be ~18,000-19,000 lines
+  ```
+- **Immediate rollback on errors** - If console errors appear after changes, immediately revert instead of attempting fixes
+
+### Safe Editing Practices for Large Changes
+- **Use MultiEdit for complex modifications** - Reduces risk of misplaced content
+- **Search before moving** - Always grep for the content you're about to move
+- **Verify section boundaries** - When working near section transitions, double-check you're in the right section
+- **Test every 100 lines** - For changes spanning >100 lines, save and test incrementally
+
+### Emergency Recovery
+- **If corruption detected**:
+  1. STOP immediately - don't attempt fixes
+  2. Check git diff to understand the damage
+  3. Revert to last known good commit
+  4. Document what was being attempted
+  5. Retry with smaller, incremental changes
