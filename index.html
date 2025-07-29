@@ -4988,7 +4988,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             </div>
 
             <!-- Miter Angle Calculator -->
-            <div class="calc-card" id="angleCard" style="margin-bottom: 10px !important;">
+            <div class="calc-card" id="angleCard">
                 <div class="calc-card-header" onclick="toggleCalcCard('angle')">
                     <span class="calc-icon">📐</span>
                     <span class="calc-title">Miter Angle Calculator</span>
@@ -5250,7 +5250,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     </div>
                     
                     <!-- Results Panel -->
-                    <div class="calc-result" style="margin-bottom: 20px;">
+                    <div class="calc-result">
                         <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Results</h4>
                         <div id="miterResults">
                             <div class="result-display" id="maResult" style="padding: 20px; background: #f8f9fa; border-radius: 8px; margin-bottom: 15px;">Select mode and enter dimensions</div>
@@ -5259,9 +5259,10 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     </div>
                 </div>
             </div>
+        </div>
 
             <!-- Screw & Pilot Hole Calculator -->
-            <div class="calc-card" id="screwCard" style="margin-bottom: 10px !important;">
+            <div class="calc-card" id="screwCard">
                 <div class="calc-card-header" onclick="toggleCalcCard('screw')">
                     <span class="calc-icon">🔩</span>
                     <span class="calc-title">Screw & Pilot Hole Calculator</span>
@@ -5983,6 +5984,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
             <!-- Wood Species Database -->
             <div class="calc-card" id="woodSpeciesCard">
@@ -6063,9 +6066,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div> <!-- End of specialty tab-content -->
+        </div> <!-- End of specialty tab-content -->
 
         <!-- Projects Tab -->
         <div id="projects" class="tab-content">
@@ -7120,7 +7121,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 }
                 
                 updateDisplays();
-                updateBoardDisplay();
+                // updateBoardDisplay(); // Function doesn't exist
                 updateCutDisplay();
                 updateCalculatorDisplay();
                 // Project loaded silently
@@ -18890,6 +18891,58 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             initWoodSpeciesDatabase(); // Initialize Wood Species Database
             
             console.log('WorkShop Pro Calculator with Visual Project Management loaded!');
+            
+            // Update project dropdowns
+            updateGlobalProjectSelector();
+            
+            // Debug function for Wood Species visibility
+            window.debugWoodSpecies = function() {
+                const woodCard = document.getElementById('woodSpeciesCard');
+                const specialtyTab = document.getElementById('specialty');
+                const tileCard = document.getElementById('tileCard');
+                console.log('Wood Species Card:', woodCard);
+                console.log('Wood Species Card display:', woodCard ? getComputedStyle(woodCard).display : 'element not found');
+                console.log('Specialty tab active:', specialtyTab?.classList.contains('active'));
+                console.log('All calc cards in specialty:', document.querySelectorAll('#specialty .calc-card').length);
+                
+                if (woodCard) {
+                    const rect = woodCard.getBoundingClientRect();
+                    console.log('Wood Species position:', {
+                        top: rect.top,
+                        left: rect.left,
+                        width: rect.width,
+                        height: rect.height,
+                        visible: rect.top < window.innerHeight && rect.bottom > 0
+                    });
+                    
+                    // Check its content
+                    const content = document.getElementById('woodSpeciesContent');
+                    console.log('Wood Species Content element:', content);
+                    console.log('Wood Species Content display:', content ? getComputedStyle(content).display : 'not found');
+                    console.log('Wood Species Content HTML length:', woodCard.innerHTML.length);
+                    console.log('Has calc-card-header:', woodCard.querySelector('.calc-card-header') !== null);
+                    console.log('Has calc-card-content:', woodCard.querySelector('.calc-card-content') !== null);
+                    
+                    // Check parent element
+                    console.log('Parent element:', woodCard.parentElement);
+                    console.log('Parent display:', woodCard.parentElement ? getComputedStyle(woodCard.parentElement).display : 'no parent');
+                    
+                    // Force visibility
+                    woodCard.style.width = 'auto';
+                    woodCard.style.height = 'auto';
+                    woodCard.style.position = 'relative';
+                    console.log('Forced styles applied. New dimensions:', woodCard.getBoundingClientRect());
+                    
+                    // Scroll to it
+                    console.log('Scrolling to Wood Species Database...');
+                    woodCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                
+                if (tileCard) {
+                    const tileRect = tileCard.getBoundingClientRect();
+                    console.log('Tile Calculator bottom:', tileRect.bottom);
+                }
+            };
         });
     </script>
     </div> <!-- End of main container from line 4106 -->
