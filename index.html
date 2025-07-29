@@ -17,7 +17,7 @@
      2. HTML STRUCTURE (Lines 3821-5985)
         2.1 Navigation & Header (Lines 3821-3870)
         2.2 Calculator Tab Content (Lines 3871-3985)
-        2.3 Cut Calculator Tab (Lines 3986-4203)
+        2.3 Specialty Calculators Tab (includes Cut Calculator)
         2.4 Specialty Calculators Tab (Lines 4204-5558)
         2.5 Projects Tab (Lines 5559-5985)
         
@@ -4136,7 +4136,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         <div class="tab-buttons">
             <button class="tab-btn active" onclick="switchTab('calculator')">Calculator</button>
-            <button class="tab-btn" onclick="switchTab('cutCalculator')">Cut Calculator</button>
             <button class="tab-btn" onclick="switchTab('specialty')">Specialty Calculators</button>
             <button class="tab-btn" onclick="switchTab('projects')">📁 Projects</button>
         </div>
@@ -4273,312 +4272,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             </div>
         </div>
         
-        <!-- Cut Calculator Tab -->
-        <div id="cutCalculator" class="tab-content">
-            <!-- Mode Toggle -->
-            <div class="mode-toggle-section">
-                <div class="mode-toggle">
-                    <button class="mode-btn active" id="equalDivisionMode" onclick="switchCutMode('equal')">
-                        📏 Equal Division
-                    </button>
-                    <button class="mode-btn" id="cutOptimizationMode" onclick="switchCutMode('optimization')">
-                        🔧 Cut Optimization
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Equal Division Mode Content -->
-            <div id="equalDivisionContent" class="mode-content">
-                <!-- Settings Panel -->
-                <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-                    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-                        <!-- Left Column -->
-                        <div style="flex: 1; min-width: 250px;">
-                            <div class="settings-row" style="margin-bottom: 15px;">
-                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Precision:</label>
-                                <select id="cutPrecision" onchange="updatePrecision('cut')" class="wide-input" style="width: 100%;">
-                                    <option value="32">1/32"</option>
-                                    <option value="16" selected>1/16"</option>
-                                    <option value="8">1/8"</option>
-                                    <option value="4">1/4"</option>
-                                    <option value="2">1/2"</option>
-                                    <option value="1">1"</option>
-                                </select>
-                            </div>
-                            
-                        </div>
-                        
-                        <!-- Right Column -->
-                        <div style="flex: 1; min-width: 250px;">
-                            <div class="settings-row" id="cutKerfRow" style="margin-bottom: 15px;">
-                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Kerf Width:</label>
-                                <select id="cutKerf" class="wide-input" style="width: 100%;" onchange="updateKerfDiagram()">
-                                    <option value="0">None</option>
-                                    <option value="0.0625">1/16"</option>
-                                    <option value="0.09375">3/32"</option>
-                                    <option value="0.125" selected>1/8"</option>
-                                    <option value="0.1875">3/16"</option>
-                                </select>
-                            </div>
-                            
-                            <div class="settings-row" id="cutSideRow">
-                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Cut Side:</label>
-                                <select id="cutSide" onchange="updateKerfDiagram()" class="wide-input" style="width: 100%;">
-                                    <option value="left">Left Side</option>
-                                    <option value="right">Right Side</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            
-            <!-- Kerf Visualization -->
-            <div class="kerf-diagram" id="kerfDiagram" style="display: none; background: var(--surface-color); border-radius: 12px; margin-bottom: 20px;">
-                <svg width="100%" height="150" viewBox="0 0 400 150" style="max-width: 400px; margin: 0 auto; display: block;">
-                    <!-- Grid pattern background -->
-                    <defs>
-                        <pattern id="kerfGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-                            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
-                        </pattern>
-                        <!-- Wood grain pattern -->
-                        <pattern id="woodGrain" patternUnits="userSpaceOnUse" width="100" height="60">
-                            <rect width="100" height="60" fill="#D2691E"/>
-                            <path d="M0,10 Q25,5 50,10 T100,10" stroke="#A0522D" stroke-width="0.8" fill="none"/>
-                            <path d="M0,25 Q30,20 60,25 T100,25" stroke="#A0522D" stroke-width="0.6" fill="none"/>
-                            <path d="M0,40 Q20,35 40,40 T100,40" stroke="#A0522D" stroke-width="0.7" fill="none"/>
-                            <path d="M0,55 Q35,50 70,55 T100,55" stroke="#A0522D" stroke-width="0.5" fill="none"/>
-                        </pattern>
-                    </defs>
-                    <rect width="400" height="150" fill="url(#kerfGrid)" />
-                    
-                    <!-- Board representation -->
-                    <rect x="50" y="50" width="300" height="60" fill="url(#woodGrain)" stroke="#654321" stroke-width="3" rx="2"/>
-                    
-                    <!-- Mark line -->
-                    <line x1="200" y1="30" x2="200" y2="130" stroke="#ff0000" stroke-width="2" stroke-dasharray="4,2"/>
-                    
-                    <!-- Kerf area (will be positioned dynamically) -->
-                    <defs>
-                        <pattern id="kerfPattern" patternUnits="userSpaceOnUse" width="4" height="4">
-                            <rect width="4" height="4" fill="#ff6b6b"/>
-                            <line x1="0" y1="0" x2="4" y2="4" stroke="white" stroke-width="0.5"/>
-                            <line x1="4" y1="0" x2="0" y2="4" stroke="white" stroke-width="0.5"/>
-                        </pattern>
-                    </defs>
-                    <rect id="kerfAreaSvg" x="200" y="50" width="0" height="60" fill="url(#kerfPattern)" stroke="#ff0000" stroke-width="2"/>
-                    
-                    <!-- Labels -->
-                    <text x="200" y="20" text-anchor="middle" font-size="14" font-weight="bold" fill="#ff0000">Mark</text>
-                    <text x="100" y="135" text-anchor="middle" font-size="12" fill="#666">Left piece</text>
-                    <text x="300" y="135" text-anchor="middle" font-size="12" fill="#666">Right piece</text>
-                    
-                    <!-- Kerf label (will be positioned dynamically) -->
-                    <text id="kerfLabelSvg" x="200" y="85" text-anchor="middle" font-size="10" font-weight="bold" fill="white" style="display: none;">KERF</text>
-                    
-                    <!-- Dimension arrows -->
-                    <path d="M 55 45 L 195 45 M 55 45 L 60 42 M 55 45 L 60 48 M 195 45 L 190 42 M 195 45 L 190 48" stroke="#333" stroke-width="1" fill="none"/>
-                    <path d="M 205 45 L 345 45 M 205 45 L 210 42 M 205 45 L 210 48 M 345 45 L 340 42 M 345 45 L 340 48" stroke="#333" stroke-width="1" fill="none"/>
-                </svg>
-            </div>
-            
-            <!-- Board Input Section -->
-            <div class="calc-section" style="margin-bottom: 25px;">
-                <div class="input-group">
-                    <label style="display: block; margin-bottom: 10px; font-weight: 600; font-size: 16px; color: var(--primary-color);">Board Length:</label>
-                    <input type="text" id="smartCutLength" placeholder="Try: 8', 96&quot;, 8 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewCutLength', updateCutLengthValue)" style="font-size: 18px; padding: 15px;">
-                </div>
-                <div id="previewCutLength" class="input-preview"></div>
-                <div style="display: none;">
-                    <!-- Hidden legacy inputs for backward compatibility -->
-                    <input type="number" id="cutFeet" placeholder="0" min="0" class="wide-input" onchange="updateCutValue()">
-                    <input type="number" id="cutInches" placeholder="0" min="0" max="11" class="wide-input" onchange="updateCutValue()">
-                    <select id="cutFraction" style="width: 120px;" onchange="updateCutValue()">
-                        <option value="0">0</option>
-                    </select>
-                </div>
-            </div>
-            
-            <!-- Division Controls -->
-            <div class="division-controls calc-section" style="background: var(--surface-color); border-radius: 12px; padding: 20px; margin-bottom: 25px;">
-                <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Division Options</h4>
-                
-                <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: end;">
-                    <div class="input-group">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Quick Division:</label>
-                        <select id="divisionSelect" class="wide-input" onchange="performDivision()" style="padding: 12px;">
-                            <option value="">Select division...</option>
-                            <option value="2">Half (2 pieces)</option>
-                            <option value="3">Thirds (3 pieces)</option>
-                            <option value="4">Fourths (4 pieces)</option>
-                            <option value="5">Fifths (5 pieces)</option>
-                            <option value="6">Sixths (6 pieces)</option>
-                            <option value="8">Eighths (8 pieces)</option>
-                        </select>
-                    </div>
-                    
-                    <div style="text-align: center; padding: 0 10px; color: var(--text-secondary); font-weight: 600;">OR</div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: end; margin-top: 15px;">
-                    <div class="input-group">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Custom Division:</label>
-                        <input type="number" id="customPieces" placeholder="Enter number of pieces" min="2" max="20" class="wide-input" oninput="performCustomDivision()" style="padding: 12px;">
-                    </div>
-                    
-                    <button class="btn btn-primary" onclick="clearCut()" style="padding: 12px 24px; height: fit-content;">Clear All</button>
-                </div>
-            </div>
-            
-                <!-- Results Section -->
-                <div class="results-section">
-                    <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Cut Results</h4>
-                    <div class="history" id="cutHistory" style="max-height: 400px; overflow-y: auto;">
-                        <!-- Results will appear here -->
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Cut Optimization Mode Content -->
-            <div id="cutOptimizationContent" class="mode-content" style="display: none;">
-                <!-- Settings Panel -->
-                <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-                    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-                        <!-- Left Column -->
-                        <div style="flex: 1; min-width: 250px;">
-                            <div class="settings-row" style="margin-bottom: 15px;">
-                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Precision:</label>
-                                <select id="optPrecision" onchange="updatePrecision('optimizer'); autoRecalculateOptimization();" class="wide-input" style="width: 100%;">
-                                    <option value="32">1/32"</option>
-                                    <option value="16" selected>1/16"</option>
-                                    <option value="8">1/8"</option>
-                                    <option value="4">1/4"</option>
-                                    <option value="2">1/2"</option>
-                                    <option value="1">1"</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <!-- Right Column -->
-                        <div style="flex: 1; min-width: 250px;">
-                            <div class="settings-row">
-                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Kerf Width:</label>
-                                <select id="optKerf" class="wide-input" style="width: 100%;" onchange="autoRecalculateOptimization()">
-                                    <option value="0">None</option>
-                                    <option value="0.0625">1/16"</option>
-                                    <option value="0.09375">3/32"</option>
-                                    <option value="0.125" selected>1/8"</option>
-                                    <option value="0.1875">3/16"</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Available Boards Section -->
-                <div class="calc-section" style="background: var(--surface-color); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-                    <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Available Boards</h4>
-                    <div class="board-input" style="display: grid; grid-template-columns: 2fr 60px auto; gap: 10px; align-items: end;">
-                        <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Board Length:</label>
-                            <input type="text" id="smartBoardLength" placeholder="Try: 8', 96&quot;, 8 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewBoardLength', updateBoardLengthValue)" style="padding: 12px;">
-                        </div>
-                        <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Qty:</label>
-                            <input type="number" id="boardQuantity" placeholder="1" min="1" value="1" style="width: 100%; padding: 12px;">
-                        </div>
-                        <button class="btn btn-primary" onclick="addBoard()" style="padding: 12px 24px; height: fit-content;">Add Board</button>
-                    </div>
-                    <div id="previewBoardLength" class="input-preview"></div>
-                        <div style="display: none;">
-                            <!-- Hidden legacy inputs for backward compatibility -->
-                            <input type="number" id="boardFeet" placeholder="0" min="0" class="wide-input">
-                            <input type="number" id="boardInches" placeholder="0" min="0" max="11" class="wide-input">
-                            <select id="boardFraction" style="width: 120px;">
-                                <option value="0">0</option>
-                                <option value="0.0625">1/16"</option>
-                                <option value="0.125">1/8"</option>
-                                <option value="0.1875">3/16"</option>
-                                <option value="0.25">1/4"</option>
-                                <option value="0.3125">5/16"</option>
-                                <option value="0.375">3/8"</option>
-                                <option value="0.4375">7/16"</option>
-                                <option value="0.5">1/2"</option>
-                                <option value="0.5625">9/16"</option>
-                                <option value="0.625">5/8"</option>
-                                <option value="0.6875">11/16"</option>
-                                <option value="0.75">3/4"</option>
-                                <option value="0.8125">13/16"</option>
-                                <option value="0.875">7/8"</option>
-                                <option value="0.9375">15/16"</option>
-                            </select>
-                        </div>
-                    <div id="boardsList" style="margin-top: 15px;"></div>
-                </div>
-                
-                <!-- Needed Cuts Section -->
-                <div class="calc-section" style="background: var(--surface-color); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-                    <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Needed Cuts</h4>
-                    <div class="cut-input" style="display: grid; grid-template-columns: 2fr 60px auto; gap: 10px; align-items: end;">
-                        <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Cut Length:</label>
-                            <input type="text" id="smartOptCutLength" placeholder="Try: 24&quot;, 2', 2 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewOptCutLength', updateOptCutLengthValue)" style="padding: 12px;">
-                        </div>
-                        <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Qty:</label>
-                            <input type="number" id="cutQuantity" placeholder="1" min="1" value="1" style="width: 100%; padding: 12px;">
-                        </div>
-                        <button class="btn btn-primary" onclick="addCut()" style="padding: 12px 24px; height: fit-content;">Add Cut</button>
-                    </div>
-                    <div id="previewOptCutLength" class="input-preview"></div>
-                        <div style="display: none;">
-                            <!-- Hidden legacy inputs for backward compatibility -->
-                            <input type="number" id="optCutFeet" placeholder="0" min="0" class="wide-input">
-                            <input type="number" id="optCutInches" placeholder="0" min="0" max="11" class="wide-input">
-                            <select id="optCutFraction" style="width: 120px;">
-                                <option value="0">0</option>
-                                <option value="0.0625">1/16"</option>
-                                <option value="0.125">1/8"</option>
-                                <option value="0.1875">3/16"</option>
-                                <option value="0.25">1/4"</option>
-                                <option value="0.3125">5/16"</option>
-                                <option value="0.375">3/8"</option>
-                                <option value="0.4375">7/16"</option>
-                                <option value="0.5">1/2"</option>
-                                <option value="0.5625">9/16"</option>
-                                <option value="0.625">5/8"</option>
-                                <option value="0.6875">11/16"</option>
-                                <option value="0.75">3/4"</option>
-                                <option value="0.8125">13/16"</option>
-                                <option value="0.875">7/8"</option>
-                                <option value="0.9375">15/16"</option>
-                            </select>
-                        </div>
-                    <div id="cutsList" style="margin-top: 15px;"></div>
-                </div>
-                
-                <!-- Action Buttons -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-                    <button class="btn btn-primary" onclick="optimizeCuts()" style="padding: 15px; font-size: 16px;">
-                        🔧 Optimize Cuts
-                    </button>
-                    <button class="btn btn-secondary" onclick="clearOptimization()" style="padding: 15px; font-size: 16px;">
-                        Clear All
-                    </button>
-                </div>
-                
-                <!-- Results Section -->
-                <div class="results-section">
-                    <div id="optimizationResults"></div>
-                </div>
-                
-                <!-- Visual Cut Layout -->
-                <div id="visualLayout" style="display: none;">
-                    <h3>Visual Cut Layout</h3>
-                    <div id="boardVisualization" class="board-visualization"></div>
-                </div>
-            </div>
-        </div> <!-- End of cutCalculator tab -->
-
         <!-- Specialty Calculators Tab -->
         <div id="specialty" class="tab-content">
             <!-- Expand/Collapse All Controls -->
@@ -5987,6 +5680,321 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         </div>
     </div>
 
+            <!-- Cut Calculator -->
+            <div class="calc-card" id="cutCalcCard">
+                <div class="calc-card-header" onclick="toggleCalcCard('cutCalc')">
+                    <span class="calc-icon">✂️</span>
+                    <span class="calc-title">Cut Calculator</span>
+                    <span class="calc-arrow">▼</span>
+                </div>
+                <div class="calc-card-content" id="cutCalcContent">
+                    <div class="calc-description">Calculate equal divisions with kerf compensation or optimize cuts from available boards</div>
+                    
+                    <!-- Mode Toggle -->
+                    <div class="mode-toggle-section">
+                        <div class="mode-toggle">
+                            <button class="mode-btn active" id="equalDivisionMode" onclick="switchCutMode('equal')">
+                                📏 Equal Division
+                            </button>
+                            <button class="mode-btn" id="cutOptimizationMode" onclick="switchCutMode('optimization')">
+                                🔧 Cut Optimization
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Equal Division Mode Content -->
+                    <div id="equalDivisionContent" class="mode-content">
+                        <!-- Settings Panel -->
+                        <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                            <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                                <!-- Left Column -->
+                                <div style="flex: 1; min-width: 250px;">
+                                    <div class="settings-row" style="margin-bottom: 15px;">
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Precision:</label>
+                                        <select id="cutPrecision" onchange="updatePrecision('cut')" class="wide-input" style="width: 100%;">
+                                            <option value="32">1/32"</option>
+                                            <option value="16" selected>1/16"</option>
+                                            <option value="8">1/8"</option>
+                                            <option value="4">1/4"</option>
+                                            <option value="2">1/2"</option>
+                                            <option value="1">1"</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                                
+                                <!-- Right Column -->
+                                <div style="flex: 1; min-width: 250px;">
+                                    <div class="settings-row" id="cutKerfRow" style="margin-bottom: 15px;">
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Kerf Width:</label>
+                                        <select id="cutKerf" class="wide-input" style="width: 100%;" onchange="updateKerfDiagram()">
+                                            <option value="0">None</option>
+                                            <option value="0.0625">1/16"</option>
+                                            <option value="0.09375">3/32"</option>
+                                            <option value="0.125" selected>1/8"</option>
+                                            <option value="0.1875">3/16"</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="settings-row" id="cutSideRow">
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Cut Side:</label>
+                                        <select id="cutSide" onchange="updateKerfDiagram()" class="wide-input" style="width: 100%;">
+                                            <option value="left">Left Side</option>
+                                            <option value="right">Right Side</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    <!-- Kerf Visualization -->
+                    <div class="kerf-diagram" id="kerfDiagram" style="display: none; background: var(--surface-color); border-radius: 12px; margin-bottom: 20px;">
+                        <svg width="100%" height="150" viewBox="0 0 400 150" style="max-width: 400px; margin: 0 auto; display: block;">
+                            <!-- Grid pattern background -->
+                            <defs>
+                                <pattern id="kerfGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
+                                </pattern>
+                                <!-- Wood grain pattern -->
+                                <pattern id="woodGrain" patternUnits="userSpaceOnUse" width="100" height="60">
+                                    <rect width="100" height="60" fill="#D2691E"/>
+                                    <path d="M0,10 Q25,5 50,10 T100,10" stroke="#A0522D" stroke-width="0.8" fill="none"/>
+                                    <path d="M0,25 Q30,20 60,25 T100,25" stroke="#A0522D" stroke-width="0.6" fill="none"/>
+                                    <path d="M0,40 Q20,35 40,40 T100,40" stroke="#A0522D" stroke-width="0.7" fill="none"/>
+                                    <path d="M0,55 Q35,50 70,55 T100,55" stroke="#A0522D" stroke-width="0.5" fill="none"/>
+                                </pattern>
+                            </defs>
+                            <rect width="400" height="150" fill="url(#kerfGrid)" />
+                            
+                            <!-- Board representation -->
+                            <rect x="50" y="50" width="300" height="60" fill="url(#woodGrain)" stroke="#654321" stroke-width="3" rx="2"/>
+                            
+                            <!-- Mark line -->
+                            <line x1="200" y1="30" x2="200" y2="130" stroke="#ff0000" stroke-width="2" stroke-dasharray="4,2"/>
+                            
+                            <!-- Kerf area (will be positioned dynamically) -->
+                            <defs>
+                                <pattern id="kerfPattern" patternUnits="userSpaceOnUse" width="4" height="4">
+                                    <rect width="4" height="4" fill="#ff6b6b"/>
+                                    <line x1="0" y1="0" x2="4" y2="4" stroke="white" stroke-width="0.5"/>
+                                    <line x1="4" y1="0" x2="0" y2="4" stroke="white" stroke-width="0.5"/>
+                                </pattern>
+                            </defs>
+                            <rect id="kerfAreaSvg" x="200" y="50" width="0" height="60" fill="url(#kerfPattern)" stroke="#ff0000" stroke-width="2"/>
+                            
+                            <!-- Labels -->
+                            <text x="200" y="20" text-anchor="middle" font-size="14" font-weight="bold" fill="#ff0000">Mark</text>
+                            <text x="100" y="135" text-anchor="middle" font-size="12" fill="#666">Left piece</text>
+                            <text x="300" y="135" text-anchor="middle" font-size="12" fill="#666">Right piece</text>
+                            
+                            <!-- Kerf label (will be positioned dynamically) -->
+                            <text id="kerfLabelSvg" x="200" y="85" text-anchor="middle" font-size="10" font-weight="bold" fill="white" style="display: none;">KERF</text>
+                            
+                            <!-- Dimension arrows -->
+                            <path d="M 55 45 L 195 45 M 55 45 L 60 42 M 55 45 L 60 48 M 195 45 L 190 42 M 195 45 L 190 48" stroke="#333" stroke-width="1" fill="none"/>
+                            <path d="M 205 45 L 345 45 M 205 45 L 210 42 M 205 45 L 210 48 M 345 45 L 340 42 M 345 45 L 340 48" stroke="#333" stroke-width="1" fill="none"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Board Input Section -->
+                    <div class="calc-section" style="margin-bottom: 25px;">
+                        <div class="input-group">
+                            <label style="display: block; margin-bottom: 10px; font-weight: 600; font-size: 16px; color: var(--primary-color);">Board Length:</label>
+                            <input type="text" id="smartCutLength" placeholder="Try: 8', 96&quot;, 8 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewCutLength', updateCutLengthValue)" style="font-size: 18px; padding: 15px;">
+                        </div>
+                        <div id="previewCutLength" class="input-preview"></div>
+                        <div style="display: none;">
+                            <!-- Hidden legacy inputs for backward compatibility -->
+                            <input type="number" id="cutFeet" placeholder="0" min="0" class="wide-input" onchange="updateCutValue()">
+                            <input type="number" id="cutInches" placeholder="0" min="0" max="11" class="wide-input" onchange="updateCutValue()">
+                            <select id="cutFraction" style="width: 120px;" onchange="updateCutValue()">
+                                <option value="0">0</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Division Controls -->
+                    <div class="division-controls calc-section" style="background: var(--surface-color); border-radius: 12px; padding: 20px; margin-bottom: 25px;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Division Options</h4>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: end;">
+                            <div class="input-group">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Quick Division:</label>
+                                <select id="divisionSelect" class="wide-input" onchange="performDivision()" style="padding: 12px;">
+                                    <option value="">Select division...</option>
+                                    <option value="2">Half (2 pieces)</option>
+                                    <option value="3">Thirds (3 pieces)</option>
+                                    <option value="4">Fourths (4 pieces)</option>
+                                    <option value="5">Fifths (5 pieces)</option>
+                                    <option value="6">Sixths (6 pieces)</option>
+                                    <option value="8">Eighths (8 pieces)</option>
+                                </select>
+                            </div>
+                            
+                            <div style="text-align: center; padding: 0 10px; color: var(--text-secondary); font-weight: 600;">OR</div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: end; margin-top: 15px;">
+                            <div class="input-group">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Custom Division:</label>
+                                <input type="number" id="customPieces" placeholder="Enter number of pieces" min="2" max="20" class="wide-input" oninput="performCustomDivision()" style="padding: 12px;">
+                            </div>
+                            
+                            <button class="btn btn-primary" onclick="clearCut()" style="padding: 12px 24px; height: fit-content;">Clear All</button>
+                        </div>
+                    </div>
+                    
+                        <!-- Results Section -->
+                        <div class="results-section">
+                            <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Cut Results</h4>
+                            <div class="history" id="cutHistory" style="max-height: 400px; overflow-y: auto;">
+                                <!-- Results will appear here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cut Optimization Mode Content -->
+                    <div id="cutOptimizationContent" class="mode-content" style="display: none;">
+                        <!-- Settings Panel -->
+                        <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                            <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                                <!-- Left Column -->
+                                <div style="flex: 1; min-width: 250px;">
+                                    <div class="settings-row" style="margin-bottom: 15px;">
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Precision:</label>
+                                        <select id="optPrecision" onchange="updatePrecision('optimizer'); autoRecalculateOptimization();" class="wide-input" style="width: 100%;">
+                                            <option value="32">1/32"</option>
+                                            <option value="16" selected>1/16"</option>
+                                            <option value="8">1/8"</option>
+                                            <option value="4">1/4"</option>
+                                            <option value="2">1/2"</option>
+                                            <option value="1">1"</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Right Column -->
+                                <div style="flex: 1; min-width: 250px;">
+                                    <div class="settings-row">
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Kerf Width:</label>
+                                        <select id="optKerf" class="wide-input" style="width: 100%;" onchange="autoRecalculateOptimization()">
+                                            <option value="0">None</option>
+                                            <option value="0.0625">1/16"</option>
+                                            <option value="0.09375">3/32"</option>
+                                            <option value="0.125" selected>1/8"</option>
+                                            <option value="0.1875">3/16"</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Available Boards Section -->
+                        <div class="calc-section" style="background: var(--surface-color); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                            <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Available Boards</h4>
+                            <div class="board-input" style="display: grid; grid-template-columns: 2fr 60px auto; gap: 10px; align-items: end;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Board Length:</label>
+                                    <input type="text" id="smartBoardLength" placeholder="Try: 8', 96&quot;, 8 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewBoardLength', updateBoardLengthValue)" style="padding: 12px;">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Qty:</label>
+                                    <input type="number" id="boardQuantity" placeholder="1" min="1" value="1" style="width: 100%; padding: 12px;">
+                                </div>
+                                <button class="btn btn-primary" onclick="addBoard()" style="padding: 12px 24px; height: fit-content;">Add Board</button>
+                            </div>
+                            <div id="previewBoardLength" class="input-preview"></div>
+                                <div style="display: none;">
+                                    <!-- Hidden legacy inputs for backward compatibility -->
+                                    <input type="number" id="boardFeet" placeholder="0" min="0" class="wide-input">
+                                    <input type="number" id="boardInches" placeholder="0" min="0" max="11" class="wide-input">
+                                    <select id="boardFraction" style="width: 120px;">
+                                        <option value="0">0</option>
+                                        <option value="0.0625">1/16"</option>
+                                        <option value="0.125">1/8"</option>
+                                        <option value="0.1875">3/16"</option>
+                                        <option value="0.25">1/4"</option>
+                                        <option value="0.3125">5/16"</option>
+                                        <option value="0.375">3/8"</option>
+                                        <option value="0.4375">7/16"</option>
+                                        <option value="0.5">1/2"</option>
+                                        <option value="0.5625">9/16"</option>
+                                        <option value="0.625">5/8"</option>
+                                        <option value="0.6875">11/16"</option>
+                                        <option value="0.75">3/4"</option>
+                                        <option value="0.8125">13/16"</option>
+                                        <option value="0.875">7/8"</option>
+                                        <option value="0.9375">15/16"</option>
+                                    </select>
+                                </div>
+                            <div id="boardsList" style="margin-top: 15px;"></div>
+                        </div>
+                        
+                        <!-- Needed Cuts Section -->
+                        <div class="calc-section" style="background: var(--surface-color); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                            <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Needed Cuts</h4>
+                            <div class="cut-input" style="display: grid; grid-template-columns: 2fr 60px auto; gap: 10px; align-items: end;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Cut Length:</label>
+                                    <input type="text" id="smartOptCutLength" placeholder="Try: 24&quot;, 2', 2 0 0&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewOptCutLength', updateOptCutLengthValue)" style="padding: 12px;">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Qty:</label>
+                                    <input type="number" id="cutQuantity" placeholder="1" min="1" value="1" style="width: 100%; padding: 12px;">
+                                </div>
+                                <button class="btn btn-primary" onclick="addCut()" style="padding: 12px 24px; height: fit-content;">Add Cut</button>
+                            </div>
+                            <div id="previewOptCutLength" class="input-preview"></div>
+                                <div style="display: none;">
+                                    <!-- Hidden legacy inputs for backward compatibility -->
+                                    <input type="number" id="optCutFeet" placeholder="0" min="0" class="wide-input">
+                                    <input type="number" id="optCutInches" placeholder="0" min="0" max="11" class="wide-input">
+                                    <select id="optCutFraction" style="width: 120px;">
+                                        <option value="0">0</option>
+                                        <option value="0.0625">1/16"</option>
+                                        <option value="0.125">1/8"</option>
+                                        <option value="0.1875">3/16"</option>
+                                        <option value="0.25">1/4"</option>
+                                        <option value="0.3125">5/16"</option>
+                                        <option value="0.375">3/8"</option>
+                                        <option value="0.4375">7/16"</option>
+                                        <option value="0.5">1/2"</option>
+                                        <option value="0.5625">9/16"</option>
+                                        <option value="0.625">5/8"</option>
+                                        <option value="0.6875">11/16"</option>
+                                        <option value="0.75">3/4"</option>
+                                        <option value="0.8125">13/16"</option>
+                                        <option value="0.875">7/8"</option>
+                                        <option value="0.9375">15/16"</option>
+                                    </select>
+                                </div>
+                            <div id="cutsList" style="margin-top: 15px;"></div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                            <button class="btn btn-primary" onclick="optimizeCuts()" style="padding: 15px; font-size: 16px;">
+                                🔧 Optimize Cuts
+                            </button>
+                            <button class="btn btn-secondary" onclick="clearOptimization()" style="padding: 15px; font-size: 16px;">
+                                Clear All
+                            </button>
+                        </div>
+                        
+                        <!-- Results Section -->
+                        <div class="results-section">
+                            <div id="optimizationResults"></div>
+                        </div>
+                        
+                        <!-- Visual Cut Layout -->
+                        <div id="visualLayout" style="display: none;">
+                            <h3>Visual Cut Layout</h3>
+                            <div id="boardVisualization" class="board-visualization"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Wood Species Database -->
             <div class="calc-card" id="woodSpeciesCard">
                 <div class="calc-card-header" onclick="toggleCalcCard('woodSpecies')">
@@ -6250,7 +6258,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     </div>
 
                     <div class="help-calc-card">
-                        <h4>✂️ Cut Calculator Tab</h4>
+                        <h4>✂️ Cut Calculator (in Specialty Calculators)</h4>
                         <p><strong>Purpose:</strong> Precise cutting with automatic kerf compensation</p>
                         <p><strong>Modes:</strong></p>
                         <ul style="margin: 8px 0; padding-left: 20px;">
