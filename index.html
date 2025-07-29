@@ -6863,7 +6863,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             // Hide/show global project selector
             const globalProjectSelector = document.getElementById('globalProjectSelector');
             if (globalProjectSelector) {
-                globalProjectSelector.style.display = modeConfig.saveToProject ? 'block' : 'none';
+                const shouldShow = modeConfig.saveToProject === true;
+                globalProjectSelector.style.display = shouldShow ? 'block' : 'none';
+                console.log(`Global project selector: mode=${uiConfig.mode}, saveToProject=${modeConfig.saveToProject}, display=${shouldShow ? 'block' : 'none'}`);
             }
         }
         
@@ -10539,13 +10541,19 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 targetTab.classList.add('active');
             }
             
-            // Hide/show global project selector based on tab
+            // Hide/show global project selector based on tab and mode
             const globalSelector = document.getElementById('globalProjectSelector');
             if (globalSelector) {
+                const modeConfig = uiConfig.modes[uiConfig.mode];
                 if (tab === 'projects') {
+                    // Always hide in projects tab to avoid redundancy
                     globalSelector.style.display = 'none';
-                } else {
+                } else if (modeConfig.saveToProject) {
+                    // Only show in other tabs if we're in project mode
                     globalSelector.style.display = 'block';
+                } else {
+                    // Hide in non-project modes
+                    globalSelector.style.display = 'none';
                 }
             }
             
@@ -19321,7 +19329,15 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             calculatorRegistry.initialize();
             
             // Apply initial UI mode
+            console.log('Initial UI mode from localStorage:', uiConfig.mode);
             applyUIMode();
+            
+            // Double-check mode selector is set correctly
+            const modeSelect = document.getElementById('uiModeSelect');
+            if (modeSelect && modeSelect.value !== uiConfig.mode) {
+                console.log('Mode selector mismatch - fixing:', modeSelect.value, '->', uiConfig.mode);
+                modeSelect.value = uiConfig.mode;
+            }
             
             // Set initial collapsed state for all calculators
             if (uiConfig.preferences.rememberCollapsedState) {
