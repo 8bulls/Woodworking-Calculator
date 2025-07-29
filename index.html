@@ -1718,8 +1718,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         /* Specific styling for miter angle diagram container */
         #angleCard .calc-visual {
             min-height: 220px; /* Reserve space for enhanced diagrams */
-            margin-bottom: 30px;
+            margin-bottom: 0;
             position: relative;
+        }
+        
+        /* Ensure proper spacing for calculators */
+        .calc-card {
+            margin-bottom: 10px !important;
         }
         
         .calc-inputs {
@@ -4988,7 +4993,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <span class="calc-title">Miter Angle Calculator</span>
                     <span class="calc-arrow">▼</span>
                 </div>
-                <div class="calc-card-content" id="angleContent">
+                <div class="calc-card-content" id="angleContent" style="padding-bottom: 10px;">
                     <div class="calc-description">Calculate miter angles for frames and single board cuts</div>
                     
                     <!-- Visual Preview Panel -->
