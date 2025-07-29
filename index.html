@@ -13068,24 +13068,50 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             ${angle}° Miter ${cutType === 'one-sided' ? 'One-End' : 'Both-Ends'} Cut
                         </text>
                         
-                        <!-- Long side dimension with extension line -->
-                        <line x1="${boardX}" y1="${boardY + boardVisualWidth + 15}" 
-                              x2="${boardX + boardLength}" y2="${boardY + boardVisualWidth + 15}" 
-                              stroke="#666" stroke-width="1"/>
-                        <line x1="${boardX}" y1="${boardY + boardVisualWidth + 10}" 
-                              x2="${boardX}" y2="${boardY + boardVisualWidth + 20}" 
-                              stroke="#666" stroke-width="1"/>
-                        <line x1="${boardX + boardLength}" y1="${boardY + boardVisualWidth + 10}" 
-                              x2="${boardX + boardLength}" y2="${boardY + boardVisualWidth + 20}" 
-                              stroke="#666" stroke-width="1"/>
-                        <text x="${centerX}" y="${boardY + boardVisualWidth + 35}" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">
+                        <!-- Long side dimension on top with extension line -->
+                        <line x1="${boardX}" y1="${boardY - 15}" 
+                              x2="${boardX + boardLength}" y2="${boardY - 15}" 
+                              stroke="#333" stroke-width="1"/>
+                        <line x1="${boardX}" y1="${boardY - 10}" 
+                              x2="${boardX}" y2="${boardY - 20}" 
+                              stroke="#333" stroke-width="1"/>
+                        <line x1="${boardX + boardLength}" y1="${boardY - 10}" 
+                              x2="${boardX + boardLength}" y2="${boardY - 20}" 
+                              stroke="#333" stroke-width="1"/>
+                        <text x="${centerX}" y="${boardY - 25}" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">
                             Long: ${inchesToDisplay(longSide)}
                         </text>
                         
-                        <!-- Short side dimension -->
-                        <text x="${centerX}" y="${boardY + boardVisualWidth + 52}" text-anchor="middle" font-size="14" font-weight="bold" fill="#666">
-                            Short: ${inchesToDisplay(shortSide)}
-                        </text>
+                        <!-- Short side dimension on bottom with extension line -->
+                        ${cutType === 'dual-sided' ? `
+                            <!-- For dual-sided, measure between the two cut starts -->
+                            <line x1="${leftCutX2}" y1="${boardY + boardVisualWidth + 15}" 
+                                  x2="${rightCutX2}" y2="${boardY + boardVisualWidth + 15}" 
+                                  stroke="#666" stroke-width="1"/>
+                            <line x1="${leftCutX2}" y1="${boardY + boardVisualWidth + 10}" 
+                                  x2="${leftCutX2}" y2="${boardY + boardVisualWidth + 20}" 
+                                  stroke="#666" stroke-width="1"/>
+                            <line x1="${rightCutX2}" y1="${boardY + boardVisualWidth + 10}" 
+                                  x2="${rightCutX2}" y2="${boardY + boardVisualWidth + 20}" 
+                                  stroke="#666" stroke-width="1"/>
+                            <text x="${centerX}" y="${boardY + boardVisualWidth + 35}" text-anchor="middle" font-size="14" font-weight="bold" fill="#666">
+                                Short: ${inchesToDisplay(shortSide)}
+                            </text>
+                        ` : `
+                            <!-- For one-sided, measure from cut start to right edge -->
+                            <line x1="${leftCutX2}" y1="${boardY + boardVisualWidth + 15}" 
+                                  x2="${boardX + boardLength}" y2="${boardY + boardVisualWidth + 15}" 
+                                  stroke="#666" stroke-width="1"/>
+                            <line x1="${leftCutX2}" y1="${boardY + boardVisualWidth + 10}" 
+                                  x2="${leftCutX2}" y2="${boardY + boardVisualWidth + 20}" 
+                                  stroke="#666" stroke-width="1"/>
+                            <line x1="${boardX + boardLength}" y1="${boardY + boardVisualWidth + 10}" 
+                                  x2="${boardX + boardLength}" y2="${boardY + boardVisualWidth + 20}" 
+                                  stroke="#666" stroke-width="1"/>
+                            <text x="${(leftCutX2 + boardX + boardLength) / 2}" y="${boardY + boardVisualWidth + 35}" text-anchor="middle" font-size="14" font-weight="bold" fill="#666">
+                                Short: ${inchesToDisplay(shortSide)}
+                            </text>
+                        `}
                         
                         <!-- Board width label on the board -->
                         <text x="${centerX}" y="${centerY + 4}" text-anchor="middle" font-size="12" font-weight="bold" fill="white" 
