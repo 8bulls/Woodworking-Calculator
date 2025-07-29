@@ -9516,21 +9516,25 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             }
             
             // Common patterns for feet/inches input
+            // Note: Added support for various quote characters used by mobile keyboards
+            const feetChars = "['\x27\u2019\u2018\u201A\u201B\u2032′'']";
+            const inchChars = '["\\x22\\u201C\\u201D\\u201E\\u201F\\u2033″""]';
+            
             const patterns = [
                 // Feet and inches with fractions: 4' 6 1/2" or 4 ft 6 1/2 in
-                { regex: /^(\d+)(?:\s*['\x27]|\s*ft)\s*(\d+)(?:\s*(\d+)\/(\d+))?\s*(?:["\x22]|\s*in)?$/i, type: 'feet_inches_frac' },
+                { regex: new RegExp(`^(\\d+)(?:\\s*${feetChars}|\\s*ft)\\s*(\\d+)(?:\\s*(\\d+)\\/(\\d+))?\\s*(?:${inchChars}|\\s*in)?$`, 'i'), type: 'feet_inches_frac' },
                 // Feet only with fractions: 4' 1/2 or 4 1/2 ft  
-                { regex: /^(\d+)(?:\s*(\d+)\/(\d+))?\s*['\x27]$/i, type: 'feet_frac' },
+                { regex: new RegExp(`^(\\d+)(?:\\s*(\\d+)\\/(\\d+))?\\s*${feetChars}$`, 'i'), type: 'feet_frac' },
                 // Feet followed by fractional inches: 1' 1/16 or 4' 3/8
-                { regex: /^(\d+)\s*['\x27]\s*(\d+)\/(\d+)\s*["\x22]?$/i, type: 'feet_then_frac_inches' },
+                { regex: new RegExp(`^(\\d+)\\s*${feetChars}\\s*(\\d+)\\/(\\d+)\\s*${inchChars}?$`, 'i'), type: 'feet_then_frac_inches' },
                 // Just inches with fractions: 54 1/2" or 54.5"
-                { regex: /^(\d+)(?:\.(\d+)|(\d+)\/(\d+))?\s*["\x22]?$/i, type: 'inches_frac' },
+                { regex: new RegExp(`^(\\d+)(?:\\.(\\d+)|(\\d+)\\/(\\d+))?\\s*${inchChars}?$`, 'i'), type: 'inches_frac' },
                 // Pure fraction: 3/4 or 3/4"
-                { regex: /^(\d+)\/(\d+)\s*["\x22]?$/i, type: 'pure_fraction' },
+                { regex: new RegExp(`^(\\d+)\\/(\\d+)\\s*${inchChars}?$`, 'i'), type: 'pure_fraction' },
                 // Inches with space-separated fraction: 1 1/16 or 12 3/4
-                { regex: /^(\d+)\s+(\d+)\/(\d+)\s*["\x22]?$/i, type: 'inches_space_frac' },
+                { regex: new RegExp(`^(\\d+)\\s+(\\d+)\\/(\\d+)\\s*${inchChars}?$`, 'i'), type: 'inches_space_frac' },
                 // Decimal feet: 4.5' or 4.5 ft
-                { regex: /^(\d+(?:\.\d+)?)\s*(?:['\x27]|ft)$/i, type: 'decimal_feet' },
+                { regex: new RegExp(`^(\\d+(?:\\.\\d+)?)\\s*(?:${feetChars}|ft)$`, 'i'), type: 'decimal_feet' },
                 // Space separated: "4 6 1/2" (feet inches fraction)
                 { regex: /^(\d+)\s+(\d+)(?:\s+(\d+)\/(\d+))?$/i, type: 'space_separated' },
                 // Pure decimal
