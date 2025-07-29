@@ -4994,45 +4994,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <!-- Visual Preview Panel -->
                     <div class="settings-panel" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
                         <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Visual Preview</h4>
-                        <div class="calc-visual" id="angleDiagramContainer" style="min-height: 300px;">
-                        <svg width="100%" height="200" viewBox="0 0 400 200" style="max-width: 400px; margin: 0 auto; display: block;">
-                            <!-- Grid pattern background -->
-                            <defs>
-                                <pattern id="angleGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
-                                </pattern>
-                                <!-- Wood texture for polygon -->
-                                <pattern id="woodTexture" patternUnits="userSpaceOnUse" width="60" height="60">
-                                    <rect width="60" height="60" fill="#F5DEB3"/>
-                                    <path d="M0,10 Q15,8 30,10 T60,10" stroke="#E6D8B5" stroke-width="1" fill="none"/>
-                                    <path d="M0,25 Q20,22 40,25 T60,25" stroke="#DDD0A5" stroke-width="1.2" fill="none"/>
-                                    <path d="M0,40 Q10,38 20,40 T60,40" stroke="#E6D8B5" stroke-width="0.8" fill="none"/>
-                                    <path d="M0,55 Q25,52 50,55 T60,55" stroke="#DDD0A5" stroke-width="1" fill="none"/>
-                                </pattern>
-                            </defs>
-                            <rect width="400" height="200" fill="url(#angleGrid)" />
-                            
-                            <!-- Default polygon (square) -->
-                            <g id="polygonGroup" transform="translate(200, 100)">
-                                <polygon id="miterPolygon" points="-60,-60 60,-60 60,60 -60,60" 
-                                    fill="url(#woodTexture)" 
-                                    stroke="var(--primary-color)" 
-                                    stroke-width="3"/>
-                                
-                                <!-- Miter angle indicators -->
-                                <g id="miterAngles">
-                                    <!-- Will be populated dynamically -->
-                                </g>
-                            </g>
-                            
-                            <!-- Labels -->
-                            <text x="200" y="20" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--primary-color)">
-                                <tspan id="sidesLabel">4 Sides</tspan>
-                            </text>
-                            <text x="200" y="185" text-anchor="middle" font-size="12" fill="#666">
-                                <tspan id="angleLabel">Miter Angle: 45°</tspan>
-                            </text>
-                        </svg>
+                        <div class="calc-visual" id="angleDiagramContainer" style="min-height: 200px;">
+                            <!-- Diagram will be populated by updateMiterDiagram() -->
                         </div>
                     </div>
                     
@@ -5100,11 +5063,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                     </select>
                                 </div>
                                 
-                                <div id="frameWidthInput" style="margin-bottom: 15px;">
-                                    <label id="frameWidthLabel" style="display: block; margin-bottom: 8px; font-weight: 600;">Frame outer width:</label>
-                                    <input type="text" id="smartFrameWidth" placeholder="Try: 8&quot;, 0.667', 8 1/2&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewFrameWidth', updateFrameWidthValue)" style="padding: 12px;">
-                                    <div id="previewFrameWidth" class="input-preview"></div>
-                                </div>
+                                <!-- Rectangle dimensions (width & height) -->
+                                <div id="frameRectangleDimensions">
+                                    <div id="frameWidthInput" style="margin-bottom: 15px;">
+                                        <label id="frameWidthLabel" style="display: block; margin-bottom: 8px; font-weight: 600;">Frame outer width:</label>
+                                        <input type="text" id="smartFrameWidth" placeholder="Try: 8&quot;, 0.667', 8 1/2&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewFrameWidth', updateFrameWidthValue)" style="padding: 12px;">
+                                        <div id="previewFrameWidth" class="input-preview"></div>
+                                    </div>
                                 <div style="display: none;">
                                     <!-- Hidden legacy inputs for backward compatibility -->
                                     <input type="number" id="frameWidthFeet" placeholder="0" min="0" class="wide-input" onchange="calculateFrameBuilder()">
@@ -5156,6 +5121,39 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                         <option value="0.875">7/8"</option>
                                         <option value="0.9375">15/16"</option>
                                     </select>
+                                </div>
+                                </div>
+                                
+                                <!-- Polygon dimensions (side length) -->
+                                <div id="framePolygonDimensions" style="display: none;">
+                                    <div style="margin-bottom: 15px;">
+                                        <label id="framePolygonLabel" style="display: block; margin-bottom: 8px; font-weight: 600;">Side Length:</label>
+                                        <input type="text" id="smartFramePolygon" placeholder="Try: 6&quot;, 0.5', 6 1/2&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewFramePolygon', updateFramePolygonValue)" style="padding: 12px;">
+                                        <div id="previewFramePolygon" class="input-preview"></div>
+                                    </div>
+                                    <div style="display: none;">
+                                        <!-- Hidden legacy inputs for backward compatibility -->
+                                        <input type="number" id="framePolygonFeet" placeholder="0" min="0" class="wide-input" onchange="calculateFrameBuilder()">
+                                        <input type="number" id="framePolygonInches" placeholder="6" min="0" max="11" class="wide-input" onchange="calculateFrameBuilder()">
+                                        <select id="framePolygonFraction" style="width: 120px;" onchange="calculateFrameBuilder()">
+                                            <option value="0" selected>0</option>
+                                            <option value="0.0625">1/16"</option>
+                                            <option value="0.125">1/8"</option>
+                                            <option value="0.1875">3/16"</option>
+                                            <option value="0.25">1/4"</option>
+                                            <option value="0.3125">5/16"</option>
+                                            <option value="0.375">3/8"</option>
+                                            <option value="0.4375">7/16"</option>
+                                            <option value="0.5">1/2"</option>
+                                            <option value="0.5625">9/16"</option>
+                                            <option value="0.625">5/8"</option>
+                                            <option value="0.6875">11/16"</option>
+                                            <option value="0.75">3/4"</option>
+                                            <option value="0.8125">13/16"</option>
+                                            <option value="0.875">7/8"</option>
+                                            <option value="0.9375">15/16"</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -12130,6 +12128,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         */
 
+        // OLD POLYGON DIAGRAM FUNCTION - NO LONGER USED
+        /*
         function updatePolygonDiagram(sides, miterAngle) {
             const polygon = document.getElementById('miterPolygon');
             const miterAnglesGroup = document.getElementById('miterAngles');
@@ -12187,6 +12187,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             if (sidesLabel) sidesLabel.textContent = `${sides} Sides`;
             if (angleLabel) angleLabel.textContent = `Miter Angle: ${miterAngle.toFixed(1)}°`;
         }
+        */
 
         // Removed old updatePolygonDiagramOLD function - replaced with SVG version above
 
@@ -12763,7 +12764,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
 
         function updateSingleMiterDiagram(angle, boardWidth, shortSide, longSide, cutType = 'one-sided') {
-            const diagram = document.getElementById('angleDiagram');
+            const diagram = document.getElementById('angleDiagramContainer');
             if (!diagram) return;
             
             // Create a detailed, large miter cut visualization
@@ -13051,7 +13052,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 const interiorAngle = ((sides - 2) * 180) / sides;
                 const miterAngle = (180 - interiorAngle) / 2;
                 
-            } else if (currentMiterMode === 'frame') {*/
+            } else if (currentMiterMode === 'frame') {
                 const sides = parseInt(document.getElementById('frameShapeSides').value);
                 
                 // Use smart input values if available, otherwise fall back to legacy inputs
