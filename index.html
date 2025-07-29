@@ -14796,6 +14796,29 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             const frameTypeDisplay = cabinetFrameStyle.charAt(0).toUpperCase() + cabinetFrameStyle.slice(1);
             const modeDisplay = cabinetDrawerMode === 'equal' ? 'Equal Heights' : 'Custom Heights';
             
+            // Generate rail marking guide
+            let railMarkingGuide = '';
+            if (currentRailThicknessInches > 0) {
+                const rails = layoutData.positions.filter(p => p.type === 'rail');
+                if (rails.length > 0) {
+                    railMarkingGuide = `
+                        <div class="divider-marks" style="margin-top: 15px;">
+                            <div class="marks-header" style="font-weight: bold; margin-bottom: 8px; color: var(--primary-color);">
+                                📐 Rail Marking Guide (from ${cabinetLayoutDirection === 'bottom-up' ? 'bottom' : 'top'}):
+                            </div>
+                            ${rails.map(rail => `
+                                <div class="divider-mark-row" style="margin-bottom: 6px; padding: 5px; background: #f8f9fa; border-radius: 4px;">
+                                    <span class="divider-label" style="font-weight: 600; min-width: 60px; display: inline-block;">Rail ${rail.number}:</span>
+                                    <span class="mark-left" style="margin: 0 10px;">Bottom edge at ${inchesToDisplay(cabinetLayoutDirection === 'bottom-up' ? rail.bottom : currentCabinetHeightInches - rail.top)}</span>
+                                    <span class="mark-center" style="margin: 0 10px;">Center at ${inchesToDisplay(cabinetLayoutDirection === 'bottom-up' ? rail.bottom + rail.thickness/2 : currentCabinetHeightInches - (rail.bottom + rail.thickness/2))}</span>
+                                    <span class="mark-right">Top edge at ${inchesToDisplay(cabinetLayoutDirection === 'bottom-up' ? rail.top : currentCabinetHeightInches - rail.bottom)}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            }
+            
             resultDiv.innerHTML = `
                 <div class="result-value">${frameTypeDisplay} Cabinet - ${drawerData.length} Drawers (${modeDisplay})</div>
                 <div class="result-summary">
@@ -14817,20 +14840,21 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                         <span class="summary-value">${cabinetLayoutDirection === 'bottom-up' ? 'Bottom-Up' : 'Top-Down'}</span>
                     </div>
                 </div>
+                ${railMarkingGuide}
             `;
             
             // Generate cut list
             let cutListHTML = `
-                <h4 style="margin: 0 0 15px 0; color: var(--primary-color);">Cut List</h4>
-                <div style="background: white; border: 1px solid #ddd; border-radius: 4px; padding: 15px;">
-                    <h5 style="margin: 0 0 10px 0; color: #333;">Drawer Fronts:</h5>
-                    <table style="width: 100%; border-collapse: collapse;">
+                <h4 style="margin: 0 0 10px 0; color: var(--primary-color); font-size: 14px;">Cut List</h4>
+                <div style="background: white; border: 1px solid #ddd; border-radius: 4px; padding: 12px; font-size: 12px;">
+                    <h5 style="margin: 0 0 8px 0; color: #333; font-size: 13px;">Drawer Fronts:</h5>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
                         <thead>
-                            <tr style="border-bottom: 2px solid #ddd;">
-                                <th style="text-align: left; padding: 8px;">Item</th>
-                                <th style="text-align: left; padding: 8px;">Quantity</th>
-                                <th style="text-align: left; padding: 8px;">Width</th>
-                                <th style="text-align: left; padding: 8px;">Height</th>
+                            <tr style="border-bottom: 1px solid #ddd;">
+                                <th style="text-align: left; padding: 6px; font-size: 11px; font-weight: 600;">Item</th>
+                                <th style="text-align: left; padding: 6px; font-size: 11px; font-weight: 600;">Qty</th>
+                                <th style="text-align: left; padding: 6px; font-size: 11px; font-weight: 600;">Width</th>
+                                <th style="text-align: left; padding: 6px; font-size: 11px; font-weight: 600;">Height</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -14838,11 +14862,11 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             
             drawerData.forEach(drawer => {
                 cutListHTML += `
-                    <tr>
-                        <td style="padding: 8px;">Drawer ${drawer.number}</td>
-                        <td style="padding: 8px;">1</td>
-                        <td style="padding: 8px;">${inchesToDisplay(drawer.width)}</td>
-                        <td style="padding: 8px;">${inchesToDisplay(drawer.height)}</td>
+                    <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 6px; font-size: 12px;">Drawer ${drawer.number}</td>
+                        <td style="padding: 6px; font-size: 12px;">1</td>
+                        <td style="padding: 6px; font-size: 12px;">${inchesToDisplay(drawer.width)}</td>
+                        <td style="padding: 6px; font-size: 12px;">${inchesToDisplay(drawer.height)}</td>
                     </tr>
                 `;
             });
@@ -14854,22 +14878,22 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             
             if (currentRailThicknessInches > 0 && drawerData.length > 1) {
                 cutListHTML += `
-                    <h5 style="margin: 20px 0 10px 0; color: #333;">Face Frame Rails:</h5>
-                    <table style="width: 100%; border-collapse: collapse;">
+                    <h5 style="margin: 15px 0 8px 0; color: #333; font-size: 13px;">Face Frame Rails:</h5>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
                         <thead>
-                            <tr style="border-bottom: 2px solid #ddd;">
-                                <th style="text-align: left; padding: 8px;">Item</th>
-                                <th style="text-align: left; padding: 8px;">Quantity</th>
-                                <th style="text-align: left; padding: 8px;">Width</th>
-                                <th style="text-align: left; padding: 8px;">Thickness</th>
+                            <tr style="border-bottom: 1px solid #ddd;">
+                                <th style="text-align: left; padding: 6px; font-size: 11px; font-weight: 600;">Item</th>
+                                <th style="text-align: left; padding: 6px; font-size: 11px; font-weight: 600;">Qty</th>
+                                <th style="text-align: left; padding: 6px; font-size: 11px; font-weight: 600;">Width</th>
+                                <th style="text-align: left; padding: 6px; font-size: 11px; font-weight: 600;">Thickness</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td style="padding: 8px;">Horizontal Rails</td>
-                                <td style="padding: 8px;">${drawerData.length - 1}</td>
-                                <td style="padding: 8px;">${inchesToDisplay(currentCabinetWidthInches)}</td>
-                                <td style="padding: 8px;">${inchesToDisplay(currentRailThicknessInches)}</td>
+                            <tr style="border-bottom: 1px solid #f0f0f0;">
+                                <td style="padding: 6px; font-size: 12px;">Horizontal Rails</td>
+                                <td style="padding: 6px; font-size: 12px;">${drawerData.length - 1}</td>
+                                <td style="padding: 6px; font-size: 12px;">${inchesToDisplay(currentCabinetWidthInches)}</td>
+                                <td style="padding: 6px; font-size: 12px;">${inchesToDisplay(currentRailThicknessInches)}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -14877,9 +14901,9 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             }
             
             cutListHTML += `
-                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd;">
-                        <strong>Notes:</strong>
-                        <ul style="margin: 5px 0 0 20px;">
+                    <div style="margin-top: 15px; padding-top: 12px; border-top: 1px solid #ddd;">
+                        <strong style="font-size: 12px;">Notes:</strong>
+                        <ul style="margin: 5px 0 0 20px; font-size: 11px; line-height: 1.4;">
                             <li>All dimensions are finished sizes</li>
                             ${cabinetFrameStyle === 'overlay' ? '<li>Drawer fronts include overlay on all edges</li>' : ''}
                             ${cabinetFrameStyle === 'inset' ? '<li>Drawer fronts sized for ' + inchesToDisplay(currentHorizontalRevealInches) + ' reveals</li>' : ''}
