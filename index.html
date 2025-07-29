@@ -1415,6 +1415,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             background: var(--background-color);
             overflow: visible;
             transition: var(--theme-transition);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         
         .calc-card-header {
@@ -4576,7 +4577,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <div id="boardVisualization" class="board-visualization"></div>
                 </div>
             </div>
-        </div>
+        </div> <!-- End of cutCalculator tab -->
 
         <!-- Specialty Calculators Tab -->
         <div id="specialty" class="tab-content">
@@ -4987,7 +4988,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             </div>
 
             <!-- Miter Angle Calculator -->
-            <div class="calc-card" id="angleCard">
+            <div class="calc-card" id="angleCard" style="margin-bottom: 10px !important;">
                 <div class="calc-card-header" onclick="toggleCalcCard('angle')">
                     <span class="calc-icon">📐</span>
                     <span class="calc-title">Miter Angle Calculator</span>
@@ -5260,7 +5261,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             </div>
 
             <!-- Screw & Pilot Hole Calculator -->
-            <div class="calc-card" id="screwCard">
+            <div class="calc-card" id="screwCard" style="margin-bottom: 10px !important;">
                 <div class="calc-card-header" onclick="toggleCalcCard('screw')">
                     <span class="calc-icon">🔩</span>
                     <span class="calc-title">Screw & Pilot Hole Calculator</span>
@@ -6062,7 +6063,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     </div>
                 </div>
             </div>
-        </div>
+        </div> <!-- End of specialty tab-content -->
+    </div>
+</div>
 
         <!-- Projects Tab -->
         <div id="projects" class="tab-content">
@@ -18889,5 +18892,6 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             console.log('WorkShop Pro Calculator with Visual Project Management loaded!');
         });
     </script>
+    </div> <!-- End of main container from line 4106 -->
 </body>
 </html>
