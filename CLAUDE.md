@@ -268,6 +268,49 @@ When making significant changes, follow this pattern:
 - **Error Recovery**: If errors appear, stop immediately - don't try to fix by adding more changes
 - **Syntax Validation**: For JavaScript changes, use a linter or online validator before saving
 
+## HTML Structure Debugging
+
+### Common Div Nesting Issues
+DIV balance problems are the #1 cause of visual bugs in this single-file application. Issues manifest as:
+- Multiple calculators appearing within a single border
+- Inconsistent spacing between sections
+- Elements not displaying (0 width/height despite having content)
+- Tab content missing or appearing in wrong locations
+
+### Debugging Approach
+1. **Visual Symptoms**: 
+   - Multiple borders around grouped elements = missing closing divs
+   - Elements with 0 dimensions but visible content = incorrect parent nesting
+   - Inconsistent spacing = check for extra margins or unclosed containers
+
+2. **Diagnostic Tools**:
+   ```python
+   # Python script to check div balance between sections
+   with open('index.html', 'r') as f:
+       content = f.read()
+   section = content[start_pos:end_pos]
+   balance = section.count('<div') - section.count('</div>')
+   print(f'Div balance: {balance}')
+   ```
+
+3. **Quick Checks**:
+   - Use browser DevTools to inspect parent relationships
+   - Add temporary CSS borders to visualize container boundaries
+   - Check computed styles for unexpected inheritance
+
+### Prevention Strategies
+1. **Always Close at Same Indentation**: When adding a div, immediately add its closing tag
+2. **Comment Major Sections**: Use comments like `<!-- End of calculator-name -->` 
+3. **Validate After Moving Code**: Moving sections often leaves orphaned tags
+4. **Check Parent Elements**: Use `console.log(element.parentElement)` to verify nesting
+5. **Balance Testing**: After structural changes, verify total document div balance is 0
+
+### Common Pitfalls
+- **Inline Styles**: Avoid inline `style="margin-bottom: 10px"` - use CSS classes
+- **Copy-Paste Errors**: Always verify closing tags match when copying calculator sections
+- **Missing Initialization**: Ensure all UI components are initialized on page load
+- **Function Name Typos**: Double-check function names exist before calling them
+
 ### Version Control Safety
 - **NEVER commit without explicit user permission** - Always ask "Should I commit these changes?" before running git commit
 - **Recommend commits before risky changes** - Before making structural changes, suggest: "I recommend committing the current working state before proceeding with [describe risky change]"
