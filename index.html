@@ -9515,6 +9515,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 return { value: 0, display: '0"', isValid: true, error: '' };
             }
             
+            // Normalize extra spaces to single spaces
+            value = value.replace(/\s+/g, ' ');
+            
             // Common patterns for feet/inches input
             // Note: Added support for various quote characters used by mobile keyboards
             const feetChars = "['\x27\u2019\u2018\u201A\u201B\u2032′'']";
@@ -9529,6 +9532,12 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 { regex: new RegExp(`^(\\d+)\\s*${feetChars}\\s*(\\d+)\\/(\\d+)\\s*${inchChars}?$`, 'i'), type: 'feet_then_frac_inches' },
                 // Feet with decimal inches: 4' 3.5" or 4 ft 3.5 in
                 { regex: new RegExp(`^(\\d+)\\s*(?:${feetChars}|\\s*ft)\\s*(\\d+(?:\\.\\d+)?)\\s*(?:${inchChars}|\\s*in)?$`, 'i'), type: 'feet_decimal_inches' },
+                // Decimal feet with integer inches: 4.5' 6" or 4.5 ft 6 in
+                { regex: new RegExp(`^(\\d+(?:\\.\\d+)?)\\s*(?:${feetChars}|\\s*ft)\\s*(\\d+)\\s*(?:${inchChars}|\\s*in)?$`, 'i'), type: 'decimal_feet_inches' },
+                // Decimal feet with decimal inches: 4.5' 3.5" or 4.5 ft 3.5 in
+                { regex: new RegExp(`^(\\d+(?:\\.\\d+)?)\\s*(?:${feetChars}|\\s*ft)\\s*(\\d+(?:\\.\\d+)?)\\s*(?:${inchChars}|\\s*in)?$`, 'i'), type: 'decimal_feet_decimal_inches' },
+                // Decimal feet with fractional inches: 4.5' 1/2" or 4.5 ft 3/8 in
+                { regex: new RegExp(`^(\\d+(?:\\.\\d+)?)\\s*(?:${feetChars}|\\s*ft)\\s*(\\d+)\\/(\\d+)\\s*(?:${inchChars}|\\s*in)?$`, 'i'), type: 'decimal_feet_frac_inches' },
                 // Just inches with fractions: 54 1/2" or 54.5"
                 { regex: new RegExp(`^(\\d+)(?:\\.(\\d+)|(\\d+)\\/(\\d+))?\\s*${inchChars}?$`, 'i'), type: 'inches_frac' },
                 // Pure fraction: 3/4 or 3/4"
@@ -9537,6 +9546,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 { regex: new RegExp(`^(\\d+)\\s+(\\d+)\\/(\\d+)\\s*${inchChars}?$`, 'i'), type: 'inches_space_frac' },
                 // Decimal feet: 4.5' or 4.5 ft
                 { regex: new RegExp(`^(\\d+(?:\\.\\d+)?)\\s*(?:${feetChars}|ft)$`, 'i'), type: 'decimal_feet' },
+                // Space separated with decimal: "4 3.5" (feet decimal-inches)
+                { regex: /^(\d+)\s+(\d+(?:\.\d+)?)$/i, type: 'space_separated_decimal' },
                 // Space separated: "4 6 1/2" (feet inches fraction)
                 { regex: /^(\d+)\s+(\d+)(?:\s+(\d+)\/(\d+))?$/i, type: 'space_separated' },
                 // Pure decimal
@@ -9662,6 +9673,39 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     const feetDec = parseInt(match[1]) || 0;
                     const decimalInches = parseFloat(match[2]) || 0;
                     inches = feetDec * 12 + decimalInches;
+                    break;
+                    
+                case 'decimal_feet_inches':
+                    const decFeet1 = parseFloat(match[1]) || 0;
+                    const intInches = parseInt(match[2]) || 0;
+                    inches = decFeet1 * 12 + intInches;
+                    break;
+                    
+                case 'decimal_feet_decimal_inches':
+                    const decFeet2 = parseFloat(match[1]) || 0;
+                    const decInches = parseFloat(match[2]) || 0;
+                    inches = decFeet2 * 12 + decInches;
+                    break;
+                    
+                case 'decimal_feet_frac_inches':
+                    const decFeet3 = parseFloat(match[1]) || 0;
+                    const fracNum = parseInt(match[2]) || 0;
+                    const fracDen = parseInt(match[3]) || 1;
+                    
+                    if (fracNum >= fracDen && fracNum > 0) {
+                        return { error: `Invalid fraction: ${fracNum}/${fracDen} (must be less than 1)` };
+                    }
+                    if (fracDen > 32) {
+                        return { error: `Invalid fraction: ${fracNum}/${fracDen} (max denominator is 32)` };
+                    }
+                    
+                    inches = decFeet3 * 12 + (fracNum / fracDen);
+                    break;
+                    
+                case 'space_separated_decimal':
+                    const feetSD = parseInt(match[1]) || 0;
+                    const decInchSD = parseFloat(match[2]) || 0;
+                    inches = feetSD * 12 + decInchSD;
                     break;
                     
                 case 'space_separated':
