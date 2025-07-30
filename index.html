@@ -14699,18 +14699,17 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 let totalRails = 0;
                 
                 if (cabinetFrameStyle === 'inset') {
-                    // Inset: Account for reveals and rails
-                    // Reveals: top, bottom, and one on each side of each rail
-                    // For n drawers: 2 + 2*(n-1) = 2n reveals total
-                    totalVerticalReveals = (2 * numDrawers) * currentVerticalRevealInches;
+                    // Inset: Calculate opening sizes first, then drawer fronts
                     totalRails = (numDrawers - 1) * currentRailThicknessInches;
-                    availableHeight = currentCabinetHeightInches - totalVerticalReveals - totalRails;
+                    // Available space for drawer openings
+                    const availableForOpenings = currentCabinetHeightInches - totalRails;
+                    // Each drawer opening height
+                    const openingHeight = availableForOpenings / numDrawers;
+                    // Drawer front is smaller than opening by reveals on both sides
+                    drawerHeight = openingHeight - (2 * currentVerticalRevealInches);
                     
-                    if (availableHeight <= 0) {
+                    if (drawerHeight <= 0) {
                         validationError = 'Not enough space for drawers with current reveal and rail settings';
-                    } else {
-                        drawerHeight = availableHeight / numDrawers;
-                        
                     }
                 } else {
                     // Overlay: Drawer fronts extend beyond cabinet opening
@@ -14736,31 +14735,15 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 
                 // Generate drawer data
                 if (!validationError) {
-                    // For inset mode, adjust last drawer to ensure perfect fit
-                    if (cabinetFrameStyle === 'inset' && numDrawers > 1) {
-                        // Calculate exact remaining space for last drawer
-                        const usedByFirstDrawers = (numDrawers - 1) * drawerHeight;
-                        const usedByReveals = totalVerticalReveals;
-                        const usedByRails = totalRails;
-                        const remainingForLastDrawer = currentCabinetHeightInches - usedByFirstDrawers - usedByReveals - usedByRails;
-                        
-                        for (let i = 0; i < numDrawers; i++) {
-                            drawerData.push({
-                                number: i + 1,
-                                width: drawerWidth,
-                                height: (i === numDrawers - 1) ? remainingForLastDrawer : drawerHeight
-                            });
-                        }
-                        
-                    } else {
-                        // Original logic for other cases
-                        for (let i = 0; i < numDrawers; i++) {
-                            drawerData.push({
-                                number: i + 1,
-                                width: drawerWidth,
-                                height: drawerHeight
-                            });
-                        }
+                    // For equal mode, all drawers have the same dimensions
+                    for (let i = 0; i < numDrawers; i++) {
+                        drawerData.push({
+                            number: i + 1,
+                            width: drawerWidth,
+                            height: drawerHeight,
+                            // Store opening height for inset mode positioning
+                            openingHeight: cabinetFrameStyle === 'inset' ? drawerHeight + (2 * currentVerticalRevealInches) : drawerHeight
+                        });
                     }
                 }
                 
@@ -15094,13 +15077,13 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                         });
                         
                     } else {
-                        // Equal mode: drawer heights are front sizes, need reveals between
+                        // Equal mode: position drawer openings to fill cabinet exactly
                         drawerData.forEach((drawer, index) => {
-                            // Add reveal before drawer
-                            currentPosition += currentVerticalRevealInches;
+                            // Use opening height if available (for inset), otherwise use drawer height
+                            const openingHeight = drawer.openingHeight || drawer.height;
                             
                             const drawerBottom = currentPosition;
-                            const drawerTop = currentPosition + drawer.height;
+                            const drawerTop = currentPosition + openingHeight;
                         
                         
                         positions.push({
@@ -15108,7 +15091,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                             number: drawer.number,
                             bottom: drawerBottom,
                             top: drawerTop,
-                            height: drawer.height,
+                            height: openingHeight,
                             width: drawer.width
                         });
                         
@@ -15116,8 +15099,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                         
                         // Add rail if not last drawer
                         if (index < drawerData.length - 1 && currentRailThicknessInches > 0) {
-                            currentPosition += currentVerticalRevealInches;
-                            
+                            // Rails are directly adjacent to openings (no reveals)
                             const railBottom = currentPosition;
                             const railTop = currentPosition + currentRailThicknessInches;
                             
@@ -15132,9 +15114,6 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                             currentPosition = railTop;
                         }
                         });
-                        
-                        // Add final reveal for equal mode
-                        currentPosition += currentVerticalRevealInches;
                     }
                 }
             
@@ -15256,9 +15235,12 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     x = offsetX + (layoutData.reveals.horizontal * scale);
                     width = (layoutData.cabinetWidth - 2 * layoutData.reveals.horizontal) * scale;
                 } else if (layoutData.frameStyle === 'inset') {
-                    // Equal inset mode: drawer dimensions already include reveals
-                    y = offsetY + (layoutData.cabinetHeight - drawer.top) * scale;
-                    height = drawer.height * scale;
+                    // Equal inset mode: drawer.height is opening size, need to calculate drawer front
+                    const actualDrawerHeight = drawer.height - (2 * layoutData.reveals.vertical);
+                    const openingY = offsetY + (layoutData.cabinetHeight - drawer.top) * scale;
+                    
+                    y = openingY + (layoutData.reveals.vertical * scale);
+                    height = actualDrawerHeight * scale;
                     x = offsetX + (layoutData.reveals.horizontal * scale);
                     width = (layoutData.cabinetWidth - 2 * layoutData.reveals.horizontal) * scale;
                 } else {
