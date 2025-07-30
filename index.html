@@ -4933,13 +4933,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                 <div>
                                     <label style="display: block; margin-bottom: 5px; font-size: 13px;">Horizontal Reveal:</label>
                                     <input type="text" id="smartHorizontalReveal" placeholder="1/8&quot; typical" class="wide-input" 
-                                           value="0.125" oninput="handleSmartInput(this, 'previewHReveal', updateHorizontalRevealValue)" style="padding: 10px;">
+                                           value="1/8" oninput="handleSmartInput(this, 'previewHReveal', updateHorizontalRevealValue)" style="padding: 10px;">
                                     <div id="previewHReveal" class="input-preview"></div>
                                 </div>
                                 <div>
                                     <label style="display: block; margin-bottom: 5px; font-size: 13px;">Vertical Reveal:</label>
                                     <input type="text" id="smartVerticalReveal" placeholder="1/8&quot; typical" class="wide-input" 
-                                           value="0.125" oninput="handleSmartInput(this, 'previewVReveal', updateVerticalRevealValue)" style="padding: 10px;">
+                                           value="1/8" oninput="handleSmartInput(this, 'previewVReveal', updateVerticalRevealValue)" style="padding: 10px;">
                                     <div id="previewVReveal" class="input-preview"></div>
                                 </div>
                             </div>
@@ -4950,7 +4950,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             <h5 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 14px;">Overlay Settings</h5>
                             <label style="display: block; margin-bottom: 5px; font-size: 13px;">Overlay Amount:</label>
                             <input type="text" id="smartOverlayAmount" placeholder="3/4&quot; typical" class="wide-input" 
-                                   value="0.75" oninput="handleSmartInput(this, 'previewOverlay', updateOverlayAmountValue)" style="padding: 10px;">
+                                   value="3/4" oninput="handleSmartInput(this, 'previewOverlay', updateOverlayAmountValue)" style="padding: 10px;">
                             <div id="previewOverlay" class="input-preview"></div>
                         </div>
                         
@@ -14637,7 +14637,8 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         }
         
         function updateCustomDrawerHeight(index, value) {
-            const inches = parseFloat(value) || 0;
+            // Use the conversion function to handle fractions
+            const inches = convertToDecimal(value) || 0;
             if (inches > 0) {
                 customDrawerHeights[index] = inches;
                 calculateCabinetLayout();
@@ -14655,7 +14656,8 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             listDiv.innerHTML = customDrawerHeights.map((height, index) => `
                 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                     <span style="min-width: 80px; font-weight: 600;">Drawer ${index + 1}:</span>
-                    <input type="number" value="${height}" min="1" step="0.125" 
+                    <input type="text" value="${inchesToDisplay(height)}" 
+                           placeholder="e.g. 6, 4 1/2, 3.75"
                            oninput="updateCustomDrawerHeight(${index}, this.value)"
                            style="width: 100px; padding: 8px;">
                     <span style="color: #666;">inches</span>
@@ -20547,6 +20549,21 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             updatePrecision('calculator');
             updatePrecision('cut');
             updatePrecision('optimizer');
+            
+            // Initialize cabinet calculator smart inputs with fraction values
+            const smartHReveal = document.getElementById('smartHorizontalReveal');
+            const smartVReveal = document.getElementById('smartVerticalReveal');
+            const smartOverlay = document.getElementById('smartOverlayAmount');
+            
+            if (smartHReveal && smartHReveal.value === '1/8') {
+                handleSmartInput(smartHReveal, 'previewHReveal', updateHorizontalRevealValue);
+            }
+            if (smartVReveal && smartVReveal.value === '1/8') {
+                handleSmartInput(smartVReveal, 'previewVReveal', updateVerticalRevealValue);
+            }
+            if (smartOverlay && smartOverlay.value === '3/4') {
+                handleSmartInput(smartOverlay, 'previewOverlay', updateOverlayAmountValue);
+            }
             
             // Initialize kerf diagram state
             updateKerfDiagram();
