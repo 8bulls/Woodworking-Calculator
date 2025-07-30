@@ -15313,10 +15313,10 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         }
         
         function updateCustomDrawerHeight(index, value) {
-            // Use the conversion function to handle fractions
-            const inches = convertToDecimal(value) || 0;
-            if (inches > 0) {
-                customDrawerHeights[index] = inches;
+            // Parse the input to handle fractions, decimals, etc.
+            const result = parseSmartInput(value);
+            if (result.isValid && result.value > 0) {
+                customDrawerHeights[index] = result.value;
                 calculateCabinetLayout();
             }
         }
