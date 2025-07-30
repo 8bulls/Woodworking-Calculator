@@ -1526,6 +1526,30 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             user-select: none;
             transition: var(--theme-transition);
             color: var(--primary-color);
+            position: relative;
+        }
+        
+        .calc-help-btn {
+            position: absolute;
+            right: 40px;
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            color: #666;
+            transition: all 0.2s;
+        }
+        
+        .calc-help-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
         }
         
         .calc-card-header:hover {
@@ -4433,6 +4457,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div class="calc-card-header" onclick="toggleCalcCard('boardFoot')">
                     <span class="calc-icon">📏</span>
                     <span class="calc-title">Lumber Shopping Cart</span>
+                    <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('lumberCart')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
                 <div class="calc-card-content" id="boardFootContent">
@@ -4596,6 +4621,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div class="calc-card-header" onclick="toggleCalcCard('goldenRatio')">
                     <span class="calc-icon">✨</span>
                     <span class="calc-title">Golden Ratio Calculator</span>
+                    <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('goldenRatio')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
                 <div class="calc-card-content" id="goldenRatioContent">
@@ -4717,6 +4743,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div class="calc-card-header" onclick="toggleCalcCard('spacing')">
                     <span class="calc-icon">📐</span>
                     <span class="calc-title">Shelf & Division Calculator</span>
+                    <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('spacing')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
                 <div class="calc-card-content" id="spacingContent">
@@ -4838,6 +4865,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div class="calc-card-header" onclick="toggleCalcCard('cabinetDrawer')">
                     <span class="calc-icon">🗄️</span>
                     <span class="calc-title">Cabinet Drawer & Face Frame Layout</span>
+                    <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('cabinetDrawer')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
                 <div class="calc-card-content" id="cabinetDrawerContent">
@@ -5020,6 +5048,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div class="calc-card-header" onclick="toggleCalcCard('angle')">
                     <span class="calc-icon">📐</span>
                     <span class="calc-title">Miter Angle Calculator</span>
+                    <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('angle')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
                 <div class="calc-card-content" id="angleContent" style="padding-bottom: 10px;">
@@ -5294,6 +5323,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div class="calc-card-header" onclick="toggleCalcCard('screw')">
                     <span class="calc-icon">🔩</span>
                     <span class="calc-title">Screw & Pilot Hole Calculator</span>
+                    <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('screw')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
                 <div class="calc-card-content" id="screwContent">
@@ -5573,6 +5603,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div class="calc-card-header" onclick="toggleCalcCard('grade')">
                     <span class="calc-icon">📐</span>
                     <span class="calc-title">Grade/Slope Calculator</span>
+                    <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('grade')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
                 <div class="calc-card-content" id="gradeContent">
@@ -5764,6 +5795,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div class="calc-card-header" onclick="toggleCalcCard('tile')">
                     <span class="calc-icon">🔲</span>
                     <span class="calc-title">Tile & Paver Calculator</span>
+                    <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('tile')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
                 <div class="calc-card-content" id="tileContent">
@@ -6029,6 +6061,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div class="calc-card-header" onclick="toggleCalcCard('cutCalc')">
                     <span class="calc-icon">✂️</span>
                     <span class="calc-title">Cut Calculator</span>
+                    <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('cutCalc')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
                 <div class="calc-card-content" id="cutCalcContent">
@@ -6344,6 +6377,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div class="calc-card-header" onclick="toggleCalcCard('woodSpecies')">
                     <span class="calc-icon">🌳</span>
                     <span class="calc-title">Wood Species Database</span>
+                    <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('woodSpecies')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
                 <div class="calc-card-content" id="woodSpeciesContent">
@@ -6425,6 +6459,34 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         <!-- Projects Tab -->
         <div id="projects" class="tab-content">
             <div class="projects-dashboard">
+                <!-- Help Section -->
+                <div id="projectsHelpSection" style="background: #e3f2fd; border-radius: 12px; padding: 20px; margin-bottom: 30px; border-left: 4px solid var(--primary-color);">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div style="flex: 1;">
+                            <h3 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 18px; display: flex; align-items: center; gap: 10px;">
+                                📁 Welcome to Projects
+                                <button onclick="document.getElementById('projectsHelpSection').style.display='none'; sessionStorage.setItem('hideProjectsHelp', 'true')" 
+                                        style="margin-left: auto; background: none; border: 1px solid #1976d2; color: #1976d2; padding: 2px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;"
+                                        title="Hide this help section for this session">
+                                    Hide
+                                </button>
+                            </h3>
+                            <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5;">
+                                Projects help you organize and save all your woodworking calculations in one place.
+                            </p>
+                            <ul style="margin: 10px 0; padding-left: 20px; font-size: 13px; line-height: 1.6;">
+                                <li><strong>Create Projects:</strong> Click "➕ New Project" to start a new woodworking project</li>
+                                <li><strong>Save Calculations:</strong> Use "💾 Save to Project" in any calculator to add to the active project</li>
+                                <li><strong>View Timeline:</strong> Click any project card to see all saved calculations chronologically</li>
+                                <li><strong>Export/Import:</strong> Download projects as JSON files for backup or sharing</li>
+                            </ul>
+                            <p style="margin: 10px 0 0 0; font-size: 12px; color: #666;">
+                                💡 <strong>Tip:</strong> Select your active project from the dropdown at the top of the page - all calculations will automatically save to it.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Quick Actions Section -->
                 <div class="quick-actions-section" style="margin-bottom: 30px;">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 600px; margin: 0 auto;">
@@ -11091,7 +11153,438 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             if (modal) modal.style.display = 'none';
         }
 
+        // Help content organized by context
+        const helpContent = {
+            tabs: {
+                calculator: {
+                    title: 'Calculator Help',
+                    sections: [
+                        {
+                            icon: '📱',
+                            title: 'UI Modes',
+                            content: `
+                                <p style="margin: 0 0 10px 0;"><strong>Current Mode: Basic</strong></p>
+                                <ul>
+                                    <li><strong>Basic:</strong> Single calculator only (current view)</li>
+                                    <li><strong>Standard:</strong> Adds Specialty Calculators tab with 10+ tools</li>
+                                    <li><strong>Project:</strong> Adds Projects tab for saving calculations</li>
+                                </ul>
+                                <p style="margin-top: 10px; font-size: 12px;">Switch modes using the dropdown in the header (top right)</p>
+                            `
+                        },
+                        {
+                            icon: '🧮',
+                            title: 'Calculator Operations',
+                            content: `
+                                <ul>
+                                    <li><strong>Operations:</strong> + (add), - (subtract), × (multiply), ÷ (divide)</li>
+                                    <li><strong>Memory:</strong> MC (clear), MR (recall), M+ (add), M- (subtract)</li>
+                                    <li><strong>Precision:</strong> Set rounding from 1/32" to 1" to match your tools</li>
+                                </ul>
+                            `
+                        },
+                        {
+                            icon: '📏',
+                            title: 'Input Examples',
+                            content: `
+                                <ul>
+                                    <li><strong>Feet & inches:</strong> 4'6", 4' 6", 4 ft 6 in</li>
+                                    <li><strong>Inches only:</strong> 54", 54.5", 54 1/2"</li>
+                                    <li><strong>Smart parsing:</strong> 4 6 1/2, 1 2 3/8</li>
+                                    <li><strong>Fractions:</strong> 3/4", 1/16", 5/32"</li>
+                                    <li><strong>Decimals:</strong> .75", 0.75", 4.5'</li>
+                                    <li><strong>Metric:</strong> 25mm, 30cm, 1.5m, 2m 15cm</li>
+                                </ul>
+                            `
+                        }
+                    ]
+                },
+                specialty: {
+                    title: 'Specialty Calculators Help',
+                    sections: [
+                        {
+                            icon: '🔍',
+                            title: 'Finding Calculators',
+                            content: `
+                                <ul>
+                                    <li><strong>Search:</strong> Type keywords to filter calculators</li>
+                                    <li><strong>Categories:</strong> Click category headers to expand/collapse</li>
+                                    <li><strong>Recent:</strong> Your most-used calculators appear at the top</li>
+                                    <li><strong>Expand All:</strong> Show all calculators at once</li>
+                                </ul>
+                            `
+                        },
+                        {
+                            icon: '📱',
+                            title: 'UI Modes',
+                            content: `
+                                <ul>
+                                    <li><strong>Basic:</strong> Single calculator only</li>
+                                    <li><strong>Standard:</strong> Calculator + Specialty tabs (current view)</li>
+                                    <li><strong>Project:</strong> All tabs including Projects</li>
+                                </ul>
+                                <p style="margin-top: 8px; font-size: 12px;">Change modes with the dropdown in the header (top right)</p>
+                            `
+                        }
+                    ]
+                },
+                projects: {
+                    title: 'Projects Help',
+                    sections: [
+                        {
+                            icon: '📁',
+                            title: 'Project Basics',
+                            content: `
+                                <ul>
+                                    <li><strong>Active Project:</strong> Select from dropdown to auto-save calculations</li>
+                                    <li><strong>New Project:</strong> Click "+ New" to create</li>
+                                    <li><strong>Save to Project:</strong> Available in every calculator</li>
+                                    <li><strong>Timeline:</strong> View all saved calculations chronologically</li>
+                                </ul>
+                            `
+                        },
+                        {
+                            icon: '📤',
+                            title: 'Import/Export',
+                            content: `
+                                <ul>
+                                    <li><strong>Export:</strong> Download projects as JSON files</li>
+                                    <li><strong>Import:</strong> Load previously exported projects</li>
+                                    <li><strong>Backup:</strong> Regular exports protect your data</li>
+                                </ul>
+                            `
+                        }
+                    ]
+                }
+            },
+            calculators: {
+                lumberCart: {
+                    title: 'Lumber Shopping Cart',
+                    icon: '🛒',
+                    description: 'Calculate lumber costs and board feet by species',
+                    sections: [
+                        {
+                            title: 'How to Use',
+                            content: `
+                                <ol>
+                                    <li>Select wood species from dropdown</li>
+                                    <li>Enter dimensions (thickness × width × length)</li>
+                                    <li>Set quantity and price per board foot</li>
+                                    <li>Click "Add to Cart" to build your list</li>
+                                </ol>
+                            `
+                        },
+                        {
+                            title: 'Tips',
+                            content: `
+                                <ul>
+                                    <li>Prices save per species for quick estimates</li>
+                                    <li>Board feet = (T × W × L) ÷ 144 (inches) or ÷ 12 (feet)</li>
+                                    <li>Export cart summary for lumber yard visits</li>
+                                </ul>
+                            `
+                        }
+                    ]
+                },
+                goldenRatio: {
+                    title: 'Golden Ratio Calculator',
+                    icon: '✨',
+                    description: 'Create proportionally pleasing dimensions using φ (1.618)',
+                    sections: [
+                        {
+                            title: 'How to Use',
+                            content: `
+                                <ol>
+                                    <li>Enter one dimension (width OR height)</li>
+                                    <li>Calculator provides the golden ratio complement</li>
+                                    <li>Visual preview shows the proportions</li>
+                                </ol>
+                            `
+                        },
+                        {
+                            title: 'Best For',
+                            content: `
+                                <ul>
+                                    <li>Picture frames and artwork</li>
+                                    <li>Furniture proportions</li>
+                                    <li>Cabinet doors and drawers</li>
+                                    <li>Any aesthetic design element</li>
+                                </ul>
+                            `
+                        }
+                    ]
+                },
+                spacing: {
+                    title: 'Shelf & Division Calculator',
+                    icon: '📐',
+                    description: 'Calculate equal spacing for shelves and divisions',
+                    sections: [
+                        {
+                            title: 'Two Modes',
+                            content: `
+                                <ul>
+                                    <li><strong>By Count:</strong> Specify number of shelves/divisions</li>
+                                    <li><strong>By Spacing:</strong> Specify desired gap between items</li>
+                                </ul>
+                            `
+                        },
+                        {
+                            title: 'Common Uses',
+                            content: `
+                                <ul>
+                                    <li>Bookshelf spacing</li>
+                                    <li>Picket fence posts</li>
+                                    <li>Drawer dividers</li>
+                                    <li>Stair balusters</li>
+                                </ul>
+                            `
+                        }
+                    ]
+                },
+                angle: {
+                    title: 'Miter Angle Calculator',
+                    icon: '📐',
+                    description: 'Calculate precise angles for joints and frames',
+                    sections: [
+                        {
+                            title: 'Three Modes',
+                            content: `
+                                <ul>
+                                    <li><strong>Polygon:</strong> Regular shapes (3-12 sides)</li>
+                                    <li><strong>Frame:</strong> Custom rectangles with corners</li>
+                                    <li><strong>Single Cut:</strong> One-off angle calculations</li>
+                                </ul>
+                            `
+                        },
+                        {
+                            title: 'Results Include',
+                            content: `
+                                <ul>
+                                    <li>Miter saw angle setting</li>
+                                    <li>Actual cut angle</li>
+                                    <li>Interior angle</li>
+                                    <li>Visual diagram</li>
+                                </ul>
+                            `
+                        }
+                    ]
+                },
+                screw: {
+                    title: 'Screw & Pilot Hole Calculator',
+                    icon: '🔩',
+                    description: 'Find correct drill sizes for any screw',
+                    sections: [
+                        {
+                            title: 'Inputs',
+                            content: `
+                                <ul>
+                                    <li>Screw size (#2-#20, fractions, lag bolts)</li>
+                                    <li>Wood type (hardwood/softwood)</li>
+                                    <li>Optional: thread pitch</li>
+                                </ul>
+                            `
+                        },
+                        {
+                            title: 'Results',
+                            content: `
+                                <ul>
+                                    <li><strong>Pilot hole:</strong> For screw threads</li>
+                                    <li><strong>Clearance hole:</strong> For screw shank</li>
+                                    <li><strong>Countersink:</strong> For flat head screws</li>
+                                    <li><strong>Counterbore:</strong> For recessed heads</li>
+                                </ul>
+                            `
+                        }
+                    ]
+                },
+                grade: {
+                    title: 'Grade/Slope Calculator',
+                    icon: '📐',
+                    description: 'Calculate slopes for ramps, roofs, and drainage',
+                    sections: [
+                        {
+                            title: 'Input Any Two',
+                            content: `
+                                <ul>
+                                    <li>Rise (vertical distance)</li>
+                                    <li>Run (horizontal distance)</li>
+                                    <li>Angle (degrees)</li>
+                                </ul>
+                            `
+                        },
+                        {
+                            title: 'Compliance Info',
+                            content: `
+                                <ul>
+                                    <li><strong>ADA Ramps:</strong> Max 1:12 (8.33%)</li>
+                                    <li><strong>Parking:</strong> 1-5% typical</li>
+                                    <li><strong>Drainage:</strong> Min 1-2%</li>
+                                </ul>
+                            `
+                        }
+                    ]
+                },
+                tile: {
+                    title: 'Tile & Paver Calculator',
+                    icon: '🔲',
+                    description: 'Calculate quantities and costs for tile projects',
+                    sections: [
+                        {
+                            title: 'Features',
+                            content: `
+                                <ul>
+                                    <li>Multiple layout patterns</li>
+                                    <li>Grout quantity estimation</li>
+                                    <li>Automatic waste factor</li>
+                                    <li>Cut tile estimation</li>
+                                </ul>
+                            `
+                        },
+                        {
+                            title: 'Pro Tips',
+                            content: `
+                                <ul>
+                                    <li>Add 10-15% waste for diagonal layouts</li>
+                                    <li>Grout type auto-selected by gap size</li>
+                                    <li>Include perimeter cuts in calculations</li>
+                                </ul>
+                            `
+                        }
+                    ]
+                },
+                woodSpecies: {
+                    title: 'Wood Species Database',
+                    icon: '🌳',
+                    description: 'Research wood properties and characteristics',
+                    sections: [
+                        {
+                            title: 'Features',
+                            content: `
+                                <ul>
+                                    <li>40+ common wood species</li>
+                                    <li>Janka hardness ratings</li>
+                                    <li>Cost indicators ($-$$$$)</li>
+                                    <li>Workability ratings</li>
+                                </ul>
+                            `
+                        },
+                        {
+                            title: 'Project Wizard',
+                            content: `
+                                <ul>
+                                    <li>Select project type</li>
+                                    <li>Get species recommendations</li>
+                                    <li>Filter by budget and skill level</li>
+                                </ul>
+                            `
+                        }
+                    ]
+                },
+                cabinetDrawer: {
+                    title: 'Cabinet Drawer & Face Frame Layout',
+                    icon: '🗄️',
+                    description: 'Calculate drawer and rail positions for cabinets',
+                    sections: [
+                        {
+                            title: 'Configuration',
+                            content: `
+                                <ul>
+                                    <li><strong>Frame Style:</strong> Inset or Overlay</li>
+                                    <li><strong>Drawer Mode:</strong> Equal heights or Custom sizes</li>
+                                    <li><strong>Rails:</strong> Optional horizontal dividers</li>
+                                    <li><strong>Reveals/Overlay:</strong> Gap or overlap amount</li>
+                                </ul>
+                            `
+                        },
+                        {
+                            title: 'Results Include',
+                            content: `
+                                <ul>
+                                    <li>Visual diagrams (front view & rail placement)</li>
+                                    <li>Cut list with exact dimensions</li>
+                                    <li>Rail marking guide from bottom</li>
+                                    <li>All measurements in specified precision</li>
+                                </ul>
+                            `
+                        }
+                    ]
+                },
+                cutCalc: {
+                    title: 'Cut Calculator',
+                    icon: '✂️',
+                    description: 'Divide boards into equal pieces with kerf compensation',
+                    sections: [
+                        {
+                            title: 'Two Modes',
+                            content: `
+                                <ul>
+                                    <li><strong>Equal Division:</strong> Cut one board into equal pieces</li>
+                                    <li><strong>Cut Optimization:</strong> Distribute cuts across multiple boards</li>
+                                </ul>
+                            `
+                        },
+                        {
+                            title: 'Kerf Settings',
+                            content: `
+                                <ul>
+                                    <li>Common blade widths: 1/16", 3/32", 1/8", 3/16"</li>
+                                    <li>Cut side preference affects final piece sizes</li>
+                                    <li>Visual diagram shows blade position</li>
+                                </ul>
+                            `
+                        },
+                        {
+                            title: 'Results',
+                            content: `
+                                <ul>
+                                    <li>Exact cut mark measurements</li>
+                                    <li>Final piece dimensions</li>
+                                    <li>Total waste calculation</li>
+                                    <li>Save multiple scenarios</li>
+                                </ul>
+                            `
+                        }
+                    ]
+                }
+            }
+        };
+
         function showHelp() {
+            // Determine which tab is active
+            const activeTab = document.querySelector('.tab-content[style*="block"]')?.id?.replace('Tab', '') || 'calculator';
+            
+            // Determine current UI mode
+            const currentMode = uiConfig.mode || 'basic';
+            
+            // Update mode-specific content
+            if (helpContent.tabs.calculator && helpContent.tabs.calculator.sections[0]) {
+                const modeSection = helpContent.tabs.calculator.sections[0];
+                let modeText = '';
+                switch(currentMode) {
+                    case 'basic':
+                        modeText = '<p style="margin: 0 0 10px 0;"><strong>Current Mode: Basic</strong></p>';
+                        break;
+                    case 'standard':
+                        modeText = '<p style="margin: 0 0 10px 0;"><strong>Current Mode: Standard</strong></p>';
+                        break;
+                    case 'advanced':
+                        modeText = '<p style="margin: 0 0 10px 0;"><strong>Current Mode: Project</strong></p>';
+                        break;
+                }
+                modeSection.content = modeText + `
+                    <ul>
+                        <li><strong>Basic:</strong> Single calculator only</li>
+                        <li><strong>Standard:</strong> Calculator + Specialty Calculators tab</li>
+                        <li><strong>Project:</strong> All tabs including Projects</li>
+                    </ul>
+                    <p style="margin-top: 10px; font-size: 12px;">Switch modes using the dropdown in the header (top right)</p>
+                `;
+            }
+            
+            showContextHelp(activeTab);
+        }
+
+        function showContextHelp(context) {
             const modal = document.getElementById('helpModal');
             if (modal) {
                 // Move modal to body to ensure it's not constrained by parent
@@ -11119,12 +11612,35 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         padding: 20px !important;
                         border-radius: 15px !important;
                         width: 90% !important;
-                        max-width: 800px !important;
-                        max-height: 90vh !important;
+                        max-width: 600px !important;
+                        max-height: 80vh !important;
                         overflow-y: auto !important;
                         display: block !important;
                         position: relative !important;
                     `;
+                    
+                    // Update content based on context
+                    const helpData = helpContent.tabs[context] || helpContent.tabs.calculator;
+                    
+                    let contentHTML = `
+                        <span class="close" onclick="closeHelp()" style="font-size: 28px; font-weight: bold; cursor: pointer; position: absolute; right: 15px; top: 10px;">&times;</span>
+                        <h2 style="text-align: center; color: var(--primary-color); margin: 0 0 20px 0;">${helpData.title}</h2>
+                    `;
+                    
+                    helpData.sections.forEach(section => {
+                        contentHTML += `
+                            <div style="margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <h3 style="margin: 0 0 10px 0; color: var(--primary-color); font-size: 16px;">
+                                    ${section.icon} ${section.title}
+                                </h3>
+                                <div style="font-size: 14px; line-height: 1.6;">
+                                    ${section.content}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    modalContent.innerHTML = contentHTML;
                 }
             }
         }
@@ -11132,6 +11648,71 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         function closeHelp() {
             const modal = document.getElementById('helpModal');
             if (modal) modal.style.display = 'none';
+        }
+        
+        function showCalculatorHelp(calcId) {
+            const helpData = helpContent.calculators[calcId];
+            if (!helpData) {
+                console.warn(`No help content for calculator: ${calcId}`);
+                return;
+            }
+            
+            const modal = document.getElementById('helpModal');
+            if (modal) {
+                // Move modal to body to ensure it's not constrained by parent
+                document.body.appendChild(modal);
+                
+                // Apply modal styles
+                modal.style.cssText = `
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100vw !important;
+                    height: 100vh !important;
+                    background-color: rgba(0,0,0,0.5) !important;
+                    z-index: 99999 !important;
+                    display: block !important;
+                    visibility: visible !important;
+                `;
+                
+                const modalContent = modal.querySelector('.modal-content');
+                if (modalContent) {
+                    modalContent.style.cssText = `
+                        background-color: white !important;
+                        margin: 5% auto !important;
+                        padding: 20px !important;
+                        border-radius: 15px !important;
+                        width: 90% !important;
+                        max-width: 500px !important;
+                        max-height: 70vh !important;
+                        overflow-y: auto !important;
+                        display: block !important;
+                        position: relative !important;
+                    `;
+                    
+                    let contentHTML = `
+                        <span class="close" onclick="closeHelp()" style="font-size: 28px; font-weight: bold; cursor: pointer; position: absolute; right: 15px; top: 10px;">&times;</span>
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <span style="font-size: 48px;">${helpData.icon}</span>
+                        </div>
+                        <h2 style="text-align: center; color: var(--primary-color); margin: 0 0 10px 0; font-size: 20px;">${helpData.title}</h2>
+                        <p style="text-align: center; color: #666; margin: 0 0 20px 0; font-size: 14px;">${helpData.description}</p>
+                    `;
+                    
+                    helpData.sections.forEach(section => {
+                        contentHTML += `
+                            <div style="margin-bottom: 15px;">
+                                <h4 style="margin: 0 0 8px 0; color: var(--primary-color); font-size: 15px;">${section.title}</h4>
+                                <div style="font-size: 13px; line-height: 1.5;">
+                                    ${section.content}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    modalContent.innerHTML = contentHTML;
+                }
+            }
         }
 
         // SVG Diagram Capture Utility
@@ -11181,28 +11762,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             }
         }
 
-        function showHelpSection(section) {
-            // Hide all help sections
-            document.getElementById('helpCalculators').style.display = 'none';
-            document.getElementById('helpProjects').style.display = 'none';
-            document.getElementById('helpTips').style.display = 'none';
-            
-            // Remove active class from all tabs
-            const tabs = document.querySelectorAll('.help-tab-btn');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            
-            // Show selected section and activate corresponding tab
-            if (section === 'calculators') {
-                document.getElementById('helpCalculators').style.display = 'block';
-                document.querySelector('button[onclick="showHelpSection(\'calculators\')"]').classList.add('active');
-            } else if (section === 'projects') {
-                document.getElementById('helpProjects').style.display = 'block';
-                document.querySelector('button[onclick="showHelpSection(\'projects\')"]').classList.add('active');
-            } else if (section === 'tips') {
-                document.getElementById('helpTips').style.display = 'block';
-                document.querySelector('button[onclick="showHelpSection(\'tips\')"]').classList.add('active');
-            }
-        }
         
         // Edit modal functions
         function showEditModal(type, data) {
@@ -20804,6 +21363,14 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             
             loadFromLocalStorage();
             // updateProjectSelector() removed - we call updateGlobalProjectSelector directly
+            
+            // Check if projects help should be hidden for this session
+            if (sessionStorage.getItem('hideProjectsHelp') === 'true') {
+                const projectsHelp = document.getElementById('projectsHelpSection');
+                if (projectsHelp) {
+                    projectsHelp.style.display = 'none';
+                }
+            }
             
             // =====================================================
             // Register All Calculators
