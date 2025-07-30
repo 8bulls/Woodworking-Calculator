@@ -14737,8 +14737,10 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                             const totalRails = (numDrawers - 1) * currentRailThicknessInches;
                             // Calculate the space each drawer gets
                             const spacePerDrawer = (currentCabinetHeightInches - totalRails) / numDrawers;
-                            // Add overlay on top and bottom, plus extra for overlapping rails
-                            drawerHeight = spacePerDrawer + (2 * currentOverlayAmountInches) + currentRailThicknessInches;
+                            // For first and last drawer: overlay on one side + full opening + overlay on other side
+                            // For middle drawers: they share overlay space at rails
+                            // So we add 2*overlay for non-shared edges only
+                            drawerHeight = spacePerDrawer + (2 * currentOverlayAmountInches);
                         }
                     }
                 }
@@ -15000,16 +15002,17 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     currentPosition = 0; // Start at bottom of cabinet
                     
                     drawerData.forEach((drawer, index) => {
-                        // Drawer front extends beyond the opening
+                        // Calculate drawer front position
+                        // Each drawer extends beyond its opening by overlay amount on both sides
                         const drawerBottom = currentPosition - currentOverlayAmountInches;
-                        const drawerTop = drawerBottom + drawer.height;
+                        const drawerTop = currentPosition + drawerBoxHeight + currentOverlayAmountInches;
                         
                         positions.push({
                             type: 'drawer',
                             number: drawer.number,
                             bottom: drawerBottom,
                             top: drawerTop,
-                            height: drawer.height,
+                            height: drawerTop - drawerBottom,
                             width: drawer.width
                         });
                         
@@ -15086,14 +15089,14 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     drawerData.forEach((drawer, index) => {
                         // Drawer positions are the same as bottom-up
                         const drawerBottom = currentPosition - currentOverlayAmountInches;
-                        const drawerTop = drawerBottom + drawer.height;
+                        const drawerTop = currentPosition + drawerBoxHeight + currentOverlayAmountInches;
                         
                         positions.push({
                             type: 'drawer',
                             number: drawer.number,
                             bottom: drawerBottom,
                             top: drawerTop,
-                            height: drawer.height,
+                            height: drawerTop - drawerBottom,
                             width: drawer.width
                         });
                         
@@ -15236,38 +15239,40 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             frontContent += `<rect x="${offsetX}" y="${offsetY}" width="${cabinetPixelWidth}" height="${cabinetPixelHeight}" 
                             fill="none" stroke="#333" stroke-width="2"/>`;
             
-            // Draw components
-            layoutData.positions.forEach(item => {
-                const y = offsetY + (layoutData.cabinetHeight - item.top) * scale;
-                const height = item.height * scale;
+            // Draw rails first (behind drawers)
+            layoutData.positions.filter(item => item.type === 'rail').forEach(rail => {
+                const railY = offsetY + (layoutData.cabinetHeight - rail.top) * scale;
+                const railHeight = rail.thickness * scale;
                 
-                if (item.type === 'drawer') {
-                    let x, width;
-                    
-                    if (layoutData.frameStyle === 'inset') {
-                        x = offsetX + (layoutData.reveals.horizontal * scale);
-                        width = (layoutData.cabinetWidth - 2 * layoutData.reveals.horizontal) * scale;
-                    } else {
-                        // Overlay
-                        x = offsetX - (layoutData.overlay * scale);
-                        width = (layoutData.cabinetWidth + 2 * layoutData.overlay) * scale;
-                    }
-                    
-                    frontContent += `
-                        <rect x="${x}" y="${y}" width="${width}" height="${height}" 
-                              fill="url(#drawerWood)" stroke="#8B4513" stroke-width="1.5"/>
-                        <text x="${x + width/2}" y="${y + height/2 + 5}" text-anchor="middle" 
-                              font-size="12" fill="white" font-weight="bold">D${item.number}</text>
-                    `;
-                } else if (item.type === 'rail') {
-                    const railY = offsetY + (layoutData.cabinetHeight - item.top) * scale;
-                    const railHeight = item.thickness * scale;
-                    
-                    frontContent += `
-                        <rect x="${offsetX}" y="${railY}" width="${cabinetPixelWidth}" height="${railHeight}" 
-                              fill="url(#railWood)" stroke="#654321" stroke-width="1"/>
-                    `;
+                frontContent += `
+                    <rect x="${offsetX}" y="${railY}" width="${cabinetPixelWidth}" height="${railHeight}" 
+                          fill="url(#railWood)" stroke="#654321" stroke-width="1"/>
+                `;
+            });
+            
+            // Draw drawers on top of rails
+            layoutData.positions.filter(item => item.type === 'drawer').forEach(drawer => {
+                const y = offsetY + (layoutData.cabinetHeight - drawer.top) * scale;
+                const height = drawer.height * scale;
+                let x, width;
+                
+                if (layoutData.frameStyle === 'inset') {
+                    x = offsetX + (layoutData.reveals.horizontal * scale);
+                    width = (layoutData.cabinetWidth - 2 * layoutData.reveals.horizontal) * scale;
+                } else {
+                    // Overlay
+                    x = offsetX - (layoutData.overlay * scale);
+                    width = (layoutData.cabinetWidth + 2 * layoutData.overlay) * scale;
                 }
+                
+                // Draw drawer front with opacity for overlay mode
+                const drawerOpacity = layoutData.frameStyle === 'overlay' ? '0.85' : '1';
+                frontContent += `
+                    <rect x="${x}" y="${y}" width="${width}" height="${height}" 
+                          fill="url(#drawerWood)" stroke="#8B4513" stroke-width="1.5" opacity="${drawerOpacity}"/>
+                    <text x="${x + width/2}" y="${y + height/2 + 5}" text-anchor="middle" 
+                          font-size="12" fill="white" font-weight="bold">D${drawer.number}</text>
+                `;
             });
             
             // Add dimensions
