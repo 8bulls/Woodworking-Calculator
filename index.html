@@ -9702,6 +9702,72 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         // =====================================================
         
         /**
+         * Parse metric input and convert to inches
+         * @param {string} value - User input string
+         * @returns {object|null} - {value: inches, display: formatted, isValid: boolean, error: string} or null if not metric
+         */
+        function parseMetricInput(value) {
+            // Conversion factors
+            const MM_TO_INCHES = 0.0393701;
+            const CM_TO_INCHES = 0.393701;
+            const M_TO_INCHES = 39.3701;
+            
+            // Pattern for metric values with units
+            // Supports: 5.4mm, 12cm, 1.5m, 4m 9cm, 2m 15cm 3mm, etc.
+            // Also supports spaces before units: 5 cm, 12 mm, 1.5 m
+            const metricPattern = /(\d+(?:\.\d+)?)\s*(mm|cm|m)(?:\s+(\d+(?:\.\d+)?)\s*(mm|cm|m))?(?:\s+(\d+(?:\.\d+)?)\s*(mm|cm|m))?/gi;
+            
+            // Check if input contains metric units
+            if (!/(mm|cm|m)/i.test(value)) {
+                return null;
+            }
+            
+            let totalInches = 0;
+            let hasValidMetric = false;
+            let lastIndex = 0;
+            
+            // Extract all metric values
+            let match;
+            while ((match = metricPattern.exec(value)) !== null) {
+                hasValidMetric = true;
+                
+                // Process each matched group (up to 3 metric values)
+                for (let i = 1; i < match.length; i += 2) {
+                    if (match[i] && match[i + 1]) {
+                        const num = parseFloat(match[i]);
+                        const unit = match[i + 1].toLowerCase();
+                        
+                        switch (unit) {
+                            case 'mm':
+                                totalInches += num * MM_TO_INCHES;
+                                break;
+                            case 'cm':
+                                totalInches += num * CM_TO_INCHES;
+                                break;
+                            case 'm':
+                                totalInches += num * M_TO_INCHES;
+                                break;
+                        }
+                    }
+                }
+                lastIndex = match.index + match[0].length;
+            }
+            
+            // Check if there's any text after the metric values that wasn't matched
+            if (hasValidMetric && lastIndex === value.length) {
+                return {
+                    value: totalInches,
+                    display: inchesToDisplay(totalInches, 'calculator'),
+                    isValid: true,
+                    error: '',
+                    isMetric: true
+                };
+            }
+            
+            return null;
+        }
+        
+        /**
          * Universal smart input parser for feet/inches/fractions
          * @param {string} value - User input string
          * @returns {object} - {value: inches, display: formatted, isValid: boolean, error: string}
@@ -9718,6 +9784,15 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             
             // Normalize extra spaces to single spaces
             value = value.replace(/\s+/g, ' ');
+            
+            // Handle leading decimal (e.g., ".75" -> "0.75")
+            value = value.replace(/^\./, '0.');
+            
+            // Check for metric input first
+            const metricResult = parseMetricInput(value);
+            if (metricResult) {
+                return metricResult;
+            }
             
             // Common patterns for feet/inches input
             // Note: Added support for various quote characters used by mobile keyboards
@@ -9784,7 +9859,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 value: 0,
                 display: '0"',
                 isValid: false,
-                error: 'Unrecognized format. Try: 4\'6", 48", 1\' 1/16, 4 6 1/2, 48.5, or 1 1/16'
+                error: 'Unrecognized format. Try: 4\'6", 48", 4 6 1/2, .75", 25mm, 30cm, 1.5m'
             };
         }
         
@@ -10013,7 +10088,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 // Valid input
                 inputElement.classList.add('valid');
                 previewDiv.classList.add('success');
-                previewDiv.textContent = `✓ ${result.display}`;
+                
+                // Show metric conversion note if applicable
+                if (result.isMetric) {
+                    previewDiv.textContent = `✓ ${result.display} (converted from metric)`;
+                } else {
+                    previewDiv.textContent = `✓ ${result.display}`;
+                }
                 
                 // Call callback with parsed value if provided
                 if (callback && typeof callback === 'function') {
