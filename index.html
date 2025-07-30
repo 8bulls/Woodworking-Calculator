@@ -1510,14 +1510,14 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             border: 2px solid var(--border-color);
             border-radius: 8px;
             margin-bottom: 10px;
-            background: var(--background-color);
+            background: #e3f2fd;
             overflow: visible;
             transition: var(--theme-transition);
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         
         .calc-card-header {
-            background: var(--gradient-primary);
+            background: transparent;
             padding: 12px 15px;
             cursor: pointer;
             display: flex;
@@ -1525,11 +1525,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             gap: 10px;
             user-select: none;
             transition: var(--theme-transition);
-            color: var(--text-on-primary);
+            color: var(--primary-color);
         }
         
         .calc-card-header:hover {
-            background: var(--primary-light);
+            background: rgba(139, 69, 19, 0.1);
         }
         
         .calc-icon {
@@ -1554,12 +1554,28 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         .calc-card-content {
             display: none;
             padding: 20px;
-            background: var(--surface-color);
+            background: transparent;
             transition: var(--theme-transition);
         }
         
         .calc-card.expanded .calc-card-content {
             display: block;
+        }
+        
+        /* Category header styles */
+        .calc-category-header {
+            transition: all 0.2s ease;
+        }
+        
+        .calc-category-header:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+        
+        .category-arrow {
+            color: var(--text-on-primary);
+            font-weight: bold;
+            transition: transform 0.3s;
         }
 
         /* Wood Species Database Styles */
@@ -4406,9 +4422,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             </div>
             
             <!-- Materials & Shopping Category -->
-            <div class="calc-category-header" style="background: #e3f2fd; padding: 12px 20px; margin: 20px 0 15px 0; border-radius: 8px; border-left: 4px solid var(--primary-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCategory('materials')">
-                <h3 style="margin: 0; color: var(--primary-color); font-size: 18px; font-weight: 600;">📦 Materials & Shopping</h3>
-                <span class="category-arrow" id="materials-arrow">▶</span>
+            <div class="calc-category-header" style="background: var(--gradient-primary); padding: 12px 20px; margin: 20px 0 15px 0; border-radius: 8px; border-left: 4px solid var(--primary-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCategory('materials')">
+                <h3 style="margin: 0; color: var(--text-on-primary); font-size: 18px; font-weight: 600;">📦 Materials & Shopping</h3>
+                <span class="category-arrow" id="materials-arrow" style="color: var(--text-on-primary);">▶</span>
             </div>
             <div class="calc-category-content" id="materials-content" style="display: none;">
             
@@ -4569,9 +4585,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             </div> <!-- End Materials & Shopping Category -->
             
             <!-- Measurements & Layout Category -->
-            <div class="calc-category-header" style="background: #e3f2fd; padding: 12px 20px; margin: 20px 0 15px 0; border-radius: 8px; border-left: 4px solid var(--primary-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCategory('measurements')">
-                <h3 style="margin: 0; color: var(--primary-color); font-size: 18px; font-weight: 600;">📏 Measurements & Layout</h3>
-                <span class="category-arrow" id="measurements-arrow">▶</span>
+            <div class="calc-category-header" style="background: var(--gradient-primary); padding: 12px 20px; margin: 20px 0 15px 0; border-radius: 8px; border-left: 4px solid var(--primary-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCategory('measurements')">
+                <h3 style="margin: 0; color: var(--text-on-primary); font-size: 18px; font-weight: 600;">📏 Measurements & Layout</h3>
+                <span class="category-arrow" id="measurements-arrow" style="color: var(--text-on-primary);">▶</span>
             </div>
             <div class="calc-category-content" id="measurements-content" style="display: none;">
 
@@ -4993,9 +5009,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             </div> <!-- End Measurements & Layout Category -->
             
             <!-- Angles & Joinery Category -->
-            <div class="calc-category-header" style="background: #e3f2fd; padding: 12px 20px; margin: 20px 0 15px 0; border-radius: 8px; border-left: 4px solid var(--primary-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCategory('angles')">
-                <h3 style="margin: 0; color: var(--primary-color); font-size: 18px; font-weight: 600;">🔧 Angles & Joinery</h3>
-                <span class="category-arrow" id="angles-arrow">▶</span>
+            <div class="calc-category-header" style="background: var(--gradient-primary); padding: 12px 20px; margin: 20px 0 15px 0; border-radius: 8px; border-left: 4px solid var(--primary-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCategory('angles')">
+                <h3 style="margin: 0; color: var(--text-on-primary); font-size: 18px; font-weight: 600;">🔧 Angles & Joinery</h3>
+                <span class="category-arrow" id="angles-arrow" style="color: var(--text-on-primary);">▶</span>
             </div>
             <div class="calc-category-content" id="angles-content" style="display: none;">
 
@@ -5546,9 +5562,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             </div> <!-- End Angles & Joinery Category -->
             
             <!-- Construction Category -->
-            <div class="calc-category-header" style="background: #e3f2fd; padding: 12px 20px; margin: 20px 0 15px 0; border-radius: 8px; border-left: 4px solid var(--primary-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCategory('construction')">
-                <h3 style="margin: 0; color: var(--primary-color); font-size: 18px; font-weight: 600;">🏗️ Construction</h3>
-                <span class="category-arrow" id="construction-arrow">▶</span>
+            <div class="calc-category-header" style="background: var(--gradient-primary); padding: 12px 20px; margin: 20px 0 15px 0; border-radius: 8px; border-left: 4px solid var(--primary-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCategory('construction')">
+                <h3 style="margin: 0; color: var(--text-on-primary); font-size: 18px; font-weight: 600;">🏗️ Construction</h3>
+                <span class="category-arrow" id="construction-arrow" style="color: var(--text-on-primary);">▶</span>
             </div>
             <div class="calc-category-content" id="construction-content" style="display: none;">
 
@@ -7032,7 +7048,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             // Update expand/collapse controls
             const expandCollapseControls = document.getElementById('expandCollapseControls');
             if (expandCollapseControls) {
-                expandCollapseControls.style.display = uiConfig.mode === 'advanced' ? 'block' : 'none';
+                expandCollapseControls.style.display = 'block'; // Show in both Standard and Advanced modes
             }
         }
         
@@ -11900,6 +11916,16 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         
         function expandAllCalculators() {
+            // Expand all categories first
+            const categoryContents = document.querySelectorAll('.calc-category-content');
+            categoryContents.forEach(content => {
+                content.style.display = 'block';
+                const categoryId = content.id.replace('-content', '');
+                const arrow = document.getElementById(categoryId + '-arrow');
+                if (arrow) arrow.textContent = '▼';
+            });
+            
+            // Then expand all calculators
             calculatorRegistry.calculators.forEach(calc => {
                 calc.expand();
                 // Save individual states
@@ -11910,12 +11936,22 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         
         function collapseAllCalculators() {
+            // Collapse all calculators first
             calculatorRegistry.calculators.forEach(calc => {
                 calc.collapse();
                 // Save individual states
                 if (uiConfig.preferences.rememberCollapsedState) {
                     localStorage.setItem(`calc-${calc.id}-collapsed`, 'true');
                 }
+            });
+            
+            // Then collapse all categories
+            const categoryContents = document.querySelectorAll('.calc-category-content');
+            categoryContents.forEach(content => {
+                content.style.display = 'none';
+                const categoryId = content.id.replace('-content', '');
+                const arrow = document.getElementById(categoryId + '-arrow');
+                if (arrow) arrow.textContent = '▶';
             });
         }
 
@@ -15491,16 +15527,131 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             const frameType = cabinetFrameStyle.charAt(0).toUpperCase() + cabinetFrameStyle.slice(1);
             const modeType = cabinetDrawerMode === 'equal' ? 'Equal Heights' : 'Custom Heights';
             
-            const equation = `${frameType} cabinet ${inchesToDisplay(currentCabinetWidthInches)} × ${inchesToDisplay(currentCabinetHeightInches)} with ${numDrawers} drawers`;
-            const result = `${numDrawers} drawer fronts + ${numDrawers - 1} rails`;
+            // Capture both SVG diagrams
+            const frontViewSVG = document.getElementById('cabinetFrontView');
+            const railViewSVG = document.getElementById('cabinetRailView');
+            
+            let diagramsHTML = '';
+            if (frontViewSVG && railViewSVG) {
+                try {
+                    // Create proper SVG strings with all necessary attributes
+                    const frontSVGString = new XMLSerializer().serializeToString(frontViewSVG);
+                    const railSVGString = new XMLSerializer().serializeToString(railViewSVG);
+                    
+                    // Create data URLs for the SVGs
+                    const frontDataURL = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(frontSVGString)));
+                    const railDataURL = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(railSVGString)));
+                    
+                    diagramsHTML = `
+                        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin: 10px 0;">
+                            <div style="text-align: center;">
+                                <p style="margin: 0 0 5px 0; font-size: 12px; font-weight: bold;">Front View</p>
+                                <img src="${frontDataURL}" width="200" height="200" style="border: 1px solid #ddd;">
+                            </div>
+                            <div style="text-align: center;">
+                                <p style="margin: 0 0 5px 0; font-size: 12px; font-weight: bold;">Rail Placement</p>
+                                <img src="${railDataURL}" width="200" height="200" style="border: 1px solid #ddd;">
+                            </div>
+                        </div>
+                    `;
+                } catch (e) {
+                    console.error('Error capturing diagrams:', e);
+                }
+            }
+            
+            // Get detailed cut list and marking information
+            let detailedCutListHTML = '';
+            
+            // Build drawer data
+            const drawerData = cabinetDrawerMode === 'equal' ? 
+                Array(parseInt(document.getElementById('numDrawers').value) || 3).fill(null).map((_, i) => {
+                    let drawerHeight, drawerWidth;
+                    if (cabinetFrameStyle === 'inset') {
+                        const totalRails = (parseInt(document.getElementById('numDrawers').value) || 3 - 1) * currentRailThicknessInches;
+                        const availableForOpenings = currentCabinetHeightInches - totalRails;
+                        const openingHeight = availableForOpenings / (parseInt(document.getElementById('numDrawers').value) || 3);
+                        drawerHeight = openingHeight - (2 * currentVerticalRevealInches);
+                        drawerWidth = currentCabinetWidthInches - (2 * currentHorizontalRevealInches);
+                    } else {
+                        const totalRails = (parseInt(document.getElementById('numDrawers').value) || 3 - 1) * currentRailThicknessInches;
+                        const availableHeight = currentCabinetHeightInches - totalRails;
+                        drawerHeight = availableHeight / (parseInt(document.getElementById('numDrawers').value) || 3);
+                        drawerWidth = currentCabinetWidthInches + (2 * currentOverlayAmountInches);
+                    }
+                    return { number: i + 1, height: drawerHeight, width: drawerWidth };
+                }) :
+                customDrawerHeights.map((height, i) => {
+                    let drawerWidth;
+                    if (cabinetFrameStyle === 'inset') {
+                        drawerWidth = currentCabinetWidthInches - (2 * currentHorizontalRevealInches);
+                    } else {
+                        drawerWidth = currentCabinetWidthInches + (2 * currentOverlayAmountInches);
+                    }
+                    return { 
+                        number: i + 1, 
+                        height: cabinetFrameStyle === 'inset' ? height - (2 * currentVerticalRevealInches) : height,
+                        width: drawerWidth 
+                    };
+                });
+            
+            // Get layout data for rail positions
+            const layoutData = calculateRailPositions(drawerData, cabinetDrawerMode);
+            
+            // Build drawer fronts list
+            let drawerFrontsHTML = '<div style="margin-top: 8px; font-size: 12px;"><strong>Drawer Fronts:</strong><ul style="margin: 3px 0 0 20px; padding: 0;">';
+            drawerData.forEach(drawer => {
+                drawerFrontsHTML += `<li>Drawer ${drawer.number}: ${inchesToDisplay(drawer.width)} W × ${inchesToDisplay(drawer.height)} H</li>`;
+            });
+            drawerFrontsHTML += '</ul></div>';
+            
+            // Build rails list if applicable
+            let railsHTML = '';
+            if (currentRailThicknessInches > 0 && layoutData.positions.filter(p => p.type === 'rail').length > 0) {
+                const rails = layoutData.positions.filter(p => p.type === 'rail');
+                railsHTML = '<div style="margin-top: 8px; font-size: 12px;"><strong>Rails:</strong><ul style="margin: 3px 0 0 20px; padding: 0;">';
+                rails.forEach(rail => {
+                    railsHTML += `<li>Rail ${rail.number}: ${inchesToDisplay(currentCabinetWidthInches)} W × ${inchesToDisplay(rail.thickness)} H</li>`;
+                });
+                railsHTML += '</ul></div>';
+                
+                // Add rail marking guide
+                railsHTML += '<div style="margin-top: 8px; font-size: 12px;"><strong>Rail Marks (from bottom):</strong><ul style="margin: 3px 0 0 20px; padding: 0;">';
+                rails.forEach(rail => {
+                    const centerMark = rail.bottom + rail.thickness/2;
+                    railsHTML += `<li>Rail ${rail.number}: Bottom ${inchesToDisplay(rail.bottom)}, Center ${inchesToDisplay(centerMark)}, Top ${inchesToDisplay(rail.top)}</li>`;
+                });
+                railsHTML += '</ul></div>';
+            }
+            
+            detailedCutListHTML = drawerFrontsHTML + railsHTML;
+            
+            // Get configuration details
+            const configDetails = `
+                <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+                    <p style="margin: 0 0 3px 0; font-size: 14px;"><strong>Configuration:</strong></p>
+                    <p style="margin: 2px 0; font-size: 13px;">Cabinet: ${inchesToDisplay(currentCabinetWidthInches)} W × ${inchesToDisplay(currentCabinetHeightInches)} H • ${frameType} • ${modeType}</p>
+                    <p style="margin: 2px 0; font-size: 13px;">Drawers: ${numDrawers} • ${cabinetFrameStyle === 'inset' ? 
+                        `Reveals: H ${inchesToDisplay(currentHorizontalRevealInches)}, V ${inchesToDisplay(currentVerticalRevealInches)}` :
+                        `Overlay: ${inchesToDisplay(currentOverlayAmountInches)}`
+                    } • ${currentRailThicknessInches > 0 ? 
+                        `Rails: ${inchesToDisplay(currentRailThicknessInches)}` :
+                        'No Rails'
+                    }</p>
+                </div>
+            `;
+            
+            const equation = `${frameType} cabinet ${inchesToDisplay(currentCabinetWidthInches)} × ${inchesToDisplay(currentCabinetHeightInches)} with ${numDrawers} drawers (${modeType})`;
+            const result = `${numDrawers} drawer fronts${currentRailThicknessInches > 0 ? ` + ${numDrawers - 1} rails` : ''}`;
+            
+            // Combine all content in a clean layout
+            const fullDetails = configDetails + diagramsHTML + detailedCutListHTML;
             
             const saveData = {
                 tool: 'Cabinet Drawer & Face Frame Layout',
                 equation: equation,
                 result: result,
-                details: document.getElementById('cabinetResult').innerHTML + '\n\n' + document.getElementById('cabinetCutList').innerHTML,
-                timestamp: new Date().toISOString(),
-                diagramContainerId: 'cabinetDiagramContainer'
+                details: fullDetails,
+                timestamp: new Date().toISOString()
             };
             
             showSaveToProjectModal(saveData);
