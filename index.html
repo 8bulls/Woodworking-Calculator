@@ -4866,6 +4866,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                             Rail placement guide
                                         </text>
                                     </svg>
+                                    <p style="margin: 10px 0 0 0; font-size: 11px; color: #666;">All measurements from bottom of cabinet</p>
                                 </div>
                             </div>
                         </div>
@@ -4967,15 +4968,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                 <input type="text" id="smartRailThickness" placeholder="Try: 1.5&quot;, 38mm" class="wide-input" 
                                        oninput="handleSmartInput(this, 'previewRailThickness', updateRailThicknessValue)" style="padding: 12px;">
                                 <div id="previewRailThickness" class="input-preview"></div>
-                            </div>
-                        </div>
-                        
-                        <!-- Layout Direction -->
-                        <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Layout Direction:</label>
-                            <div style="display: flex; gap: 10px;">
-                                <button class="mode-btn active" onclick="setLayoutDirection('bottom-up')" id="layoutBottomUp" style="flex: 1;">Bottom-Up</button>
-                                <button class="mode-btn" onclick="setLayoutDirection('top-down')" id="layoutTopDown" style="flex: 1;">Top-Down</button>
                             </div>
                         </div>
                         
@@ -14539,7 +14531,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         let currentRailThicknessInches = 1.5;      // Default 1.5"
         let cabinetFrameStyle = 'inset';           // 'inset' or 'overlay'
         let cabinetDrawerMode = 'equal';           // 'equal' or 'custom'
-        let cabinetLayoutDirection = 'bottom-up';  // 'bottom-up' or 'top-down'
+        // Layout is always bottom-up (all measurements from bottom)
         let customDrawerHeights = [];              // Array of custom drawer heights
         
         // Smart input callback functions
@@ -14614,15 +14606,6 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             calculateCabinetLayout();
         }
         
-        function setLayoutDirection(direction) {
-            cabinetLayoutDirection = direction;
-            
-            // Update button states
-            document.getElementById('layoutBottomUp').classList.toggle('active', direction === 'bottom-up');
-            document.getElementById('layoutTopDown').classList.toggle('active', direction === 'top-down');
-            
-            calculateCabinetLayout();
-        }
         
         // Rail thickness handling
         function updateRailThickness() {
@@ -14791,12 +14774,16 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     const totalCustomHeight = customDrawerHeights.reduce((sum, h) => sum + h, 0);
                     
                     if (cabinetFrameStyle === 'inset') {
-                        const totalVerticalReveals = (numDrawers + 1) * currentVerticalRevealInches;
+                        // For custom inset drawers, the specified heights are the opening sizes
+                        // Reveals are WITHIN the openings, not additional space
                         const totalRails = (numDrawers - 1) * currentRailThicknessInches;
-                        const requiredHeight = totalCustomHeight + totalVerticalReveals + totalRails;
+                        const requiredHeight = totalCustomHeight + totalRails;
                         
                         if (requiredHeight > currentCabinetHeightInches) {
                             validationError = `Total height (${inchesToDisplay(requiredHeight)}) exceeds cabinet opening (${inchesToDisplay(currentCabinetHeightInches)})`;
+                        } else if (requiredHeight < currentCabinetHeightInches) {
+                            const gap = currentCabinetHeightInches - requiredHeight;
+                            validationError = `Total drawer openings (${inchesToDisplay(totalCustomHeight)}) plus rails (${inchesToDisplay(totalRails)}) = ${inchesToDisplay(requiredHeight)} leaves a ${inchesToDisplay(gap)} gap. Custom drawer openings must exactly fill the cabinet height.`;
                         }
                     } else {
                         // For overlay, need to account for overlaps
@@ -14811,21 +14798,26 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                             
                             if (requiredHeight > currentCabinetHeightInches) {
                                 validationError = `Total drawer openings (${inchesToDisplay(totalCustomHeight)}) plus rails (${inchesToDisplay(totalRails)}) exceeds cabinet height (${inchesToDisplay(currentCabinetHeightInches)})`;
+                            } else if (requiredHeight < currentCabinetHeightInches) {
+                                const gap = currentCabinetHeightInches - requiredHeight;
+                                validationError = `Total drawer openings (${inchesToDisplay(totalCustomHeight)}) plus rails (${inchesToDisplay(totalRails)}) = ${inchesToDisplay(requiredHeight)} leaves a ${inchesToDisplay(gap)} gap. Custom drawer openings must exactly fill the cabinet height.`;
                             }
                         }
                     }
                     
                     // Generate drawer data
                     if (!validationError) {
+                        // For custom mode, dimensions represent openings
                         const drawerWidth = cabinetFrameStyle === 'inset' ? 
-                            currentCabinetWidthInches - (2 * currentHorizontalRevealInches) :
+                            currentCabinetWidthInches :  // Full cabinet width for opening
                             currentCabinetWidthInches + (2 * currentOverlayAmountInches);
                         
                         customDrawerHeights.forEach((height, i) => {
                             drawerData.push({
                                 number: i + 1,
                                 width: drawerWidth,
-                                height: cabinetFrameStyle === 'overlay' ? height + (2 * currentOverlayAmountInches) : height
+                                height: cabinetFrameStyle === 'overlay' ? height + (2 * currentOverlayAmountInches) : height,
+                                isCustom: true  // Flag to indicate custom mode
                             });
                         });
                     }
@@ -14841,7 +14833,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             }
             
             // Calculate rail positions and generate cut list
-            const layoutData = calculateRailPositions(drawerData);
+            const layoutData = calculateRailPositions(drawerData, cabinetDrawerMode);
             
             // Display results
             const frameTypeDisplay = cabinetFrameStyle.charAt(0).toUpperCase() + cabinetFrameStyle.slice(1);
@@ -14855,7 +14847,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     railMarkingGuide = `
                         <div class="divider-marks" style="margin-top: 15px;">
                             <div class="marks-header" style="font-weight: bold; margin-bottom: 10px; color: var(--primary-color); font-size: 14px;">
-                                📐 Rail Marking Guide (measuring from ${cabinetLayoutDirection === 'bottom-up' ? 'bottom' : 'top'})
+                                📐 Rail Marking Guide (measuring from bottom)
                             </div>
                             <div style="display: grid; gap: 10px;">
                                 ${rails.map(rail => {
@@ -14864,22 +14856,15 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                                     let bottomMark, centerMark, topMark;
                                     
                                     if (cabinetFrameStyle === 'overlay') {
-                                        // Physical positions remain the same, only measurement reference changes
-                                        if (cabinetLayoutDirection === 'bottom-up') {
-                                            bottomMark = rail.bottom;
-                                            centerMark = rail.bottom + rail.thickness/2;
-                                            topMark = rail.top;
-                                        } else {
-                                            // Top-down: measure from top, but rail physical position unchanged
-                                            bottomMark = currentCabinetHeightInches - rail.top;
-                                            centerMark = currentCabinetHeightInches - (rail.top - rail.thickness/2);
-                                            topMark = currentCabinetHeightInches - rail.bottom;
-                                        }
+                                        // Always measure from bottom
+                                        bottomMark = rail.bottom;
+                                        centerMark = rail.bottom + rail.thickness/2;
+                                        topMark = rail.top;
                                     } else {
                                         // Inset mode - keep original logic
-                                        bottomMark = cabinetLayoutDirection === 'bottom-up' ? rail.bottom : currentCabinetHeightInches - rail.top;
-                                        centerMark = cabinetLayoutDirection === 'bottom-up' ? rail.bottom + rail.thickness/2 : currentCabinetHeightInches - (rail.bottom + rail.thickness/2);
-                                        topMark = cabinetLayoutDirection === 'bottom-up' ? rail.top : currentCabinetHeightInches - rail.bottom;
+                                        bottomMark = rail.bottom;
+                                        centerMark = rail.bottom + rail.thickness/2;
+                                        topMark = rail.top;
                                     }
                                     
                                     return `
@@ -14925,10 +14910,6 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                         <span class="summary-label">Rails:</span>
                         <span class="summary-value">${drawerData.length - 1} rails @ ${inchesToDisplay(currentRailThicknessInches)} thick</span>
                     </div>` : ''}
-                    <div class="summary-row">
-                        <span class="summary-label">Layout:</span>
-                        <span class="summary-value">${cabinetLayoutDirection === 'bottom-up' ? 'Bottom-Up' : 'Top-Down'}</span>
-                    </div>
                 </div>
                 ${railMarkingGuide}
             `;
@@ -14951,12 +14932,23 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             `;
             
             drawerData.forEach(drawer => {
+                // For custom inset drawers, the drawer front is smaller than the opening by 2× reveal
+                let actualDrawerHeight = drawer.height;
+                let actualDrawerWidth = drawer.width;
+                
+                if (cabinetFrameStyle === 'inset' && drawer.isCustom) {
+                    // In custom mode for inset, drawer.height is the opening size
+                    // The actual drawer front is the opening minus reveals on both sides
+                    actualDrawerHeight = drawer.height - (2 * currentVerticalRevealInches);
+                    actualDrawerWidth = drawer.width - (2 * currentHorizontalRevealInches);
+                }
+                
                 cutListHTML += `
                     <tr style="border-bottom: 1px solid #f0f0f0;">
                         <td style="padding: 6px; font-size: 12px;">Drawer ${drawer.number}</td>
                         <td style="padding: 6px; font-size: 12px;">1</td>
-                        <td style="padding: 6px; font-size: 12px;">${inchesToDisplay(drawer.width)}</td>
-                        <td style="padding: 6px; font-size: 12px;">${inchesToDisplay(drawer.height)}</td>
+                        <td style="padding: 6px; font-size: 12px;">${inchesToDisplay(actualDrawerWidth)}</td>
+                        <td style="padding: 6px; font-size: 12px;">${inchesToDisplay(actualDrawerHeight)}</td>
                     </tr>
                 `;
             });
@@ -15011,11 +15003,11 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         }
         
         // Calculate rail positions and drawer layout
-        function calculateRailPositions(drawerData) {
+        function calculateRailPositions(drawerData, drawerMode = 'equal') {
             const positions = [];
             let currentPosition = 0;
             
-            if (cabinetLayoutDirection === 'bottom-up') {
+            // All positioning is bottom-up (measurements from bottom)
                 if (cabinetFrameStyle === 'overlay') {
                     // Overlay mode - drawers extend beyond cabinet bounds
                     // Calculate actual drawer box positions first
@@ -15061,14 +15053,53 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                         }
                     });
                 } else {
-                    // Inset mode - original logic
-                    
-                    drawerData.forEach((drawer, index) => {
-                        // Add reveal before drawer
-                        currentPosition += currentVerticalRevealInches;
+                    // Inset mode
+                    if (drawerMode === 'custom') {
+                        // Custom mode: drawer heights are opening sizes
+                        // Start at bottom (0) - no reveal adjustment
+                        currentPosition = 0;
                         
-                        const drawerBottom = currentPosition;
-                        const drawerTop = currentPosition + drawer.height;
+                        drawerData.forEach((drawer, index) => {
+                            const drawerBottom = currentPosition;
+                            const drawerTop = currentPosition + drawer.height;
+                            
+                            positions.push({
+                                type: 'drawer',
+                                number: drawer.number,
+                                bottom: drawerBottom,
+                                top: drawerTop,
+                                height: drawer.height,
+                                width: drawer.width
+                            });
+                            
+                            currentPosition = drawerTop;
+                            
+                            // Add rail if not last drawer
+                            if (index < drawerData.length - 1 && currentRailThicknessInches > 0) {
+                                // No reveals in custom mode - rails directly adjacent to openings
+                                const railBottom = currentPosition;
+                                const railTop = currentPosition + currentRailThicknessInches;
+                                
+                                positions.push({
+                                    type: 'rail',
+                                    number: index + 1,
+                                    bottom: railBottom,
+                                    top: railTop,
+                                    thickness: currentRailThicknessInches
+                                });
+                                
+                                currentPosition = railTop;
+                            }
+                        });
+                        
+                    } else {
+                        // Equal mode: drawer heights are front sizes, need reveals between
+                        drawerData.forEach((drawer, index) => {
+                            // Add reveal before drawer
+                            currentPosition += currentVerticalRevealInches;
+                            
+                            const drawerBottom = currentPosition;
+                            const drawerTop = currentPosition + drawer.height;
                         
                         
                         positions.push({
@@ -15099,104 +15130,20 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                             
                             currentPosition = railTop;
                         }
-                    });
-                    
-                    // Add final reveal
-                    currentPosition += currentVerticalRevealInches;
-                }
-            } else {
-                // Top-down layout - same positions as bottom-up, just different measurement reference
-                // Use the exact same logic as bottom-up to ensure consistency
-                if (cabinetFrameStyle === 'overlay') {
-                    // Overlay mode - drawers extend beyond cabinet bounds
-                    const numRails = drawerData.length - 1;
-                    const totalRailHeight = numRails * currentRailThicknessInches;
-                    const availableForDrawers = currentCabinetHeightInches - totalRailHeight;
-                    const drawerBoxHeight = availableForDrawers / drawerData.length;
-                    
-                    currentPosition = 0; // Still calculate from bottom for consistency
-                    
-                    drawerData.forEach((drawer, index) => {
-                        // Drawer positions are the same as bottom-up
-                        const drawerBottom = currentPosition - currentOverlayAmountInches;
-                        const drawerTop = currentPosition + drawerBoxHeight + currentOverlayAmountInches;
-                        
-                        positions.push({
-                            type: 'drawer',
-                            number: drawer.number,
-                            bottom: drawerBottom,
-                            top: drawerTop,
-                            height: drawerTop - drawerBottom,
-                            width: drawer.width
                         });
                         
-                        currentPosition += drawerBoxHeight;
-                        
-                        // Add rail if not last drawer
-                        if (index < drawerData.length - 1) {
-                            const railBottom = currentPosition;
-                            const railTop = railBottom + currentRailThicknessInches;
-                            
-                            positions.push({
-                                type: 'rail',
-                                number: index + 1,
-                                bottom: railBottom,
-                                top: railTop,
-                                thickness: currentRailThicknessInches
-                            });
-                            
-                            currentPosition = railTop;
-                        }
-                    });
-                } else {
-                    // Inset mode - top-down
-                    currentPosition = currentCabinetHeightInches;
-                    
-                    for (let i = drawerData.length - 1; i >= 0; i--) {
-                        const drawer = drawerData[i];
-                        
-                        currentPosition -= currentVerticalRevealInches;
-                        
-                        const drawerTop = currentPosition;
-                        const drawerBottom = currentPosition - drawer.height;
-                        
-                        positions.unshift({
-                            type: 'drawer',
-                            number: drawer.number,
-                            bottom: drawerBottom,
-                            top: drawerTop,
-                            height: drawer.height,
-                            width: drawer.width
-                        });
-                        
-                        currentPosition = drawerBottom;
-                        
-                        if (i > 0 && currentRailThicknessInches > 0) {
-                            currentPosition -= currentVerticalRevealInches;
-                            
-                            const railTop = currentPosition;
-                            const railBottom = currentPosition - currentRailThicknessInches;
-                            
-                            positions.unshift({
-                                type: 'rail',
-                                number: i,
-                                bottom: railBottom,
-                                top: railTop,
-                                thickness: currentRailThicknessInches
-                            });
-                            
-                            currentPosition = railBottom;
-                        }
+                        // Add final reveal for equal mode
+                        currentPosition += currentVerticalRevealInches;
                     }
                 }
-            }
             
             return {
                 positions: positions,
                 cabinetHeight: currentCabinetHeightInches,
                 cabinetWidth: currentCabinetWidthInches,
-                layoutDirection: cabinetLayoutDirection,
+                layoutDirection: 'bottom-up',
                 frameStyle: cabinetFrameStyle,
+                drawerMode: drawerMode,
                 reveals: {
                     horizontal: currentHorizontalRevealInches,
                     vertical: currentVerticalRevealInches
@@ -15283,16 +15230,40 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             
             // Draw drawers on top of rails
             layoutData.positions.filter(item => item.type === 'drawer').forEach(drawer => {
-                const y = offsetY + (layoutData.cabinetHeight - drawer.top) * scale;
-                const height = drawer.height * scale;
+                let y, height, x, width;
                 
-                let x, width;
-                
-                if (layoutData.frameStyle === 'inset') {
+                if (layoutData.frameStyle === 'inset' && layoutData.drawerMode === 'custom') {
+                    // Custom inset mode: drawer.height is opening size, need to show drawer front with reveals
+                    const actualDrawerHeight = drawer.height - (2 * layoutData.reveals.vertical);
+                    // Calculate position based on opening, then add reveal offset
+                    const openingY = offsetY + (layoutData.cabinetHeight - drawer.top) * scale;
+                    
+                    
+                    // Check if this is the topmost drawer (highest top value)
+                    const allDrawers = layoutData.positions.filter(item => item.type === 'drawer');
+                    const maxTop = Math.max(...allDrawers.map(d => d.top));
+                    
+                    if (drawer.top === maxTop) {
+                        // Top drawer: position so there's a reveal at the top of the cabinet
+                        y = offsetY + (layoutData.reveals.vertical * scale);
+                    } else {
+                        // Other drawers: position with reveal from the opening top
+                        y = openingY + (layoutData.reveals.vertical * scale);
+                    }
+                    
+                    height = actualDrawerHeight * scale;
+                    x = offsetX + (layoutData.reveals.horizontal * scale);
+                    width = (layoutData.cabinetWidth - 2 * layoutData.reveals.horizontal) * scale;
+                } else if (layoutData.frameStyle === 'inset') {
+                    // Equal inset mode: drawer dimensions already include reveals
+                    y = offsetY + (layoutData.cabinetHeight - drawer.top) * scale;
+                    height = drawer.height * scale;
                     x = offsetX + (layoutData.reveals.horizontal * scale);
                     width = (layoutData.cabinetWidth - 2 * layoutData.reveals.horizontal) * scale;
                 } else {
-                    // Overlay
+                    // Overlay mode
+                    y = offsetY + (layoutData.cabinetHeight - drawer.top) * scale;
+                    height = drawer.height * scale;
                     x = offsetX - (layoutData.overlay * scale);
                     width = (layoutData.cabinetWidth + 2 * layoutData.overlay) * scale;
                 }
