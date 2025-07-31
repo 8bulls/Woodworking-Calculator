@@ -5015,6 +5015,101 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             </div>
                         </div>
                         
+                        <!-- Drawer Box Details Section -->
+                        <div style="margin-bottom: 20px; border-top: 2px solid #e0e0e0; margin-top: 25px; padding-top: 20px;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                                <input type="checkbox" id="includeDrawerBox" onchange="toggleDrawerBox()" style="width: 20px; height: 20px;">
+                                <label for="includeDrawerBox" style="font-weight: 600; font-size: 16px; cursor: pointer;">Calculate Drawer Box Dimensions</label>
+                                <button class="calc-help-btn" onclick="showDrawerBoxHelp()" title="Drawer Box Terminology" style="margin-left: auto;">?</button>
+                            </div>
+                            
+                            <div id="drawerBoxSettings" style="display: none;">
+                                <!-- Slide Configuration -->
+                                <div style="background: #f0f4f8; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                                    <h5 style="margin: 0 0 12px 0; color: var(--text-secondary); font-size: 14px;">Slide Configuration</h5>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: block; margin-bottom: 5px; font-size: 13px;">Slide Type:</label>
+                                        <div style="display: flex; gap: 10px;">
+                                            <button class="mode-btn active" onclick="setSlideType('side')" id="slideTypeSide" style="flex: 1;">Side Mount</button>
+                                            <button class="mode-btn" onclick="setSlideType('bottom')" id="slideTypeBottom" style="flex: 1;">Bottom Mount</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                        <div>
+                                            <label style="display: block; margin-bottom: 5px; font-size: 13px;">Box-to-Cabinet Clearance <span style="color: #666;">(per side)</span>:</label>
+                                            <input type="text" id="smartSideClearance" placeholder="1/2&quot; typical" class="wide-input" 
+                                                   value="1/2" oninput="handleSmartInput(this, 'previewSideClearance', updateSideClearanceValue)" style="padding: 10px;">
+                                            <div id="previewSideClearance" class="input-preview"></div>
+                                        </div>
+                                        <div>
+                                            <label style="display: block; margin-bottom: 5px; font-size: 13px;">Rear Clearance:</label>
+                                            <input type="text" id="smartRearClearance" placeholder="1&quot; typical" class="wide-input" 
+                                                   value="1" oninput="handleSmartInput(this, 'previewRearClearance', updateRearClearanceValue)" style="padding: 10px;">
+                                            <div id="previewRearClearance" class="input-preview"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-top: 10px;">
+                                        <label style="display: block; margin-bottom: 5px; font-size: 13px;">Top Clearance:</label>
+                                        <input type="text" id="smartTopClearance" placeholder="1/8&quot; typical" class="wide-input" 
+                                               value="1/8" oninput="handleSmartInput(this, 'previewTopClearance', updateTopClearanceValue)" style="padding: 10px; max-width: 200px;">
+                                        <div id="previewTopClearance" class="input-preview"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Cabinet & Material Dimensions -->
+                                <div style="background: #f0f4f8; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                                    <h5 style="margin: 0 0 12px 0; color: var(--text-secondary); font-size: 14px;">Cabinet & Material Dimensions</h5>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: block; margin-bottom: 5px; font-size: 13px; font-weight: 600;">Cabinet Interior Depth <span style="color: #666;">(front to back)</span>:</label>
+                                        <input type="text" id="smartCabinetDepth" placeholder="Try: 22&quot;, 560mm" class="wide-input" 
+                                               oninput="handleSmartInput(this, 'previewCabinetDepth', updateCabinetDepthValue)" style="padding: 12px;">
+                                        <div id="previewCabinetDepth" class="input-preview"></div>
+                                    </div>
+                                    
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                        <div>
+                                            <label style="display: block; margin-bottom: 5px; font-size: 13px;">Box Material Thickness:</label>
+                                            <input type="text" id="smartBoxMaterial" placeholder="1/2&quot; typical" class="wide-input" 
+                                                   value="1/2" oninput="handleSmartInput(this, 'previewBoxMaterial', updateBoxMaterialValue)" style="padding: 10px;">
+                                            <div id="previewBoxMaterial" class="input-preview"></div>
+                                        </div>
+                                        <div>
+                                            <label style="display: block; margin-bottom: 5px; font-size: 13px;">Bottom Panel Thickness:</label>
+                                            <input type="text" id="smartBottomPanel" placeholder="1/4&quot; typical" class="wide-input" 
+                                                   value="1/4" oninput="handleSmartInput(this, 'previewBottomPanel', updateBottomPanelValue)" style="padding: 10px;">
+                                            <div id="previewBottomPanel" class="input-preview"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
+                                        <div>
+                                            <label style="display: block; margin-bottom: 5px; font-size: 13px;">Bottom Dado Depth:</label>
+                                            <input type="text" id="smartDadoDepth" placeholder="1/4&quot; typical" class="wide-input" 
+                                                   value="1/4" oninput="handleSmartInput(this, 'previewDadoDepth', updateDadoDepthValue)" style="padding: 10px;">
+                                            <div id="previewDadoDepth" class="input-preview"></div>
+                                        </div>
+                                        <div>
+                                            <label style="display: block; margin-bottom: 5px; font-size: 13px;">Dado Height from Bottom:</label>
+                                            <input type="text" id="smartDadoHeight" placeholder="1/4&quot; typical" class="wide-input" 
+                                                   value="1/4" oninput="handleSmartInput(this, 'previewDadoHeight', updateDadoHeightValue)" style="padding: 10px;">
+                                            <div id="previewDadoHeight" class="input-preview"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-top: 10px;">
+                                        <label style="display: block; margin-bottom: 5px; font-size: 13px;">Drawer Face Thickness:</label>
+                                        <input type="text" id="smartFaceThickness" placeholder="3/4&quot; typical" class="wide-input" 
+                                               value="3/4" oninput="handleSmartInput(this, 'previewFaceThickness', updateFaceThicknessValue)" style="padding: 10px; max-width: 200px;">
+                                        <div id="previewFaceThickness" class="input-preview"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <!-- Clear Button -->
                         <div style="text-align: right;">
                             <button class="btn btn-secondary" onclick="clearCabinetCalculator()" style="padding: 10px 20px;">Clear All</button>
@@ -15211,6 +15306,19 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         // Layout is always bottom-up (all measurements from bottom)
         let customDrawerHeights = [];              // Array of custom drawer heights
         
+        // Drawer box calculation variables
+        let includeDrawerBox = false;               // Toggle for drawer box calculations
+        let drawerSlideType = 'side';              // 'side' or 'bottom'
+        let currentCabinetDepthInches = 0;         // Interior cabinet depth
+        let currentBoxMaterialThickness = 0.5;     // Default 1/2" for sides/front/back
+        let currentBottomThickness = 0.25;         // Default 1/4" for bottom
+        let currentBottomDadoDepth = 0.25;         // Default 1/4" dado depth
+        let currentBottomDadoHeight = 0.25;        // Default 1/4" up from bottom
+        let currentSideClearance = 0.5;            // Default 1/2" per side for side mount
+        let currentRearClearance = 1;              // Default 1" rear clearance
+        let currentTopClearance = 0.125;           // Default 1/8" top clearance
+        let currentFaceThickness = 0.75;           // Default 3/4" drawer face thickness
+        
         // Smart input callback functions
         function updateCabinetHeightValue(inches, display) {
             currentCabinetHeightInches = inches;
@@ -15240,6 +15348,102 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         function updateRailThicknessValue(inches, display) {
             currentRailThicknessInches = inches;
             calculateCabinetLayout();
+        }
+        
+        // Drawer box smart input callbacks
+        function updateCabinetDepthValue(inches, display) {
+            currentCabinetDepthInches = inches;
+            calculateCabinetLayout();
+        }
+        
+        function updateSideClearanceValue(inches, display) {
+            currentSideClearance = inches;
+            calculateCabinetLayout();
+        }
+        
+        function updateRearClearanceValue(inches, display) {
+            currentRearClearance = inches;
+            calculateCabinetLayout();
+        }
+        
+        function updateTopClearanceValue(inches, display) {
+            currentTopClearance = inches;
+            calculateCabinetLayout();
+        }
+        
+        function updateBoxMaterialValue(inches, display) {
+            currentBoxMaterialThickness = inches;
+            calculateCabinetLayout();
+        }
+        
+        function updateBottomPanelValue(inches, display) {
+            currentBottomThickness = inches;
+            calculateCabinetLayout();
+        }
+        
+        function updateDadoDepthValue(inches, display) {
+            currentBottomDadoDepth = inches;
+            calculateCabinetLayout();
+        }
+        
+        function updateDadoHeightValue(inches, display) {
+            currentBottomDadoHeight = inches;
+            calculateCabinetLayout();
+        }
+        
+        function updateFaceThicknessValue(inches, display) {
+            currentFaceThickness = inches;
+            calculateCabinetLayout();
+        }
+        
+        // Toggle drawer box calculations
+        function toggleDrawerBox() {
+            includeDrawerBox = document.getElementById('includeDrawerBox').checked;
+            document.getElementById('drawerBoxSettings').style.display = includeDrawerBox ? 'block' : 'none';
+            calculateCabinetLayout();
+        }
+        
+        // Set slide type
+        function setSlideType(type) {
+            drawerSlideType = type;
+            
+            // Update button states
+            document.getElementById('slideTypeSide').classList.toggle('active', type === 'side');
+            document.getElementById('slideTypeBottom').classList.toggle('active', type === 'bottom');
+            
+            // Update default clearances based on slide type
+            if (type === 'bottom') {
+                document.getElementById('smartSideClearance').value = '3/16';
+                currentSideClearance = 0.1875; // 3/16"
+            } else {
+                document.getElementById('smartSideClearance').value = '1/2';
+                currentSideClearance = 0.5; // 1/2"
+            }
+            
+            calculateCabinetLayout();
+        }
+        
+        // Show drawer box help
+        function showDrawerBoxHelp() {
+            showNotification(`
+                <h4>Drawer Box Terminology</h4>
+                <dl style="text-align: left; margin-top: 10px;">
+                    <dt><strong>Slide Setback:</strong></dt>
+                    <dd>Distance from cabinet front edge to where drawer slide mounts</dd>
+                    
+                    <dt><strong>Box-to-Cabinet Clearance:</strong></dt>
+                    <dd>Gap between drawer box sides and cabinet opening (per side)</dd>
+                    
+                    <dt><strong>Rear Clearance:</strong></dt>
+                    <dd>Space between back of drawer box and rear cabinet wall</dd>
+                    
+                    <dt><strong>Face Attachment Offset:</strong></dt>
+                    <dd>How far drawer face extends beyond drawer box edges</dd>
+                    
+                    <dt><strong>Box Front Setback:</strong></dt>
+                    <dd>Small gap between box front and back of drawer face</dd>
+                </dl>
+            `, 'info');
         }
         
         // Mode switching functions
@@ -15657,11 +15861,231 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 </div>
             `;
             
+            // Add drawer box components if enabled
+            if (includeDrawerBox && currentCabinetDepthInches > 0) {
+                const boxCalculations = calculateDrawerBoxes(drawerData, layoutData);
+                
+                if (boxCalculations) {
+                    cutListHTML += `
+                        <h4 style="margin: 20px 0 10px 0; color: var(--primary-color); font-size: 14px;">Drawer Box Components</h4>
+                        <div style="background: white; border: 1px solid #ddd; border-radius: 4px; padding: 12px; font-size: 12px;">
+                    `;
+                    
+                    // Group materials by thickness
+                    const materialGroups = {};
+                    
+                    boxCalculations.forEach((drawer, index) => {
+                        // Add box material
+                        const boxKey = `${currentBoxMaterialThickness}"_box`;
+                        if (!materialGroups[boxKey]) {
+                            materialGroups[boxKey] = {
+                                thickness: currentBoxMaterialThickness,
+                                type: 'box',
+                                parts: []
+                            };
+                        }
+                        
+                        materialGroups[boxKey].parts.push(
+                            { name: `Drawer ${drawer.number} Sides`, qty: 2, width: drawer.boxHeight, length: drawer.boxDepth },
+                            { name: `Drawer ${drawer.number} Front`, qty: 1, width: drawer.boxWidth, length: drawer.boxHeight },
+                            { name: `Drawer ${drawer.number} Back`, qty: 1, width: drawer.boxWidth, length: drawer.boxHeight }
+                        );
+                        
+                        // Add bottom panel
+                        const bottomKey = `${currentBottomThickness}"_bottom`;
+                        if (!materialGroups[bottomKey]) {
+                            materialGroups[bottomKey] = {
+                                thickness: currentBottomThickness,
+                                type: 'bottom',
+                                parts: []
+                            };
+                        }
+                        
+                        materialGroups[bottomKey].parts.push(
+                            { name: `Drawer ${drawer.number} Bottom`, qty: 1, width: drawer.bottomWidth, length: drawer.bottomDepth }
+                        );
+                    });
+                    
+                    // Display grouped materials
+                    Object.entries(materialGroups).forEach(([key, group]) => {
+                        cutListHTML += `
+                            <h5 style="margin: 15px 0 8px 0; color: #333; font-size: 13px;">
+                                ${inchesToDisplay(group.thickness)} Stock ${group.type === 'bottom' ? '(Plywood for Bottoms)' : '(Plywood/Solid for Box)'}
+                            </h5>
+                            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid #ddd;">
+                                        <th style="text-align: left; padding: 6px; font-size: 11px; font-weight: 600;">Part</th>
+                                        <th style="text-align: left; padding: 6px; font-size: 11px; font-weight: 600;">Qty</th>
+                                        <th style="text-align: left; padding: 6px; font-size: 11px; font-weight: 600;">Dimensions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        `;
+                        
+                        group.parts.forEach(part => {
+                            cutListHTML += `
+                                <tr style="border-bottom: 1px solid #f0f0f0;">
+                                    <td style="padding: 6px; font-size: 12px;">${part.name}</td>
+                                    <td style="padding: 6px; font-size: 12px;">${part.qty}</td>
+                                    <td style="padding: 6px; font-size: 12px;">${inchesToDisplay(part.width)} × ${inchesToDisplay(part.length)}</td>
+                                </tr>
+                            `;
+                        });
+                        
+                        cutListHTML += `
+                                </tbody>
+                            </table>
+                        `;
+                    });
+                    
+                    // Add assembly notes
+                    cutListHTML += `
+                        <div style="margin-top: 15px; padding-top: 12px; border-top: 1px solid #ddd;">
+                            <strong style="font-size: 12px;">Assembly Notes:</strong>
+                            <ul style="margin: 5px 0 0 20px; font-size: 11px; line-height: 1.4;">
+                                <li>Bottom panel: ${inchesToDisplay(currentBottomDadoDepth)} dado, ${inchesToDisplay(currentBottomDadoHeight)} up from bottom edge</li>
+                                <li>Slide mounting: ${cabinetFrameStyle === 'overlay' ? 'Flush with cabinet front edge' : 'Set back ' + inchesToDisplay(currentFaceThickness) + ' from front'}</li>
+                                <li>Pre-drill face mounting holes ${boxCalculations[0].mountingHoleOffset} from box edges</li>
+                                <li>Maximum screw length: ${inchesToDisplay(currentBoxMaterialThickness + currentFaceThickness - 0.25)}</li>
+                            </ul>
+                        </div>
+                    `;
+                    
+                    // Add face mounting guide
+                    cutListHTML += `
+                        <h5 style="margin: 15px 0 8px 0; color: #333; font-size: 13px;">Face-to-Box Mounting Guide</h5>
+                        <div style="background: #f8f9fa; border-radius: 4px; padding: 10px; font-size: 11px;">
+                    `;
+                    
+                    boxCalculations.forEach(drawer => {
+                        cutListHTML += `
+                            <div style="margin-bottom: 12px; padding-bottom: 12px; ${drawer.number < boxCalculations.length ? 'border-bottom: 1px solid #e0e0e0;' : ''}">
+                                <strong>Drawer ${drawer.number}:</strong>
+                                <div style="margin-top: 5px; display: grid; grid-template-columns: auto 1fr; gap: 5px 15px;">
+                                    <span style="color: #666;">Face Size:</span>
+                                    <span>${inchesToDisplay(drawer.faceWidth)} W × ${inchesToDisplay(drawer.faceHeight)} H</span>
+                                    <span style="color: #666;">Box Size:</span>
+                                    <span>${inchesToDisplay(drawer.boxWidth)} W × ${inchesToDisplay(drawer.boxHeight)} H</span>
+                                    <span style="color: #666;">Horizontal Offset:</span>
+                                    <span>${drawer.horizontalOffset} each side</span>
+                                    <span style="color: #666;">Vertical Offset:</span>
+                                    <span>${drawer.verticalOffset} top and bottom</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    cutListHTML += `
+                        </div>
+                        
+                        <h5 style="margin: 15px 0 8px 0; color: #333; font-size: 13px;">Hardware Requirements</h5>
+                        <div style="background: #f8f9fa; border-radius: 4px; padding: 10px; font-size: 11px;">
+                            <div style="display: grid; grid-template-columns: auto 1fr; gap: 5px 15px;">
+                                <span style="color: #666;">Drawer Slides:</span>
+                                <span>${drawerData.length} pairs × ${boxCalculations[0].slideLength} ${drawerSlideType}-mount slides</span>
+                                <span style="color: #666;">Slide Setback:</span>
+                                <span>${cabinetFrameStyle === 'overlay' ? 'Flush with cabinet front' : inchesToDisplay(currentFaceThickness) + ' from cabinet front'}</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    cutListHTML += `</div>`;
+                }
+            }
+            
             cutListDiv.innerHTML = cutListHTML;
             cutListDiv.style.display = 'block';
             
             // Update visual diagrams
             updateCabinetDiagrams(layoutData);
+        }
+        
+        // Calculate drawer box dimensions
+        function calculateDrawerBoxes(drawerData, layoutData) {
+            if (!includeDrawerBox || currentCabinetDepthInches <= 0) return null;
+            
+            const boxCalculations = [];
+            
+            // Standard slide lengths (in inches)
+            const standardSlideLengths = [12, 14, 16, 18, 20, 22, 24];
+            
+            // Calculate maximum box depth based on cabinet depth and clearances
+            let maxBoxDepth;
+            if (cabinetFrameStyle === 'inset') {
+                maxBoxDepth = currentCabinetDepthInches - currentRearClearance - currentFaceThickness;
+            } else {
+                // Overlay - minimal setback from face (1/16" to 1/8")
+                maxBoxDepth = currentCabinetDepthInches - currentRearClearance - 0.0625; // 1/16" setback
+            }
+            
+            // Find appropriate slide length (round down to nearest standard size)
+            const slideLength = standardSlideLengths.reverse().find(length => length <= maxBoxDepth) || standardSlideLengths[0];
+            
+            drawerData.forEach(drawer => {
+                // Calculate box width
+                let boxWidth;
+                if (cabinetFrameStyle === 'inset') {
+                    // Inset: account for reveals and slide clearances
+                    boxWidth = currentCabinetWidthInches - (2 * currentHorizontalRevealInches) - (2 * currentSideClearance);
+                } else {
+                    // Overlay: just slide clearances
+                    boxWidth = currentCabinetWidthInches - (2 * currentSideClearance);
+                }
+                
+                // Calculate box height
+                let boxHeight;
+                if (drawerSlideType === 'bottom') {
+                    // Bottom mount needs extra clearance
+                    boxHeight = drawer.height - currentTopClearance - 0.5; // Extra 0.5" for undermount hardware
+                } else {
+                    // Side mount
+                    boxHeight = drawer.height - currentTopClearance;
+                }
+                
+                // For inset custom drawers, drawer.height is the opening size
+                if (cabinetFrameStyle === 'inset' && drawer.isCustom) {
+                    boxHeight = drawer.height - (2 * currentVerticalRevealInches) - currentTopClearance;
+                }
+                
+                // Calculate bottom panel dimensions (accounting for dado)
+                const bottomWidth = boxWidth - (2 * currentBottomDadoDepth);
+                const bottomDepth = slideLength - currentBoxMaterialThickness; // Subtract front thickness
+                
+                // Calculate face mounting offsets
+                let horizontalOffset, verticalOffset;
+                if (cabinetFrameStyle === 'inset') {
+                    // Face is same width as opening minus reveals
+                    const faceWidth = currentCabinetWidthInches - (2 * currentHorizontalRevealInches);
+                    const faceHeight = drawer.height - (drawer.isCustom ? 0 : 2 * currentVerticalRevealInches);
+                    horizontalOffset = (faceWidth - boxWidth) / 2;
+                    verticalOffset = (faceHeight - boxHeight) / 2;
+                } else {
+                    // Overlay face extends beyond box
+                    const faceWidth = drawer.width;
+                    const faceHeight = drawer.height;
+                    horizontalOffset = (faceWidth - boxWidth) / 2;
+                    verticalOffset = (faceHeight - boxHeight) / 2;
+                }
+                
+                boxCalculations.push({
+                    number: drawer.number,
+                    boxWidth: boxWidth,
+                    boxHeight: boxHeight,
+                    boxDepth: slideLength,
+                    bottomWidth: bottomWidth,
+                    bottomDepth: bottomDepth,
+                    slideLength: inchesToDisplay(slideLength),
+                    faceWidth: drawer.width,
+                    faceHeight: cabinetFrameStyle === 'inset' && drawer.isCustom ? 
+                        drawer.height - (2 * currentVerticalRevealInches) : drawer.height,
+                    horizontalOffset: inchesToDisplay(horizontalOffset),
+                    verticalOffset: inchesToDisplay(verticalOffset),
+                    mountingHoleOffset: inchesToDisplay(Math.min(1, boxWidth * 0.15)) // 1" or 15% of width
+                });
+            });
+            
+            return boxCalculations;
         }
         
         // Calculate rail positions and drawer layout
@@ -16131,10 +16555,36 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             currentRailThicknessInches = 1.5;
             customDrawerHeights = [];
             
+            // Reset drawer box variables
+            includeDrawerBox = false;
+            drawerSlideType = 'side';
+            currentCabinetDepthInches = 0;
+            currentBoxMaterialThickness = 0.5;
+            currentBottomThickness = 0.25;
+            currentBottomDadoDepth = 0.25;
+            currentBottomDadoHeight = 0.25;
+            currentSideClearance = 0.5;
+            currentRearClearance = 1;
+            currentTopClearance = 0.125;
+            currentFaceThickness = 0.75;
+            
+            // Reset drawer box UI
+            document.getElementById('includeDrawerBox').checked = false;
+            document.getElementById('drawerBoxSettings').style.display = 'none';
+            document.getElementById('smartCabinetDepth').value = '';
+            document.getElementById('smartSideClearance').value = '1/2';
+            document.getElementById('smartRearClearance').value = '1';
+            document.getElementById('smartTopClearance').value = '1/8';
+            document.getElementById('smartBoxMaterial').value = '1/2';
+            document.getElementById('smartBottomPanel').value = '1/4';
+            document.getElementById('smartDadoDepth').value = '1/4';
+            document.getElementById('smartDadoHeight').value = '1/4';
+            document.getElementById('smartFaceThickness').value = '3/4';
+            setSlideType('side');
+            
             // Reset to defaults
             setFrameStyle('inset');
             setCabinetDrawerMode('equal');
-            setLayoutDirection('bottom-up');
             
             // Clear custom drawer list
             updateCustomDrawerList();
