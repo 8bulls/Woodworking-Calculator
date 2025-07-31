@@ -5093,7 +5093,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                                         <div>
                                             <label style="display: block; margin-bottom: 5px; font-size: 13px;">Box-to-Cabinet Clearance <span style="color: #666;">(per side)</span>:</label>
-                                            <input type="text" id="smartSideClearance" placeholder="1/2&quot; typical" class="wide-input" 
+                                            <input type="text" id="smartSideClearance" placeholder="1/2&quot; typical for side mount" class="wide-input" 
                                                    value="1/2" oninput="handleSmartInput(this, 'previewSideClearance', updateSideClearanceValue)" style="padding: 10px;">
                                             <div id="previewSideClearance" class="input-preview"></div>
                                         </div>
@@ -5103,6 +5103,10 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                                    value="1" oninput="handleSmartInput(this, 'previewRearClearance', updateRearClearanceValue)" style="padding: 10px;">
                                             <div id="previewRearClearance" class="input-preview"></div>
                                         </div>
+                                    </div>
+                                    
+                                    <div id="bottomMountNote" style="display: none; margin-top: 8px; padding: 8px 12px; background: #fff3cd; border-radius: 4px; font-size: 12px; color: #856404;">
+                                        <strong>Note:</strong> Bottom mount slides still require side clearances for proper operation.
                                     </div>
                                     
                                     <div style="margin-top: 10px;">
@@ -15469,10 +15473,14 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             // Update default clearances based on slide type
             if (type === 'bottom') {
                 document.getElementById('smartSideClearance').value = '3/16';
+                document.getElementById('smartSideClearance').placeholder = '3/16&quot; to 1/4&quot; typical for bottom mount';
                 currentSideClearance = 0.1875; // 3/16"
+                document.getElementById('bottomMountNote').style.display = 'block';
             } else {
                 document.getElementById('smartSideClearance').value = '1/2';
+                document.getElementById('smartSideClearance').placeholder = '1/2&quot; typical for side mount';
                 currentSideClearance = 0.5; // 1/2"
+                document.getElementById('bottomMountNote').style.display = 'none';
             }
             
             calculateCabinetLayout();
