@@ -16085,9 +16085,12 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 maxTotalBoxDepth = currentCabinetDepthInches - currentRearClearance - 0.0625; // 1/16" setback
             }
             
-            // Since front and back add to the slide length, we need to subtract their thickness
-            // to find the maximum slide length that will fit
-            const maxSlideLength = maxTotalBoxDepth - (2 * currentBoxMaterialThickness);
+            // Calculate the actual side length needed
+            const sideLength = maxTotalBoxDepth - (2 * currentBoxMaterialThickness);
+            
+            // Find appropriate slide length (must be <= total box depth, not side length)
+            // Slides mount to the assembled box, so they can be up to the full box depth
+            const recommendedSlideLength = [...standardSlideLengths].reverse().find(length => length <= maxTotalBoxDepth) || standardSlideLengths[0];
             
             // Debug logging
             console.log('Drawer Box Calculation Debug:');
@@ -16095,12 +16098,8 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             console.log('Rear Clearance:', currentRearClearance);
             console.log('Box Material Thickness:', currentBoxMaterialThickness);
             console.log('Max Total Box Depth:', maxTotalBoxDepth);
-            console.log('Max Slide Length:', maxSlideLength);
-            
-            // Find appropriate slide length (round down to nearest standard size)
-            // Create a copy and reverse it to avoid mutating the original array
-            const slideLength = [...standardSlideLengths].reverse().find(length => length <= maxSlideLength) || standardSlideLengths[0];
-            console.log('Selected Slide Length:', slideLength);
+            console.log('Side Length:', sideLength);
+            console.log('Recommended Slide Length:', recommendedSlideLength);
             
             drawerData.forEach(drawer => {
                 // Calculate box width
@@ -16130,7 +16129,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 
                 // Calculate bottom panel dimensions (accounting for dado)
                 const bottomWidth = boxWidth - (2 * currentBottomDadoDepth);
-                const bottomDepth = slideLength - currentBoxMaterialThickness; // Subtract front thickness
+                const bottomDepth = sideLength - currentBoxMaterialThickness; // Subtract front thickness
                 
                 // Calculate face mounting offsets
                 let horizontalOffset, verticalOffset;
@@ -16149,17 +16148,17 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 }
                 
                 // The actual total box depth includes front and back thickness
-                const totalBoxDepth = slideLength + (2 * currentBoxMaterialThickness);
+                const totalBoxDepth = sideLength + (2 * currentBoxMaterialThickness);
                 
                 boxCalculations.push({
                     number: drawer.number,
                     boxWidth: boxWidth,
                     boxHeight: boxHeight,
-                    boxDepth: slideLength,  // This is the side length (slide length)
+                    boxDepth: sideLength,  // This is the side length
                     totalDepth: totalBoxDepth,  // This is the complete box depth
                     bottomWidth: bottomWidth,
                     bottomDepth: bottomDepth,
-                    slideLength: inchesToDisplay(slideLength),
+                    slideLength: inchesToDisplay(recommendedSlideLength),
                     faceWidth: drawer.width,
                     faceHeight: cabinetFrameStyle === 'inset' && drawer.isCustom ? 
                         drawer.height - (2 * currentVerticalRevealInches) : drawer.height,
