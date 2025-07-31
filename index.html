@@ -4913,6 +4913,48 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                     <p style="margin: 10px 0 0 0; font-size: 11px; color: #666;">All measurements from bottom of cabinet</p>
                                 </div>
                             </div>
+                            
+                            <!-- Drawer Box View (shown when drawer box is enabled) -->
+                            <div id="drawerBoxDiagramContainer" style="display: none; margin-top: 20px;">
+                                <div style="text-align: center;">
+                                    <h5 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 14px;">Drawer Box Construction</h5>
+                                    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                                        <!-- 3D Exploded View -->
+                                        <div>
+                                            <h6 style="margin: 0 0 5px 0; color: #666; font-size: 12px;">Exploded View</h6>
+                                            <svg id="drawerBoxExploded" width="350" height="300" viewBox="0 0 350 300" style="border: 1px solid #ddd; border-radius: 4px; background: white;">
+                                                <defs>
+                                                    <pattern id="plywoodPattern" patternUnits="userSpaceOnUse" width="40" height="40">
+                                                        <rect width="40" height="40" fill="#F5DEB3"/>
+                                                        <path d="M0,10 L40,10 M0,20 L40,20 M0,30 L40,30" stroke="#DEB887" stroke-width="0.5"/>
+                                                    </pattern>
+                                                    <pattern id="bottomPattern" patternUnits="userSpaceOnUse" width="30" height="30">
+                                                        <rect width="30" height="30" fill="#FAEBD7"/>
+                                                        <circle cx="15" cy="15" r="10" fill="none" stroke="#D2B48C" stroke-width="0.5"/>
+                                                    </pattern>
+                                                </defs>
+                                                <text x="175" y="150" text-anchor="middle" font-size="14" fill="#999">
+                                                    Enable drawer box calculations to see construction
+                                                </text>
+                                            </svg>
+                                        </div>
+                                        <!-- Cross Section View -->
+                                        <div>
+                                            <h6 style="margin: 0 0 5px 0; color: #666; font-size: 12px;">Cross Section (Side View)</h6>
+                                            <svg id="drawerBoxCrossSection" width="350" height="300" viewBox="0 0 350 300" style="border: 1px solid #ddd; border-radius: 4px; background: white;">
+                                                <text x="175" y="150" text-anchor="middle" font-size="14" fill="#999">
+                                                    Shows dado joint and clearances
+                                                </text>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <!-- Interactive Elements -->
+                                    <div id="boxDimensionDisplay" style="margin-top: 15px; padding: 10px; background: #f0f4f8; border-radius: 6px; font-size: 12px; display: none;">
+                                        <div style="font-weight: 600; margin-bottom: 5px;">Selected Drawer Box Dimensions:</div>
+                                        <div id="boxDimensionText" style="color: #666;">Hover over drawer parts to see dimensions</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -15400,6 +15442,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         function toggleDrawerBox() {
             includeDrawerBox = document.getElementById('includeDrawerBox').checked;
             document.getElementById('drawerBoxSettings').style.display = includeDrawerBox ? 'block' : 'none';
+            document.getElementById('drawerBoxDiagramContainer').style.display = includeDrawerBox ? 'block' : 'none';
             calculateCabinetLayout();
         }
         
@@ -15695,6 +15738,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 resultDiv.innerHTML = `<div class="result-warning">${validationError}</div>`;
                 cutListDiv.style.display = 'none';
                 updateCabinetDiagrams(null);
+                document.getElementById('boxDimensionDisplay').style.display = 'none';
                 return;
             }
             
@@ -15999,6 +16043,12 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             
             // Update visual diagrams
             updateCabinetDiagrams(layoutData);
+            
+            // Update drawer box diagrams if enabled
+            if (includeDrawerBox && currentCabinetDepthInches > 0) {
+                const boxCalculations = calculateDrawerBoxes(drawerData, layoutData);
+                updateDrawerBoxDiagrams(boxCalculations);
+            }
         }
         
         // Calculate drawer box dimensions
@@ -16381,6 +16431,233 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             updateCabinetRailView(layoutData, railView);
         }
         
+        // Update drawer box construction diagrams
+        function updateDrawerBoxDiagrams(boxCalculations) {
+            const explodedView = document.getElementById('drawerBoxExploded');
+            const crossSection = document.getElementById('drawerBoxCrossSection');
+            const dimensionDisplay = document.getElementById('boxDimensionDisplay');
+            
+            if (!explodedView || !crossSection || !boxCalculations || boxCalculations.length === 0) return;
+            
+            // Show dimension display
+            dimensionDisplay.style.display = 'block';
+            
+            // Use first drawer for demonstration
+            const drawer = boxCalculations[0];
+            
+            // Exploded view showing all parts
+            const svgWidth = 350;
+            const svgHeight = 300;
+            const centerX = svgWidth / 2;
+            const centerY = svgHeight / 2;
+            
+            // Scale for visualization
+            const scale = Math.min(200 / drawer.boxWidth, 150 / drawer.boxHeight) * 0.6;
+            
+            // Create exploded view
+            let explodedContent = `
+                <defs>
+                    <pattern id="plywoodPattern" patternUnits="userSpaceOnUse" width="40" height="40">
+                        <rect width="40" height="40" fill="#F5DEB3"/>
+                        <path d="M0,10 L40,10 M0,20 L40,20 M0,30 L40,30" stroke="#DEB887" stroke-width="0.5"/>
+                    </pattern>
+                    <pattern id="bottomPattern" patternUnits="userSpaceOnUse" width="30" height="30">
+                        <rect width="30" height="30" fill="#FAEBD7"/>
+                        <circle cx="15" cy="15" r="10" fill="none" stroke="#D2B48C" stroke-width="0.5"/>
+                    </pattern>
+                </defs>
+            `;
+            
+            // Calculate part positions
+            const boxW = drawer.boxWidth * scale;
+            const boxH = drawer.boxHeight * scale;
+            const boxD = Math.min(drawer.boxDepth * scale * 0.5, 100); // Perspective depth
+            const bottomW = drawer.bottomWidth * scale;
+            const bottomD = Math.min(drawer.bottomDepth * scale * 0.5, 90);
+            
+            // Left side
+            const leftX = centerX - boxW * 0.8;
+            const leftY = centerY - boxH * 0.3;
+            explodedContent += `
+                <g class="drawer-part" data-part="left-side" data-dims="${inchesToDisplay(drawer.boxHeight)} × ${inchesToDisplay(drawer.boxDepth)}">
+                    <path d="M${leftX},${leftY} L${leftX + boxD * 0.3},${leftY - boxD * 0.2} 
+                            L${leftX + boxD * 0.3},${leftY + boxH - boxD * 0.2} 
+                            L${leftX},${leftY + boxH} Z" 
+                          fill="url(#plywoodPattern)" stroke="#8B4513" stroke-width="1.5" opacity="0.9"/>
+                    <text x="${leftX - 10}" y="${leftY + boxH/2}" text-anchor="end" font-size="10" fill="#666">
+                        Left Side
+                    </text>
+                </g>
+            `;
+            
+            // Right side
+            const rightX = centerX + boxW * 0.5;
+            const rightY = centerY - boxH * 0.3;
+            explodedContent += `
+                <g class="drawer-part" data-part="right-side" data-dims="${inchesToDisplay(drawer.boxHeight)} × ${inchesToDisplay(drawer.boxDepth)}">
+                    <path d="M${rightX},${rightY} L${rightX + boxD * 0.3},${rightY - boxD * 0.2} 
+                            L${rightX + boxD * 0.3},${rightY + boxH - boxD * 0.2} 
+                            L${rightX},${rightY + boxH} Z" 
+                          fill="url(#plywoodPattern)" stroke="#8B4513" stroke-width="1.5" opacity="0.9"/>
+                    <text x="${rightX + boxD * 0.3 + 10}" y="${rightY + boxH/2}" font-size="10" fill="#666">
+                        Right Side
+                    </text>
+                </g>
+            `;
+            
+            // Back
+            const backX = centerX - boxW * 0.3;
+            const backY = centerY - boxH * 0.5;
+            explodedContent += `
+                <g class="drawer-part" data-part="back" data-dims="${inchesToDisplay(drawer.boxWidth)} × ${inchesToDisplay(drawer.boxHeight)}">
+                    <rect x="${backX}" y="${backY}" width="${boxW * 0.6}" height="${boxH}" 
+                          fill="url(#plywoodPattern)" stroke="#8B4513" stroke-width="1.5" opacity="0.8"/>
+                    <text x="${centerX}" y="${backY - 5}" text-anchor="middle" font-size="10" fill="#666">
+                        Back
+                    </text>
+                </g>
+            `;
+            
+            // Front
+            const frontX = centerX - boxW * 0.4;
+            const frontY = centerY + boxH * 0.1;
+            explodedContent += `
+                <g class="drawer-part" data-part="front" data-dims="${inchesToDisplay(drawer.boxWidth)} × ${inchesToDisplay(drawer.boxHeight)}">
+                    <rect x="${frontX}" y="${frontY}" width="${boxW * 0.8}" height="${boxH * 0.8}" 
+                          fill="url(#plywoodPattern)" stroke="#8B4513" stroke-width="1.5"/>
+                    <text x="${centerX}" y="${frontY + boxH * 0.8 + 15}" text-anchor="middle" font-size="10" fill="#666">
+                        Front
+                    </text>
+                </g>
+            `;
+            
+            // Bottom
+            const bottomX = centerX - bottomW * 0.4;
+            const bottomY = centerY + boxH * 0.3;
+            explodedContent += `
+                <g class="drawer-part" data-part="bottom" data-dims="${inchesToDisplay(drawer.bottomWidth)} × ${inchesToDisplay(drawer.bottomDepth)}">
+                    <path d="M${bottomX},${bottomY} L${bottomX + bottomW * 0.8},${bottomY} 
+                            L${bottomX + bottomW * 0.8 + bottomD * 0.2},${bottomY - bottomD * 0.15} 
+                            L${bottomX + bottomD * 0.2},${bottomY - bottomD * 0.15} Z" 
+                          fill="url(#bottomPattern)" stroke="#D2B48C" stroke-width="1" opacity="0.7"/>
+                    <text x="${centerX}" y="${bottomY + 20}" text-anchor="middle" font-size="10" fill="#666">
+                        Bottom (1/4")
+                    </text>
+                </g>
+            `;
+            
+            // Add dimension lines
+            explodedContent += `
+                <g stroke="#999" stroke-width="0.5" fill="none">
+                    <line x1="${frontX - 10}" y1="${frontY}" x2="${frontX - 10}" y2="${frontY + boxH * 0.8}" stroke-dasharray="2,2"/>
+                    <text x="${frontX - 15}" y="${frontY + boxH * 0.4}" text-anchor="end" font-size="9" fill="#666" transform="rotate(-90, ${frontX - 15}, ${frontY + boxH * 0.4})">
+                        ${inchesToDisplay(drawer.boxHeight)}
+                    </text>
+                    <line x1="${frontX}" y1="${frontY + boxH * 0.8 + 5}" x2="${frontX + boxW * 0.8}" y2="${frontY + boxH * 0.8 + 5}" stroke-dasharray="2,2"/>
+                    <text x="${centerX}" y="${frontY + boxH * 0.8 + 20}" text-anchor="middle" font-size="9" fill="#666">
+                        ${inchesToDisplay(drawer.boxWidth)}
+                    </text>
+                </g>
+            `;
+            
+            explodedView.innerHTML = explodedContent;
+            
+            // Cross section view
+            let crossContent = `
+                <defs>
+                    <pattern id="sideGrain" patternUnits="userSpaceOnUse" width="1" height="20">
+                        <rect width="1" height="20" fill="#DEB887"/>
+                    </pattern>
+                </defs>
+            `;
+            
+            // Cross section dimensions
+            const csX = 50;
+            const csY = 50;
+            const csBoxW = drawer.boxDepth * scale * 0.8;
+            const csBoxH = drawer.boxHeight * scale;
+            const matThick = currentBoxMaterialThickness * scale * 2; // Exaggerate for visibility
+            const bottomThick = currentBottomThickness * scale * 3;
+            const dadoDepth = currentBottomDadoDepth * scale * 3;
+            const dadoHeight = currentBottomDadoHeight * scale * 2;
+            
+            // Draw cross section
+            // Back
+            crossContent += `<rect x="${csX}" y="${csY}" width="${matThick}" height="${csBoxH}" fill="url(#sideGrain)" stroke="#8B4513"/>`;
+            
+            // Bottom in dado
+            crossContent += `<rect x="${csX + matThick}" y="${csY + csBoxH - dadoHeight - bottomThick}" 
+                                  width="${csBoxW - matThick * 2}" height="${bottomThick}" 
+                                  fill="#FAEBD7" stroke="#D2B48C"/>`;
+            
+            // Front
+            crossContent += `<rect x="${csX + csBoxW - matThick}" y="${csY}" width="${matThick}" height="${csBoxH}" 
+                                  fill="url(#sideGrain)" stroke="#8B4513"/>`;
+            
+            // Show dado cut
+            crossContent += `
+                <g stroke="#666" stroke-width="0.5" fill="none">
+                    <path d="M${csX + csBoxW - matThick - 5},${csY + csBoxH - dadoHeight} 
+                            L${csX + csBoxW - matThick},${csY + csBoxH - dadoHeight} 
+                            L${csX + csBoxW - matThick},${csY + csBoxH - dadoHeight - bottomThick} 
+                            L${csX + csBoxW - matThick + dadoDepth},${csY + csBoxH - dadoHeight - bottomThick}
+                            L${csX + csBoxW - matThick + dadoDepth},${csY + csBoxH - dadoHeight}" stroke-dasharray="2,2"/>
+                </g>
+            `;
+            
+            // Labels
+            crossContent += `
+                <text x="${csX + csBoxW/2}" y="${csY - 10}" text-anchor="middle" font-size="11" fill="#666">
+                    Side View - Dado Joint Detail
+                </text>
+                <g font-size="9" fill="#666">
+                    <text x="${csX + csBoxW + 10}" y="${csY + csBoxH - dadoHeight}">
+                        ${inchesToDisplay(currentBottomDadoHeight)} up
+                    </text>
+                    <text x="${csX + csBoxW + 10}" y="${csY + csBoxH - dadoHeight - bottomThick/2}">
+                        ${inchesToDisplay(currentBottomDadoDepth)} dado
+                    </text>
+                    <line x1="${csX - 10}" y1="${csY}" x2="${csX - 10}" y2="${csY + csBoxH}" stroke="#999" stroke-width="0.5"/>
+                    <text x="${csX - 15}" y="${csY + csBoxH/2}" text-anchor="end" transform="rotate(-90, ${csX - 15}, ${csY + csBoxH/2})">
+                        ${inchesToDisplay(drawer.boxHeight)} height
+                    </text>
+                </g>
+            `;
+            
+            // Add clearance indicators
+            if (drawerSlideType === 'side') {
+                crossContent += `
+                    <rect x="${csX}" y="${csY + csBoxH + 5}" width="${csBoxW}" height="10" 
+                          fill="#e0e0e0" stroke="#999" stroke-dasharray="2,2" opacity="0.5"/>
+                    <text x="${csX + csBoxW/2}" y="${csY + csBoxH + 12}" text-anchor="middle" font-size="8" fill="#666">
+                        Side Mount Slide
+                    </text>
+                `;
+            }
+            
+            crossSection.innerHTML = crossContent;
+            
+            // Add interactivity
+            const parts = explodedView.querySelectorAll('.drawer-part');
+            const dimensionText = document.getElementById('boxDimensionText');
+            
+            parts.forEach(part => {
+                part.addEventListener('mouseenter', function() {
+                    this.style.opacity = '1';
+                    this.style.filter = 'drop-shadow(2px 2px 4px rgba(0,0,0,0.3))';
+                    const partName = this.getAttribute('data-part');
+                    const dims = this.getAttribute('data-dims');
+                    dimensionText.textContent = `${partName.replace('-', ' ').toUpperCase()}: ${dims}`;
+                });
+                
+                part.addEventListener('mouseleave', function() {
+                    this.style.opacity = '';
+                    this.style.filter = '';
+                    dimensionText.textContent = 'Hover over drawer parts to see dimensions';
+                });
+            });
+        }
+        
         function updateCabinetRailView(layoutData, railView) {
             const svgWidth = 400;
             const svgHeight = 400;
@@ -16600,6 +16877,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             
             // Reset diagrams
             updateCabinetDiagrams(null);
+            document.getElementById('drawerBoxDiagramContainer').style.display = 'none';
         }
         
         // Save to project function
