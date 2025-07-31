@@ -5118,7 +5118,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                     <h5 style="margin: 0 0 12px 0; color: var(--text-secondary); font-size: 14px;">Cabinet & Material Dimensions</h5>
                                     
                                     <div style="margin-bottom: 15px;">
-                                        <label style="display: block; margin-bottom: 5px; font-size: 13px; font-weight: 600;">Cabinet Interior Depth <span style="color: #666;">(front to back)</span>:</label>
+                                        <label style="display: block; margin-bottom: 5px; font-size: 13px; font-weight: 600;">Cabinet Interior Clear Depth <span style="color: #666;">(inside face frame to inside back wall)</span>:</label>
                                         <input type="text" id="smartCabinetDepth" placeholder="Try: 22&quot;, 560mm" class="wide-input" 
                                                oninput="handleSmartInput(this, 'previewCabinetDepth', updateCabinetDepthValue)" style="padding: 12px;">
                                         <div id="previewCabinetDepth" class="input-preview"></div>
@@ -16074,11 +16074,14 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             const standardSlideLengths = [8, 10, 12, 14, 16, 18, 20, 22, 24];
             
             // Calculate maximum TOTAL box depth based on cabinet depth and clearances
+            // Note: currentCabinetDepthInches is the interior clear depth (inside face frame to inside back wall)
             let maxTotalBoxDepth;
             if (cabinetFrameStyle === 'inset') {
+                // For inset, drawer front sits within the face frame, so we need to subtract its thickness
                 maxTotalBoxDepth = currentCabinetDepthInches - currentRearClearance - currentFaceThickness;
             } else {
-                // Overlay - minimal setback from face (1/16" to 1/8")
+                // For overlay, drawer front sits on top of face frame, so full interior depth is available
+                // Just subtract rear clearance and a minimal setback (1/16" to prevent binding)
                 maxTotalBoxDepth = currentCabinetDepthInches - currentRearClearance - 0.0625; // 1/16" setback
             }
             
