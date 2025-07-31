@@ -5127,8 +5127,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                                         <div>
                                             <label style="display: block; margin-bottom: 5px; font-size: 13px;">Box Material Thickness:</label>
-                                            <input type="text" id="smartBoxMaterial" placeholder="1/2&quot; typical" class="wide-input" 
-                                                   value="1/2" oninput="handleSmartInput(this, 'previewBoxMaterial', updateBoxMaterialValue)" style="padding: 10px;">
+                                            <input type="text" id="smartBoxMaterial" placeholder="Try: 3/4&quot;, 0.75&quot;, 19mm" class="wide-input" 
+                                                   value="3/4" oninput="handleSmartInput(this, 'previewBoxMaterial', updateBoxMaterialValue)" style="padding: 10px;">
                                             <div id="previewBoxMaterial" class="input-preview"></div>
                                         </div>
                                         <div>
@@ -15364,7 +15364,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         let includeDrawerBox = false;               // Toggle for drawer box calculations
         let drawerSlideType = 'side';              // 'side' or 'bottom'
         let currentCabinetDepthInches = 0;         // Interior cabinet depth
-        let currentBoxMaterialThickness = 0.5;     // Default 1/2" for sides/front/back
+        let currentBoxMaterialThickness = 0.75;    // Default 3/4" for sides/front/back
         let currentBottomThickness = 0.25;         // Default 1/4" for bottom
         let currentBottomDadoDepth = 0.25;         // Default 1/4" dado depth
         let currentBottomDadoHeight = 0.25;        // Default 1/4" up from bottom
@@ -16086,9 +16086,18 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             // to find the maximum slide length that will fit
             const maxSlideLength = maxTotalBoxDepth - (2 * currentBoxMaterialThickness);
             
+            // Debug logging
+            console.log('Drawer Box Calculation Debug:');
+            console.log('Cabinet Depth:', currentCabinetDepthInches);
+            console.log('Rear Clearance:', currentRearClearance);
+            console.log('Box Material Thickness:', currentBoxMaterialThickness);
+            console.log('Max Total Box Depth:', maxTotalBoxDepth);
+            console.log('Max Slide Length:', maxSlideLength);
+            
             // Find appropriate slide length (round down to nearest standard size)
             // Create a copy and reverse it to avoid mutating the original array
             const slideLength = [...standardSlideLengths].reverse().find(length => length <= maxSlideLength) || standardSlideLengths[0];
+            console.log('Selected Slide Length:', slideLength);
             
             drawerData.forEach(drawer => {
                 // Calculate box width
@@ -16974,7 +16983,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             includeDrawerBox = false;
             drawerSlideType = 'side';
             currentCabinetDepthInches = 0;
-            currentBoxMaterialThickness = 0.5;
+            currentBoxMaterialThickness = 0.75;
             currentBottomThickness = 0.25;
             currentBottomDadoDepth = 0.25;
             currentBottomDadoHeight = 0.25;
