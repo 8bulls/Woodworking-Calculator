@@ -10188,7 +10188,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                            id="${inputId}" 
                            placeholder="${placeholder}" 
                            class="wide-input smart-input" 
-                           inputmode="decimal"
                            oninput="handleSmartInput(this, '${previewId}', ${callback ? callback.name : 'null'})" 
                            onchange="handleSmartInput(this, '${previewId}', ${callback ? callback.name : 'null'})">
                 </div>
@@ -21373,11 +21372,11 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
                 }
             }
             
-            // Add numeric keyboards to all smart inputs for better mobile experience
-            const smartInputs = document.querySelectorAll('input[oninput*="handleSmartInput"]');
-            smartInputs.forEach(input => {
-                input.setAttribute('inputmode', 'decimal');
-            });
+            // Commented out numeric keyboards - too restrictive (no space bar)
+            // const smartInputs = document.querySelectorAll('input[oninput*="handleSmartInput"]');
+            // smartInputs.forEach(input => {
+            //     input.setAttribute('inputmode', 'decimal');
+            // });
             
             // =====================================================
             // Register All Calculators
