@@ -5106,13 +5106,16 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                     </div>
                                     
                                     <div id="bottomMountNote" style="display: none; margin-top: 8px; padding: 8px 12px; background: #fff3cd; border-radius: 4px; font-size: 12px; color: #856404;">
-                                        <strong>Note:</strong> Bottom mount slides still require side clearances for proper operation.
+                                        <strong>Note:</strong> Bottom mount slides require:<br>
+                                        • 3/16"-1/4" side clearance (less than side mount)<br>
+                                        • 1/2" minimum top clearance<br>
+                                        • 3/8" bottom clearance for clip hardware
                                     </div>
                                     
                                     <div style="margin-top: 10px;">
-                                        <label style="display: block; margin-bottom: 5px; font-size: 13px;">Top Clearance:</label>
-                                        <input type="text" id="smartTopClearance" placeholder="1/8&quot; typical" class="wide-input" 
-                                               value="1/8" oninput="handleSmartInput(this, 'previewTopClearance', updateTopClearanceValue)" style="padding: 10px; max-width: 200px;">
+                                        <label style="display: block; margin-bottom: 5px; font-size: 13px;">Top Clearance <span style="color: #666;">(1/2" min for bottom mount)</span>:</label>
+                                        <input type="text" id="smartTopClearance" placeholder="1/2&quot; typical" class="wide-input" 
+                                               value="1/2" oninput="handleSmartInput(this, 'previewTopClearance', updateTopClearanceValue)" style="padding: 10px; max-width: 200px;">
                                         <div id="previewTopClearance" class="input-preview"></div>
                                     </div>
                                 </div>
@@ -15374,7 +15377,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         let currentBottomDadoHeight = 0.25;        // Default 1/4" up from bottom
         let currentSideClearance = 0.5;            // Default 1/2" per side for side mount
         let currentRearClearance = 1;              // Default 1" rear clearance
-        let currentTopClearance = 0.125;           // Default 1/8" top clearance
+        let currentTopClearance = 0.5;             // Default 1/2" top clearance
         let currentFaceThickness = 0.75;           // Default 3/4" drawer face thickness
         
         // Smart input callback functions
@@ -16123,10 +16126,14 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 // Calculate box height
                 let boxHeight;
                 if (drawerSlideType === 'bottom') {
-                    // Bottom mount needs extra clearance
-                    boxHeight = drawer.height - currentTopClearance - 0.5; // Extra 0.5" for undermount hardware
+                    // Bottom mount needs specific clearances:
+                    // - Top: currentTopClearance (typically 1/2" minimum)
+                    // - Bottom: 3/8" minimum for clip hardware
+                    // Total reduction = top clearance + bottom clearance for hardware
+                    const bottomMountBottomClearance = 0.375; // 3/8" for clip hardware
+                    boxHeight = drawer.height - currentTopClearance - bottomMountBottomClearance;
                 } else {
-                    // Side mount
+                    // Side mount only needs top clearance
                     boxHeight = drawer.height - currentTopClearance;
                 }
                 
@@ -16999,7 +17006,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             currentBottomDadoHeight = 0.25;
             currentSideClearance = 0.5;
             currentRearClearance = 1;
-            currentTopClearance = 0.125;
+            currentTopClearance = 0.5;
             currentFaceThickness = 0.75;
             
             // Reset drawer box UI
