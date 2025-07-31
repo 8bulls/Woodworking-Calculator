@@ -16070,7 +16070,8 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             }
             
             // Find appropriate slide length (round down to nearest standard size)
-            const slideLength = standardSlideLengths.reverse().find(length => length <= maxBoxDepth) || standardSlideLengths[0];
+            // Create a copy and reverse it to avoid mutating the original array
+            const slideLength = [...standardSlideLengths].reverse().find(length => length <= maxBoxDepth) || standardSlideLengths[0];
             
             drawerData.forEach(drawer => {
                 // Calculate box width
