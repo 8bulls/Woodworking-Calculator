@@ -4918,12 +4918,12 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             
                             <!-- Drawer Box Views (shown when drawer box is enabled) -->
                             <div id="drawerBoxDiagramContainer" style="display: none; margin-top: 20px;">
-                                <h5 style="margin: 0 0 15px 0; text-align: center; color: var(--text-secondary); font-size: 14px;">Drawer Box Construction</h5>
-                                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                                <h5 style="margin: 0 0 15px 0; text-align: center; color: var(--text-secondary); font-size: 14px;">Drawer Box Construction - 3 Views</h5>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; max-width: 900px; margin: 0 auto;">
                                     <!-- Front View of Box -->
                                     <div style="text-align: center;">
-                                        <h6 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 14px;">Box Front View</h6>
-                                        <svg id="drawerBoxFrontView" width="400" height="400" viewBox="0 0 400 400" style="border: 1px solid #ddd; border-radius: 4px; background: white;">
+                                        <h6 style="margin: 0 0 5px 0; color: var(--text-secondary); font-size: 12px;">Front View</h6>
+                                        <svg id="drawerBoxFrontView" width="250" height="250" viewBox="0 0 250 250" style="border: 1px solid #ddd; border-radius: 4px; background: white; width: 100%;">
                                             <defs>
                                                 <pattern id="plywoodPattern" patternUnits="userSpaceOnUse" width="40" height="40">
                                                     <rect width="40" height="40" fill="#F5DEB3"/>
@@ -4933,21 +4933,33 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                                     <rect width="30" height="30" fill="#FAEBD7"/>
                                                     <circle cx="15" cy="15" r="10" fill="none" stroke="#D2B48C" stroke-width="0.5"/>
                                                 </pattern>
+                                                <pattern id="endGrain" patternUnits="userSpaceOnUse" width="20" height="20">
+                                                    <rect width="20" height="20" fill="#CD853F"/>
+                                                    <circle cx="10" cy="10" r="8" fill="none" stroke="#8B4513" stroke-width="0.5"/>
+                                                </pattern>
                                             </defs>
-                                            <text x="200" y="200" text-anchor="middle" font-size="14" fill="#999">
-                                                Configure drawer box to see construction
+                                            <text x="125" y="125" text-anchor="middle" font-size="12" fill="#999">
+                                                Configure drawer box
                                             </text>
                                         </svg>
                                     </div>
                                     <!-- Side View of Box -->
                                     <div style="text-align: center;">
-                                        <h6 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 14px;">Box Side View</h6>
-                                        <svg id="drawerBoxSideView" width="400" height="400" viewBox="0 0 400 400" style="border: 1px solid #ddd; border-radius: 4px; background: white;">
-                                            <text x="200" y="200" text-anchor="middle" font-size="14" fill="#999">
-                                                Shows dado joint and depth
+                                        <h6 style="margin: 0 0 5px 0; color: var(--text-secondary); font-size: 12px;">Side View</h6>
+                                        <svg id="drawerBoxSideView" width="250" height="250" viewBox="0 0 250 250" style="border: 1px solid #ddd; border-radius: 4px; background: white; width: 100%;">
+                                            <text x="125" y="125" text-anchor="middle" font-size="12" fill="#999">
+                                                Shows dado joint
                                             </text>
                                         </svg>
-                                        <p style="margin: 10px 0 0 0; font-size: 11px; color: #666;">All dimensions in inches</p>
+                                    </div>
+                                    <!-- Top View of Box -->
+                                    <div style="text-align: center;">
+                                        <h6 style="margin: 0 0 5px 0; color: var(--text-secondary); font-size: 12px;">Top View</h6>
+                                        <svg id="drawerBoxTopView" width="250" height="250" viewBox="0 0 250 250" style="border: 1px solid #ddd; border-radius: 4px; background: white; width: 100%;">
+                                            <text x="125" y="125" text-anchor="middle" font-size="12" fill="#999">
+                                                Shows slide mounting
+                                            </text>
+                                        </svg>
                                     </div>
                                 </div>
                                 <!-- Interactive Elements -->
@@ -16436,9 +16448,10 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         function updateDrawerBoxDiagrams(boxCalculations) {
             const frontView = document.getElementById('drawerBoxFrontView');
             const sideView = document.getElementById('drawerBoxSideView');
+            const topView = document.getElementById('drawerBoxTopView');
             const dimensionDisplay = document.getElementById('boxDimensionDisplay');
             
-            if (!frontView || !sideView || !boxCalculations || boxCalculations.length === 0) return;
+            if (!frontView || !sideView || !topView || !boxCalculations || boxCalculations.length === 0) return;
             
             // Show dimension display
             dimensionDisplay.style.display = 'block';
@@ -16446,14 +16459,16 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             // Use first drawer for demonstration
             const drawer = boxCalculations[0];
             
-            // Exploded view showing all parts
-            const svgWidth = 350;
-            const svgHeight = 300;
-            const centerX = svgWidth / 2;
-            const centerY = svgHeight / 2;
+            // SVG dimensions for all views
+            const svgSize = 250;
+            const padding = 40;
+            const drawableSize = svgSize - (2 * padding);
+            const centerX = svgSize / 2;
+            const centerY = svgSize / 2;
             
-            // Scale for visualization
-            const scale = Math.min(200 / drawer.boxWidth, 150 / drawer.boxHeight) * 0.6;
+            // Calculate scale to fit the largest dimension with padding
+            const maxDimension = Math.max(drawer.boxWidth, drawer.boxHeight, drawer.boxDepth);
+            const scale = drawableSize / maxDimension * 0.8; // 80% to leave some margin
             
             // Create front view of drawer box
             let frontContent = `
@@ -16469,13 +16484,14 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 </defs>
             `;
             
-            // Front view dimensions
+            // Common dimensions for all views
             const boxW = drawer.boxWidth * scale;
             const boxH = drawer.boxHeight * scale;
-            const matThick = currentBoxMaterialThickness * scale * 2; // Exaggerate for visibility
-            const bottomThick = currentBottomThickness * scale * 3;
-            const dadoDepth = currentBottomDadoDepth * scale * 3;
-            const dadoHeight = currentBottomDadoHeight * scale * 2;
+            const boxD = drawer.boxDepth * scale;
+            const matThick = Math.max(currentBoxMaterialThickness * scale, 3); // Minimum 3px for visibility
+            const bottomThick = Math.max(currentBottomThickness * scale, 2);
+            const dadoDepth = Math.max(currentBottomDadoDepth * scale, 2);
+            const dadoHeight = Math.max(currentBottomDadoHeight * scale, 2);
             
             // Center the front view
             const frontX = centerX - boxW / 2;
@@ -16525,8 +16541,8 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 </g>
                 
                 <!-- Labels -->
-                <text x="${centerX}" y="${frontY - 10}" text-anchor="middle" font-size="12" fill="#666" font-weight="600">
-                    Front View (Looking at Front)
+                <text x="${centerX}" y="20" text-anchor="middle" font-size="11" fill="#666" font-weight="600">
+                    Looking at Front
                 </text>
                 
                 <!-- Material thickness indicator -->
@@ -16554,10 +16570,9 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 </defs>
             `;
             
-            // Side view dimensions - same scale as front view
-            const sideX = centerX - (drawer.boxDepth * scale) / 2;
+            // Side view positioning
+            const sideX = centerX - boxD / 2;
             const sideY = centerY - boxH / 2;
-            const sideW = drawer.boxDepth * scale;
             
             // Draw side view
             sideContent += `
@@ -16568,24 +16583,24 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                           fill="url(#plywoodPattern)" stroke="#8B4513" stroke-width="1"/>
                     
                     <!-- Front -->
-                    <rect x="${sideX + sideW - matThick}" y="${sideY}" width="${matThick}" height="${boxH}" 
+                    <rect x="${sideX + boxD - matThick}" y="${sideY}" width="${matThick}" height="${boxH}" 
                           fill="url(#plywoodPattern)" stroke="#8B4513" stroke-width="1"/>
                     
                     <!-- Side panel -->
-                    <rect x="${sideX + matThick}" y="${sideY}" width="${sideW - 2 * matThick}" height="${boxH - dadoHeight}" 
+                    <rect x="${sideX + matThick}" y="${sideY}" width="${boxD - 2 * matThick}" height="${boxH - dadoHeight}" 
                           fill="url(#plywoodPattern)" stroke="#8B4513" stroke-width="1" opacity="0.5"/>
                     
                     <!-- Bottom in dado -->
                     <rect x="${sideX + matThick - dadoDepth/2}" y="${sideY + boxH - dadoHeight - bottomThick}" 
-                          width="${sideW - 2 * matThick + dadoDepth}" height="${bottomThick}" 
+                          width="${boxD - 2 * matThick + dadoDepth}" height="${bottomThick}" 
                           fill="url(#bottomPattern)" stroke="#D2B48C" stroke-width="1"/>
                     
                     <!-- Dado detail -->
                     <g stroke="#666" stroke-width="0.5" fill="none">
-                        <path d="M${sideX + sideW - matThick},${sideY + boxH - dadoHeight} 
-                                L${sideX + sideW - matThick + dadoDepth},${sideY + boxH - dadoHeight} 
-                                L${sideX + sideW - matThick + dadoDepth},${sideY + boxH - dadoHeight - bottomThick}
-                                L${sideX + sideW - matThick},${sideY + boxH - dadoHeight - bottomThick}" 
+                        <path d="M${sideX + boxD - matThick},${sideY + boxH - dadoHeight} 
+                                L${sideX + boxD - matThick + dadoDepth},${sideY + boxH - dadoHeight} 
+                                L${sideX + boxD - matThick + dadoDepth},${sideY + boxH - dadoHeight - bottomThick}
+                                L${sideX + boxD - matThick},${sideY + boxH - dadoHeight - bottomThick}" 
                               stroke-dasharray="1,1"/>
                     </g>
                 </g>
@@ -16593,32 +16608,32 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 <!-- Dimension lines -->
                 <g stroke="#999" stroke-width="0.5" fill="none">
                     <!-- Depth dimension -->
-                    <line x1="${sideX}" y1="${sideY + boxH + 20}" x2="${sideX + sideW}" y2="${sideY + boxH + 20}" marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
+                    <line x1="${sideX}" y1="${sideY + boxH + 20}" x2="${sideX + boxD}" y2="${sideY + boxH + 20}" marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
                     <text x="${centerX}" y="${sideY + boxH + 35}" text-anchor="middle" font-size="11" fill="#666">
                         ${inchesToDisplay(drawer.boxDepth)} depth
                     </text>
                     
                     <!-- Dado measurements -->
                     <g font-size="9" fill="#999">
-                        <line x1="${sideX + sideW + 10}" y1="${sideY + boxH}" x2="${sideX + sideW + 10}" y2="${sideY + boxH - dadoHeight}" stroke-dasharray="2,2"/>
-                        <text x="${sideX + sideW + 15}" y="${sideY + boxH - dadoHeight/2}">${inchesToDisplay(currentBottomDadoHeight)}</text>
+                        <line x1="${sideX + boxD + 10}" y1="${sideY + boxH}" x2="${sideX + boxD + 10}" y2="${sideY + boxH - dadoHeight}" stroke-dasharray="2,2"/>
+                        <text x="${sideX + boxD + 15}" y="${sideY + boxH - dadoHeight/2}">${inchesToDisplay(currentBottomDadoHeight)}</text>
                         
-                        <line x1="${sideX + sideW - matThick}" y1="${sideY + boxH - dadoHeight - bottomThick - 5}" 
-                              x2="${sideX + sideW - matThick + dadoDepth}" y2="${sideY + boxH - dadoHeight - bottomThick - 5}"/>
-                        <text x="${sideX + sideW - matThick + dadoDepth/2}" y="${sideY + boxH - dadoHeight - bottomThick - 10}" 
+                        <line x1="${sideX + boxD - matThick}" y1="${sideY + boxH - dadoHeight - bottomThick - 5}" 
+                              x2="${sideX + boxD - matThick + dadoDepth}" y2="${sideY + boxH - dadoHeight - bottomThick - 5}"/>
+                        <text x="${sideX + boxD - matThick + dadoDepth/2}" y="${sideY + boxH - dadoHeight - bottomThick - 10}" 
                               text-anchor="middle" font-size="8">${inchesToDisplay(currentBottomDadoDepth)}</text>
                     </g>
                 </g>
                 
                 <!-- Labels -->
-                <text x="${centerX}" y="${sideY - 10}" text-anchor="middle" font-size="12" fill="#666" font-weight="600">
-                    Side View (Looking at Left Side)
+                <text x="${centerX}" y="20" text-anchor="middle" font-size="11" fill="#666" font-weight="600">
+                    Looking at Left Side
                 </text>
                 
                 <!-- Slide indicator -->
                 ${drawerSlideType === 'side' ? `
                     <g opacity="0.6">
-                        <rect x="${sideX - 5}" y="${sideY + boxH + 5}" width="${sideW + 10}" height="8" 
+                        <rect x="${sideX - 5}" y="${sideY + boxH + 5}" width="${boxD + 10}" height="8" 
                               fill="#e0e0e0" stroke="#999" stroke-dasharray="2,2"/>
                         <text x="${centerX}" y="${sideY + boxH + 11}" text-anchor="middle" font-size="8" fill="#666">
                             Side Mount Slide Rail
@@ -16628,16 +16643,119 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 
                 <!-- Face attachment indicator -->
                 <g stroke="#999" stroke-width="0.5" fill="none">
-                    <rect x="${sideX + sideW + 20}" y="${sideY - 5}" width="15" height="${boxH + 10}" 
+                    <rect x="${sideX + boxD + 20}" y="${sideY - 5}" width="15" height="${boxH + 10}" 
                           stroke-dasharray="3,2" fill="#f0f0f0" opacity="0.5"/>
-                    <text x="${sideX + sideW + 27}" y="${centerY}" text-anchor="middle" font-size="9" fill="#666" 
-                          transform="rotate(90, ${sideX + sideW + 27}, ${centerY})">
+                    <text x="${sideX + boxD + 27}" y="${centerY}" text-anchor="middle" font-size="9" fill="#666" 
+                          transform="rotate(90, ${sideX + boxD + 27}, ${centerY})">
                         Drawer Face
                     </text>
                 </g>
             `;
             
             sideView.innerHTML = sideContent;
+            
+            // Top view content
+            let topContent = `
+                <defs>
+                    <pattern id="sideGrain" patternUnits="userSpaceOnUse" width="1" height="20">
+                        <rect width="1" height="20" fill="#DEB887"/>
+                    </pattern>
+                </defs>
+            `;
+            
+            // Top view positioning
+            const topX = centerX - boxW / 2;
+            const topY = centerY - boxD / 2;
+            
+            // Draw top view
+            topContent += `
+                <!-- Box top view -->
+                <g class="drawer-part" data-part="box-top" data-dims="Width: ${inchesToDisplay(drawer.boxWidth)} × Depth: ${inchesToDisplay(drawer.boxDepth)}">
+                    <!-- Left side -->
+                    <rect x="${topX}" y="${topY}" width="${matThick}" height="${boxD}" 
+                          fill="url(#endGrain)" stroke="#8B4513" stroke-width="1"/>
+                    
+                    <!-- Right side -->
+                    <rect x="${topX + boxW - matThick}" y="${topY}" width="${matThick}" height="${boxD}" 
+                          fill="url(#endGrain)" stroke="#8B4513" stroke-width="1"/>
+                    
+                    <!-- Back -->
+                    <rect x="${topX + matThick}" y="${topY}" width="${boxW - 2 * matThick}" height="${matThick}" 
+                          fill="url(#plywoodPattern)" stroke="#8B4513" stroke-width="1"/>
+                    
+                    <!-- Front -->
+                    <rect x="${topX + matThick}" y="${topY + boxD - matThick}" width="${boxW - 2 * matThick}" height="${matThick}" 
+                          fill="url(#plywoodPattern)" stroke="#8B4513" stroke-width="1"/>
+                    
+                    <!-- Bottom panel (visible from top) -->
+                    <rect x="${topX + matThick}" y="${topY + matThick}" 
+                          width="${boxW - 2 * matThick}" height="${boxD - 2 * matThick}" 
+                          fill="url(#bottomPattern)" stroke="#D2B48C" stroke-width="0.5" opacity="0.3"/>
+                </g>
+                
+                <!-- Slide indicators -->
+                ${drawerSlideType === 'side' ? `
+                    <g opacity="0.6">
+                        <rect x="${topX - 10}" y="${topY}" width="8" height="${boxD}" 
+                              fill="#e0e0e0" stroke="#999" stroke-dasharray="2,2"/>
+                        <rect x="${topX + boxW + 2}" y="${topY}" width="8" height="${boxD}" 
+                              fill="#e0e0e0" stroke="#999" stroke-dasharray="2,2"/>
+                        <text x="${topX - 14}" y="${centerY}" text-anchor="middle" font-size="8" fill="#666" 
+                              transform="rotate(-90, ${topX - 14}, ${centerY})">
+                            Slide
+                        </text>
+                        <text x="${topX + boxW + 14}" y="${centerY}" text-anchor="middle" font-size="8" fill="#666" 
+                              transform="rotate(90, ${topX + boxW + 14}, ${centerY})">
+                            Slide
+                        </text>
+                    </g>
+                ` : `
+                    <g opacity="0.6">
+                        <rect x="${topX + matThick}" y="${topY + boxD + 2}" width="${boxW - 2 * matThick}" height="8" 
+                              fill="#e0e0e0" stroke="#999" stroke-dasharray="2,2"/>
+                        <text x="${centerX}" y="${topY + boxD + 8}" text-anchor="middle" font-size="8" fill="#666">
+                            Bottom Mount Slides
+                        </text>
+                    </g>
+                `}
+                
+                <!-- Dimension lines -->
+                <g stroke="#999" stroke-width="0.5" fill="none">
+                    <!-- Width dimension -->
+                    <line x1="${topX}" y1="${topY - 10}" x2="${topX + boxW}" y2="${topY - 10}" marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
+                    <text x="${centerX}" y="${topY - 15}" text-anchor="middle" font-size="11" fill="#666">
+                        ${inchesToDisplay(drawer.boxWidth)} width
+                    </text>
+                    
+                    <!-- Depth dimension -->
+                    <line x1="${topX - 20}" y1="${topY}" x2="${topX - 20}" y2="${topY + boxD}" marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
+                    <text x="${topX - 25}" y="${centerY}" text-anchor="middle" font-size="11" fill="#666" transform="rotate(-90, ${topX - 25}, ${centerY})">
+                        ${inchesToDisplay(drawer.boxDepth)} depth
+                    </text>
+                    
+                    <!-- Clearance indicators -->
+                    <g font-size="8" fill="#999">
+                        <line x1="${topX - matThick - 5}" y1="${topY + 20}" x2="${topX}" y2="${topY + 20}" stroke-dasharray="1,1"/>
+                        <text x="${topX - matThick/2 - 5}" y="${topY + 18}" text-anchor="middle" font-size="7">${inchesToDisplay(currentSideClearance)}</text>
+                        <line x1="${topX + boxW}" y1="${topY + 20}" x2="${topX + boxW + matThick + 5}" y2="${topY + 20}" stroke-dasharray="1,1"/>
+                        <text x="${topX + boxW + matThick/2 + 5}" y="${topY + 18}" text-anchor="middle" font-size="7">${inchesToDisplay(currentSideClearance)}</text>
+                    </g>
+                </g>
+                
+                <!-- Labels -->
+                <text x="${centerX}" y="20" text-anchor="middle" font-size="11" fill="#666" font-weight="600">
+                    Looking Down from Top
+                </text>
+                
+                <!-- Front indicator -->
+                <g>
+                    <text x="${centerX}" y="${topY + boxD + 30}" text-anchor="middle" font-size="9" fill="#666">
+                        ↓ FRONT ↓
+                    </text>
+                </g>
+            `;
+            
+            topView.innerHTML = topContent;
             
             // Add interactivity to both views
             const allParts = document.querySelectorAll('.drawer-part');
