@@ -7213,7 +7213,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     saveToProject: false
                 },
                 standard: {
-                    showTabs: ['calculator', 'cutCalculator', 'specialty'],
+                    showTabs: ['calculator', 'specialty'],
                     availableOperations: ['+', '-', '*', '/'],
                     inputMethod: 'feet-inches',
                     memoryButtons: true,
@@ -7223,7 +7223,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     saveToProject: false
                 },
                 project: {
-                    showTabs: ['calculator', 'cutCalculator', 'specialty', 'projects'],
+                    showTabs: ['calculator', 'specialty', 'projects'],
                     availableOperations: ['+', '-', '*', '/'],
                     inputMethod: 'feet-inches',
                     memoryButtons: true,
@@ -7308,7 +7308,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             // Show/hide "Show More Tools" section
             const showMoreToolsSection = document.getElementById('showMoreToolsSection');
             if (showMoreToolsSection) {
-                showMoreToolsSection.style.display = uiConfig.mode === 'simple' ? 'block' : 'none';
+                showMoreToolsSection.style.display = uiConfig.mode === 'basic' ? 'block' : 'none';
             }
             
             // Update expand/collapse controls
