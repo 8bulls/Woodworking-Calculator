@@ -4,10 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a single-file HTML woodworking calculator application that provides three main tools:
+This is a single-file HTML woodworking calculator application that provides multiple woodworking tools:
 - **Calculator**: Feet/inches arithmetic with memory functions and conversions
 - **Cut Calculator**: Material cutting optimization with waste calculation
 - **Waste Optimizer**: Optimizes board usage to minimize waste
+- **Drawer Box Calculator**: Calculates drawer box dimensions with assembly instructions
 
 The entire application is contained in a single `index.html` file with embedded CSS and JavaScript.
 
@@ -19,16 +20,19 @@ The entire application is contained in a single `index.html` file with embedded 
 - No external dependencies or frameworks
 
 ### Key Components
-- **Tab System**: Three main tabs (Calculator, Cut Calculator, Waste Optimizer)
+- **Tab System**: Multiple tabs for different calculators and tools
 - **State Management**: Global JavaScript variables manage application state:
   - `currentValueInches`, `cutValueInches` for calculator values
   - `history[]`, `cutHistory[]` for operation history
   - `boards[]`, `cuts[]` for cut optimization data
   - `memoryValue` for calculator memory functions
+  - `currentCabinetDepthInches`, `currentCabinetMaterialThickness` for drawer calculations
+  - `cabinetFrameStyle`, `drawerSlideType` for drawer configuration
 
 ### Core Functions
 - **Calculator Functions**: `updateCalculation()`, `setOperation()`, `memoryOperation()`
 - **Cut Calculator**: `addBoard()`, `addCut()`, `calculateCuts()`
+- **Drawer Calculator**: `calculateDrawerBoxes()`, `calculateRailPositions()`, `updateDrawerBoxDiagrams()`, `updateFaceToBoxMountingDiagram()`
 - **Conversion Utilities**: `inchesToFeet()`, `convertToDecimal()`, `convertToFraction()`
 - **UI Management**: `switchTab()`, `updatePrecision()`, `showNotification()`
 
@@ -186,6 +190,60 @@ python -m http.server 8000  # For local development server
   3. Finally validate optional fields (price, notes)
 
 - **Consistent Validation Order**: Follow the same validation sequence across all calculators
+
+## Drawer Box Calculator Principles
+
+### Cabinet Interior Depth Definition
+- **Interior depth** = inside face of cabinet front to inside back wall
+- This is the baseline measurement for all drawer box calculations
+- User inputs this value directly in the "Cabinet Interior Clear Depth" field
+
+### Frame Style Logic
+- **Inset drawers**:
+  - Face sits inside cabinet opening, flush with cabinet face frame
+  - Box uses full interior depth minus rear clearance
+  - Max box depth = cabinet interior depth - rear clearance
+  
+- **Overlay drawers**:
+  - Face sits on top of cabinet face frame
+  - Box extends forward by cabinet material thickness
+  - Max box depth = cabinet interior depth + cabinet material thickness - rear clearance
+  - Requires "Cabinet Material Thickness" input (defaults to 3/4")
+
+### Box Construction Method
+- Front and back pieces run the full width of the box
+- Side pieces are sandwiched between front and back
+- Side length = total box depth - (2 × box material thickness)
+- Bottom panel sits in dado grooves on all four sides
+
+### Clearance Requirements
+- **Side mount slides**:
+  - Box-to-cabinet clearance per side (default 1/2")
+  - Top clearance only (default 1/2")
+  
+- **Bottom mount slides**:
+  - Smaller side clearances (default 3/16")
+  - Top clearance (default 1/2")
+  - Bottom clearance for slide hardware (default 3/8")
+  - Box height reduced by both top and bottom clearances
+
+### Critical Assembly Features
+- **Face-to-box mounting diagram** shows:
+  - Precise alignment offsets (horizontal and vertical)
+  - Pilot hole locations (1" from edges)
+  - Screw specifications (1 1/4" length)
+  - Center line alignment guides
+  
+- **Assembly instructions** emphasize:
+  - Pre-drilling to prevent splitting
+  - Mounting from inside the box
+  - Verifying alignment before final tightening
+
+### Validation and Error Handling
+- Minimum depth validation prevents negative dimensions
+- Insufficient depth shows clear warning messages
+- SVG diagrams gracefully handle edge cases
+- All calculations return null if constraints aren't met
 
 ## Development Guidelines
 
