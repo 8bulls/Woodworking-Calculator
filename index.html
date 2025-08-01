@@ -4403,9 +4403,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             <!-- Show More Tools for Simple Mode -->
             <div id="showMoreToolsSection" style="display: none; text-align: center; margin: 30px 0; padding: 20px; background: var(--surface-color); border-radius: 8px;">
                 <h3 style="color: var(--primary-color); margin-bottom: 15px;">Need More Tools?</h3>
-                <p style="margin-bottom: 20px; color: var(--text-secondary);">Switch to Advanced Mode to access specialty calculators like Board Foot, Miter Angles, Tile Layout, and more!</p>
-                <button class="btn btn-primary" onclick="updateUIMode('advanced')" style="padding: 10px 30px; font-size: 16px;">
-                    🔧 Switch to Advanced Mode
+                <p style="margin-bottom: 20px; color: var(--text-secondary);">Switch to Standard Mode to access specialty calculators like Board Foot, Miter Angles, Tile Layout, and more!</p>
+                <button class="btn btn-primary" onclick="updateUIMode('standard')" style="padding: 10px 30px; font-size: 16px;">
+                    🔧 Switch to Standard Mode
                 </button>
             </div>
         </div>
@@ -22458,8 +22458,8 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             const attributionFooter = document.getElementById('woodImageAttribution');
             if (!attributionFooter) return;
             
-            const hasWoodImages = data.some(species => species.grainImage);
-            attributionFooter.style.display = hasWoodImages ? 'block' : 'none';
+            // For now, hide attribution since images aren't loaded
+            attributionFooter.style.display = 'none';
         }
         
         // Create individual species card
@@ -22471,25 +22471,11 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
                 `<span class="use-tag">${formatUseTag(use)}</span>`
             ).join('');
             
-            const grainPreview = species.grainImage || species.grainPattern ? `
+            const grainPreview = species.grainPattern ? `
                 <div class="wood-grain-preview" style="
-                    ${species.grainImage ? 
-                        `background-image: url('${species.grainImage}'); background-size: cover; background-position: center;` : 
-                        `background: ${species.grainPattern};`
-                    } 
-                    width: 100%; height: 150px; border-radius: 4px; margin-bottom: ${species.grainImage ? '4px' : '12px'}; border: 1px solid var(--border-color);
-                " onerror="this.style.backgroundImage='none'; this.style.background='${species.grainPattern || '#ddd'}';"></div>
-                ${species.grainImage ? `
-                    <div class="image-attribution" style="
-                        font-size: 10px; 
-                        color: var(--text-secondary); 
-                        text-align: center; 
-                        margin-bottom: 12px;
-                        opacity: 0.8;
-                    ">
-                        Image: <a href="https://www.wood-database.com/" target="_blank" style="color: var(--primary-color); text-decoration: none;">Wood Database</a>
-                    </div>
-                ` : ''}
+                    background: ${species.grainPattern};
+                    width: 100%; height: 150px; border-radius: 4px; margin-bottom: 12px; border: 1px solid var(--border-color);
+                "></div>
             ` : '';
             
             const finishRecommendations = species.finishRecommendations ? `
