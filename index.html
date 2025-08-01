@@ -16059,7 +16059,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     
                     boxCalculations.forEach((drawer, index) => {
                         // Add box material
-                        const boxKey = `${currentBoxMaterialThickness}"_box`;
+                        const boxKey = `${currentBoxMaterialThickness}_box`;
                         if (!materialGroups[boxKey]) {
                             materialGroups[boxKey] = {
                                 thickness: currentBoxMaterialThickness,
@@ -16075,7 +16075,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                         );
                         
                         // Add bottom panel
-                        const bottomKey = `${currentBottomThickness}"_bottom`;
+                        const bottomKey = `${currentBottomThickness}_bottom`;
                         if (!materialGroups[bottomKey]) {
                             materialGroups[bottomKey] = {
                                 thickness: currentBottomThickness,
