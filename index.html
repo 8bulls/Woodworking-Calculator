@@ -16009,20 +16009,44 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                         <div style="background: white; border: 1px solid #ddd; border-radius: 4px; padding: 12px; font-size: 12px;">
                     `;
                 } else if (boxCalculations === null) {
-                    // Insufficient depth message
-                    const minDepthNeeded = (2 * currentBoxMaterialThickness) + currentRearClearance + 0.5; // Add 0.5" for minimum usable depth
-                    cutListHTML += `
-                        <h4 style="margin: 20px 0 10px 0; color: var(--primary-color); font-size: 14px;">Drawer Box Components</h4>
-                        <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; padding: 15px; font-size: 12px;">
-                            <strong style="color: #856404;">⚠️ Insufficient Cabinet Depth</strong><br>
-                            <div style="margin-top: 8px; color: #856404;">
-                                Current cabinet depth (${inchesToDisplay(currentCabinetDepthInches)}) is too shallow for drawer boxes.<br>
-                                With current settings, you need at least ${inchesToDisplay(minDepthNeeded)} of cabinet depth:<br>
-                                • Box material thickness: ${inchesToDisplay(currentBoxMaterialThickness)} × 2 = ${inchesToDisplay(2 * currentBoxMaterialThickness)}<br>
-                                • Rear clearance: ${inchesToDisplay(currentRearClearance)}<br>
-                                • Minimum usable depth: 1/2"
+                    // Check if it's a depth or height issue
+                    const testHeight = drawerData[0].height - currentTopClearance - (drawerSlideType === 'bottom' ? currentBottomClearance : 0);
+                    const isHeightIssue = testHeight <= 0;
+                    
+                    if (isHeightIssue) {
+                        // Insufficient height message
+                        cutListHTML += `
+                            <h4 style="margin: 20px 0 10px 0; color: var(--primary-color); font-size: 14px;">Drawer Box Components</h4>
+                            <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; padding: 15px; font-size: 12px;">
+                                <strong style="color: #856404;">⚠️ Insufficient Drawer Height</strong><br>
+                                <div style="margin-top: 8px; color: #856404;">
+                                    The clearances are too large for the drawer opening height.<br>
+                                    Drawer opening: ${inchesToDisplay(drawerData[0].height)}<br>
+                                    • Top clearance: ${inchesToDisplay(currentTopClearance)}<br>
+                                    ${drawerSlideType === 'bottom' ? `• Bottom clearance: ${inchesToDisplay(currentBottomClearance)}<br>` : ''}
+                                    • Total clearances: ${inchesToDisplay(currentTopClearance + (drawerSlideType === 'bottom' ? currentBottomClearance : 0))}<br>
+                                    <br>
+                                    <strong>Solution:</strong> Reduce the clearances or increase the drawer opening height.
+                                </div>
                             </div>
-                        </div>
+                    `;
+                    } else {
+                        // Insufficient depth message
+                        const minDepthNeeded = (2 * currentBoxMaterialThickness) + currentRearClearance + 0.5; // Add 0.5" for minimum usable depth
+                        cutListHTML += `
+                            <h4 style="margin: 20px 0 10px 0; color: var(--primary-color); font-size: 14px;">Drawer Box Components</h4>
+                            <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; padding: 15px; font-size: 12px;">
+                                <strong style="color: #856404;">⚠️ Insufficient Cabinet Depth</strong><br>
+                                <div style="margin-top: 8px; color: #856404;">
+                                    Current cabinet depth (${inchesToDisplay(currentCabinetDepthInches)}) is too shallow for drawer boxes.<br>
+                                    With current settings, you need at least ${inchesToDisplay(minDepthNeeded)} of cabinet depth:<br>
+                                    • Box material thickness: ${inchesToDisplay(currentBoxMaterialThickness)} × 2 = ${inchesToDisplay(2 * currentBoxMaterialThickness)}<br>
+                                    • Rear clearance: ${inchesToDisplay(currentRearClearance)}<br>
+                                    • Minimum usable depth: 1/2"
+                                </div>
+                            </div>
+                    `;
+                    }
                     `;
                     cutListDiv.innerHTML = cutListHTML;
                     cutListDiv.style.display = 'block';
@@ -16284,9 +16308,9 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     const dimensionDisplay = document.getElementById('boxDimensionDisplay');
                     const faceToBoxDiagram = document.getElementById('faceToBoxMountingDiagram');
                     
-                    if (frontView) frontView.innerHTML = '<text x="125" y="125" text-anchor="middle" font-size="12" fill="#999">Insufficient depth for drawer box</text>';
-                    if (sideView) sideView.innerHTML = '<text x="125" y="125" text-anchor="middle" font-size="12" fill="#999">Insufficient depth for drawer box</text>';
-                    if (topView) topView.innerHTML = '<text x="125" y="125" text-anchor="middle" font-size="12" fill="#999">Insufficient depth for drawer box</text>';
+                    if (frontView) frontView.innerHTML = '<text x="125" y="125" text-anchor="middle" font-size="12" fill="#999">Insufficient dimensions for drawer box</text>';
+                    if (sideView) sideView.innerHTML = '<text x="125" y="125" text-anchor="middle" font-size="12" fill="#999">Insufficient dimensions for drawer box</text>';
+                    if (topView) topView.innerHTML = '<text x="125" y="125" text-anchor="middle" font-size="12" fill="#999">Insufficient dimensions for drawer box</text>';
                     if (dimensionDisplay) dimensionDisplay.style.display = 'none';
                     if (faceToBoxDiagram) faceToBoxDiagram.style.display = 'none';
                 }
@@ -16361,6 +16385,12 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 // For inset custom drawers, drawer.height is the opening size
                 if (cabinetFrameStyle === 'inset' && drawer.isCustom) {
                     boxHeight = drawer.height - (2 * currentVerticalRevealInches) - currentTopClearance;
+                }
+                
+                // Validate box height is positive
+                if (boxHeight <= 0) {
+                    console.warn('Box height is too small after applying clearances. Height would be:', boxHeight);
+                    return null;
                 }
                 
                 // Calculate bottom panel dimensions (accounting for dado)
