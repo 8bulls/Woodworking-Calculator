@@ -4972,18 +4972,18 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             <!-- Face-to-Box Mounting Diagram -->
                             <div id="faceToBoxMountingDiagram" style="margin-top: 20px; padding: 20px; background: #f9f9f9; border-radius: 8px; border: 1px solid #e0e0e0; display: none;">
                                 <h5 style="margin: 0 0 15px 0; text-align: center; color: var(--text-secondary); font-size: 14px;">Face-to-Box Mounting Alignment</h5>
-                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto;">
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto;">
                                     <!-- Front Mounting View -->
                                     <div style="text-align: center;">
                                         <h6 style="margin: 0 0 5px 0; color: var(--text-secondary); font-size: 12px;">Front View - Face Alignment</h6>
-                                        <svg id="faceToBoxFrontView" width="300" height="300" viewBox="0 0 300 300" style="border: 1px solid #ddd; border-radius: 4px; background: white; width: 100%;">
+                                        <svg id="faceToBoxFrontView" width="400" height="400" viewBox="0 0 400 400" style="border: 1px solid #ddd; border-radius: 4px; background: white; width: 100%; max-width: 500px;">
                                             <!-- Content will be dynamically generated -->
                                         </svg>
                                     </div>
                                     <!-- Side Mounting View -->
                                     <div style="text-align: center;">
                                         <h6 style="margin: 0 0 5px 0; color: var(--text-secondary); font-size: 12px;">Side View - Mounting Detail</h6>
-                                        <svg id="faceToBoxSideView" width="300" height="300" viewBox="0 0 300 300" style="border: 1px solid #ddd; border-radius: 4px; background: white; width: 100%;">
+                                        <svg id="faceToBoxSideView" width="400" height="400" viewBox="0 0 400 400" style="border: 1px solid #ddd; border-radius: 4px; background: white; width: 100%; max-width: 500px;">
                                             <!-- Content will be dynamically generated -->
                                         </svg>
                                     </div>
@@ -16909,10 +16909,10 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 
                 <!-- Face attachment indicator -->
                 <g stroke="#999" stroke-width="0.5" fill="none">
-                    <rect x="${sideX + boxD + 20}" y="${sideY - 5}" width="15" height="${boxH + 10}" 
+                    <rect x="${sideX + totalDepth + 10}" y="${sideY - 5}" width="15" height="${sideH + 10}" 
                           stroke-dasharray="3,2" fill="#f0f0f0" opacity="0.5"/>
-                    <text x="${sideX + boxD + 27}" y="${centerY}" text-anchor="middle" font-size="9" fill="#666" 
-                          transform="rotate(90, ${sideX + boxD + 27}, ${centerY})">
+                    <text x="${sideX + totalDepth + 17}" y="${centerY}" text-anchor="middle" font-size="9" fill="#666" 
+                          transform="rotate(90, ${sideX + totalDepth + 17}, ${centerY})">
                         Drawer Face
                     </text>
                 </g>
@@ -17058,15 +17058,15 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             const drawer = boxCalculations[0];
             
             // SVG dimensions
-            const svgSize = 300;
-            const padding = 50;
+            const svgSize = 400;
+            const padding = 60;
             const drawableSize = svgSize - (2 * padding);
             const centerX = svgSize / 2;
             const centerY = svgSize / 2;
             
             // Calculate scale to fit the largest dimension
             const maxDimension = Math.max(drawer.faceWidth, drawer.faceHeight);
-            const scale = drawableSize / maxDimension * 0.7; // 70% to leave room for annotations
+            const scale = drawableSize / maxDimension * 0.85; // 85% to better fill space
             
             // Create front view showing face and box alignment
             let frontContent = `
@@ -17102,7 +17102,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 <g opacity="0.3">
                     <rect x="${faceX}" y="${faceY}" width="${faceW}" height="${faceH}" 
                           fill="url(#woodGrain)" stroke="#8B4513" stroke-width="2"/>
-                    <text x="${centerX}" y="${faceY - 5}" text-anchor="middle" font-size="10" fill="#666">
+                    <text x="${centerX}" y="${faceY - 5}" text-anchor="middle" font-size="11" fill="#666">
                         Drawer Face: ${inchesToDisplay(drawer.faceWidth)} × ${inchesToDisplay(drawer.faceHeight)}
                     </text>
                 </g>
@@ -17110,7 +17110,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 <!-- Drawer box front -->
                 <rect x="${boxX}" y="${boxY}" width="${boxW}" height="${boxH}" 
                       fill="none" stroke="#0066cc" stroke-width="2"/>
-                <text x="${centerX}" y="${boxY + boxH + 15}" text-anchor="middle" font-size="10" fill="#0066cc">
+                <text x="${centerX}" y="${boxY + boxH + 15}" text-anchor="middle" font-size="11" fill="#0066cc">
                     Box Front: ${inchesToDisplay(drawer.boxWidth)} × ${inchesToDisplay(drawer.boxHeight)}
                 </text>
                 
@@ -17125,27 +17125,27 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     <!-- Horizontal offset -->
                     <line x1="${faceX}" y1="${faceY - 20}" x2="${boxX}" y2="${faceY - 20}" 
                           marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
-                    <text x="${(faceX + boxX) / 2}" y="${faceY - 25}" text-anchor="middle" font-size="9" fill="#666">
+                    <text x="${(faceX + boxX) / 2}" y="${faceY - 25}" text-anchor="middle" font-size="10" fill="#666">
                         ${drawer.horizontalOffset}
                     </text>
                     
                     <line x1="${boxX + boxW}" y1="${faceY - 20}" x2="${faceX + faceW}" y2="${faceY - 20}" 
                           marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
-                    <text x="${(boxX + boxW + faceX + faceW) / 2}" y="${faceY - 25}" text-anchor="middle" font-size="9" fill="#666">
+                    <text x="${(boxX + boxW + faceX + faceW) / 2}" y="${faceY - 25}" text-anchor="middle" font-size="10" fill="#666">
                         ${drawer.horizontalOffset}
                     </text>
                     
                     <!-- Vertical offset -->
                     <line x1="${faceX - 30}" y1="${faceY}" x2="${faceX - 30}" y2="${boxY}" 
                           marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
-                    <text x="${faceX - 35}" y="${(faceY + boxY) / 2}" text-anchor="middle" font-size="9" fill="#666"
+                    <text x="${faceX - 35}" y="${(faceY + boxY) / 2}" text-anchor="middle" font-size="10" fill="#666"
                           transform="rotate(-90, ${faceX - 35}, ${(faceY + boxY) / 2})">
                         ${drawer.verticalOffset}
                     </text>
                     
                     <line x1="${faceX - 30}" y1="${boxY + boxH}" x2="${faceX - 30}" y2="${faceY + faceH}" 
                           marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
-                    <text x="${faceX - 35}" y="${(boxY + boxH + faceY + faceH) / 2}" text-anchor="middle" font-size="9" fill="#666"
+                    <text x="${faceX - 35}" y="${(boxY + boxH + faceY + faceH) / 2}" text-anchor="middle" font-size="10" fill="#666"
                           transform="rotate(-90, ${faceX - 35}, ${(boxY + boxH + faceY + faceH) / 2})">
                         ${drawer.verticalOffset}
                     </text>
@@ -17157,18 +17157,18 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     <circle cx="${boxX + boxW - 25}" cy="${boxY + 25}" r="3"/>
                     <circle cx="${boxX + 25}" cy="${boxY + boxH - 25}" r="3"/>
                     <circle cx="${boxX + boxW - 25}" cy="${boxY + boxH - 25}" r="3"/>
-                    <text x="${boxX + 25}" y="${boxY + 40}" text-anchor="middle" font-size="8" fill="#ff0000">
+                    <text x="${boxX + 25}" y="${boxY + 40}" text-anchor="middle" font-size="9" fill="#ff0000">
                         ${drawer.mountingHoleOffset}
                     </text>
                 </g>
                 
                 <!-- Title -->
-                <text x="${centerX}" y="20" text-anchor="middle" font-size="12" fill="#333" font-weight="600">
+                <text x="${centerX}" y="25" text-anchor="middle" font-size="13" fill="#333" font-weight="600">
                     Face and Box Alignment
                 </text>
                 
                 <!-- Legend -->
-                <g font-size="8" fill="#666">
+                <g font-size="9" fill="#666">
                     <text x="10" y="${svgSize - 20}">Red dots = Pilot hole locations</text>
                     <text x="10" y="${svgSize - 10}">Measure from box edges</text>
                 </g>
@@ -17186,36 +17186,41 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 </defs>
             `;
             
-            // Side view dimensions
-            const thickness = Math.max(currentFaceThickness * scale, 10); // Min 10px for visibility
-            const boxThickness = Math.max(currentBoxMaterialThickness * scale, 8);
-            const totalDepth = (drawer.totalDepth + currentFaceThickness) * scale;
+            // Side view dimensions - calculate separate scale for side view
+            const sideMaxDimension = Math.max(drawer.totalDepth + currentFaceThickness, drawer.faceHeight);
+            const sideScale = drawableSize / sideMaxDimension * 0.85;
+            
+            const thickness = Math.max(currentFaceThickness * sideScale, 10); // Min 10px for visibility
+            const boxThickness = Math.max(currentBoxMaterialThickness * sideScale, 8);
+            const totalDepth = (drawer.totalDepth + currentFaceThickness) * sideScale;
+            const sideH = drawer.faceHeight * sideScale;
+            const sideBoxH = drawer.boxHeight * sideScale;
             
             // Position for side view
             const sideX = centerX - totalDepth / 2;
-            const sideY = centerY - faceH / 2;
+            const sideY = centerY - sideH / 2;
             
             sideContent += `
                 <!-- Cabinet opening outline -->
-                <rect x="${sideX - 20}" y="${sideY - 20}" width="${totalDepth + 40}" height="${faceH + 40}" 
+                <rect x="${sideX - 20}" y="${sideY - 20}" width="${totalDepth + 40}" height="${sideH + 40}" 
                       fill="none" stroke="#ccc" stroke-width="1" stroke-dasharray="3,3"/>
-                <text x="${centerX}" y="${sideY - 25}" text-anchor="middle" font-size="9" fill="#999">
+                <text x="${centerX}" y="${sideY - 25}" text-anchor="middle" font-size="10" fill="#999">
                     Cabinet Opening
                 </text>
                 
                 <!-- Drawer face (side view) -->
-                <rect x="${sideX}" y="${sideY}" width="${thickness}" height="${faceH}" 
+                <rect x="${sideX}" y="${sideY}" width="${thickness}" height="${sideH}" 
                       fill="url(#woodGrain)" stroke="#8B4513" stroke-width="2"/>
-                <text x="${sideX + thickness / 2}" y="${sideY - 5}" text-anchor="middle" font-size="9" fill="#666">
+                <text x="${sideX + thickness / 2}" y="${sideY - 5}" text-anchor="middle" font-size="10" fill="#666">
                     Face
                 </text>
                 
                 <!-- Drawer box (side view) -->
-                <g transform="translate(${thickness * scale}, 0)">
-                    <rect x="${sideX}" y="${sideY + (faceH - boxH) / 2}" width="${totalDepth - thickness}" height="${boxH}" 
+                <g transform="translate(${thickness}, 0)">
+                    <rect x="${sideX}" y="${sideY + (sideH - sideBoxH) / 2}" width="${totalDepth - thickness}" height="${sideBoxH}" 
                           fill="url(#crossSection)" stroke="#0066cc" stroke-width="1.5"/>
-                    <text x="${sideX + (totalDepth - thickness) / 2}" y="${sideY + faceH + 15}" 
-                          text-anchor="middle" font-size="9" fill="#0066cc">
+                    <text x="${sideX + (totalDepth - thickness) / 2}" y="${sideY + sideH + 15}" 
+                          text-anchor="middle" font-size="10" fill="#0066cc">
                         Box Depth: ${inchesToDisplay(drawer.totalDepth)}
                     </text>
                 </g>
@@ -17224,36 +17229,36 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 <g stroke="#ff0000" stroke-width="2" fill="none">
                     <line x1="${sideX + thickness - 2}" y1="${sideY + 30}" x2="${sideX + thickness + 20}" y2="${sideY + 30}"/>
                     <circle cx="${sideX + thickness - 2}" cy="${sideY + 30}" r="2" fill="#ff0000"/>
-                    <text x="${sideX + thickness + 25}" y="${sideY + 33}" font-size="8" fill="#ff0000">1¼" screw</text>
+                    <text x="${sideX + thickness + 25}" y="${sideY + 33}" font-size="9" fill="#ff0000">1¼" screw</text>
                     
-                    <line x1="${sideX + thickness - 2}" y1="${sideY + faceH - 30}" x2="${sideX + thickness + 20}" y2="${sideY + faceH - 30}"/>
-                    <circle cx="${sideX + thickness - 2}" cy="${sideY + faceH - 30}" r="2" fill="#ff0000"/>
+                    <line x1="${sideX + thickness - 2}" y1="${sideY + sideH - 30}" x2="${sideX + thickness + 20}" y2="${sideY + sideH - 30}"/>
+                    <circle cx="${sideX + thickness - 2}" cy="${sideY + sideH - 30}" r="2" fill="#ff0000"/>
                 </g>
                 
                 <!-- Dimensions -->
                 <g stroke="#666" stroke-width="0.5" fill="none">
                     <!-- Face thickness -->
-                    <line x1="${sideX}" y1="${sideY + faceH + 30}" x2="${sideX + thickness}" y2="${sideY + faceH + 30}" 
+                    <line x1="${sideX}" y1="${sideY + sideH + 30}" x2="${sideX + thickness}" y2="${sideY + sideH + 30}" 
                           marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
-                    <text x="${sideX + thickness / 2}" y="${sideY + faceH + 45}" text-anchor="middle" font-size="9" fill="#666">
+                    <text x="${sideX + thickness / 2}" y="${sideY + sideH + 45}" text-anchor="middle" font-size="10" fill="#666">
                         ${inchesToDisplay(currentFaceThickness)}
                     </text>
                     
                     <!-- Total assembly depth -->
-                    <line x1="${sideX}" y1="${sideY + faceH + 50}" x2="${sideX + totalDepth}" y2="${sideY + faceH + 50}" 
+                    <line x1="${sideX}" y1="${sideY + sideH + 50}" x2="${sideX + totalDepth}" y2="${sideY + sideH + 50}" 
                           marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
-                    <text x="${centerX}" y="${sideY + faceH + 65}" text-anchor="middle" font-size="9" fill="#666">
+                    <text x="${centerX}" y="${sideY + sideH + 65}" text-anchor="middle" font-size="10" fill="#666">
                         Total: ${inchesToDisplay(drawer.totalDepth + currentFaceThickness)}
                     </text>
                 </g>
                 
                 <!-- Title -->
-                <text x="${centerX}" y="20" text-anchor="middle" font-size="12" fill="#333" font-weight="600">
+                <text x="${centerX}" y="25" text-anchor="middle" font-size="13" fill="#333" font-weight="600">
                     Side Mounting View
                 </text>
                 
                 <!-- Notes -->
-                <g font-size="8" fill="#666">
+                <g font-size="9" fill="#666">
                     <text x="10" y="${svgSize - 20}">Attach from inside box</text>
                     <text x="10" y="${svgSize - 10}">Pre-drill to prevent splitting</text>
                 </g>
