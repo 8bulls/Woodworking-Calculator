@@ -16374,13 +16374,29 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     const faceWidth = currentCabinetWidthInches - (2 * currentHorizontalRevealInches);
                     const faceHeight = drawer.height - (drawer.isCustom ? 0 : 2 * currentVerticalRevealInches);
                     horizontalOffset = (faceWidth - boxWidth) / 2;
-                    verticalOffset = (faceHeight - boxHeight) / 2;
+                    
+                    // Vertical offset depends on slide type
+                    if (drawerSlideType === 'bottom') {
+                        // Bottom mount: offset by bottom clearance
+                        verticalOffset = currentBottomClearance;
+                    } else {
+                        // Side mount: bottom-aligned (no offset)
+                        verticalOffset = 0;
+                    }
                 } else {
                     // Overlay face extends beyond box
                     const faceWidth = drawer.width;
                     const faceHeight = drawer.height;
                     horizontalOffset = (faceWidth - boxWidth) / 2;
-                    verticalOffset = (faceHeight - boxHeight) / 2;
+                    
+                    // Vertical offset depends on slide type
+                    if (drawerSlideType === 'bottom') {
+                        // Bottom mount: offset by bottom clearance
+                        verticalOffset = currentBottomClearance;
+                    } else {
+                        // Side mount: bottom-aligned (no offset)
+                        verticalOffset = 0;
+                    }
                 }
                 
                 // The actual total box depth includes front and back thickness
@@ -17094,7 +17110,9 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             const faceX = centerX - faceW / 2;
             const faceY = centerY - faceH / 2;
             const boxX = centerX - boxW / 2;
-            const boxY = centerY - boxH / 2;
+            // Box is bottom-aligned with face, adjusted by vertical offset
+            const verticalOffsetScaled = parseFloat(drawer.verticalOffset.replace(/['"]/g, '')) * scale;
+            const boxY = faceY + faceH - boxH - verticalOffsetScaled;
             
             // Draw the front view
             frontContent += `
@@ -17136,18 +17154,22 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     </text>
                     
                     <!-- Vertical offset -->
+                    ${verticalOffsetScaled > 0.1 ? `
+                        <!-- Bottom offset (if any) -->
+                        <line x1="${faceX - 30}" y1="${faceY + faceH}" x2="${faceX - 30}" y2="${boxY + boxH}" 
+                              marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
+                        <text x="${faceX - 35}" y="${(faceY + faceH + boxY + boxH) / 2}" text-anchor="middle" font-size="10" fill="#666"
+                              transform="rotate(-90, ${faceX - 35}, ${(faceY + faceH + boxY + boxH) / 2})">
+                            ${drawer.verticalOffset}
+                        </text>
+                    ` : ''}
+                    
+                    <!-- Top gap -->
                     <line x1="${faceX - 30}" y1="${faceY}" x2="${faceX - 30}" y2="${boxY}" 
                           marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
                     <text x="${faceX - 35}" y="${(faceY + boxY) / 2}" text-anchor="middle" font-size="10" fill="#666"
                           transform="rotate(-90, ${faceX - 35}, ${(faceY + boxY) / 2})">
-                        ${drawer.verticalOffset}
-                    </text>
-                    
-                    <line x1="${faceX - 30}" y1="${boxY + boxH}" x2="${faceX - 30}" y2="${faceY + faceH}" 
-                          marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
-                    <text x="${faceX - 35}" y="${(boxY + boxH + faceY + faceH) / 2}" text-anchor="middle" font-size="10" fill="#666"
-                          transform="rotate(-90, ${faceX - 35}, ${(boxY + boxH + faceY + faceH) / 2})">
-                        ${drawer.verticalOffset}
+                        ${inchesToDisplay((faceY - boxY) / scale)}
                     </text>
                 </g>
                 
