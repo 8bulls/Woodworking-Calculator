@@ -308,6 +308,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             position: relative;
             transition: var(--theme-transition);
+            overflow: hidden;
         }
         
         .header-section {
@@ -631,6 +632,44 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         .tab-content.active {
             display: block;
+        }
+        
+        /* Ensure specialty content is hidden when tab is not active */
+        #specialty:not(.active) .calc-category-header {
+            display: none !important;
+        }
+        
+        /* Fix projects tab layout */
+        #projects {
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .projects-dashboard {
+            width: 100%;
+            max-width: 100%;
+            position: relative;
+        }
+        
+        #projects .project-card,
+        #projects .settings-panel,
+        #projects .action-card {
+            box-sizing: border-box;
+            max-width: 100%;
+            position: relative !important;
+        }
+        
+        /* Ensure active project and recent projects stay within bounds */
+        #activeProjectSection,
+        #recentProjectsSection,
+        .quick-actions-section {
+            position: relative !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
         }
         
         .settings-row {
@@ -4196,7 +4235,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             }
             
             /* Prevent horizontal scroll */
-            .tab-content,
             .mode-content {
                 overflow-x: hidden;
             }
@@ -11240,6 +11278,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             if (tab === 'projects') {
                 updateProjectsDashboard();
             }
+            
+            // Ensure category headers are properly hidden/shown
+            ensureCategoryVisibility();
         }
         
         // Set the real implementation
@@ -12688,13 +12729,15 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         function filterCalculators() {
             const searchTerm = document.getElementById('calcSearchInput').value.toLowerCase();
-            const calcCards = document.querySelectorAll('.calc-card');
-            const categoryHeaders = document.querySelectorAll('.calc-category-header');
-            const categoryContents = document.querySelectorAll('.calc-category-content');
+            const specialtyTab = document.getElementById('specialty');
+            const calcCards = specialtyTab ? specialtyTab.querySelectorAll('.calc-card') : [];
+            const categoryHeaders = specialtyTab ? specialtyTab.querySelectorAll('.calc-category-header') : [];
+            const categoryContents = specialtyTab ? specialtyTab.querySelectorAll('.calc-category-content') : [];
             
             if (!searchTerm) {
                 // Show all calculators and headers, but keep categories collapsed
                 calcCards.forEach(card => card.style.display = 'block');
+                // Show category headers (we're already scoped to specialty tab)
                 categoryHeaders.forEach(header => header.style.display = 'flex');
             } else {
                 // Expand all categories for search
@@ -12735,6 +12778,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         header.style.display = 'none';
                         content.style.display = 'none';
                     } else {
+                        // Show header (we're already scoped to specialty tab)
                         header.style.display = 'flex';
                     }
                 });
@@ -12744,6 +12788,53 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         function clearCalculatorSearch() {
             document.getElementById('calcSearchInput').value = '';
             filterCalculators();
+        }
+        
+        // Ensure category headers and calc cards are hidden in non-active tabs
+        function ensureCategoryVisibility() {
+            const activeTab = document.querySelector('.tab-content.active');
+            const categoryHeaders = document.querySelectorAll('.calc-category-header');
+            const categoryContents = document.querySelectorAll('.calc-category-content');
+            const specialtyCalcCards = document.querySelectorAll('#specialty .calc-card');
+            
+            if (activeTab && activeTab.id === 'specialty') {
+                // Show category headers in specialty tab
+                categoryHeaders.forEach(header => {
+                    header.style.display = 'flex';
+                });
+                // Show calc cards in specialty tab
+                specialtyCalcCards.forEach(card => {
+                    card.style.display = 'block';
+                });
+                // Restore category content display state
+                categoryContents.forEach(content => {
+                    if (content.getAttribute('data-was-expanded') === 'true') {
+                        content.style.display = 'block';
+                        content.removeAttribute('data-was-expanded');
+                        // Update arrow to show expanded state
+                        const categoryId = content.id.replace('-content', '');
+                        const arrow = document.getElementById(categoryId + '-arrow');
+                        if (arrow) arrow.textContent = '▼';
+                    }
+                });
+            } else {
+                // Hide all category headers if not in specialty tab
+                categoryHeaders.forEach(header => {
+                    header.style.display = 'none';
+                });
+                // Hide all category content containers if not in specialty tab
+                categoryContents.forEach(content => {
+                    // Store the current display state to restore later
+                    if (content.style.display !== 'none') {
+                        content.setAttribute('data-was-expanded', 'true');
+                    }
+                    content.style.display = 'none';
+                });
+                // Hide specialty calc cards if not in specialty tab
+                specialtyCalcCards.forEach(card => {
+                    card.style.display = 'none';
+                });
+            }
         }
         
         function toggleCategory(categoryId) {
@@ -22888,6 +22979,9 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             
             // Initialize recent calculators
             updateRecentCalculators();
+            
+            // Ensure category headers are properly hidden on load
+            ensureCategoryVisibility();
             
             // Debug function for Wood Species visibility
             window.debugWoodSpecies = function() {
