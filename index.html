@@ -628,16 +628,20 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         .tab-content {
             display: none;
+            position: relative;
+            overflow: hidden;
         }
         
         .tab-content.active {
             display: block;
         }
         
+        
         /* Ensure specialty content is hidden when tab is not active */
         #specialty:not(.active) .calc-category-header {
             display: none !important;
         }
+        
         
         /* Fix projects tab layout */
         #projects {
@@ -5276,7 +5280,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 </div>
             </div>
             
-            </div> <!-- End Measurements & Layout Category -->
+            <!-- End Measurements & Layout Category -->
             
             <!-- Angles & Joinery Category -->
             <div class="calc-category-header" style="background: var(--gradient-primary); padding: 12px 20px; margin: 20px 0 15px 0; border-radius: 8px; border-left: 4px solid var(--primary-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCategory('angles')">
@@ -6696,7 +6700,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             </div>
             
             </div> <!-- End Construction Category -->
-        </div> <!-- End of specialty tab-content -->
+            
+        </div> <!-- End specialty tab-content -->
 
         <!-- Projects Tab -->
         <div id="projects" class="tab-content">
@@ -9250,9 +9255,71 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             }
         }
         
+        // Track event listeners for cleanup
+        const eventListenerRegistry = [];
+        
+        /**
+         * Add event listener with automatic tracking for cleanup
+         * @param {Element} element - DOM element
+         * @param {string} event - Event name
+         * @param {Function} handler - Event handler function
+         * @param {Object} options - Event listener options
+         */
+        function addTrackedEventListener(element, event, handler, options) {
+            element.addEventListener(event, handler, options);
+            eventListenerRegistry.push({ element, event, handler, options });
+        }
+        
+        /**
+         * Remove all tracked event listeners
+         * Useful for cleanup when switching tabs or modes
+         */
+        function cleanupEventListeners() {
+            eventListenerRegistry.forEach(({ element, event, handler, options }) => {
+                if (element && element.removeEventListener) {
+                    element.removeEventListener(event, handler, options);
+                }
+            });
+            // Clear the registry
+            eventListenerRegistry.length = 0;
+        }
+        
+        /**
+         * Cleanup tab-specific event listeners when switching tabs
+         * @param {string} oldTab - Tab being left
+         * @param {string} newTab - Tab being entered
+         */
+        function cleanupTabEventListeners(oldTab, newTab) {
+            // Clean up tile pattern specific listeners
+            if (oldTab === 'tilePattern' && typeof cleanupTilePatternListeners === 'function') {
+                cleanupTilePatternListeners();
+            }
+            
+            // Clear any lingering touch event listeners
+            if (isMobileDevice()) {
+                const oldTabElement = document.getElementById(oldTab);
+                if (oldTabElement) {
+                    const buttons = oldTabElement.querySelectorAll('.calc-btn, .btn');
+                    buttons.forEach(button => {
+                        // Clone and replace to remove all event listeners
+                        const newButton = button.cloneNode(true);
+                        button.parentNode.replaceChild(newButton, button);
+                    });
+                }
+            }
+            
+            // Re-initialize touch events for new tab
+            if (newTab && isMobileDevice()) {
+                setTimeout(() => {
+                    initializeTouchEvents();
+                }, 100);
+            }
+        }
+        
         // Save essential data when user closes the app
         window.addEventListener('beforeunload', function() {
             saveEssentialData();
+            cleanupEventListeners();
         });
         
         // Notification system to replace alerts
@@ -9305,6 +9372,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 const currentValue = select.value; // Store current value
                 select.innerHTML = '<option value="0">0</option>';
                 
+                // Use DocumentFragment for better performance
+                const fragment = document.createDocumentFragment();
+                
                 for (let i = 1; i < precision; i++) {
                     const decimal = i / precision;
                     let displayText;
@@ -9320,8 +9390,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         displayText = `${simplifiedNumerator}/${simplifiedDenominator} (${i}/${precision})`;
                     }
                     
-                    select.innerHTML += `<option value="${decimal}">${displayText}</option>`;
+                    const option = document.createElement('option');
+                    option.value = decimal;
+                    option.textContent = displayText;
+                    fragment.appendChild(option);
                 }
+                
+                select.appendChild(fragment);
                 
                 // Restore value if it still exists
                 if (currentValue && Array.from(select.options).some(opt => opt.value === currentValue)) {
@@ -9335,6 +9410,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 if (fraction2) {
                     const currentValue = fraction2.value;
                     fraction2.innerHTML = '<option value="0">0</option>';
+                    // Use DocumentFragment for better performance
+                    const fragment = document.createDocumentFragment();
+                    
                     for (let i = 1; i < precision; i++) {
                         const decimal = i / precision;
                         const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
@@ -9349,8 +9427,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             displayText = `${simplifiedNumerator}/${simplifiedDenominator} (${i}/${precision})`;
                         }
                         
-                        fraction2.innerHTML += `<option value="${decimal}">${displayText}</option>`;
+                        const option = document.createElement('option');
+                        option.value = decimal;
+                        option.textContent = displayText;
+                        fragment.appendChild(option);
                     }
+                    
+                    fraction2.appendChild(fragment);
                     if (currentValue && Array.from(fraction2.options).some(opt => opt.value === currentValue)) {
                         fraction2.value = currentValue;
                     }
@@ -9374,6 +9457,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 const currentValue = select.value; // Store current value
                 select.innerHTML = '<option value="0">0</option>';
                 
+                // Use DocumentFragment for better performance
+                const fragment = document.createDocumentFragment();
+                
                 for (let i = 1; i < precision; i++) {
                     const decimal = i / precision;
                     let displayText;
@@ -9389,8 +9475,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         displayText = `${simplifiedNumerator}/${simplifiedDenominator}"`;
                     }
                     
-                    select.innerHTML += `<option value="${decimal}">${displayText}</option>`;
+                    const option = document.createElement('option');
+                    option.value = decimal;
+                    option.textContent = displayText;
+                    fragment.appendChild(option);
                 }
+                
+                select.appendChild(fragment);
                 
                 // Restore value if it still exists
                 if (currentValue && Array.from(select.options).some(opt => opt.value === currentValue)) {
@@ -10000,6 +10091,81 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             }
         }
         
+        
+        // =====================================================
+        // Touch Event Support for Mobile
+        // =====================================================
+        
+        /**
+         * Add touch event support to calculator buttons
+         * Prevents double-firing and improves mobile responsiveness
+         */
+        function initializeTouchEvents() {
+            // Only initialize if touch is supported
+            if (!('ontouchstart' in window)) {
+                return;
+            }
+            
+            // Get all calculator buttons
+            const buttons = document.querySelectorAll('.calc-btn, .btn');
+            
+            buttons.forEach(button => {
+                // Prevent default touch behavior
+                button.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    // Add visual feedback
+                    this.classList.add('active');
+                }, { passive: false });
+                
+                button.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    // Remove visual feedback
+                    this.classList.remove('active');
+                    // Trigger the click event
+                    this.click();
+                }, { passive: false });
+                
+                // Prevent ghost clicks
+                button.addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('active');
+                }, { passive: false });
+            });
+            
+            // Add CSS for active state if not already present
+            if (!document.querySelector('#touchStyles')) {
+                const style = document.createElement('style');
+                style.id = 'touchStyles';
+                style.textContent = `
+                    .calc-btn.active, .btn.active {
+                        transform: scale(0.95);
+                        opacity: 0.8;
+                    }
+                    
+                    /* Improve touch targets on mobile */
+                    @media (max-width: 768px) {
+                        .calc-btn, .btn {
+                            min-height: 44px;
+                            min-width: 44px;
+                            touch-action: manipulation;
+                        }
+                        
+                        /* Prevent tap highlight on mobile */
+                        .calc-btn, .btn {
+                            -webkit-tap-highlight-color: transparent;
+                        }
+                        
+                        /* Hardware acceleration for smoother animations */
+                        .calc-btn, .btn, svg, .input-preview {
+                            will-change: transform;
+                            -webkit-transform: translateZ(0);
+                            transform: translateZ(0);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
         
         // =====================================================
         // Smart Input Parser System
@@ -11213,6 +11379,15 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         
         function switchTab(tab, evt) {
+            // Get current active tab for cleanup
+            const currentActiveTab = document.querySelector('.tab-content.active');
+            const oldTab = currentActiveTab ? currentActiveTab.id : null;
+            
+            // Clean up event listeners from the old tab
+            if (oldTab && oldTab !== tab) {
+                cleanupTabEventListeners(oldTab, tab);
+            }
+            
             // Remove active class from all tabs and buttons
             const tabBtns = document.querySelectorAll('.tab-btn');
             const tabContents = document.querySelectorAll('.tab-content');
@@ -11257,6 +11432,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             if (targetTab && targetTab.classList) {
                 targetTab.classList.add('active');
             }
+            
             
             // Hide/show global project selector based on tab and mode
             const globalSelector = document.getElementById('globalProjectSelector');
@@ -12793,9 +12969,10 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         // Ensure category headers and calc cards are hidden in non-active tabs
         function ensureCategoryVisibility() {
             const activeTab = document.querySelector('.tab-content.active');
-            const categoryHeaders = document.querySelectorAll('.calc-category-header');
-            const categoryContents = document.querySelectorAll('.calc-category-content');
-            const specialtyCalcCards = document.querySelectorAll('#specialty .calc-card');
+            const specialtyTab = document.getElementById('specialty');
+            const categoryHeaders = specialtyTab ? specialtyTab.querySelectorAll('.calc-category-header') : [];
+            const categoryContents = specialtyTab ? specialtyTab.querySelectorAll('.calc-category-content') : [];
+            const specialtyCalcCards = specialtyTab ? specialtyTab.querySelectorAll('.calc-card') : [];
             
             if (activeTab && activeTab.id === 'specialty') {
                 // Show category headers in specialty tab
@@ -15760,20 +15937,45 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 return;
             }
             
-            listDiv.innerHTML = customDrawerHeights.map((height, index) => `
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                    <span style="min-width: 80px; font-weight: 600;">Drawer ${index + 1}:</span>
-                    <input type="text" value="${inchesToDisplay(height)}" 
-                           placeholder="e.g. 6, 4 1/2, 3.75"
-                           oninput="updateCustomDrawerHeight(${index}, this.value)"
-                           style="width: 100px; padding: 8px;">
-                    <span style="color: #666;">inches</span>
-                    <button class="btn btn-sm" onclick="removeCustomDrawer(${index})" 
-                            style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
-                        Remove
-                    </button>
-                </div>
-            `).join('');
+            // Clear existing content
+            listDiv.innerHTML = '';
+            
+            // Use DocumentFragment for better performance
+            const fragment = document.createDocumentFragment();
+            
+            customDrawerHeights.forEach((height, index) => {
+                const div = document.createElement('div');
+                div.style.cssText = 'display: flex; align-items: center; gap: 10px; margin-bottom: 10px;';
+                
+                const span = document.createElement('span');
+                span.style.cssText = 'min-width: 80px; font-weight: 600;';
+                span.textContent = `Drawer ${index + 1}:`;
+                div.appendChild(span);
+                
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = inchesToDisplay(height);
+                input.placeholder = 'e.g. 6, 4 1/2, 3.75';
+                input.style.cssText = 'width: 100px; padding: 8px;';
+                input.oninput = function() { updateCustomDrawerHeight(index, this.value); };
+                div.appendChild(input);
+                
+                const inchesSpan = document.createElement('span');
+                inchesSpan.style.color = '#666';
+                inchesSpan.textContent = 'inches';
+                div.appendChild(inchesSpan);
+                
+                const button = document.createElement('button');
+                button.className = 'btn btn-sm';
+                button.style.cssText = 'background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;';
+                button.textContent = 'Remove';
+                button.onclick = function() { removeCustomDrawer(index); };
+                div.appendChild(button);
+                
+                fragment.appendChild(div);
+            });
+            
+            listDiv.appendChild(fragment);
         }
         
         // Main calculation function
@@ -19685,6 +19887,20 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
 
         // === INTERACTIVE SVG PATTERN VISUALIZATION ===
 
+        // SVG Pattern Cache to avoid regenerating identical patterns
+        const svgPatternCache = new Map();
+        
+        // Mobile device detection utility
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                || window.innerWidth < 768;
+        }
+        
+        // Get pattern cache key
+        function getPatternCacheKey(patternKey, tileLength, tileWidth, canvasWidth, canvasHeight) {
+            return `${patternKey}_${tileLength}_${tileWidth}_${canvasWidth}_${canvasHeight}`;
+        }
+
         function generateInteractivePatternPreview() {
             const pattern = patternDatabase[currentTileData.selectedPattern];
             if (!pattern) return;
@@ -19724,88 +19940,137 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         }
 
         function generatePatternSVG(patternKey, tileLength, tileWidth, canvasWidth, canvasHeight) {
+            // Check cache first
+            const cacheKey = getPatternCacheKey(patternKey, tileLength, tileWidth, canvasWidth, canvasHeight);
+            if (svgPatternCache.has(cacheKey)) {
+                return svgPatternCache.get(cacheKey);
+            }
+            
             const pattern = patternDatabase[patternKey];
             const groutWidth = 1; // Visual grout width for preview
+            let result = '';
             
             switch(patternKey) {
                 case 'straight-lay':
-                    return generateStraightLaySVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    result = generateStraightLaySVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    break;
                     
                 case 'running-bond':
-                    return generateRunningBondSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    result = generateRunningBondSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    break;
                     
                 case 'herringbone':
-                    return generateHerringboneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    result = generateHerringboneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    break;
                     
                 case 'diagonal-grid':
-                    return generateDiagonalGridSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    result = generateDiagonalGridSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    break;
                     
                 case 'checkerboard':
-                    return generateCheckerboardSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    result = generateCheckerboardSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    break;
                     
                 case 'basketweave':
-                    return generateBasketweaveSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    result = generateBasketweaveSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    break;
                     
                 case 'versailles':
-                    return generateVersaillesSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    result = generateVersaillesSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    break;
                     
                 case 'hexagon':
-                    return generateHexagonSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    result = generateHexagonSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    break;
                     
                 // Paver patterns
                 case 'paver-stack-bond':
-                    return generateStraightLaySVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    result = generateStraightLaySVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    break;
                     
                 case 'paver-running-bond':
-                    return generateRunningBondSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color, 0.5); // 50% offset for pavers
+                    result = generateRunningBondSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color, 0.5); // 50% offset for pavers
+                    break;
                     
                 case 'paver-herringbone':
-                    return generateHerringboneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    result = generateHerringboneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    break;
                     
                 case 'paver-basketweave':
-                    return generateBasketweaveSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    result = generateBasketweaveSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    break;
                     
                 // New tile patterns
                 case 'windmill':
-                    return generateWindmillSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    result = generateWindmillSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    break;
                 case 'pinwheel':
-                    return generatePinwheelSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    result = generatePinwheelSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    break;
                 case 'hopscotch':
-                    return generateHopscotchSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    result = generateHopscotchSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    break;
                 case 'offset-grid':
-                    return generateOffsetGridSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    result = generateOffsetGridSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    break;
                 case 'french-pattern':
-                    return generateFrenchPatternSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    result = generateFrenchPatternSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    break;
                 case 'modular':
-                    return generateModularSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    result = generateModularSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    break;
                 case 'cobblestone':
-                    return generateCobbleStoneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    result = generateCobbleStoneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    break;
                 case 'brick-ashlar':
-                    return generateBrickAshlarSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    result = generateBrickAshlarSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    break;
                 case 'quarter-turn':
-                    return generateQuarterTurnSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    result = generateQuarterTurnSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    break;
                 case 'mixed-size-straight':
-                    return generateMixedSizeStraightSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    result = generateMixedSizeStraightSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    break;
                     
                 // New paver patterns
                 case 'paver-circular':
-                    return generatePaverCircularSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    result = generatePaverCircularSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    break;
                 case 'paver-fan':
-                    return generatePaverFanSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    result = generatePaverFanSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles[0].color);
+                    break;
                 case 'paver-cobblestone':
-                    return generatePaverCobbleStoneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    result = generatePaverCobbleStoneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    break;
                 case 'paver-random':
-                    return generatePaverRandomSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    result = generatePaverRandomSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, pattern.tiles);
+                    break;
                     
                 default:
-                    return `<text x="200" y="125" text-anchor="middle" fill="#666" font-size="14">Pattern preview coming soon</text>`;
+                    result = `<text x="200" y="125" text-anchor="middle" fill="#666" font-size="14">Pattern preview coming soon</text>`;
             }
+            
+            // Cache the result
+            svgPatternCache.set(cacheKey, result);
+            
+            // Limit cache size to prevent memory issues
+            if (svgPatternCache.size > 50) {
+                const firstKey = svgPatternCache.keys().next().value;
+                svgPatternCache.delete(firstKey);
+            }
+            
+            return result;
         }
 
         function generateStraightLaySVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
-            let svg = '';
+            const svgParts = [];
             const effectiveTileLength = tileLength + groutWidth;
             const effectiveTileWidth = tileWidth + groutWidth;
+            
+            // Detect mobile device and limit complexity
+            const isMobile = isMobileDevice();
+            const maxTiles = isMobile ? 100 : 500; // Limit tiles on mobile
+            let tileCount = 0;
             
             for (let row = 0; row * effectiveTileWidth < canvasHeight + effectiveTileWidth; row++) {
                 for (let col = 0; col * effectiveTileLength < canvasWidth + effectiveTileLength; col++) {
@@ -19813,20 +20078,28 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     const y = row * effectiveTileWidth;
                     
                     if (x < canvasWidth && y < canvasHeight) {
-                        svg += `<rect x="${x}" y="${y}" width="${tileLength}" height="${tileWidth}" 
-                                fill="${color}" stroke="#C0C0C0" stroke-width="0.5" 
-                                onmouseover="showTileInfo(this, '${tileLength.toFixed(1)}" × ${tileWidth.toFixed(1)}"')" />`;
+                        if (tileCount >= maxTiles) {
+                            svgParts.push(`<text x="${canvasWidth/2}" y="${canvasHeight/2}" text-anchor="middle" fill="#999" font-size="12">Pattern continues...</text>`);
+                            return svgParts.join('');
+                        }
+                        svgParts.push(`<rect x="${x}" y="${y}" width="${tileLength}" height="${tileWidth}" fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                        tileCount++;
                     }
                 }
             }
-            return svg;
+            return svgParts.join('');
         }
 
         function generateRunningBondSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color, offsetPercent = 0.33) {
-            let svg = '';
+            const svgParts = [];
             const effectiveTileLength = tileLength + groutWidth;
             const effectiveTileWidth = tileWidth + groutWidth;
             const offset = tileLength * offsetPercent;
+            
+            // Detect mobile device and limit complexity
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const maxTiles = isMobile ? 100 : 500;
+            let tileCount = 0;
             
             for (let row = 0; row * effectiveTileWidth < canvasHeight + effectiveTileWidth; row++) {
                 const rowOffset = (row % 2) * offset;
@@ -19835,37 +20108,48 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     const y = row * effectiveTileWidth;
                     
                     if (x < canvasWidth + offset && y < canvasHeight && x + tileLength > 0) {
-                        svg += `<rect x="${x}" y="${y}" width="${tileLength}" height="${tileWidth}" 
-                                fill="${color}" stroke="#C0C0C0" stroke-width="0.5" 
-                                onmouseover="showTileInfo(this, 'Running Bond: ${offsetPercent * 100}% offset')" />`;
+                        if (tileCount >= maxTiles) {
+                            svgParts.push(`<text x="${canvasWidth/2}" y="${canvasHeight/2}" text-anchor="middle" fill="#999" font-size="12">Pattern continues...</text>`);
+                            return svgParts.join('');
+                        }
+                        svgParts.push(`<rect x="${x}" y="${y}" width="${tileLength}" height="${tileWidth}" fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                        tileCount++;
                     }
                 }
             }
-            return svg;
+            return svgParts.join('');
         }
 
         function generateHerringboneSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
-            let svg = '';
+            const svgParts = [];
             const unitWidth = tileLength + tileWidth + groutWidth * 2;
             const unitHeight = tileLength + tileWidth + groutWidth * 2;
+            
+            // Detect mobile device and limit complexity
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const maxTiles = isMobile ? 50 : 250; // Herringbone uses 2 tiles per unit
+            let tileCount = 0;
             
             for (let row = 0; row * unitHeight < canvasHeight + unitHeight; row++) {
                 for (let col = 0; col * unitWidth < canvasWidth + unitWidth; col++) {
                     const baseX = col * unitWidth;
                     const baseY = row * unitHeight;
                     
+                    if (tileCount >= maxTiles) {
+                        svgParts.push(`<text x="${canvasWidth/2}" y="${canvasHeight/2}" text-anchor="middle" fill="#999" font-size="12">Pattern continues...</text>`);
+                        return svgParts.join('');
+                    }
+                    
                     // First tile (horizontal)
-                    svg += `<rect x="${baseX}" y="${baseY}" width="${tileLength}" height="${tileWidth}" 
-                            fill="${color}" stroke="#C0C0C0" stroke-width="0.5" 
-                            onmouseover="showTileInfo(this, 'Herringbone H')" />`;
+                    svgParts.push(`<rect x="${baseX}" y="${baseY}" width="${tileLength}" height="${tileWidth}" fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                    tileCount++;
                     
                     // Second tile (vertical)
-                    svg += `<rect x="${baseX + tileLength + groutWidth}" y="${baseY}" width="${tileWidth}" height="${tileLength}" 
-                            fill="${color}" stroke="#C0C0C0" stroke-width="0.5" 
-                            onmouseover="showTileInfo(this, 'Herringbone V')" />`;
+                    svgParts.push(`<rect x="${baseX + tileLength + groutWidth}" y="${baseY}" width="${tileWidth}" height="${tileLength}" fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                    tileCount++;
                 }
             }
-            return svg;
+            return svgParts.join('');
         }
 
         function generateDiagonalGridSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
@@ -19880,9 +20164,14 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         }
 
         function generateCheckerboardSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
-            let svg = '';
+            const svgParts = [];
             const effectiveTileLength = tileLength + groutWidth;
             const effectiveTileWidth = tileWidth + groutWidth;
+            
+            // Detect mobile device and limit complexity
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const maxTiles = isMobile ? 100 : 500;
+            let tileCount = 0;
             
             for (let row = 0; row * effectiveTileWidth < canvasHeight + effectiveTileWidth; row++) {
                 for (let col = 0; col * effectiveTileLength < canvasWidth + effectiveTileLength; col++) {
@@ -19892,19 +20181,27 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     const color = tiles[colorIndex].color;
                     
                     if (x < canvasWidth && y < canvasHeight) {
-                        svg += `<rect x="${x}" y="${y}" width="${tileLength}" height="${tileWidth}" 
-                                fill="${color}" stroke="#C0C0C0" stroke-width="0.5" 
-                                onmouseover="showTileInfo(this, 'Checkerboard ${tiles[colorIndex].name}')" />`;
+                        if (tileCount >= maxTiles) {
+                            svgParts.push(`<text x="${canvasWidth/2}" y="${canvasHeight/2}" text-anchor="middle" fill="#999" font-size="12">Pattern continues...</text>`);
+                            return svgParts.join('');
+                        }
+                        svgParts.push(`<rect x="${x}" y="${y}" width="${tileLength}" height="${tileWidth}" fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                        tileCount++;
                     }
                 }
             }
-            return svg;
+            return svgParts.join('');
         }
 
         function generateBasketweaveSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
-            let svg = '';
+            const svgParts = [];
             const pairWidth = tileLength * 2 + groutWidth * 3;
             const pairHeight = tileWidth * 2 + groutWidth * 3;
+            
+            // Detect mobile device and limit complexity
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const maxTiles = isMobile ? 50 : 250; // Basketweave uses 2 tiles per unit
+            let tileCount = 0;
             
             for (let row = 0; row * pairHeight < canvasHeight + pairHeight; row++) {
                 for (let col = 0; col * pairWidth < canvasWidth + pairWidth; col++) {
@@ -19912,26 +20209,29 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     const baseY = row * pairHeight;
                     const isHorizontal = (row + col) % 2 === 0;
                     
+                    if (tileCount >= maxTiles) {
+                        svgParts.push(`<text x="${canvasWidth/2}" y="${canvasHeight/2}" text-anchor="middle" fill="#999" font-size="12">Pattern continues...</text>`);
+                        return svgParts.join('');
+                    }
+                    
                     if (isHorizontal) {
                         // Two horizontal tiles
-                        svg += `<rect x="${baseX}" y="${baseY}" width="${tileLength}" height="${tileWidth}" 
-                                fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`;
-                        svg += `<rect x="${baseX}" y="${baseY + tileWidth + groutWidth}" width="${tileLength}" height="${tileWidth}" 
-                                fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                        svgParts.push(`<rect x="${baseX}" y="${baseY}" width="${tileLength}" height="${tileWidth}" fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                        svgParts.push(`<rect x="${baseX}" y="${baseY + tileWidth + groutWidth}" width="${tileLength}" height="${tileWidth}" fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                        tileCount += 2;
                     } else {
                         // Two vertical tiles
-                        svg += `<rect x="${baseX}" y="${baseY}" width="${tileWidth}" height="${tileLength}" 
-                                fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`;
-                        svg += `<rect x="${baseX + tileWidth + groutWidth}" y="${baseY}" width="${tileWidth}" height="${tileLength}" 
-                                fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                        svgParts.push(`<rect x="${baseX}" y="${baseY}" width="${tileWidth}" height="${tileLength}" fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                        svgParts.push(`<rect x="${baseX + tileWidth + groutWidth}" y="${baseY}" width="${tileWidth}" height="${tileLength}" fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                        tileCount += 2;
                     }
                 }
             }
-            return svg;
+            return svgParts.join('');
         }
 
         function generateVersaillesSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
-            let svg = '';
+            const svgParts = [];
             
             // Versailles pattern uses multiple tile sizes - simplified 4-tile repeat pattern
             const largeSize = Math.max(tileLength, tileWidth);
@@ -19947,36 +20247,39 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             const mediumColor = tiles[1] ? tiles[1].color : '#D2B48C';
             const smallColor = tiles[2] ? tiles[2].color : '#F4A460';
             
+            // Detect mobile device and limit complexity
+            const isMobile = isMobileDevice();
+            const maxTiles = isMobile ? 40 : 200; // Versailles uses 4 tiles per unit
+            let tileCount = 0;
+            
             for (let row = 0; row * patternHeight < canvasHeight + patternHeight; row++) {
                 for (let col = 0; col * patternWidth < canvasWidth + patternWidth; col++) {
                     const baseX = col * patternWidth;
                     const baseY = row * patternHeight;
                     
+                    if (tileCount >= maxTiles) {
+                        svgParts.push(`<text x="${canvasWidth/2}" y="${canvasHeight/2}" text-anchor="middle" fill="#999" font-size="12">Pattern continues...</text>`);
+                        return svgParts.join('');
+                    }
+                    
                     // Large center square
-                    svg += `<rect x="${baseX + groutWidth}" y="${baseY + groutWidth}" 
-                            width="${largeSize}" height="${largeSize}" 
-                            fill="${largeColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    svgParts.push(`<rect x="${baseX + groutWidth}" y="${baseY + groutWidth}" width="${largeSize}" height="${largeSize}" fill="${largeColor}" stroke="#C0C0C0" stroke-width="0.5" />`);
                     
                     // Medium rectangles around large square
-                    svg += `<rect x="${baseX + largeSize + groutWidth * 2}" y="${baseY + groutWidth}" 
-                            width="${mediumSize}" height="${mediumSize * 0.6}" 
-                            fill="${mediumColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
-                    
-                    svg += `<rect x="${baseX + groutWidth}" y="${baseY + largeSize + groutWidth * 2}" 
-                            width="${mediumSize * 0.6}" height="${mediumSize}" 
-                            fill="${mediumColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    svgParts.push(`<rect x="${baseX + largeSize + groutWidth * 2}" y="${baseY + groutWidth}" width="${mediumSize}" height="${mediumSize * 0.6}" fill="${mediumColor}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                    svgParts.push(`<rect x="${baseX + groutWidth}" y="${baseY + largeSize + groutWidth * 2}" width="${mediumSize * 0.6}" height="${mediumSize}" fill="${mediumColor}" stroke="#C0C0C0" stroke-width="0.5" />`);
                     
                     // Small accent squares
-                    svg += `<rect x="${baseX + largeSize + groutWidth * 2}" y="${baseY + mediumSize * 0.6 + groutWidth * 2}" 
-                            width="${smallSize}" height="${smallSize}" 
-                            fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    svgParts.push(`<rect x="${baseX + largeSize + groutWidth * 2}" y="${baseY + mediumSize * 0.6 + groutWidth * 2}" width="${smallSize}" height="${smallSize}" fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                    
+                    tileCount += 4;
                 }
             }
-            return svg;
+            return svgParts.join('');
         }
 
         function generateHexagonSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
-            let svg = '';
+            const svgParts = [];
             
             // Hexagon dimensions - use the smaller dimension as the radius
             const radius = Math.min(tileLength, tileWidth) / 2;
@@ -19999,6 +20302,11 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 return `M ${points.join(' L ')} Z`;
             }
             
+            // Detect mobile device and limit complexity
+            const isMobile = isMobileDevice();
+            const maxTiles = isMobile ? 80 : 400;
+            let tileCount = 0;
+            
             // Draw hexagon grid
             for (let row = 0; row * verticalSpacing < canvasHeight + verticalSpacing; row++) {
                 for (let col = 0; col * horizontalSpacing < canvasWidth + horizontalSpacing; col++) {
@@ -20008,12 +20316,17 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     
                     // Only draw if hexagon is visible in canvas
                     if (centerX - radius < canvasWidth && centerY - hexHeight / 2 < canvasHeight) {
+                        if (tileCount >= maxTiles) {
+                            svgParts.push(`<text x="${canvasWidth/2}" y="${canvasHeight/2}" text-anchor="middle" fill="#999" font-size="12">Pattern continues...</text>`);
+                            return svgParts.join('');
+                        }
                         const hexPath = createHexagonPath(centerX, centerY, radius * 0.9); // Slightly smaller for grout lines
-                        svg += `<path d="${hexPath}" fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                        svgParts.push(`<path d="${hexPath}" fill="${color}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                        tileCount++;
                     }
                 }
             }
-            return svg;
+            return svgParts.join('');
         }
 
         function generatePatternAnnotations(pattern, tileLength, tileWidth) {
@@ -20027,72 +20340,81 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         
         // === NEW PATTERN SVG FUNCTIONS ===
         function generateWindmillSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
-            let svg = '';
+            const svgParts = [];
             const rectColor = tiles[0] ? tiles[0].color : '#8B4513';
             const squareColor = tiles[1] ? tiles[1].color : '#D2B48C';
             
             const patternWidth = tileLength * 2 + groutWidth * 3;
             const patternHeight = tileWidth * 2 + groutWidth * 3;
             
+            // Detect mobile device and limit complexity
+            const isMobile = isMobileDevice();
+            const maxTiles = isMobile ? 25 : 125; // Windmill uses 5 tiles per unit
+            let tileCount = 0;
+            
             for (let row = 0; row * patternHeight < canvasHeight + patternHeight; row++) {
                 for (let col = 0; col * patternWidth < canvasWidth + patternWidth; col++) {
                     const baseX = col * patternWidth;
                     const baseY = row * patternHeight;
                     
+                    if (tileCount >= maxTiles) {
+                        svgParts.push(`<text x="${canvasWidth/2}" y="${canvasHeight/2}" text-anchor="middle" fill="#999" font-size="12">Pattern continues...</text>`);
+                        return svgParts.join('');
+                    }
+                    
                     // Center square
-                    svg += `<rect x="${baseX + tileLength/2}" y="${baseY + tileWidth/2}" 
-                            width="${tileLength}" height="${tileWidth}" 
-                            fill="${squareColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    svgParts.push(`<rect x="${baseX + tileLength/2}" y="${baseY + tileWidth/2}" width="${tileLength}" height="${tileWidth}" fill="${squareColor}" stroke="#C0C0C0" stroke-width="0.5" />`);
                     
                     // Four surrounding rectangles
-                    svg += `<rect x="${baseX}" y="${baseY + tileWidth/2}" 
-                            width="${tileLength/2}" height="${tileWidth}" 
-                            fill="${rectColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
-                    svg += `<rect x="${baseX + tileLength*1.5}" y="${baseY + tileWidth/2}" 
-                            width="${tileLength/2}" height="${tileWidth}" 
-                            fill="${rectColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
-                    svg += `<rect x="${baseX + tileLength/2}" y="${baseY}" 
-                            width="${tileLength}" height="${tileWidth/2}" 
-                            fill="${rectColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
-                    svg += `<rect x="${baseX + tileLength/2}" y="${baseY + tileWidth*1.5}" 
-                            width="${tileLength}" height="${tileWidth/2}" 
-                            fill="${rectColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                    svgParts.push(`<rect x="${baseX}" y="${baseY + tileWidth/2}" width="${tileLength/2}" height="${tileWidth}" fill="${rectColor}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                    svgParts.push(`<rect x="${baseX + tileLength*1.5}" y="${baseY + tileWidth/2}" width="${tileLength/2}" height="${tileWidth}" fill="${rectColor}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                    svgParts.push(`<rect x="${baseX + tileLength/2}" y="${baseY}" width="${tileLength}" height="${tileWidth/2}" fill="${rectColor}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                    svgParts.push(`<rect x="${baseX + tileLength/2}" y="${baseY + tileWidth*1.5}" width="${tileLength}" height="${tileWidth/2}" fill="${rectColor}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                    
+                    tileCount += 5;
                 }
             }
-            return svg;
+            return svgParts.join('');
         }
         
         function generateHopscotchSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, tiles) {
-            let svg = '';
+            const svgParts = [];
             const largeColor = tiles[0] ? tiles[0].color : '#8B4513';
             const smallColor = tiles[1] ? tiles[1].color : '#D2B48C';
             
             const largeSize = Math.max(tileLength, tileWidth);
             const smallSize = largeSize * 0.5;
             
+            // Detect mobile device and limit complexity
+            const isMobile = isMobileDevice();
+            const maxTiles = isMobile ? 60 : 300;
+            let tileCount = 0;
+            
             for (let row = 0; row * (largeSize + groutWidth) < canvasHeight + largeSize; row++) {
                 for (let col = 0; col * (largeSize + groutWidth) < canvasWidth + largeSize; col++) {
                     const x = col * (largeSize + groutWidth);
                     const y = row * (largeSize + groutWidth);
                     
+                    if (tileCount >= maxTiles) {
+                        svgParts.push(`<text x="${canvasWidth/2}" y="${canvasHeight/2}" text-anchor="middle" fill="#999" font-size="12">Pattern continues...</text>`);
+                        return svgParts.join('');
+                    }
+                    
                     if ((row + col) % 2 === 0) {
                         // Large square
-                        svg += `<rect x="${x}" y="${y}" width="${largeSize}" height="${largeSize}" 
-                                fill="${largeColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                        svgParts.push(`<rect x="${x}" y="${y}" width="${largeSize}" height="${largeSize}" fill="${largeColor}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                        tileCount++;
                     } else {
                         // Four small squares
-                        svg += `<rect x="${x}" y="${y}" width="${smallSize}" height="${smallSize}" 
-                                fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
-                        svg += `<rect x="${x + smallSize}" y="${y}" width="${smallSize}" height="${smallSize}" 
-                                fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
-                        svg += `<rect x="${x}" y="${y + smallSize}" width="${smallSize}" height="${smallSize}" 
-                                fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
-                        svg += `<rect x="${x + smallSize}" y="${y + smallSize}" width="${smallSize}" height="${smallSize}" 
-                                fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`;
+                        svgParts.push(`<rect x="${x}" y="${y}" width="${smallSize}" height="${smallSize}" fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                        svgParts.push(`<rect x="${x + smallSize}" y="${y}" width="${smallSize}" height="${smallSize}" fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                        svgParts.push(`<rect x="${x}" y="${y + smallSize}" width="${smallSize}" height="${smallSize}" fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                        svgParts.push(`<rect x="${x + smallSize}" y="${y + smallSize}" width="${smallSize}" height="${smallSize}" fill="${smallColor}" stroke="#C0C0C0" stroke-width="0.5" />`);
+                        tileCount += 4;
                     }
                 }
             }
-            return svg;
+            return svgParts.join('');
         }
         
         function generateOffsetGridSVG(tileLength, tileWidth, groutWidth, canvasWidth, canvasHeight, color) {
@@ -22789,6 +23111,9 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             // Load saved theme
             loadSavedTheme();
             
+            // Initialize touch events for mobile
+            initializeTouchEvents();
+            
             // Initialize screw calculator
             initScrewCalculator();
             
@@ -22982,6 +23307,31 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             
             // Ensure category headers are properly hidden on load
             ensureCategoryVisibility();
+            
+            
+            // Debug function for category header visibility
+            window.debugCategoryHeaders = function() {
+                const headers = document.querySelectorAll('.calc-category-header');
+                console.log('Total category headers found:', headers.length);
+                headers.forEach((header, index) => {
+                    const parent = header.parentElement;
+                    const text = header.textContent.trim();
+                    console.log(`Header ${index}: "${text}"`);
+                    console.log(`  Parent ID: ${parent.id}`);
+                    console.log(`  Display style: ${header.style.display}`);
+                    console.log(`  Computed display: ${getComputedStyle(header).display}`);
+                    console.log(`  Visible: ${header.offsetParent !== null}`);
+                    console.log(`  Position in DOM:`, header);
+                });
+                
+                const specialtyTab = document.getElementById('specialty');
+                const calculatorTab = document.getElementById('calculator');
+                console.log('Specialty tab active:', specialtyTab?.classList.contains('active'));
+                console.log('Calculator tab active:', calculatorTab?.classList.contains('active'));
+            };
+            
+            // Run debug on load
+            debugCategoryHeaders();
             
             // Debug function for Wood Species visibility
             window.debugWoodSpecies = function() {

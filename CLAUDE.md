@@ -405,3 +405,54 @@ DIV balance problems are the #1 cause of visual bugs in this single-file applica
   3. Revert to last known good commit
   4. Document what was being attempted
   5. Retry with smaller, incremental changes
+
+## HTML Structure Validation
+
+### Before Making Structural Changes
+- **Validate div balance**: Count opening and closing tags in the section you're modifying
+- **Use agents or grep**: Systematically verify structure rather than assuming it's correct
+- **Check parent-child relationships**: Ensure elements are inside their intended containers
+
+### Common Structural Issues
+- **Extra closing tags**: Can orphan entire sections outside their containers
+- **Missing closing tags**: Can cause elements to bleed into wrong sections
+- **Symptoms of structural problems**:
+  - Elements appearing in wrong tabs
+  - Content visible when it should be hidden
+  - CSS selectors not working as expected
+
+### Debugging Structural Issues
+When elements appear where they shouldn't:
+1. **Check structure first** - Don't assume it's a CSS/JS visibility issue
+2. **Add debug functions** that show parent-child relationships:
+   ```javascript
+   console.log('Parent ID:', element.parentElement?.id);
+   ```
+3. **Verify div balance** in the affected sections
+4. **Use browser DevTools** to inspect actual DOM structure
+
+### Best Practices for Structural Integrity
+- **Before commits**: Verify div balance in modified sections using:
+  ```bash
+  # Count divs in a section
+  grep -c '<div' index.html
+  grep -c '</div>' index.html
+  ```
+- **After moving content**: Check parent IDs of affected elements
+- **Use agents** for systematic structural analysis when issues are complex
+- **Never trust** that existing structure is correct - always verify
+
+### Tab System Structure
+Each tab must maintain proper containment:
+```html
+<div id="tabname" class="tab-content">
+  <!-- All tab content must be inside this container -->
+  <!-- Check that closing </div> doesn't close multiple levels -->
+</div>
+```
+
+### Warning Signs of Structural Problems
+- Category headers appearing in wrong tabs
+- Content bleeding between tabs
+- Elements with empty or unexpected parent IDs
+- Visual issues that persist despite CSS/JS fixes
