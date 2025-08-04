@@ -4745,6 +4745,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                     <div style="text-align: center;">
                                         <h6 style="margin: 0 0 5px 0; color: var(--text-secondary); font-size: 12px;">Front View</h6>
                                         <svg id="drawerBoxFrontView" width="250" height="250" viewBox="0 0 250 250" style="border: 1px solid #ddd; border-radius: 4px; background: white; width: 100%;">
+                                            <text x="125" y="125" text-anchor="middle" font-size="12" fill="#999">Enter cabinet depth to see diagram</text>
                                             <defs>
                                                 <pattern id="plywoodPattern" patternUnits="userSpaceOnUse" width="40" height="40">
                                                     <rect width="40" height="40" fill="#F5DEB3"/>
@@ -4769,7 +4770,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                         <h6 style="margin: 0 0 5px 0; color: var(--text-secondary); font-size: 12px;">Side View</h6>
                                         <svg id="drawerBoxSideView" width="250" height="250" viewBox="0 0 250 250" style="border: 1px solid #ddd; border-radius: 4px; background: white; width: 100%;">
                                             <text x="125" y="125" text-anchor="middle" font-size="12" fill="#999">
-                                                Shows dado joint
+                                                Enter cabinet depth to see diagram
                                             </text>
                                         </svg>
                                     </div>
@@ -4778,7 +4779,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                                         <h6 style="margin: 0 0 5px 0; color: var(--text-secondary); font-size: 12px;">Top View</h6>
                                         <svg id="drawerBoxTopView" width="250" height="250" viewBox="0 0 250 250" style="border: 1px solid #ddd; border-radius: 4px; background: white; width: 100%;">
                                             <text x="125" y="125" text-anchor="middle" font-size="12" fill="#999">
-                                                Shows slide mounting
+                                                Enter cabinet depth to see diagram
                                             </text>
                                         </svg>
                                     </div>
@@ -4791,7 +4792,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             </div>
                             
                             <!-- Face-to-Box Mounting Diagram -->
-                            <div id="faceToBoxMountingDiagram" style="margin-top: 20px; padding: 20px; background: #f9f9f9; border-radius: 8px; border: 1px solid #e0e0e0; display: none;">
+                            <div id="faceToBoxMountingDiagram" style="margin-top: 20px; padding: 20px; background: #f9f9f9; border-radius: 8px; border: 1px solid #e0e0e0; display: none; overflow: auto;">
                                 <h5 style="margin: 0 0 15px 0; text-align: center; color: var(--text-secondary); font-size: 14px;">Face-to-Box Mounting Alignment</h5>
                                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto;">
                                     <!-- Front Mounting View -->
@@ -15399,6 +15400,12 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         // Drawer box smart input callbacks
         function updateCabinetDepthValue(inches, display) {
             currentCabinetDepthInches = inches;
+            
+            // Update diagram visibility if drawer box is enabled
+            if (includeDrawerBox) {
+                document.getElementById('drawerBoxDiagramContainer').style.display = inches > 0 ? 'block' : 'none';
+            }
+            
             calculateCabinetLayout();
         }
         
@@ -15455,8 +15462,22 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         // Toggle drawer box calculations
         function toggleDrawerBox() {
             includeDrawerBox = document.getElementById('includeDrawerBox').checked;
+            console.log('DEBUG: toggleDrawerBox called - includeDrawerBox:', includeDrawerBox);
+            
+            const settingsEl = document.getElementById('drawerBoxSettings');
+            const diagramEl = document.getElementById('drawerBoxDiagramContainer');
+            console.log('DEBUG: Found settings element:', !!settingsEl, 'diagram element:', !!diagramEl);
+            
             document.getElementById('drawerBoxSettings').style.display = includeDrawerBox ? 'block' : 'none';
-            document.getElementById('drawerBoxDiagramContainer').style.display = includeDrawerBox ? 'block' : 'none';
+            
+            // Only show diagram container if we have valid cabinet depth
+            if (includeDrawerBox && currentCabinetDepthInches > 0) {
+                document.getElementById('drawerBoxDiagramContainer').style.display = 'block';
+            } else {
+                document.getElementById('drawerBoxDiagramContainer').style.display = 'none';
+            }
+            
+            console.log('DEBUG: Set display styles - calling calculateCabinetLayout()');
             calculateCabinetLayout();
         }
         
@@ -16255,9 +16276,15 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             updateCabinetDiagrams(layoutData);
             
             // Update drawer box diagrams if enabled
+            console.log('DEBUG: Diagram update check - includeDrawerBox:', includeDrawerBox, 'currentCabinetDepthInches:', currentCabinetDepthInches);
             if (includeDrawerBox && currentCabinetDepthInches > 0) {
+                console.log('DEBUG: Calculating drawer boxes...');
                 const boxCalculations = calculateDrawerBoxes(drawerData, layoutData);
-                if (boxCalculations) {
+                console.log('DEBUG: Box calculations result:', boxCalculations);
+                if (boxCalculations && boxCalculations.length > 0) {
+                    console.log('DEBUG: Updating drawer box diagrams with', boxCalculations.length, 'drawers');
+                    // Ensure container is visible
+                    document.getElementById('drawerBoxDiagramContainer').style.display = 'block';
                     updateDrawerBoxDiagrams(boxCalculations);
                     updateFaceToBoxMountingDiagram(boxCalculations);
                 } else {
@@ -16708,12 +16735,19 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         
         // Update drawer box construction diagrams
         function updateDrawerBoxDiagrams(boxCalculations) {
+            console.log('DEBUG: updateDrawerBoxDiagrams called with:', boxCalculations);
             const frontView = document.getElementById('drawerBoxFrontView');
             const sideView = document.getElementById('drawerBoxSideView');
             const topView = document.getElementById('drawerBoxTopView');
             const dimensionDisplay = document.getElementById('boxDimensionDisplay');
             
-            if (!frontView || !sideView || !topView || !boxCalculations || boxCalculations.length === 0) return;
+            console.log('DEBUG: SVG elements found - frontView:', !!frontView, 'sideView:', !!sideView, 'topView:', !!topView);
+            console.log('DEBUG: dimensionDisplay found:', !!dimensionDisplay);
+            
+            if (!frontView || !sideView || !topView || !boxCalculations || boxCalculations.length === 0) {
+                console.log('DEBUG: Early return - missing elements or no box calculations');
+                return;
+            }
             
             // Show dimension display
             dimensionDisplay.style.display = 'block';
@@ -16742,6 +16776,10 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     <pattern id="bottomPattern" patternUnits="userSpaceOnUse" width="30" height="30">
                         <rect width="30" height="30" fill="#FAEBD7"/>
                         <circle cx="15" cy="15" r="10" fill="none" stroke="#D2B48C" stroke-width="0.5"/>
+                    </pattern>
+                    <pattern id="endGrain" patternUnits="userSpaceOnUse" width="20" height="20">
+                        <rect width="20" height="20" fill="#CD853F"/>
+                        <circle cx="10" cy="10" r="8" fill="none" stroke="#8B4513" stroke-width="0.5"/>
                     </pattern>
                 </defs>
             `;
@@ -16827,6 +16865,18 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 <defs>
                     <pattern id="sideGrain" patternUnits="userSpaceOnUse" width="1" height="20">
                         <rect width="1" height="20" fill="#DEB887"/>
+                    </pattern>
+                    <pattern id="plywoodPattern" patternUnits="userSpaceOnUse" width="40" height="40">
+                        <rect width="40" height="40" fill="#F5DEB3"/>
+                        <path d="M0,10 L40,10 M0,20 L40,20 M0,30 L40,30" stroke="#DEB887" stroke-width="0.5"/>
+                    </pattern>
+                    <pattern id="bottomPattern" patternUnits="userSpaceOnUse" width="30" height="30">
+                        <rect width="30" height="30" fill="#FAEBD7"/>
+                        <circle cx="15" cy="15" r="10" fill="none" stroke="#D2B48C" stroke-width="0.5"/>
+                    </pattern>
+                    <pattern id="endGrain" patternUnits="userSpaceOnUse" width="20" height="20">
+                        <rect width="20" height="20" fill="#CD853F"/>
+                        <circle cx="10" cy="10" r="8" fill="none" stroke="#8B4513" stroke-width="0.5"/>
                     </pattern>
                 </defs>
             `;
@@ -16931,6 +16981,18 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 <defs>
                     <pattern id="sideGrain" patternUnits="userSpaceOnUse" width="1" height="20">
                         <rect width="1" height="20" fill="#DEB887"/>
+                    </pattern>
+                    <pattern id="plywoodPattern" patternUnits="userSpaceOnUse" width="40" height="40">
+                        <rect width="40" height="40" fill="#F5DEB3"/>
+                        <path d="M0,10 L40,10 M0,20 L40,20 M0,30 L40,30" stroke="#DEB887" stroke-width="0.5"/>
+                    </pattern>
+                    <pattern id="bottomPattern" patternUnits="userSpaceOnUse" width="30" height="30">
+                        <rect width="30" height="30" fill="#FAEBD7"/>
+                        <circle cx="15" cy="15" r="10" fill="none" stroke="#D2B48C" stroke-width="0.5"/>
+                    </pattern>
+                    <pattern id="endGrain" patternUnits="userSpaceOnUse" width="20" height="20">
+                        <rect width="20" height="20" fill="#CD853F"/>
+                        <circle cx="10" cy="10" r="8" fill="none" stroke="#8B4513" stroke-width="0.5"/>
                     </pattern>
                 </defs>
             `;
@@ -17047,6 +17109,8 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                     dimensionText.textContent = 'Hover over components to see details';
                 });
             });
+            
+            console.log('DEBUG: updateDrawerBoxDiagrams completed successfully');
         }
         
         // Update face-to-box mounting diagram
@@ -17065,14 +17129,14 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             
             // SVG dimensions
             const svgSize = 400;
-            const padding = 60;
+            const padding = 80; // Increased padding for dimension lines
             const drawableSize = svgSize - (2 * padding);
             const centerX = svgSize / 2;
             const centerY = svgSize / 2;
             
             // Calculate scale to fit the largest dimension
             const maxDimension = Math.max(drawer.faceWidth, drawer.faceHeight);
-            const scale = drawableSize / maxDimension * 0.85; // 85% to better fill space
+            const scale = drawableSize / maxDimension * 0.75; // Reduced to 75% to ensure dimension lines fit
             
             // Create front view showing face and box alignment
             let frontContent = `
@@ -17102,7 +17166,15 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             const boxX = centerX - boxW / 2;
             // Box is bottom-aligned with face, adjusted by vertical offset
             const verticalOffsetScaled = parseFloat(drawer.verticalOffset.replace(/['"]/g, '')) * scale;
-            const boxY = faceY + faceH - boxH - verticalOffsetScaled;
+            // Position box based on slide type
+            let boxY;
+            if (drawerSlideType === 'bottom') {
+                // Bottom mount: position from top with top clearance
+                boxY = faceY + (currentTopClearance * scale);
+            } else {
+                // Side mount: position from bottom (flush)
+                boxY = faceY + faceH - boxH;
+            }
             
             // Draw the front view
             frontContent += `
@@ -17143,24 +17215,32 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                         ${drawer.horizontalOffset}
                     </text>
                     
-                    <!-- Vertical offset -->
-                    ${verticalOffsetScaled > 0.1 ? `
-                        <!-- Bottom offset (if any) -->
-                        <line x1="${faceX - 30}" y1="${faceY + faceH}" x2="${faceX - 30}" y2="${boxY + boxH}" 
+                    <!-- Vertical gaps based on slide type -->
+                    ${drawerSlideType === 'bottom' ? `
+                        <!-- Top gap (top clearance) -->
+                        <line x1="${faceX - 30}" y1="${faceY}" x2="${faceX - 30}" y2="${boxY}" 
                               marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
-                        <text x="${faceX - 35}" y="${(faceY + faceH + boxY + boxH) / 2}" text-anchor="middle" font-size="10" fill="#666"
-                              transform="rotate(-90, ${faceX - 35}, ${(faceY + faceH + boxY + boxH) / 2})">
-                            ${drawer.verticalOffset}
+                        <text x="${faceX - 35}" y="${(faceY + boxY) / 2}" text-anchor="middle" font-size="10" fill="#666"
+                              transform="rotate(-90, ${faceX - 35}, ${(faceY + boxY) / 2})">
+                            ${inchesToDisplay(currentTopClearance)}
                         </text>
-                    ` : ''}
-                    
-                    <!-- Top gap -->
-                    <line x1="${faceX - 30}" y1="${faceY}" x2="${faceX - 30}" y2="${boxY}" 
-                          marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
-                    <text x="${faceX - 35}" y="${(faceY + boxY) / 2}" text-anchor="middle" font-size="10" fill="#666"
-                          transform="rotate(-90, ${faceX - 35}, ${(faceY + boxY) / 2})">
-                        ${inchesToDisplay((faceY - boxY) / scale)}
-                    </text>
+                        
+                        <!-- Bottom gap (bottom clearance) -->
+                        <line x1="${faceX - 30}" y1="${boxY + boxH}" x2="${faceX - 30}" y2="${faceY + faceH}" 
+                              marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
+                        <text x="${faceX - 35}" y="${(boxY + boxH + faceY + faceH) / 2}" text-anchor="middle" font-size="10" fill="#666"
+                              transform="rotate(-90, ${faceX - 35}, ${(boxY + boxH + faceY + faceH) / 2})">
+                            ${inchesToDisplay(currentBottomClearance)}
+                        </text>
+                    ` : `
+                        <!-- Side mount: box is flush at bottom, gap at top -->
+                        <line x1="${faceX - 30}" y1="${faceY}" x2="${faceX - 30}" y2="${boxY}" 
+                              marker-end="url(#arrowhead)" marker-start="url(#arrowhead)"/>
+                        <text x="${faceX - 35}" y="${(faceY + boxY) / 2}" text-anchor="middle" font-size="10" fill="#666"
+                              transform="rotate(-90, ${faceX - 35}, ${(faceY + boxY) / 2})">
+                            ${inchesToDisplay((boxY - faceY) / scale)}
+                        </text>
+                    `}
                 </g>
                 
                 <!-- Mounting hole indicators -->
@@ -17200,7 +17280,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             
             // Side view dimensions - calculate separate scale for side view
             const sideMaxDimension = Math.max(drawer.totalDepth + currentFaceThickness, drawer.faceHeight);
-            const sideScale = drawableSize / sideMaxDimension * 0.85;
+            const sideScale = drawableSize / sideMaxDimension * 0.75; // Match front view scale
             
             const thickness = Math.max(currentFaceThickness * sideScale, 10); // Min 10px for visibility
             const boxThickness = Math.max(currentBoxMaterialThickness * sideScale, 8);
@@ -17229,7 +17309,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 
                 <!-- Drawer box (side view) -->
                 <g transform="translate(${thickness}, 0)">
-                    <rect x="${sideX}" y="${sideY + (sideH - sideBoxH) / 2}" width="${totalDepth - thickness}" height="${sideBoxH}" 
+                    <rect x="${sideX}" y="${drawerSlideType === 'bottom' ? sideY + (currentTopClearance * scale) : sideY + sideH - sideBoxH}" width="${totalDepth - thickness}" height="${sideBoxH}" 
                           fill="url(#crossSection)" stroke="#0066cc" stroke-width="1.5"/>
                     <text x="${sideX + (totalDepth - thickness) / 2}" y="${sideY + sideH + 15}" 
                           text-anchor="middle" font-size="10" fill="#0066cc">
@@ -17239,12 +17319,12 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 
                 <!-- Mounting screws -->
                 <g stroke="#ff0000" stroke-width="2" fill="none">
-                    <line x1="${sideX + thickness - 2}" y1="${sideY + 30}" x2="${sideX + thickness + 20}" y2="${sideY + 30}"/>
-                    <circle cx="${sideX + thickness - 2}" cy="${sideY + 30}" r="2" fill="#ff0000"/>
-                    <text x="${sideX + thickness + 25}" y="${sideY + 33}" font-size="9" fill="#ff0000">1¼" screw</text>
+                    <line x1="${sideX + thickness - 2}" y1="${drawerSlideType === 'bottom' ? sideY + (currentTopClearance * scale) + 30 : sideY + sideH - sideBoxH + 30}" x2="${sideX + thickness + 20}" y2="${drawerSlideType === 'bottom' ? sideY + (currentTopClearance * scale) + 30 : sideY + sideH - sideBoxH + 30}"/>
+                    <circle cx="${sideX + thickness - 2}" cy="${drawerSlideType === 'bottom' ? sideY + (currentTopClearance * scale) + 30 : sideY + sideH - sideBoxH + 30}" r="2" fill="#ff0000"/>
+                    <text x="${sideX + thickness + 25}" y="${drawerSlideType === 'bottom' ? sideY + (currentTopClearance * scale) + 33 : sideY + sideH - sideBoxH + 33}" font-size="9" fill="#ff0000">1¼" screw</text>
                     
-                    <line x1="${sideX + thickness - 2}" y1="${sideY + sideH - 30}" x2="${sideX + thickness + 20}" y2="${sideY + sideH - 30}"/>
-                    <circle cx="${sideX + thickness - 2}" cy="${sideY + sideH - 30}" r="2" fill="#ff0000"/>
+                    <line x1="${sideX + thickness - 2}" y1="${drawerSlideType === 'bottom' ? sideY + (currentTopClearance * scale) + sideBoxH - 30 : sideY + sideH - 30}" x2="${sideX + thickness + 20}" y2="${drawerSlideType === 'bottom' ? sideY + (currentTopClearance * scale) + sideBoxH - 30 : sideY + sideH - 30}"/>
+                    <circle cx="${sideX + thickness - 2}" cy="${drawerSlideType === 'bottom' ? sideY + (currentTopClearance * scale) + sideBoxH - 30 : sideY + sideH - 30}" r="2" fill="#ff0000"/>
                 </g>
                 
                 <!-- Dimensions -->
