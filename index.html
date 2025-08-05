@@ -1625,14 +1625,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             transition: var(--theme-transition);
         }
         
-        /* Force cabinet drawer to be hidden initially */
-        #cabinetDrawerContent {
-            display: none !important;
-        }
-        
-        
         .calc-card.expanded .calc-card-content {
             display: block;
+        }
+        
+        /* Initial state for cabinet drawer - hide by default */
+        #cabinetDrawerContent {
+            display: none;
         }
         
         
@@ -12447,13 +12446,22 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         // New Calculator Card Functions
         function toggleCalcCard(cardType) {
+            const card = document.getElementById(cardType + 'Card');
             const content = document.getElementById(cardType + 'Content');
             const arrow = document.querySelector(`#${cardType}Card .calc-arrow`);
             
             if (content.style.display === 'none' || content.style.display === '' || window.getComputedStyle(content).display === 'none') {
-                content.style.setProperty('display', 'block', 'important');
+                // Mark as user-expanded first
                 content.dataset.userExpanded = 'true';
+                
+                // Show the content
+                content.style.display = 'block';
+                
+                if (card) {
+                    card.classList.add('expanded');
+                }
                 arrow.textContent = '▲';
+                
                 // Save state
                 if (uiConfig.preferences.rememberCollapsedState) {
                     localStorage.setItem(`calc-${cardType}-collapsed`, 'false');
@@ -12462,13 +12470,21 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 trackCalculatorUsage(cardType);
                 
                 // Trigger recalculation for cabinet drawer calculator to show diagrams
-                if (cardType === 'cabinetDrawer') {
+                if (cardType === 'cabinetDrawer' && cabinetCalcInitialized) {
                     calculateCabinetLayout();
                 }
             } else {
-                content.style.setProperty('display', 'none', 'important');
+                // Remove user-expanded flag
                 delete content.dataset.userExpanded;
+                
+                // Hide the content
+                content.style.display = 'none';
+                
+                if (card) {
+                    card.classList.remove('expanded');
+                }
                 arrow.textContent = '▼';
+                
                 // Save state
                 if (uiConfig.preferences.rememberCollapsedState) {
                     localStorage.setItem(`calc-${cardType}-collapsed`, 'true');
@@ -12703,6 +12719,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         
         function toggleCategory(categoryId) {
+            const timestamp = Date.now();
+            const cabinetContent = document.getElementById('cabinetDrawerContent');
+            
             const content = document.getElementById(categoryId + '-content');
             const arrow = document.getElementById(categoryId + '-arrow');
             
@@ -12712,16 +12731,50 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 
                 // Ensure all calculators in this category remain collapsed
                 if (categoryId === 'measurements') {
+                    const timestamp = Date.now();
+                    const cabinetContent = document.getElementById('cabinetDrawerContent');
+                    
+                    // Immediately ensure cabinet drawer is collapsed
+                    const cabinetCard = document.getElementById('cabinetDrawerCard');
+                    if (cabinetCard) {
+                        // Force remove ALL classes and re-add only calc-card
+                        cabinetCard.removeAttribute('class');
+                        cabinetCard.setAttribute('class', 'calc-card');
+                    }
+                    
+                    if (cabinetContent) {
+                        // Simply hide it unless user has explicitly expanded it
+                        if (!cabinetContent.dataset.userExpanded) {
+                            cabinetContent.style.display = 'none';
+                        }
+                        
+                        const cabinetArrow = document.querySelector('#cabinetDrawerCard .calc-arrow');
+                        if (cabinetArrow && !cabinetContent.dataset.userExpanded) {
+                            cabinetArrow.textContent = '▼';
+                        }
+                    }
+                    
                     setTimeout(() => {
-                        const calcIds = ['goldenRatio', 'spacing']; // Removed cabinetDrawer - it has special handling
+                        const laterTimestamp = Date.now();
+                        
+                        const calcIds = ['goldenRatio', 'spacing', 'cabinetDrawer']; // Re-added cabinetDrawer with explicit handling
                         calcIds.forEach(calcId => {
+                            const calcCard = document.getElementById(calcId + 'Card');
                             const calcContent = document.getElementById(calcId + 'Content');
                             const calcArrow = document.querySelector(`#${calcId}Card .calc-arrow`);
                             if (calcContent && calcArrow && !calcContent.dataset.userExpanded) {
-                                calcContent.style.setProperty('display', 'none', 'important');
+                                if (calcCard) {
+                                    calcCard.classList.remove('expanded');
+                                }
+                                calcContent.style.display = 'none';
                                 calcArrow.textContent = '▼';
                             }
                         });
+                        
+                        // Double-check cabinet drawer is still collapsed
+                        if (cabinetContent && !cabinetContent.dataset.userExpanded) {
+                            cabinetContent.style.display = 'none';
+                        }
                     }, 10);
                 }
             } else {
@@ -15406,37 +15459,52 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         
         // Smart input callback functions
         function updateCabinetHeightValue(inches, display) {
+            
             currentCabinetHeightInches = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateCabinetWidthValue(inches, display) {
+            
             currentCabinetWidthInches = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateHorizontalRevealValue(inches, display) {
             currentHorizontalRevealInches = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateVerticalRevealValue(inches, display) {
             currentVerticalRevealInches = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateOverlayAmountValue(inches, display) {
             currentOverlayAmountInches = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateRailThicknessValue(inches, display) {
             currentRailThicknessInches = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         // Drawer box smart input callbacks
         function updateCabinetDepthValue(inches, display) {
+            
             currentCabinetDepthInches = inches;
             
             // Update diagram visibility if drawer box is enabled
@@ -15444,67 +15512,90 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 document.getElementById('drawerBoxDiagramContainer').style.display = inches > 0 ? 'block' : 'none';
             }
             
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateSideClearanceValue(inches, display) {
             currentSideClearance = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateRearClearanceValue(inches, display) {
             currentRearClearance = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateTopClearanceValue(inches, display) {
             currentTopClearance = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateBoxMaterialValue(inches, display) {
             currentBoxMaterialThickness = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateBottomPanelValue(inches, display) {
             currentBottomThickness = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateDadoDepthValue(inches, display) {
             currentBottomDadoDepth = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateDadoHeightValue(inches, display) {
             currentBottomDadoHeight = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateFaceThicknessValue(inches, display) {
             currentFaceThickness = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateCabinetMaterialThicknessValue(inches, display) {
+            const timestamp = Date.now();
+            const cabinetContent = document.getElementById('cabinetDrawerContent');
+            
             currentCabinetMaterialThickness = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateBottomClearanceValue(inches, display) {
             currentBottomClearance = inches;
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         // Toggle drawer box calculations
         function toggleDrawerBox() {
             includeDrawerBox = document.getElementById('includeDrawerBox').checked;
-            console.log('DEBUG: toggleDrawerBox called - includeDrawerBox:', includeDrawerBox);
             
             const settingsEl = document.getElementById('drawerBoxSettings');
             const diagramEl = document.getElementById('drawerBoxDiagramContainer');
-            console.log('DEBUG: Found settings element:', !!settingsEl, 'diagram element:', !!diagramEl);
             
             document.getElementById('drawerBoxSettings').style.display = includeDrawerBox ? 'block' : 'none';
             
@@ -15515,8 +15606,10 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 document.getElementById('drawerBoxDiagramContainer').style.display = 'none';
             }
             
-            console.log('DEBUG: Set display styles - calling calculateCabinetLayout()');
-            calculateCabinetLayout();
+            // Only calculate if initialization is complete
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         // Set slide type
@@ -15550,7 +15643,9 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 }
             }
             
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         // Show drawer box help
@@ -15595,7 +15690,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             
             // Only calculate if the calculator is visible
             const cabinetContent = document.getElementById('cabinetDrawerContent');
-            if (cabinetContent && window.getComputedStyle(cabinetContent).display !== 'none') {
+            if (cabinetCalcInitialized && cabinetContent && window.getComputedStyle(cabinetContent).display !== 'none') {
                 calculateCabinetLayout();
             }
         }
@@ -15620,7 +15715,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             
             // Only calculate if the calculator is visible
             const cabinetContent = document.getElementById('cabinetDrawerContent');
-            if (cabinetContent && window.getComputedStyle(cabinetContent).display !== 'none') {
+            if (cabinetCalcInitialized && cabinetContent && window.getComputedStyle(cabinetContent).display !== 'none') {
                 calculateCabinetLayout();
             }
         }
@@ -15636,7 +15731,9 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             } else {
                 customRow.style.display = 'none';
                 currentRailThicknessInches = parseFloat(select.value) || 0;
-                calculateCabinetLayout();
+                if (cabinetCalcInitialized) {
+                    calculateCabinetLayout();
+                }
             }
         }
         
@@ -15645,13 +15742,17 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             const defaultHeight = 6; // Default 6" drawer
             customDrawerHeights.push(defaultHeight);
             updateCustomDrawerList();
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function removeCustomDrawer(index) {
             customDrawerHeights.splice(index, 1);
             updateCustomDrawerList();
-            calculateCabinetLayout();
+            if (cabinetCalcInitialized) {
+                calculateCabinetLayout();
+            }
         }
         
         function updateCustomDrawerHeight(index, value) {
@@ -15659,7 +15760,9 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             const result = parseSmartInput(value);
             if (result.isValid && result.value > 0) {
                 customDrawerHeights[index] = result.value;
-                calculateCabinetLayout();
+                if (cabinetCalcInitialized) {
+                    calculateCabinetLayout();
+                }
             }
         }
         
@@ -15714,13 +15817,16 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         
         // Main calculation function
         function calculateCabinetLayout() {
-            // Prevent calculations during initialization
-            if (!cabinetCalcInitialized) return;
             
-            // Debug: Don't show content if calculator is collapsed
             const cabinetContent = document.getElementById('cabinetDrawerContent');
-            if (cabinetContent && window.getComputedStyle(cabinetContent).display === 'none') {
-                console.log('Cabinet calculator is collapsed, skipping calculation');
+            
+            // Prevent calculations during initialization
+            if (!cabinetCalcInitialized) {
+                return;
+            }
+            
+            // Only skip if calculator is collapsed AND user hasn't explicitly expanded it
+            if (cabinetContent && window.getComputedStyle(cabinetContent).display === 'none' && !cabinetContent.dataset.userExpanded) {
                 return;
             }
             
@@ -21569,6 +21675,25 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
         // Initialize Application on DOM Ready
         // =====================================================
         document.addEventListener('DOMContentLoaded', function() {
+            const timestamp = Date.now();
+            
+            // IMMEDIATE cabinet drawer enforcement - before anything else
+            const cabinetCard = document.getElementById('cabinetDrawerCard');
+            const cabinetContent = document.getElementById('cabinetDrawerContent');
+            
+            if (cabinetCard) {
+                cabinetCard.classList.remove('expanded');
+                cabinetCard.removeAttribute('class');
+                cabinetCard.setAttribute('class', 'calc-card');
+            }
+            
+            if (cabinetContent) {
+                // Hide it initially
+                cabinetContent.style.display = 'none';
+                delete cabinetContent.dataset.userExpanded;
+            }
+            
+            
             // Load saved theme
             loadSavedTheme();
             
@@ -21589,6 +21714,25 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             
             // Allow cabinet calculator to run after initialization
             setTimeout(() => {
+                const timestamp = Date.now();
+                const cabinetContent = document.getElementById('cabinetDrawerContent');
+                
+                // Ensure cabinet drawer starts collapsed with maximum enforcement
+                const cabinetCard = document.getElementById('cabinetDrawerCard');
+                if (cabinetCard) {
+                    cabinetCard.classList.remove('expanded');
+                }
+                
+                if (cabinetContent) {
+                    cabinetContent.style.display = 'none';
+                    delete cabinetContent.dataset.userExpanded;
+                    
+                    const cabinetArrow = document.querySelector('#cabinetDrawerCard .calc-arrow');
+                    if (cabinetArrow) {
+                        cabinetArrow.textContent = '▼';
+                    }
+                }
+                
                 cabinetCalcInitialized = true;
             }, 300);
             
@@ -21614,6 +21758,9 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             
             // Initialize calculator registry
             calculatorRegistry.initialize();
+            
+            const finalTimestamp = Date.now();
+            const finalCabinetContent = document.getElementById('cabinetDrawerContent');
             
             console.log('Application initialized successfully');
         });
