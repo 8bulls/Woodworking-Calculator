@@ -1625,9 +1625,16 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             transition: var(--theme-transition);
         }
         
+        /* Force cabinet drawer to be hidden initially */
+        #cabinetDrawerContent {
+            display: none !important;
+        }
+        
+        
         .calc-card.expanded .calc-card-content {
             display: block;
         }
+        
         
         /* Category header styles */
         .calc-category-header {
@@ -4281,7 +4288,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('lumberCart')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
-                <div class="calc-card-content" id="boardFootContent">
+                <div class="calc-card-content" id="boardFootContent" style="display: none !important;">
                     <div class="calc-description">Calculate lumber costs by species and build a shopping cart</div>
                     <div class="calc-visual" id="boardDiagramContainer">
                         <svg width="100%" height="200" viewBox="0 0 400 200" style="max-width: 400px; margin: 0 auto; display: block;">
@@ -4445,7 +4452,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('goldenRatio')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
-                <div class="calc-card-content" id="goldenRatioContent">
+                <div class="calc-card-content" id="goldenRatioContent" style="display: none !important;">
                     <div class="calc-description">Find proportional dimensions using the golden ratio (1.618)</div>
                     
                     <!-- Visual Preview Panel -->
@@ -4567,7 +4574,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('spacing')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
-                <div class="calc-card-content" id="spacingContent">
+                <div class="calc-card-content" id="spacingContent" style="display: none !important;">
                     <div class="calc-description">Calculate shelf spacing and divisions for woodworking projects</div>
                     
                     <!-- Settings Panel -->
@@ -4689,7 +4696,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('cabinetDrawer')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
-                <div class="calc-card-content" id="cabinetDrawerContent">
+                <div class="calc-card-content" id="cabinetDrawerContent" style="display: none !important;">
                     <div class="calc-description">Design drawer fronts and face frame rails for inset and overlay cabinetry</div>
                     
                     <!-- Visual Preview Panel -->
@@ -5077,7 +5084,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('angle')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
-                <div class="calc-card-content" id="angleContent" style="padding-bottom: 10px;">
+                <div class="calc-card-content" id="angleContent" style="display: none !important; padding-bottom: 10px;">
                     <div class="calc-description">Calculate miter angles for frames and single board cuts</div>
                     
                     <!-- Visual Preview Panel -->
@@ -5352,7 +5359,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('screw')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
-                <div class="calc-card-content" id="screwContent">
+                <div class="calc-card-content" id="screwContent" style="display: none !important;">
                     <div class="calc-description">Find the correct pilot hole, clearance hole, and countersink sizes for any screw</div>
                     
                     <!-- Screw Identification Panel -->
@@ -5632,7 +5639,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('grade')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
-                <div class="calc-card-content" id="gradeContent">
+                <div class="calc-card-content" id="gradeContent" style="display: none !important;">
                     <div class="calc-description">Calculate slopes for ramps, drainage, and construction projects</div>
                     
                     <!-- Visual Preview Panel -->
@@ -5824,7 +5831,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('tile')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
-                <div class="calc-card-content" id="tileContent">
+                <div class="calc-card-content" id="tileContent" style="display: none !important;">
                     <div class="calc-description">Calculate tile quantities, costs, and visualize patterns for flooring projects</div>
                     
                     <!-- Tile Dimensions Panel -->
@@ -6090,7 +6097,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <button class="calc-help-btn" onclick="event.stopPropagation(); showCalculatorHelp('cutCalc')" title="Help">?</button>
                     <span class="calc-arrow">▼</span>
                 </div>
-                <div class="calc-card-content" id="cutCalcContent">
+                <div class="calc-card-content" id="cutCalcContent" style="display: none !important;">
                     <div class="calc-description">Calculate equal divisions with kerf compensation or optimize cuts from available boards</div>
                     
                     <!-- Mode Toggle -->
@@ -7001,6 +7008,12 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         
         // Set the real implementation
         window.updateUIModeReal = updateUIMode;
+        
+        // Restore calculator collapsed states from localStorage
+        function restoreCalculatorStates() {
+            // Removed - all calculators should start collapsed
+            // Users can expand them as needed
+        }
         
         // Apply UI mode settings
         function applyUIMode() {
@@ -12437,8 +12450,9 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             const content = document.getElementById(cardType + 'Content');
             const arrow = document.querySelector(`#${cardType}Card .calc-arrow`);
             
-            if (content.style.display === 'none' || content.style.display === '') {
-                content.style.display = 'block';
+            if (content.style.display === 'none' || content.style.display === '' || window.getComputedStyle(content).display === 'none') {
+                content.style.setProperty('display', 'block', 'important');
+                content.dataset.userExpanded = 'true';
                 arrow.textContent = '▲';
                 // Save state
                 if (uiConfig.preferences.rememberCollapsedState) {
@@ -12446,8 +12460,14 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 }
                 // Track calculator usage when expanded
                 trackCalculatorUsage(cardType);
+                
+                // Trigger recalculation for cabinet drawer calculator to show diagrams
+                if (cardType === 'cabinetDrawer') {
+                    calculateCabinetLayout();
+                }
             } else {
-                content.style.display = 'none';
+                content.style.setProperty('display', 'none', 'important');
+                delete content.dataset.userExpanded;
                 arrow.textContent = '▼';
                 // Save state
                 if (uiConfig.preferences.rememberCollapsedState) {
@@ -12689,6 +12709,21 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             if (content.style.display === 'none') {
                 content.style.display = 'block';
                 arrow.textContent = '▼';
+                
+                // Ensure all calculators in this category remain collapsed
+                if (categoryId === 'measurements') {
+                    setTimeout(() => {
+                        const calcIds = ['goldenRatio', 'spacing']; // Removed cabinetDrawer - it has special handling
+                        calcIds.forEach(calcId => {
+                            const calcContent = document.getElementById(calcId + 'Content');
+                            const calcArrow = document.querySelector(`#${calcId}Card .calc-arrow`);
+                            if (calcContent && calcArrow && !calcContent.dataset.userExpanded) {
+                                calcContent.style.setProperty('display', 'none', 'important');
+                                calcArrow.textContent = '▼';
+                            }
+                        });
+                    }, 10);
+                }
             } else {
                 content.style.display = 'none';
                 arrow.textContent = '▶';
@@ -15358,6 +15393,9 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         let currentCabinetMaterialThickness = 0.75; // Default 3/4" cabinet material thickness
         let currentBoxMaterialThickness = 0.75;    // Default 3/4" for sides/front/back
         let currentBottomThickness = 0.25;         // Default 1/4" for bottom
+        
+        // Initialization flag to prevent auto-calculation on page load
+        let cabinetCalcInitialized = false;
         let currentBottomDadoDepth = 0.25;         // Default 1/4" dado depth
         let currentBottomDadoHeight = 0.25;        // Default 1/4" up from bottom
         let currentSideClearance = 0.5;            // Default 1/2" per side for side mount
@@ -15555,7 +15593,11 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 el.style.display = 'none';
             });
             
-            calculateCabinetLayout();
+            // Only calculate if the calculator is visible
+            const cabinetContent = document.getElementById('cabinetDrawerContent');
+            if (cabinetContent && window.getComputedStyle(cabinetContent).display !== 'none') {
+                calculateCabinetLayout();
+            }
         }
         
         function setCabinetDrawerMode(mode) {
@@ -15576,7 +15618,11 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 updateCustomDrawerList();
             }
             
-            calculateCabinetLayout();
+            // Only calculate if the calculator is visible
+            const cabinetContent = document.getElementById('cabinetDrawerContent');
+            if (cabinetContent && window.getComputedStyle(cabinetContent).display !== 'none') {
+                calculateCabinetLayout();
+            }
         }
         
         
@@ -15668,6 +15714,16 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         
         // Main calculation function
         function calculateCabinetLayout() {
+            // Prevent calculations during initialization
+            if (!cabinetCalcInitialized) return;
+            
+            // Debug: Don't show content if calculator is collapsed
+            const cabinetContent = document.getElementById('cabinetDrawerContent');
+            if (cabinetContent && window.getComputedStyle(cabinetContent).display === 'none') {
+                console.log('Cabinet calculator is collapsed, skipping calculation');
+                return;
+            }
+            
             const resultDiv = document.getElementById('cabinetResult');
             const cutListDiv = document.getElementById('cabinetCutList');
             
@@ -21527,6 +21583,14 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             
             // Apply UI mode
             applyUIMode();
+            
+            // Restore calculator collapsed states
+            restoreCalculatorStates();
+            
+            // Allow cabinet calculator to run after initialization
+            setTimeout(() => {
+                cabinetCalcInitialized = true;
+            }, 300);
             
             // Initialize kerf diagram state
             updateKerfDiagram();
