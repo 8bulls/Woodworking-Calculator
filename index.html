@@ -16410,6 +16410,10 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                 // For inset custom drawers, drawer.height is the opening size
                 if (cabinetFrameStyle === 'inset' && drawer.isCustom) {
                     boxHeight = drawer.height - (2 * currentVerticalRevealInches) - currentTopClearance;
+                    // Also subtract bottom clearance for bottom mount
+                    if (drawerSlideType === 'bottom') {
+                        boxHeight -= currentBottomClearance;
+                    }
                 }
                 
                 // Validate box height is positive
@@ -16786,6 +16790,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         // Update drawer box construction diagrams
         function updateDrawerBoxDiagrams(boxCalculations) {
             console.log('DEBUG: updateDrawerBoxDiagrams called with:', boxCalculations);
+            console.log('DEBUG: Current slide type:', drawerSlideType);
             const topView = document.getElementById('drawerBoxTopView');
             const dimensionDisplay = document.getElementById('boxDimensionDisplay');
             
