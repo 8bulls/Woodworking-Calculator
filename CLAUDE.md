@@ -456,3 +456,40 @@ Each tab must maintain proper containment:
 - Content bleeding between tabs
 - Elements with empty or unexpected parent IDs
 - Visual issues that persist despite CSS/JS fixes
+- Calculators appearing expanded when they should be collapsed
+- Content visible outside of parent containers that have display:none
+- Category sections appearing/disappearing when expanding other categories
+
+### Lessons from Cabinet Drawer Calculator Debug
+This was a complex debugging session that revealed several important lessons:
+
+1. **Don't Over-Engineer Solutions**
+   - Started with complex CSS overrides and special JavaScript handling
+   - The actual issue was a simple HTML structural error (extra closing div)
+   - Always check basic structure before adding complex fixes
+
+2. **Trust the Console, Not Just Visual Appearance**
+   - Console showed `display: none, height: 0` but content was still visible
+   - This paradox indicated content was escaping its container
+   - Use specific logging to identify which elements are visible
+
+3. **Special Handling is a Code Smell**
+   - The cabinet drawer had unique CSS rules, initialization code, and state flags
+   - Other calculators worked fine without any special handling
+   - When one component needs special treatment, the problem is likely elsewhere
+
+4. **Structural Issues Cascade**
+   - One extra closing div caused the cabinet content to escape its container
+   - A missing closing div for measurements-content caused other categories to nest inside it
+   - Always verify div balance when debugging visibility issues
+
+5. **Effective Debugging Strategy**
+   - Add targeted console logging to understand actual DOM state
+   - Check computed styles vs inline styles vs CSS rules
+   - Verify parent-child relationships match expectations
+   - Count opening/closing tags in problem sections
+
+6. **Remove Before Adding**
+   - Removing all special handling made the issue clearer
+   - Sometimes the fix is to delete code, not add more
+   - Simplification often reveals the root cause
