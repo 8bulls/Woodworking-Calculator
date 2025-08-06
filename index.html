@@ -4744,7 +4744,15 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     
                     <!-- Drawer Box Views (shown when drawer box is enabled) -->
                     <div id="drawerBoxDiagramContainer" class="settings-panel" style="display: none; background: #f8f9fa; border-radius: 12px; padding: 20px; margin-top: 20px; margin-bottom: 20px; overflow: visible;">
-                        <h4 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 16px;">Drawer Box Construction</h4>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h4 style="margin: 0; color: var(--primary-color); font-size: 16px;">Drawer Box Construction</h4>
+                            <div id="drawerSelector" style="display: none; align-items: center; gap: 10px;">
+                                <label style="font-size: 14px; color: #666;">Showing:</label>
+                                <select id="selectedDrawer" onchange="updateSelectedDrawer()" style="padding: 5px 10px; border-radius: 4px; border: 1px solid #ddd;">
+                                    <!-- Options will be populated dynamically -->
+                                </select>
+                            </div>
+                        </div>
                         
                         <!-- Top View - Joinery Detail -->
                         <div style="text-align: center; margin-bottom: 25px;">
@@ -15353,6 +15361,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
         // Drawer box calculation variables
         let includeDrawerBox = false;               // Toggle for drawer box calculations
         let drawerSlideType = 'side';              // 'side' or 'bottom'
+        let selectedDrawerIndex = 0;                // Which drawer to show in diagrams
         let currentCabinetDepthInches = 0;         // Interior cabinet depth
         let currentCabinetMaterialThickness = 0.75; // Default 3/4" cabinet material thickness
         let currentBoxMaterialThickness = 0.75;    // Default 3/4" for sides/front/back
@@ -16764,6 +16773,16 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             updateCabinetRailView(layoutData, railView);
         }
         
+        // Update selected drawer for diagrams
+        function updateSelectedDrawer() {
+            const selector = document.getElementById('selectedDrawer');
+            if (selector) {
+                selectedDrawerIndex = parseInt(selector.value) || 0;
+                // Re-calculate to update diagrams
+                calculateCabinetLayout();
+            }
+        }
+        
         // Update drawer box construction diagrams
         function updateDrawerBoxDiagrams(boxCalculations) {
             console.log('DEBUG: updateDrawerBoxDiagrams called with:', boxCalculations);
@@ -16787,8 +16806,20 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             // Show dimension display
             dimensionDisplay.style.display = 'block';
             
-            // Use first drawer for demonstration
-            const drawer = boxCalculations[0];
+            // Populate drawer selector if multiple drawers
+            const drawerSelectorDiv = document.getElementById('drawerSelector');
+            const drawerSelect = document.getElementById('selectedDrawer');
+            if (boxCalculations.length > 1 && drawerSelectorDiv && drawerSelect) {
+                drawerSelectorDiv.style.display = 'flex';
+                drawerSelect.innerHTML = boxCalculations.map((drawer, index) => 
+                    `<option value="${index}" ${index === selectedDrawerIndex ? 'selected' : ''}>Drawer ${drawer.number}</option>`
+                ).join('');
+            } else if (drawerSelectorDiv) {
+                drawerSelectorDiv.style.display = 'none';
+            }
+            
+            // Use selected drawer for demonstration
+            const drawer = boxCalculations[selectedDrawerIndex] || boxCalculations[0];
             
             // SVG dimensions for top view
             const svgWidth = 600;
@@ -16975,8 +17006,8 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             // Show the diagram container
             diagramContainer.style.display = 'block';
             
-            // Use first drawer for demonstration
-            const drawer = boxCalculations[0];
+            // Use selected drawer for demonstration
+            const drawer = boxCalculations[selectedDrawerIndex] || boxCalculations[0];
             
             // SVG dimensions
             const svgSize = 450;
@@ -17406,6 +17437,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
             currentBottomClearance = 0.375;
             currentFaceThickness = 0.75;
             currentCabinetMaterialThickness = 0.75;
+            selectedDrawerIndex = 0;
             
             // Reset drawer box UI
             document.getElementById('includeDrawerBox').checked = false;
