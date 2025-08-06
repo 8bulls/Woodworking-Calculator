@@ -15798,7 +15798,8 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                         const requiredHeight = totalCustomHeight + totalRails;
                         
                         if (requiredHeight > currentCabinetHeightInches) {
-                            validationError = `Total height (${inchesToDisplay(requiredHeight)}) exceeds cabinet opening (${inchesToDisplay(currentCabinetHeightInches)})`;
+                            const excess = requiredHeight - currentCabinetHeightInches;
+                            validationError = `Total height (${inchesToDisplay(requiredHeight)}) exceeds cabinet opening (${inchesToDisplay(currentCabinetHeightInches)}) by ${inchesToDisplay(excess)}`;
                         } else if (requiredHeight < currentCabinetHeightInches) {
                             const gap = currentCabinetHeightInches - requiredHeight;
                             validationError = `Total drawer openings (${inchesToDisplay(totalCustomHeight)}) plus rails (${inchesToDisplay(totalRails)}) = ${inchesToDisplay(requiredHeight)} leaves a ${inchesToDisplay(gap)} gap. Custom drawer openings must exactly fill the cabinet height.`;
@@ -15815,7 +15816,8 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                             const requiredHeight = totalCustomHeight + totalRails;
                             
                             if (requiredHeight > currentCabinetHeightInches) {
-                                validationError = `Total drawer openings (${inchesToDisplay(totalCustomHeight)}) plus rails (${inchesToDisplay(totalRails)}) exceeds cabinet height (${inchesToDisplay(currentCabinetHeightInches)})`;
+                                const excess = requiredHeight - currentCabinetHeightInches;
+                                validationError = `Total drawer openings (${inchesToDisplay(totalCustomHeight)}) plus rails (${inchesToDisplay(totalRails)}) exceeds cabinet height (${inchesToDisplay(currentCabinetHeightInches)}) by ${inchesToDisplay(excess)}`;
                             } else if (requiredHeight < currentCabinetHeightInches) {
                                 const gap = currentCabinetHeightInches - requiredHeight;
                                 validationError = `Total drawer openings (${inchesToDisplay(totalCustomHeight)}) plus rails (${inchesToDisplay(totalRails)}) = ${inchesToDisplay(requiredHeight)} leaves a ${inchesToDisplay(gap)} gap. Custom drawer openings must exactly fill the cabinet height.`;
@@ -16915,15 +16917,7 @@ Spaces: ${numSpaces} @ ${inchesToDisplay(spacing, 'calculator')} each
                             Side Mount Slide
                         </text>
                     </g>
-                ` : `
-                    <g opacity="0.6">
-                        <rect x="${topX + matThick}" y="${topY + boxD + 5}" width="${boxW - 2 * matThick}" height="10" 
-                              fill="#e0e0e0" stroke="#999" stroke-width="1" stroke-dasharray="3,2"/>
-                        <text x="${centerX}" y="${topY + boxD + 12}" text-anchor="middle" font-size="9" fill="#666">
-                            Bottom Mount Slides
-                        </text>
-                    </g>
-                `}
+                ` : ''}
                 
                 <!-- Dimension lines -->
                 <g stroke="#999" stroke-width="0.5" fill="none">
