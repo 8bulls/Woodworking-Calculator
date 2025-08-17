@@ -4556,8 +4556,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <!-- Clear and Function Row -->
                 <div class="keypad-row">
                     <button class="calc-btn clear" onclick="clearCalculator()">AC</button>
-                    <button class="calc-btn clear" onclick="handleKeypadButton('', 'clear')">C</button>
                     <button class="calc-btn backspace" onclick="handleBackspace()">←</button>
+                    <button class="calc-btn fraction" onclick="handleKeypadButton('/', 'fraction')" title="Fraction slash (e.g., 3/32)">⁄</button>
                     <button class="calc-btn operation" onclick="handleKeypadButton(' ÷ ', 'operation')">÷</button>
                 </div>
                 
@@ -4590,28 +4590,18 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     <button class="calc-btn space" onclick="handleKeypadButton(' ', 'space')" style="grid-column: span 2;">Space</button>
                 </div>
                 
-                <!-- Units and Fractions Row 1 -->
-                <div class="keypad-row keypad-fractions">
+                <!-- Units Row -->
+                <div class="keypad-row keypad-units">
                     <button class="calc-btn unit" onclick="handleKeypadButton('ft', 'unit')">ft</button>
                     <button class="calc-btn unit" onclick="handleKeypadButton('in', 'unit')">in</button>
-                    <button class="calc-btn fraction" onclick="handleKeypadButton('1/2', 'fraction')">1/2</button>
-                    <button class="calc-btn fraction" onclick="handleKeypadButton('1/4', 'fraction')">1/4</button>
-                </div>
-                
-                <!-- Fractions Row 2 -->
-                <div class="keypad-row keypad-fractions">
-                    <button class="calc-btn fraction" onclick="handleKeypadButton('1/8', 'fraction')">1/8</button>
-                    <button class="calc-btn fraction" onclick="handleKeypadButton('1/16', 'fraction')">1/16</button>
-                    <button class="calc-btn fraction" onclick="handleKeypadButton('3/4', 'fraction')">3/4</button>
-                    <button class="calc-btn fraction" onclick="handleKeypadButton('3/8', 'fraction')">3/8</button>
-                </div>
-                
-                <!-- Metric Units Row -->
-                <div class="keypad-row keypad-units">
                     <button class="calc-btn metric" onclick="handleKeypadButton('mm', 'unit')">mm</button>
                     <button class="calc-btn metric" onclick="handleKeypadButton('cm', 'unit')">cm</button>
+                </div>
+                
+                <!-- Additional Units and Save -->
+                <div class="keypad-row">
                     <button class="calc-btn metric" onclick="handleKeypadButton('m', 'unit')">m</button>
-                    <button class="calc-btn save" onclick="saveCalculatorToProject()">Save</button>
+                    <button class="calc-btn save" onclick="saveCalculatorToProject()" style="grid-column: span 3;">Save to Project</button>
                 </div>
             </div>
             
@@ -10748,9 +10738,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     break;
                     
                 case 'fraction':
-                    // Add fraction - if there's already content, add a space first
-                    const spacedValue = currentInput && !currentInput.endsWith(' ') ? ' ' + value : value;
-                    smartInput1.value = currentInput + spacedValue;
+                    // Add fraction slash - no space needed for fractions like 3/32
+                    smartInput1.value = currentInput + value;
                     handleSmartInput(smartInput1, 'previewInput1', updateInput1Value);
                     break;
                     
@@ -11445,9 +11434,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             }
             
             // Check if this is an expression with operators
-            // Support both × and *, ÷ and /
-            const normalizedValue = value.replace(/×/g, '*').replace(/÷/g, '/');
-            const hasOperators = /[+\-*/]/.test(normalizedValue);
+            // Only +, -, ×, ÷ are operators (/ is for fractions)
+            const hasOperators = /[+\-×÷]/.test(value);
             
             if (hasOperators) {
                 // Parse and calculate the expression
@@ -11463,11 +11451,19 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     
                     // If we have a parsed expression, show it
                     if (result.parsedExpression) {
-                        displayText = result.parsedExpression + ' = ' + formatResult(result.value);
+                        // Replace <factor> tags with styled spans for display
+                        const styledExpression = result.parsedExpression.replace(
+                            /<factor>(.*?)<\/factor>/g, 
+                            '<span style="color: #9C27B0; font-weight: bold;">$1</span>'
+                        );
+                        displayText = styledExpression + ' = ' + formatResult(result.value);
+                        
+                        // For callback, keep the factor tags so they can be styled later
                         callbackDisplay = result.parsedExpression + ' = ' + formatResult(result.value);
                     }
                     
-                    previewDiv.textContent = displayText;
+                    // Use innerHTML for styled display
+                    previewDiv.innerHTML = displayText;
                     previewDiv.style.color = 'var(--success-color, #4CAF50)';
                     inputElement.classList.add('valid');
                     inputElement.classList.remove('invalid');
@@ -11530,11 +11526,14 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         // New function to parse expressions with multiple operations
         function parseExpression(expression) {
             try {
-                // Normalize operators
-                let expr = expression.replace(/×/g, '*').replace(/÷/g, '/');
+                // Don't treat / as division - it's for fractions!
+                // Only ÷ is for division
+                // First, protect fractions by temporarily replacing them
+                let expr = expression;
                 
-                // Split by operators while keeping them
-                const tokens = expr.split(/([+\-*/])/);
+                // Split by operators (but NOT slash since that's for fractions)
+                // Only split on +, -, ×, ÷
+                const tokens = expr.split(/([+\-×÷])/);
                 
                 // Clean up tokens - remove empty strings but keep operators
                 const cleanTokens = [];
@@ -11546,7 +11545,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 }
                 
                 // Handle cases where expression ends with operator (partial expression)
-                const endsWithOperator = /[+\-*/×÷]\s*$/.test(expression);
+                const endsWithOperator = /[+\-×÷]\s*$/.test(expression);
                 
                 if (cleanTokens.length === 1) {
                     // Just a single value, parse it
@@ -11573,15 +11572,14 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 
                 if (cleanTokens.length < 3) {
                     // Not enough tokens for a complete expression
-                    if (cleanTokens.length === 2 && ['+', '-', '*', '/'].includes(cleanTokens[1])) {
+                    if (cleanTokens.length === 2 && ['+', '-', '×', '÷'].includes(cleanTokens[1])) {
                         // Value followed by operator
                         const inches = parseMeasurementToInches(cleanTokens[0]);
                         if (inches !== null && !isNaN(inches)) {
-                            const op = cleanTokens[1] === '*' ? '×' : cleanTokens[1] === '/' ? '÷' : cleanTokens[1];
                             return { 
                                 isValid: false, 
                                 partial: true, 
-                                message: formatResult(inches) + ' ' + op + ' ...' 
+                                message: formatResult(inches) + ' ' + cleanTokens[1] + ' ...' 
                             };
                         }
                     }
@@ -11591,25 +11589,67 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 let result = null;
                 let currentOp = null;
                 let parsedParts = [];
+                let needsParentheses = false;
+                
+                // Check if we need parentheses (mix of +/- with ×/÷)
+                const hasAddSub = cleanTokens.some(t => t === '+' || t === '-');
+                const hasMulDiv = cleanTokens.some(t => t === '×' || t === '÷');
+                needsParentheses = hasAddSub && hasMulDiv;
                 
                 for (let i = 0; i < cleanTokens.length; i++) {
                     const token = cleanTokens[i];
                     
-                    // Check if it's an operator
-                    if (['+', '-', '*', '/'].includes(token)) {
+                    // Check if it's an operator (×  and ÷, not * and /)
+                    if (['+', '-', '×', '÷'].includes(token)) {
+                        // Add closing parenthesis if ending a multiplication/division group
+                        if (needsParentheses && currentOp && (currentOp === '×' || currentOp === '÷') && 
+                            (token === '+' || token === '-')) {
+                            parsedParts.push(')');
+                        }
+                        
                         currentOp = token;
-                        parsedParts.push(token === '*' ? '×' : token === '/' ? '÷' : token);
+                        parsedParts.push(token);
+                        
+                        // Add opening parenthesis if starting a multiplication/division group
+                        if (needsParentheses && (token === '×' || token === '÷')) {
+                            // Look back to see if we need to wrap the previous value
+                            if (parsedParts.length >= 2) {
+                                const prevValue = parsedParts[parsedParts.length - 2];
+                                parsedParts[parsedParts.length - 2] = '(' + prevValue;
+                            }
+                        }
                         continue;
                     }
                     
-                    // Parse the measurement
+                    // Parse the measurement (including fractions like 8/9)
                     const inches = parseMeasurementToInches(token);
                     if (inches === null || isNaN(inches)) {
                         return { isValid: false, error: `Cannot parse: "${token}"` };
                     }
                     
                     // Add formatted version to parsed expression
-                    parsedParts.push(formatResult(inches));
+                    // For multiplication and division, the second operand is a unitless factor
+                    if (currentOp === '×' || currentOp === '÷') {
+                        // Just show the number without units (factor)
+                        let factorStr;
+                        if (inches === Math.floor(inches)) {
+                            factorStr = inches.toString();
+                        } else {
+                            // Show decimal or fraction without quotes
+                            factorStr = convertToFraction(inches, '1/16');
+                        }
+                        // Wrap factor in special marker for styling
+                        parsedParts.push(`<factor>${factorStr}</factor>`);
+                        
+                        // Check if we need closing parenthesis (this is the last token or next is +/-)
+                        if (needsParentheses && (i === cleanTokens.length - 1 || 
+                            (i + 1 < cleanTokens.length && (cleanTokens[i + 1] === '+' || cleanTokens[i + 1] === '-')))) {
+                            parsedParts.push(')');
+                        }
+                    } else {
+                        // For addition/subtraction or first value, show with units
+                        parsedParts.push(formatResult(inches));
+                    }
                     
                     // Apply the operation
                     if (result === null) {
@@ -11622,10 +11662,10 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             case '-':
                                 result -= inches;
                                 break;
-                            case '*':
+                            case '×':
                                 result *= inches;
                                 break;
-                            case '/':
+                            case '÷':
                                 if (inches === 0) {
                                     return { isValid: false, error: 'Division by zero' };
                                 }
@@ -14410,7 +14450,12 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     // Extract the calculation part and result
                     const parts = display.split('=');
                     if (parts.length === 2) {
-                        equationElement.textContent = parts[0].trim();
+                        // Style factors in a lighter purple for visibility on dark background
+                        const styledEquation = parts[0].trim().replace(
+                            /<factor>(.*?)<\/factor>/g, 
+                            '<span style="color: #CE93D8; font-weight: bold;">$1</span>'
+                        );
+                        equationElement.innerHTML = styledEquation;
                         resultElement.textContent = '= ' + parts[1].trim();
                         return; // Don't call updateCalculation for expression results
                     }
