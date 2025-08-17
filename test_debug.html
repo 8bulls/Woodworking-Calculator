@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Expression Parser</title>
+</head>
+<body>
+    <h1>Debug "5 + 5" Expression</h1>
+    <input type="text" id="testInput" value="5 + 5" style="width: 300px; padding: 10px; font-size: 16px;">
+    <button onclick="testExpression()">Test Expression</button>
+    <div id="results" style="margin-top: 20px; padding: 20px; background: #f0f0f0;"></div>
+    
+    <script>
+        // Copy the parsing functions exactly as they are
+        function parseFraction(fraction) {
+            if (!fraction || fraction.trim() === '') return 0;
+            
+            const parts = fraction.split('/');
+            if (parts.length !== 2) return 0;
+            
+            const numerator = parseFloat(parts[0]) || 0;
+            const denominator = parseFloat(parts[1]) || 1;
+            
+            return denominator === 0 ? 0 : numerator / denominator;
+        }
+        
+        function parseInchesWithFraction(input) {
+            console.log('parseInchesWithFraction called with:', input);
+            if (!input || input.trim() === '') return 0;
+            
+            input = input.trim();
+            
+            // Check for mixed number (e.g., "12 1/2")
+            const parts = input.split(/\s+/);
+            if (parts.length === 2 && parts[1].includes('/')) {
+                const whole = parseFloat(parts[0]) || 0;
+                const fraction = parseFraction(parts[1]);
+                return whole + fraction;
+            }
+            
+            // Check for just a fraction
+            if (input.includes('/')) {
+                return parseFraction(input);
+            }
+            
+            // Parse as decimal
+            const result = parseFloat(input);
+            console.log('parseInchesWithFraction returning:', result);
+            return isNaN(result) ? null : result;
+        }
+        
+        function parseMeasurementToInches(measurement) {
+            console.log('parseMeasurementToInches called with:', measurement);
+            if (!measurement || measurement.trim() === '') return null;
+            
+            let input = measurement.trim();
+            
+            // Handle metric units
+            if (input.includes('mm')) {
+                const value = parseFloat(input.replace('mm', '').trim());
+                if (isNaN(value)) return null;
+                return value / 25.4;
+            }
+            if (input.includes('cm')) {
+                const value = parseFloat(input.replace('cm', '').trim());
+                if (isNaN(value)) return null;
+                return value / 2.54;
+            }
+            if (input.endsWith('m') && !input.includes('mm') && !input.includes('cm')) {
+                const value = parseFloat(input.replace('m', '').trim());
+                if (isNaN(value)) return null;
+                return value * 39.3701;
+            }
+            
+            // Handle explicit feet/inches notation
+            const feetInchesMatch = input.match(/^(\d+)'(?:\s*(\d+(?:\s+\d+\/\d+)?|\d+\/\d+)?"?)?$/);
+            if (feetInchesMatch) {
+                const feet = parseInt(feetInchesMatch[1]) || 0;
+                const inchPart = feetInchesMatch[2] || '0';
+                const inches = parseInchesWithFraction(inchPart);
+                return feet * 12 + inches;
+            }
+            
+            // Handle inches with quotes
+            if (input.endsWith('"')) {
+                input = input.slice(0, -1).trim();
+                return parseInchesWithFraction(input);
+            }
+            
+            // Handle space-separated format
+            const spaceParts = input.split(/\s+/);
+            console.log('spaceParts:', spaceParts);
+            if (spaceParts.length >= 2) {
+                const firstNum = parseFloat(spaceParts[0]);
+                const secondPart = spaceParts[1];
+                
+                if (spaceParts.length === 2) {
+                    const secondNum = parseFloat(secondPart);
+                    if (!isNaN(secondNum) && secondNum < 12 && !secondPart.includes('/')) {
+                        console.log('Interpreting as feet/inches:', firstNum, 'feet', secondNum, 'inches');
+                        return firstNum * 12 + secondNum;
+                    }
+                }
+            }
+            
+            // Try parsing as inches with fraction
+            const result = parseInchesWithFraction(input);
+            console.log('parseMeasurementToInches returning:', result);
+            return (isNaN(result) || result === null) ? null : result;
+        }
+        
+        function parseExpression(expression) {
+            console.log('parseExpression called with:', expression);
+            try {
+                // Normalize operators
+                let expr = expression.replace(/×/g, '*').replace(/÷/g, '/');
+                
+                // Split by operators while keeping them
+                const tokens = expr.split(/([+\-*/])/);
+                console.log('Initial tokens:', tokens);
+                
+                // Clean up tokens
+                const cleanTokens = [];
+                for (let token of tokens) {
+                    const trimmed = token.trim();
+                    if (trimmed) {
+                        cleanTokens.push(trimmed);
+                    }
+                }
+                console.log('Clean tokens:', cleanTokens);
+                
+                if (cleanTokens.length < 3) {
+                    console.log('Not enough tokens for complete expression');
+                    return { isValid: false, error: 'Incomplete expression' };
+                }
+                
+                let result = null;
+                let currentOp = null;
+                
+                for (let i = 0; i < cleanTokens.length; i++) {
+                    const token = cleanTokens[i];
+                    console.log('Processing token:', token);
+                    
+                    if (['+', '-', '*', '/'].includes(token)) {
+                        currentOp = token;
+                        console.log('Found operator:', currentOp);
+                        continue;
+                    }
+                    
+                    const inches = parseMeasurementToInches(token);
+                    console.log('Parsed', token, 'to', inches, 'inches');
+                    
+                    if (inches === null || isNaN(inches)) {
+                        console.log('Failed to parse token:', token);
+                        return { isValid: false, error: `Cannot parse: "${token}"` };
+                    }
+                    
+                    if (result === null) {
+                        result = inches;
+                    } else if (currentOp) {
+                        switch (currentOp) {
+                            case '+': result += inches; break;
+                            case '-': result -= inches; break;
+                            case '*': result *= inches; break;
+                            case '/': result = inches !== 0 ? result / inches : result; break;
+                        }
+                        console.log('Applied', currentOp, 'result is now:', result);
+                        currentOp = null;
+                    }
+                }
+                
+                console.log('Final result:', result);
+                return { isValid: true, value: result };
+                
+            } catch (error) {
+                console.error('Expression parsing error:', error);
+                return { isValid: false, error: 'Invalid expression' };
+            }
+        }
+        
+        function testExpression() {
+            const input = document.getElementById('testInput').value;
+            const result = parseExpression(input);
+            
+            const output = document.getElementById('results');
+            output.innerHTML = '<h3>Results:</h3>';
+            output.innerHTML += '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
+            output.innerHTML += '<p>Check console for detailed logs</p>';
+        }
+        
+        // Test immediately on load
+        window.onload = testExpression;
+    </script>
+</body>
+</html>

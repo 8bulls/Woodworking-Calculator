@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expression Parser Test</title>
+</head>
+<body>
+    <h1>Testing Expression Parser</h1>
+    <div id="results"></div>
+    
+    <script>
+        // Copy the relevant parsing functions from index.html
+        function parseFraction(fraction) {
+            if (!fraction || fraction.trim() === '') return 0;
+            
+            const parts = fraction.split('/');
+            if (parts.length !== 2) return 0;
+            
+            const numerator = parseFloat(parts[0]) || 0;
+            const denominator = parseFloat(parts[1]) || 1;
+            
+            return denominator === 0 ? 0 : numerator / denominator;
+        }
+        
+        function parseInchesWithFraction(input) {
+            if (!input || input.trim() === '') return 0;
+            
+            input = input.trim();
+            
+            // Check for mixed number (e.g., "12 1/2")
+            const parts = input.split(/\s+/);
+            if (parts.length === 2 && parts[1].includes('/')) {
+                const whole = parseFloat(parts[0]) || 0;
+                const fraction = parseFraction(parts[1]);
+                return whole + fraction;
+            }
+            
+            // Check for just a fraction
+            if (input.includes('/')) {
+                return parseFraction(input);
+            }
+            
+            // Parse as decimal
+            const result = parseFloat(input);
+            return isNaN(result) ? null : result;
+        }
+        
+        function parseMeasurementToInches(measurement) {
+            if (!measurement || measurement.trim() === '') return null;
+            
+            let input = measurement.trim();
+            
+            // For simple numbers, just parse them
+            const simpleNum = parseFloat(input);
+            if (!isNaN(simpleNum)) {
+                return simpleNum;
+            }
+            
+            // Handle other formats...
+            return parseInchesWithFraction(input);
+        }
+        
+        // Test cases
+        const testCases = [
+            "5 - 1",
+            "5 + 1",
+            "10 / 2",
+            "3 * 4",
+            "5.5 - 2.5",
+            "2 1/2 + 3 1/4"
+        ];
+        
+        const results = document.getElementById('results');
+        
+        testCases.forEach(test => {
+            // Normalize operators
+            let expr = test.replace(/×/g, '*').replace(/÷/g, '/');
+            
+            // Split by operators while keeping them
+            const tokens = expr.split(/([+\-*/])/);
+            
+            // Clean up tokens
+            const cleanTokens = [];
+            for (let token of tokens) {
+                const trimmed = token.trim();
+                if (trimmed) {
+                    cleanTokens.push(trimmed);
+                }
+            }
+            
+            // Calculate result
+            let result = null;
+            let currentOp = null;
+            
+            for (let i = 0; i < cleanTokens.length; i++) {
+                const token = cleanTokens[i];
+                
+                if (['+', '-', '*', '/'].includes(token)) {
+                    currentOp = token;
+                    continue;
+                }
+                
+                const value = parseMeasurementToInches(token);
+                
+                if (result === null) {
+                    result = value;
+                } else if (currentOp) {
+                    switch (currentOp) {
+                        case '+': result += value; break;
+                        case '-': result -= value; break;
+                        case '*': result *= value; break;
+                        case '/': result = value !== 0 ? result / value : result; break;
+                    }
+                }
+            }
+            
+            const div = document.createElement('div');
+            div.innerHTML = `<strong>${test}</strong>: tokens = ${JSON.stringify(cleanTokens)}, result = ${result}`;
+            results.appendChild(div);
+        });
+    </script>
+</body>
+</html>

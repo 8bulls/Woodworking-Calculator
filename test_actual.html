@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Actual Input</title>
+</head>
+<body>
+    <h1>Testing Calculator Input Processing</h1>
+    
+    <div style="margin: 20px;">
+        <h3>Test different inputs:</h3>
+        <button onclick="testInput('5')">Test "5"</button>
+        <button onclick="testInput('5 ')">Test "5 " (with space)</button>
+        <button onclick="testInput('5 +')">Test "5 +"</button>
+        <button onclick="testInput('5 + ')">Test "5 + " (with trailing space)</button>
+        <button onclick="testInput('5 + 5')">Test "5 + 5"</button>
+    </div>
+    
+    <div id="results" style="margin: 20px; padding: 20px; background: #f0f0f0; font-family: monospace;"></div>
+    
+    <script>
+        // Include all the parsing functions
+        function parseFraction(fraction) {
+            if (!fraction || fraction.trim() === '') return 0;
+            const parts = fraction.split('/');
+            if (parts.length !== 2) return 0;
+            const numerator = parseFloat(parts[0]) || 0;
+            const denominator = parseFloat(parts[1]) || 1;
+            return denominator === 0 ? 0 : numerator / denominator;
+        }
+        
+        function parseInchesWithFraction(input) {
+            if (!input || input.trim() === '') return 0;
+            input = input.trim();
+            const parts = input.split(/\s+/);
+            if (parts.length === 2 && parts[1].includes('/')) {
+                const whole = parseFloat(parts[0]) || 0;
+                const fraction = parseFraction(parts[1]);
+                return whole + fraction;
+            }
+            if (input.includes('/')) {
+                return parseFraction(input);
+            }
+            const result = parseFloat(input);
+            return isNaN(result) ? null : result;
+        }
+        
+        function parseMeasurementToInches(measurement) {
+            if (!measurement || measurement.trim() === '') return null;
+            let input = measurement.trim();
+            
+            // Handle metric units
+            if (input.includes('mm')) {
+                const value = parseFloat(input.replace('mm', '').trim());
+                if (isNaN(value)) return null;
+                return value / 25.4;
+            }
+            if (input.includes('cm')) {
+                const value = parseFloat(input.replace('cm', '').trim());
+                if (isNaN(value)) return null;
+                return value / 2.54;
+            }
+            if (input.endsWith('m') && !input.includes('mm') && !input.includes('cm')) {
+                const value = parseFloat(input.replace('m', '').trim());
+                if (isNaN(value)) return null;
+                return value * 39.3701;
+            }
+            
+            // Handle explicit feet/inches notation
+            const feetInchesMatch = input.match(/^(\d+)'(?:\s*(\d+(?:\s+\d+\/\d+)?|\d+\/\d+)?"?)?$/);
+            if (feetInchesMatch) {
+                const feet = parseInt(feetInchesMatch[1]) || 0;
+                const inchPart = feetInchesMatch[2] || '0';
+                const inches = parseInchesWithFraction(inchPart);
+                return feet * 12 + inches;
+            }
+            
+            // Handle inches with quotes
+            if (input.endsWith('"')) {
+                input = input.slice(0, -1).trim();
+                return parseInchesWithFraction(input);
+            }
+            
+            // Handle space-separated format
+            const spaceParts = input.split(/\s+/);
+            if (spaceParts.length >= 2) {
+                const firstNum = parseFloat(spaceParts[0]);
+                const secondPart = spaceParts[1];
+                if (spaceParts.length === 2) {
+                    const secondNum = parseFloat(secondPart);
+                    if (!isNaN(secondNum) && secondNum < 12 && !secondPart.includes('/')) {
+                        return firstNum * 12 + secondNum;
+                    }
+                }
+            }
+            
+            // Try parsing as inches with fraction
+            const result = parseInchesWithFraction(input);
+            return (isNaN(result) || result === null) ? null : result;
+        }
+        
+        function parseExpression(expression) {
+            try {
+                // Normalize operators
+                let expr = expression.replace(/×/g, '*').replace(/÷/g, '/');
+                
+                // Split by operators while keeping them
+                const tokens = expr.split(/([+\-*/])/);
+                
+                // Clean up tokens - remove empty strings but keep operators
+                const cleanTokens = [];
+                for (let token of tokens) {
+                    const trimmed = token.trim();
+                    if (trimmed) {
+                        cleanTokens.push(trimmed);
+                    }
+                }
+                
+                // Handle cases where expression ends with operator (partial expression)
+                const endsWithOperator = /[+\-*/×÷]\s*$/.test(expression);
+                
+                if (cleanTokens.length === 1) {
+                    // Just a single value, parse it
+                    const inches = parseMeasurementToInches(cleanTokens[0]);
+                    if (inches === null || isNaN(inches)) {
+                        return { isValid: false, error: `Cannot parse: "${cleanTokens[0]}"` };
+                    }
+                    
+                    if (endsWithOperator) {
+                        // Value followed by operator - waiting for next input
+                        return { 
+                            isValid: false, 
+                            partial: true, 
+                            message: inches + ' ' + expression.slice(-1).trim() + ' ...' 
+                        };
+                    }
+                    
+                    return {
+                        isValid: true,
+                        value: inches,
+                        parsedExpression: inches.toString()
+                    };
+                }
+                
+                if (cleanTokens.length < 3) {
+                    // Not enough tokens for a complete expression
+                    if (cleanTokens.length === 2 && ['+', '-', '*', '/'].includes(cleanTokens[1])) {
+                        // Value followed by operator
+                        const inches = parseMeasurementToInches(cleanTokens[0]);
+                        if (inches !== null && !isNaN(inches)) {
+                            const op = cleanTokens[1] === '*' ? '×' : cleanTokens[1] === '/' ? '÷' : cleanTokens[1];
+                            return { 
+                                isValid: false, 
+                                partial: true, 
+                                message: inches + ' ' + op + ' ...' 
+                            };
+                        }
+                    }
+                    return { isValid: false, partial: true, message: 'Enter values...' };
+                }
+                
+                let result = null;
+                let currentOp = null;
+                let parsedParts = [];
+                
+                for (let i = 0; i < cleanTokens.length; i++) {
+                    const token = cleanTokens[i];
+                    
+                    // Check if it's an operator
+                    if (['+', '-', '*', '/'].includes(token)) {
+                        currentOp = token;
+                        parsedParts.push(token === '*' ? '×' : token === '/' ? '÷' : token);
+                        continue;
+                    }
+                    
+                    // Parse the measurement
+                    const inches = parseMeasurementToInches(token);
+                    if (inches === null || isNaN(inches)) {
+                        return { isValid: false, error: `Cannot parse: "${token}"` };
+                    }
+                    
+                    // Add formatted version to parsed expression
+                    parsedParts.push(inches.toString());
+                    
+                    // Apply the operation
+                    if (result === null) {
+                        result = inches;
+                    } else if (currentOp) {
+                        switch (currentOp) {
+                            case '+': result += inches; break;
+                            case '-': result -= inches; break;
+                            case '*': result *= inches; break;
+                            case '/': 
+                                if (inches === 0) return { isValid: false, error: 'Division by zero' };
+                                result /= inches; 
+                                break;
+                        }
+                        currentOp = null;
+                    }
+                }
+                
+                // Check if we have a hanging operator
+                if (currentOp) {
+                    return { 
+                        isValid: false, 
+                        partial: true, 
+                        message: parsedParts.join(' ') + ' ...' 
+                    };
+                }
+                
+                return {
+                    isValid: true,
+                    value: result,
+                    parsedExpression: parsedParts.join(' ')
+                };
+                
+            } catch (error) {
+                console.error('Expression parsing error:', error);
+                return { isValid: false, error: 'Invalid expression' };
+            }
+        }
+        
+        function testInput(value) {
+            const results = document.getElementById('results');
+            
+            // First check if it has operators
+            const normalizedValue = value.replace(/×/g, '*').replace(/÷/g, '/');
+            const hasOperators = /[+\-*/]/.test(normalizedValue);
+            
+            let html = `<h3>Testing: "${value}"</h3>`;
+            html += `<p>Has operators: ${hasOperators}</p>`;
+            
+            if (hasOperators) {
+                const result = parseExpression(value);
+                html += '<p>parseExpression result:</p>';
+                html += '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
+                
+                if (result.isValid) {
+                    html += `<p style="color: green;">✓ Valid expression, result = ${result.value}</p>`;
+                } else if (result.partial) {
+                    html += `<p style="color: orange;">⚠ Partial expression: ${result.message || 'Enter next value...'}</p>`;
+                } else {
+                    html += `<p style="color: red;">✗ Invalid: ${result.error || 'Invalid expression'}</p>`;
+                }
+            } else {
+                html += '<p>No operators, would parse as single measurement</p>';
+            }
+            
+            results.innerHTML = html;
+        }
+        
+        // Test "5 + 5" on load
+        window.onload = () => testInput('5 + 5');
+    </script>
+</body>
+</html>

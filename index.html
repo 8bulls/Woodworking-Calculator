@@ -4485,6 +4485,15 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                         <option value="project">Project</option>
                     </select>
                 </div>
+                <div class="precision-selector" style="margin-left: 10px;">
+                    <select id="globalPrecision" onchange="updateGlobalPrecision()" title="Fraction Precision">
+                        <option value="32">1/32"</option>
+                        <option value="16" selected>1/16"</option>
+                        <option value="8">1/8"</option>
+                        <option value="4">1/4"</option>
+                        <option value="2">1/2"</option>
+                    </select>
+                </div>
             </div>
         </div>
         
@@ -4515,7 +4524,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 <div style="font-size: 12px; color: #4CAF50;">💡 Try: Enter 25.5, click +, then enter 12.25</div>
             </div>
             
-            <div class="settings-row">
+            <!-- Legacy precision dropdown - hidden, kept for compatibility -->
+            <div class="settings-row" style="display: none;">
                 <label>Precision:</label>
                 <select id="precision" onchange="updatePrecision('calculator'); updateWoodworkingFractions();">
                     <option value="32">1/32"</option>
@@ -6497,7 +6507,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             <div style="display: flex; flex-wrap: wrap; gap: 20px;">
                                 <!-- Left Column -->
                                 <div style="flex: 1; min-width: 250px;">
-                                    <div class="settings-row" style="margin-bottom: 15px;">
+                                    <div class="settings-row" style="margin-bottom: 15px; display: none;">
                                         <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Precision:</label>
                                         <select id="cutPrecision" onchange="updatePrecision('cut')" class="wide-input" style="width: 100%;">
                                             <option value="32">1/32"</option>
@@ -6648,7 +6658,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             <div style="display: flex; flex-wrap: wrap; gap: 20px;">
                                 <!-- Left Column -->
                                 <div style="flex: 1; min-width: 250px;">
-                                    <div class="settings-row" style="margin-bottom: 15px;">
+                                    <div class="settings-row" style="margin-bottom: 15px; display: none;">
                                         <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">Precision:</label>
                                         <select id="optPrecision" onchange="updatePrecision('optimizer'); autoRecalculateOptimization();" class="wide-input" style="width: 100%;">
                                             <option value="32">1/32"</option>
@@ -8232,11 +8242,17 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     
                     // Restore settings with 1/16" default
                     if (data.settings) {
-                        if (document.getElementById('precision')) document.getElementById('precision').value = data.settings.precision || 16;
-                        if (document.getElementById('cutPrecision')) document.getElementById('cutPrecision').value = data.settings.cutPrecision || 16;
-                        if (document.getElementById('optPrecision')) document.getElementById('optPrecision').value = data.settings.optPrecision || 16;
+                        // Set global precision first (use first available saved value)
+                        const savedPrecision = data.settings.precision || data.settings.cutPrecision || data.settings.optPrecision || 16;
+                        if (document.getElementById('globalPrecision')) document.getElementById('globalPrecision').value = savedPrecision;
+                        
+                        // Then set legacy dropdowns
+                        if (document.getElementById('precision')) document.getElementById('precision').value = savedPrecision;
+                        if (document.getElementById('cutPrecision')) document.getElementById('cutPrecision').value = savedPrecision;
+                        if (document.getElementById('optPrecision')) document.getElementById('optPrecision').value = savedPrecision;
                     } else {
                         // No saved settings - ensure 1/16" default
+                        if (document.getElementById('globalPrecision')) document.getElementById('globalPrecision').value = 16;
                         if (document.getElementById('precision')) document.getElementById('precision').value = 16;
                         if (document.getElementById('cutPrecision')) document.getElementById('cutPrecision').value = 16;
                         if (document.getElementById('optPrecision')) document.getElementById('optPrecision').value = 16;
@@ -9878,6 +9894,32 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         }
         
         // Initialize fraction selectors with proper fraction display
+        // Global precision update function
+        function updateGlobalPrecision() {
+            const globalPrecision = document.getElementById('globalPrecision');
+            if (!globalPrecision) return;
+            
+            const precisionValue = globalPrecision.value;
+            
+            // Update all legacy precision dropdowns to match
+            const legacyPrecision = document.getElementById('precision');
+            const cutPrecision = document.getElementById('cutPrecision');
+            const optPrecision = document.getElementById('optPrecision');
+            
+            if (legacyPrecision) legacyPrecision.value = precisionValue;
+            if (cutPrecision) cutPrecision.value = precisionValue;
+            if (optPrecision) optPrecision.value = precisionValue;
+            
+            // Call all update functions
+            updatePrecision('calculator');
+            updatePrecision('cut');
+            updatePrecision('optimizer');
+            updateWoodworkingFractions();
+            
+            // Save to localStorage
+            saveToLocalStorage();
+        }
+        
         function updatePrecision(tabName = null) {
             let precision = 16;
             let fractionSelects = [];

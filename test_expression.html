@@ -1,0 +1,33 @@
+<\!DOCTYPE html>
+<html>
+<head>
+    <title>Expression Test</title>
+</head>
+<body>
+    <h1>Expression Parser Test</h1>
+    <p>Testing: "5 - 1"</p>
+    <script>
+        // Test the expression splitting
+        let expr = "5 - 1";
+        expr = expr.replace(/×/g, '*').replace(/÷/g, '/');
+        
+        // Original problematic code
+        const tokensOld = expr.split(/([+\-*/])/).filter(t => t.trim());
+        console.log("Old method tokens:", tokensOld);
+        
+        // New fixed code
+        const tokens = expr.split(/([+\-*/])/);
+        const cleanTokens = [];
+        for (let token of tokens) {
+            const trimmed = token.trim();
+            if (trimmed) {
+                cleanTokens.push(trimmed);
+            }
+        }
+        console.log("New method tokens:", cleanTokens);
+        
+        document.write("<p>Old tokens: " + JSON.stringify(tokensOld) + "</p>");
+        document.write("<p>New tokens: " + JSON.stringify(cleanTokens) + "</p>");
+    </script>
+</body>
+</html>
