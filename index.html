@@ -4167,11 +4167,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             background: var(--background-color);
             border-top: 2px solid var(--primary-color);
             border-radius: 20px 20px 0 0;
-            padding: 15px;
+            padding: 10px;
             transform: translateY(100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
-            max-height: 60vh;
+            max-height: 50vh;
             overflow-y: auto;
         }
         
@@ -4198,13 +4198,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
+            margin-bottom: 6px;
+            padding-bottom: 6px;
             border-bottom: 1px solid var(--border-color);
         }
         
         .keypad-input-display {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 500;
             color: var(--text-primary);
             flex: 1;
@@ -4274,12 +4274,12 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             gap: 8px;
         }
         
-        /* Base button styles */
+        /* Base button styles - more compact */
         .keypad-btn {
-            min-height: 50px;
+            min-height: 42px;
             border: none;
-            border-radius: 10px;
-            font-size: 18px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.1s ease;
@@ -4293,7 +4293,7 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         .keypad-btn.number {
             background: var(--surface-color);
             color: var(--text-primary);
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 600;
         }
         
@@ -22949,50 +22949,39 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
                 <button class="keypad-close-btn" onclick="MobileKeypad.hide()">×</button>
             </div>
             
-            <!-- Simplified Number Pad for Single Measurements -->
-            <div class="keypad-numpad">
-                <!-- Numbers 1-9 in 3x3 grid -->
+            <!-- Compact Mobile Keypad Grid -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 8px;">
+                <!-- Row 1: Numbers 1-3 + ft -->
                 <button class="keypad-btn number" data-value="1">1</button>
                 <button class="keypad-btn number" data-value="2">2</button>
                 <button class="keypad-btn number" data-value="3">3</button>
+                <button class="keypad-btn symbol" data-value="'" style="background: #007aff; color: white;">ft</button>
                 
+                <!-- Row 2: Numbers 4-6 + in -->
                 <button class="keypad-btn number" data-value="4">4</button>
                 <button class="keypad-btn number" data-value="5">5</button>
                 <button class="keypad-btn number" data-value="6">6</button>
+                <button class="keypad-btn symbol" data-value="&quot;" style="background: #007aff; color: white;">in</button>
                 
+                <!-- Row 3: Numbers 7-9 + backspace -->
                 <button class="keypad-btn number" data-value="7">7</button>
                 <button class="keypad-btn number" data-value="8">8</button>
                 <button class="keypad-btn number" data-value="9">9</button>
+                <button class="keypad-btn control backspace" data-action="backspace" style="background: #ff3b30; color: white;">⌫</button>
                 
-                <!-- Bottom row: 0, decimal, fraction slash -->
-                <button class="keypad-btn number zero" data-value="0">0</button>
+                <!-- Row 4: 0, decimal, slash, clear -->
+                <button class="keypad-btn number" data-value="0">0</button>
                 <button class="keypad-btn symbol" data-value=".">.</button>
-                <button class="keypad-btn symbol fraction" data-value="/" title="For fractions like 3/32">⁄</button>
-            </div>
-            
-            <!-- Space and Measurement Markers -->
-            <div class="keypad-operations" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-top: 10px;">
-                <button class="keypad-btn space" data-value=" " title="Use spaces for quick entry: 2 3 5/16">Space</button>
-                <button class="keypad-btn symbol" data-value="'" title="Feet marker">ft</button>
-                <button class="keypad-btn symbol" data-value="&quot;" title="Inches marker">in</button>
-            </div>
-            
-            <!-- Metric Units -->
-            <div class="keypad-units" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px;">
-                <button class="keypad-btn unit" data-value="mm">mm</button>
-                <button class="keypad-btn unit" data-value="cm">cm</button>
-                <button class="keypad-btn unit" data-value="m">m</button>
-            </div>
-            
-            <!-- Control Buttons -->
-            <div class="keypad-controls" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
-                <button class="keypad-btn control backspace" data-action="backspace">⌫</button>
-                <button class="keypad-btn clear" data-action="clear">Clear</button>
-            </div>
-            
-            <!-- Done Button -->
-            <div style="margin-top: 10px;">
-                <button class="keypad-btn done" style="width: 100%;" data-action="done">Done</button>
+                <button class="keypad-btn symbol" data-value="/" title="Fraction">⁄</button>
+                <button class="keypad-btn clear" data-action="clear" style="background: #ff3b30; color: white;">C</button>
+                
+                <!-- Row 5: Space (2 cols), mm, cm -->
+                <button class="keypad-btn space" data-value=" " style="grid-column: span 2; background: #34c759; color: white;">Space</button>
+                <button class="keypad-btn unit" data-value="mm" style="background: #00bfa5; color: white;">mm</button>
+                <button class="keypad-btn unit" data-value="cm" style="background: #00bfa5; color: white;">cm</button>
+                
+                <!-- Row 6: Done button (full width) -->
+                <button class="keypad-btn done" data-action="done" style="grid-column: span 4; background: #007aff; color: white; font-weight: bold;">Done</button>
             </div>
         </div>
     </div>
