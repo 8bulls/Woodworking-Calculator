@@ -5451,11 +5451,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                             <!-- Cut list will be populated here -->
                         </div>
                         <button class="btn btn-success" onclick="saveCabinetToProject()" style="padding: 12px 24px; font-size: 16px;">💾 Save to Project</button>
-                    </div>
-                </div>
-            </div>
-            </div>
-            <!-- End Measurements & Layout Category -->
+                    </div> <!-- End calc-result -->
+                </div> <!-- End cabinetDrawerContent -->
+            </div> <!-- End cabinetDrawerCard -->
+            </div> <!-- End measurements-content -->
+            </div> <!-- Close unclosed div from Cabinet Drawer Calculator -->
             
             <!-- Angles & Joinery Category -->
             <div class="calc-category-header" style="background: var(--gradient-primary); padding: 12px 20px; margin: 20px 0 15px 0; border-radius: 8px; border-left: 4px solid var(--primary-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCategory('angles')">
@@ -14121,21 +14121,31 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
         function ensureCategoryVisibility() {
             const activeTab = document.querySelector('.tab-content.active');
             const specialtyTab = document.getElementById('specialty');
-            const categoryHeaders = specialtyTab ? specialtyTab.querySelectorAll('.calc-category-header') : [];
-            const categoryContents = specialtyTab ? specialtyTab.querySelectorAll('.calc-category-content') : [];
+            
+            // Get ALL category headers in the document
+            const allCategoryHeaders = document.querySelectorAll('.calc-category-header');
+            const allCategoryContents = document.querySelectorAll('.calc-category-content');
+            
+            // Get specialty calc cards
             const specialtyCalcCards = specialtyTab ? specialtyTab.querySelectorAll('.calc-card') : [];
             
+            // Headers that should be in specialty tab
+            const specialtyHeaders = ['📦 Materials & Shopping', '📏 Measurements & Layout', '🔧 Angles & Joinery', '🏗️ Construction'];
+            
             if (activeTab && activeTab.id === 'specialty') {
-                // Show category headers in specialty tab
-                categoryHeaders.forEach(header => {
-                    header.style.display = 'flex';
+                // Show ALL category headers that belong to specialty
+                allCategoryHeaders.forEach(header => {
+                    const headerText = header.querySelector('h3')?.textContent || '';
+                    if (specialtyHeaders.some(sh => headerText.includes(sh.split(' ')[0]))) {
+                        header.style.display = 'flex';
+                    }
                 });
                 // Show calc cards in specialty tab
                 specialtyCalcCards.forEach(card => {
                     card.style.display = 'block';
                 });
                 // Restore category content display state
-                categoryContents.forEach(content => {
+                allCategoryContents.forEach(content => {
                     if (content.getAttribute('data-was-expanded') === 'true') {
                         content.style.display = 'block';
                         content.removeAttribute('data-was-expanded');
@@ -14146,12 +14156,15 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                     }
                 });
             } else {
-                // Hide all category headers if not in specialty tab
-                categoryHeaders.forEach(header => {
-                    header.style.display = 'none';
+                // Hide ALL category headers when not in specialty tab
+                allCategoryHeaders.forEach(header => {
+                    const headerText = header.querySelector('h3')?.textContent || '';
+                    if (specialtyHeaders.some(sh => headerText.includes(sh.split(' ')[0]))) {
+                        header.style.display = 'none';
+                    }
                 });
                 // Hide all category content containers if not in specialty tab
-                categoryContents.forEach(content => {
+                allCategoryContents.forEach(content => {
                     // Store the current display state to restore later
                     if (content.style.display !== 'none') {
                         content.setAttribute('data-was-expanded', 'true');
@@ -22976,6 +22989,9 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             
             const finalTimestamp = Date.now();
             const finalCabinetContent = document.getElementById('cabinetDrawerContent');
+            
+            // Ensure category headers are properly hidden on page load
+            ensureCategoryVisibility();
             
             console.log('Application initialized successfully');
         });

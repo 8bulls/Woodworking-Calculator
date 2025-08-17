@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Category Debug</title>
+</head>
+<body>
+    <h1>Category Debug Test</h1>
+    <button onclick="checkCategories()">Check Categories</button>
+    <div id="results"></div>
+    
+    <script>
+        function checkCategories() {
+            const results = document.getElementById('results');
+            let output = '<h2>Category Analysis:</h2>';
+            
+            // Check if categories exist in DOM
+            const categories = ['angles', 'construction'];
+            categories.forEach(category => {
+                const header = document.querySelector(`[onclick="toggleCategory('${category}')"]`);
+                const content = document.getElementById(`${category}-content`);
+                const arrow = document.getElementById(`${category}-arrow`);
+                
+                output += `<h3>${category} Category:</h3>`;
+                output += `<p>Header exists: ${header ? 'YES' : 'NO'}</p>`;
+                output += `<p>Content div exists: ${content ? 'YES' : 'NO'}</p>`;
+                output += `<p>Arrow exists: ${arrow ? 'YES' : 'NO'}</p>`;
+                
+                if (header) {
+                    output += `<p>Header parent: ${header.parentElement ? header.parentElement.id || header.parentElement.tagName : 'NONE'}</p>`;
+                }
+                if (content) {
+                    output += `<p>Content parent: ${content.parentElement ? content.parentElement.id || content.parentElement.tagName : 'NONE'}</p>`;
+                    output += `<p>Content display: ${content.style.display}</p>`;
+                }
+            });
+            
+            // Check specialty tab
+            const specialtyTab = document.getElementById('specialty');
+            output += `<h3>Specialty Tab:</h3>`;
+            output += `<p>Specialty tab exists: ${specialtyTab ? 'YES' : 'NO'}</p>`;
+            if (specialtyTab) {
+                output += `<p>Specialty tab display: ${specialtyTab.style.display}</p>`;
+                output += `<p>Specialty tab computed display: ${window.getComputedStyle(specialtyTab).display}</p>`;
+            }
+            
+            results.innerHTML = output;
+        }
+    </script>
+</body>
+</html>
