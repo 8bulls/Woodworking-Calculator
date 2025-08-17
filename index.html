@@ -1348,8 +1348,8 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
            ---------------------------------------------------------------- */
         /* Calculator display styles */
         .calc-display {
-            background: #2F1B14;
-            color: #fff;
+            background: #2F1B14 !important; /* Dark brown background */
+            color: #fff !important; /* White text */
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -1364,16 +1364,17 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             margin-bottom: 5px;
         }
         
-        .calc-result {
+        .calc-display .calc-result {
             font-size: 28px;
             font-weight: bold;
-            text-align: right;
+            text-align: center;
             min-height: 40px;
             word-break: break-all;
+            color: #4CAF50 !important; /* Always green like validation text */
         }
         
-        .calc-result.has-value {
-            color: #4CAF50;
+        .calc-display .calc-result.has-value {
+            color: #4CAF50 !important; /* Green for valid results */
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -1437,22 +1438,26 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
-            background: var(--secondary-color);
-            color: #2F1B14;
+            background: #f5f5f5;
+            color: #212121;
+            min-height: 55px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         
         .calc-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
         }
         
         .calc-btn:active {
-            transform: translateY(0);
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         
         .calc-btn.operation {
-            background: var(--primary-color);
+            background: #ff9500;
             color: white;
+            font-size: 22px;
         }
         
         .calc-btn.equals {
@@ -1466,15 +1471,106 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             color: white;
         }
         
+        .calc-btn.unit {
+            background: #007aff;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
         .calc-btn.clear {
-            background: #f44336;
+            background: #ff3b30;
             color: white;
         }
         
         .calc-btn.memory {
-            background: #607D8B;
+            background: #616161;
             color: white;
             font-size: 14px;
+        }
+        
+        .calc-btn.number {
+            background: #ffffff;
+            color: #000000;
+            font-size: 20px;
+        }
+        
+        .calc-btn.measurement {
+            background: #9C27B0;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .calc-btn.fraction {
+            background: #673ab7;
+            color: white;
+            font-size: 14px;
+        }
+        
+        /* Keypad Layout */
+        .calc-keypad {
+            margin: 15px 0;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .keypad-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .keypad-row.keypad-memory {
+            margin-bottom: 12px;
+        }
+        
+        .keypad-row.keypad-fractions {
+            margin-bottom: 6px;
+        }
+        
+        .keypad-zero {
+            grid-column: span 1;
+        }
+        
+        .calc-btn.space {
+            grid-column: span 2;
+            background: #E3F2FD;
+            color: #1976D2;
+            font-weight: 600;
+        }
+        
+        .calc-btn.backspace {
+            background: #757575;
+            color: white;
+        }
+        
+        .calc-btn.metric {
+            background: #00BFA5;
+            color: white;
+        }
+        
+        .calc-btn.unit {
+            background: #007AFF;
+            color: white;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .calc-keypad {
+                max-width: 280px;
+            }
+            
+            .calc-btn {
+                padding: 12px 8px;
+                font-size: 16px;
+            }
+            
+            .calc-btn.fraction,
+            .calc-btn.memory {
+                font-size: 12px;
+            }
         }
         
         .memory-display {
@@ -4039,6 +4135,302 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 font-size: 16px; /* Prevents zoom on iOS */
             }
         }
+        
+        /* ----------------------------------------------------------------
+           MOBILE KEYPAD STYLES
+           ---------------------------------------------------------------- */
+        
+        /* Keypad overlay and container */
+        .keypad-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .keypad-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        .mobile-keypad {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--background-color);
+            border-top: 2px solid var(--primary-color);
+            border-radius: 20px 20px 0 0;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .keypad-overlay.active .mobile-keypad {
+            transform: translateY(0);
+        }
+        
+        /* Keypad positioned at top when needed */
+        .mobile-keypad.position-top {
+            bottom: auto;
+            top: 0;
+            border-top: none;
+            border-bottom: 2px solid var(--primary-color);
+            border-radius: 0 0 20px 20px;
+            transform: translateY(-100%);
+        }
+        
+        .keypad-overlay.active .mobile-keypad.position-top {
+            transform: translateY(0);
+        }
+        
+        /* Keypad header with active input display */
+        .keypad-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .keypad-input-display {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-primary);
+            flex: 1;
+            margin-right: 10px;
+            padding: 8px;
+            background: var(--surface-color);
+            border-radius: 8px;
+            font-family: 'Monaco', 'Consolas', monospace;
+        }
+        
+        .keypad-close-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--error-color);
+            color: white;
+            border: none;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        /* Button grid layout */
+        .keypad-buttons {
+            display: grid;
+            gap: 8px;
+        }
+        
+        /* Main number pad - 3 columns (phone style) */
+        .keypad-numpad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        /* Common fractions row */
+        .keypad-fractions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        /* Measurement symbols */
+        .keypad-operations {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        /* Units row */
+        .keypad-units {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        /* Control buttons */
+        .keypad-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        
+        /* Base button styles */
+        .keypad-btn {
+            min-height: 50px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Button types */
+        .keypad-btn.number {
+            background: var(--surface-color);
+            color: var(--text-primary);
+            font-size: 22px;
+            font-weight: 600;
+        }
+        
+        .keypad-btn.fraction {
+            background: var(--accent-color);
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .keypad-btn.operation {
+            background: var(--primary-light);
+            color: var(--text-on-primary);
+        }
+        
+        .keypad-btn.symbol {
+            background: var(--secondary-color);
+            color: var(--text-primary);
+            font-size: 20px;
+        }
+        
+        .keypad-btn.unit {
+            background: var(--info-color);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .keypad-btn.control {
+            background: var(--primary-color);
+            color: var(--text-on-primary);
+            font-weight: 600;
+        }
+        
+        .keypad-btn.space {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+        
+        .keypad-btn.clear {
+            background: var(--warning-color);
+            color: white;
+        }
+        
+        .keypad-btn.done {
+            background: var(--success-color);
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        /* Button active states */
+        .keypad-btn:active {
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+        
+        /* Ripple effect for touch feedback */
+        .keypad-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+        
+        .keypad-btn:active::after {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Special button styles */
+        .keypad-btn.backspace {
+            font-size: 24px;
+        }
+        
+        .keypad-btn.zero {
+            grid-column: span 2;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 360px) {
+            .keypad-btn {
+                min-height: 45px;
+                font-size: 16px;
+            }
+            
+            .keypad-btn.number {
+                font-size: 20px;
+            }
+            
+            .mobile-keypad {
+                padding: 10px;
+            }
+        }
+        
+        /* Landscape mode adjustments */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .mobile-keypad {
+                max-height: 80vh;
+                padding: 8px;
+            }
+            
+            .keypad-btn {
+                min-height: 40px;
+            }
+            
+            .keypad-header {
+                margin-bottom: 5px;
+                padding-bottom: 5px;
+            }
+        }
+        
+        /* Accessibility */
+        .keypad-btn:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+        
+        /* Prevent text selection on double tap */
+        .mobile-keypad * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* Smooth scrolling for keypad */
+        .mobile-keypad {
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
 </head>
 <body>
@@ -4144,64 +4536,85 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 ↩ Click result to use in next calculation
             </div>
             
+            <!-- Main Calculator Input -->
             <div class="input-group">
-                <label>Input 1:</label>
-                <input type="text" id="smartInput1" placeholder="Try: 4'6&quot;, 48&quot;, 4 6 1/2, 48.5&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewInput1', updateInput1Value)" onchange="handleSmartInput(this, 'previewInput1', updateInput1Value)">
+                <label>Calculator Input:</label>
+                <input type="text" id="smartInput1" placeholder="Try: 4'6&quot; + 12&quot; - 2.5cm or just 48&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewInput1', updateInput1Value)" onchange="handleSmartInput(this, 'previewInput1', updateInput1Value)" inputmode="none">
             </div>
             <div id="previewInput1" class="input-preview"></div>
-            <div style="display: none;">
-                <!-- Hidden legacy inputs for backward compatibility -->
-                <input type="number" id="feet1" placeholder="0" min="0" class="wide-input" onchange="updateCalculation()">
-                <input type="number" id="inches1" placeholder="0" min="0" max="11" class="wide-input" onchange="updateCalculation()">
-                <select id="fraction1" style="width: 120px;" onchange="updateCalculation()">
-                    <option value="0">0</option>
-                </select>
+            
+            <!-- Integrated Calculator Keypad -->
+            <div class="calc-keypad">
+                <!-- Memory Functions Row (only shown in standard mode) -->
+                <div class="keypad-row keypad-memory" id="memoryRow" style="display: none;">
+                    <button class="calc-btn memory" onclick="memoryOperation('MC')">MC</button>
+                    <button class="calc-btn memory" onclick="memoryOperation('MR')">MR</button>
+                    <button class="calc-btn memory" onclick="memoryOperation('M+')">M+</button>
+                    <button class="calc-btn memory" onclick="memoryOperation('M-')">M−</button>
+                </div>
+                
+                <!-- Clear and Function Row -->
+                <div class="keypad-row">
+                    <button class="calc-btn clear" onclick="clearCalculator()">AC</button>
+                    <button class="calc-btn clear" onclick="handleKeypadButton('', 'clear')">C</button>
+                    <button class="calc-btn backspace" onclick="handleBackspace()">←</button>
+                    <button class="calc-btn operation" onclick="handleKeypadButton(' ÷ ', 'operation')">÷</button>
+                </div>
+                
+                <!-- Numbers and Operations -->
+                <div class="keypad-row">
+                    <button class="calc-btn number" onclick="handleKeypadButton('7', 'number')">7</button>
+                    <button class="calc-btn number" onclick="handleKeypadButton('8', 'number')">8</button>
+                    <button class="calc-btn number" onclick="handleKeypadButton('9', 'number')">9</button>
+                    <button class="calc-btn operation" onclick="handleKeypadButton(' × ', 'operation')">×</button>
+                </div>
+                
+                <div class="keypad-row">
+                    <button class="calc-btn number" onclick="handleKeypadButton('4', 'number')">4</button>
+                    <button class="calc-btn number" onclick="handleKeypadButton('5', 'number')">5</button>
+                    <button class="calc-btn number" onclick="handleKeypadButton('6', 'number')">6</button>
+                    <button class="calc-btn operation" onclick="handleKeypadButton(' - ', 'operation')">−</button>
+                </div>
+                
+                <div class="keypad-row">
+                    <button class="calc-btn number" onclick="handleKeypadButton('1', 'number')">1</button>
+                    <button class="calc-btn number" onclick="handleKeypadButton('2', 'number')">2</button>
+                    <button class="calc-btn number" onclick="handleKeypadButton('3', 'number')">3</button>
+                    <button class="calc-btn operation" onclick="handleKeypadButton(' + ', 'operation')">+</button>
+                </div>
+                
+                <!-- Bottom Row with wider space button -->
+                <div class="keypad-row">
+                    <button class="calc-btn number" onclick="handleKeypadButton('0', 'number')">0</button>
+                    <button class="calc-btn number" onclick="handleKeypadButton('.', 'number')">.</button>
+                    <button class="calc-btn space" onclick="handleKeypadButton(' ', 'space')" style="grid-column: span 2;">Space</button>
+                </div>
+                
+                <!-- Units and Fractions Row 1 -->
+                <div class="keypad-row keypad-fractions">
+                    <button class="calc-btn unit" onclick="handleKeypadButton('ft', 'unit')">ft</button>
+                    <button class="calc-btn unit" onclick="handleKeypadButton('in', 'unit')">in</button>
+                    <button class="calc-btn fraction" onclick="handleKeypadButton('1/2', 'fraction')">1/2</button>
+                    <button class="calc-btn fraction" onclick="handleKeypadButton('1/4', 'fraction')">1/4</button>
+                </div>
+                
+                <!-- Fractions Row 2 -->
+                <div class="keypad-row keypad-fractions">
+                    <button class="calc-btn fraction" onclick="handleKeypadButton('1/8', 'fraction')">1/8</button>
+                    <button class="calc-btn fraction" onclick="handleKeypadButton('1/16', 'fraction')">1/16</button>
+                    <button class="calc-btn fraction" onclick="handleKeypadButton('3/4', 'fraction')">3/4</button>
+                    <button class="calc-btn fraction" onclick="handleKeypadButton('3/8', 'fraction')">3/8</button>
+                </div>
+                
+                <!-- Metric Units Row -->
+                <div class="keypad-row keypad-units">
+                    <button class="calc-btn metric" onclick="handleKeypadButton('mm', 'unit')">mm</button>
+                    <button class="calc-btn metric" onclick="handleKeypadButton('cm', 'unit')">cm</button>
+                    <button class="calc-btn metric" onclick="handleKeypadButton('m', 'unit')">m</button>
+                    <button class="calc-btn save" onclick="saveCalculatorToProject()">Save</button>
+                </div>
             </div>
             
-            <div class="calc-grid">
-                <button class="calc-btn operation" onclick="setOperation('+')" id="addBtn">+</button>
-                <button class="calc-btn operation" onclick="setOperation('-')" id="subBtn">−</button>
-                <button class="calc-btn operation" onclick="setOperation('*')" id="mulBtn">×</button>
-                <button class="calc-btn operation" onclick="setOperation('/')" id="divBtn">÷</button>
-            </div>
-            
-            <!-- Progressive Disclosure Button -->
-            <div id="showMoreOperations" style="display: none; text-align: center; margin: 15px 0;">
-                <button class="btn btn-secondary" onclick="showMoreCalculatorFeatures()" style="padding: 8px 16px;">
-                    ➕ Show Multiply & Divide
-                </button>
-            </div>
-            
-            <!-- Input 2 for Addition/Subtraction (feet/inches) -->
-            <div class="input-group" id="input2GroupFeetInches" style="display: none;">
-                <label>Input 2:</label>
-                <input type="text" id="smartInput2" placeholder="Try: 4'6&quot;, 48&quot;, 4 6 1/2, 48.5&quot;" class="wide-input smart-input" oninput="handleSmartInput(this, 'previewInput2', updateInput2Value)" onchange="handleSmartInput(this, 'previewInput2', updateInput2Value)">
-            </div>
-            <div id="previewInput2" class="input-preview" style="display: none;"></div>
-            <div style="display: none;">
-                <!-- Hidden legacy inputs for backward compatibility -->
-                <input type="number" id="feet2" placeholder="0" min="0" class="wide-input" onchange="updateCalculation()">
-                <input type="number" id="inches2" placeholder="0" min="0" max="11" class="wide-input" onchange="updateCalculation()">
-                <select id="fraction2" style="width: 120px;" onchange="updateCalculation()">
-                    <option value="0">0</option>
-                </select>
-            </div>
-            
-            <!-- Input 2 for Multiplication/Division (simple number) -->
-            <div class="input-group" id="input2GroupNumber" style="display: none;">
-                <label>Factor:</label>
-                <input type="number" id="factor" placeholder="" min="0" step="0.1" class="wide-input" onchange="updateCalculation()" style="width: 150px;">
-                <span style="color: #666; font-size: 12px; margin-left: 5px;">(multiply/divide by this number)</span>
-            </div>
-            
-            <div class="calc-grid" style="margin-top: 15px;">
-                <button class="calc-btn memory" onclick="memoryOperation('MC')">MC</button>
-                <button class="calc-btn memory" onclick="memoryOperation('MR')">MR</button>
-                <button class="calc-btn memory" onclick="memoryOperation('M+')">M+</button>
-                <button class="calc-btn memory" onclick="memoryOperation('M-')">M−</button>
-                <button class="calc-btn clear" onclick="clearCalculator()">Clear</button>
-                <button class="calc-btn save" onclick="saveCalculatorToProject()">Save to Project</button>
-            </div>
             
             <div class="conversion-section">
                 <h4 style="color: var(--primary-color); margin-bottom: 15px; cursor: pointer; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: space-between;" onclick="toggleConversions()">
@@ -7024,6 +7437,13 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             // Handle calculator interface elements
             applyCalculatorMode(modeConfig);
             
+            // Show/hide memory row based on mode
+            const memoryRow = document.getElementById('memoryRow');
+            if (memoryRow) {
+                // Show memory row only in standard and project modes
+                memoryRow.style.display = (uiConfig.mode === 'standard' || uiConfig.mode === 'project') ? 'grid' : 'none';
+            }
+            
             // All calculators are available in both Standard and Project modes
             // The only difference is the save to project functionality
             
@@ -7275,6 +7695,452 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 }
             }
         }
+        
+        // =====================================================
+        // Mobile Keypad Module
+        // =====================================================
+        const MobileKeypad = {
+            // State management
+            activeInput: null,
+            originalValue: '',
+            cursorPosition: 0,
+            isVisible: false,
+            
+            // Configuration
+            config: {
+                vibrateMs: 10,
+                animationDuration: 300,
+                minInputHeight: 100, // Minimum pixels from top/bottom to show keypad
+            },
+            
+            // Initialize the keypad system
+            init() {
+                // Only initialize on touch devices
+                if (!('ontouchstart' in window)) {
+                    console.log('MobileKeypad: Not a touch device, skipping initialization');
+                    return;
+                }
+                
+                console.log('MobileKeypad: Initializing for touch device');
+                
+                // Get keypad elements
+                this.overlay = document.getElementById('mobileKeypadOverlay');
+                this.keypad = document.getElementById('mobileKeypad');
+                this.display = document.getElementById('keypadInputDisplay');
+                
+                if (!this.overlay || !this.keypad) {
+                    console.error('MobileKeypad: Required elements not found');
+                    return;
+                }
+                
+                // Set up event listeners
+                this.setupEventListeners();
+                
+                // Mark all smart inputs for mobile keypad
+                this.setupSmartInputs();
+                
+                console.log('MobileKeypad: Initialization complete');
+            },
+            
+            // Set up event listeners for keypad buttons
+            setupEventListeners() {
+                // Long press handling
+                let longPressTimer = null;
+                let longPressTarget = null;
+                
+                // Use event delegation for all buttons
+                this.keypad.addEventListener('click', (e) => {
+                    const btn = e.target.closest('.keypad-btn');
+                    if (!btn) return;
+                    
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Haptic feedback
+                    this.vibrate();
+                    
+                    // Handle button action
+                    if (btn.hasAttribute('data-action')) {
+                        this.handleAction(btn.getAttribute('data-action'));
+                    } else if (btn.hasAttribute('data-value')) {
+                        this.handleValue(btn.getAttribute('data-value'));
+                    }
+                });
+                
+                // Long press for fraction buttons
+                this.keypad.addEventListener('touchstart', (e) => {
+                    const btn = e.target.closest('.keypad-btn.fraction');
+                    if (!btn) return;
+                    
+                    longPressTarget = btn;
+                    longPressTimer = setTimeout(() => {
+                        this.showFractionMenu(btn);
+                        // Strong vibration for long press
+                        if ('vibrate' in navigator) {
+                            navigator.vibrate(50);
+                        }
+                    }, 500); // 500ms for long press
+                });
+                
+                this.keypad.addEventListener('touchend', () => {
+                    if (longPressTimer) {
+                        clearTimeout(longPressTimer);
+                        longPressTimer = null;
+                        longPressTarget = null;
+                    }
+                });
+                
+                this.keypad.addEventListener('touchmove', () => {
+                    if (longPressTimer) {
+                        clearTimeout(longPressTimer);
+                        longPressTimer = null;
+                        longPressTarget = null;
+                    }
+                });
+                
+                // Close on overlay click
+                this.overlay.addEventListener('click', (e) => {
+                    if (e.target === this.overlay) {
+                        this.hide();
+                    }
+                });
+                
+                // Prevent native keyboard on input focus
+                document.addEventListener('touchstart', (e) => {
+                    const input = e.target.closest('.smart-input, [data-mobile-keypad]');
+                    if (input && input.tagName === 'INPUT') {
+                        e.preventDefault();
+                        this.show(input);
+                    }
+                }, { passive: false });
+            },
+            
+            // Show fraction menu on long press
+            showFractionMenu(button) {
+                const baseValue = button.getAttribute('data-value');
+                let fractions = [];
+                
+                // Define fraction sets based on which button was pressed
+                switch(baseValue) {
+                    case '1/2':
+                        fractions = ['1/2', '3/2', '5/2', '7/2'];
+                        break;
+                    case '1/4':
+                        fractions = ['1/4', '3/4', '5/4', '7/4'];
+                        break;
+                    case '1/8':
+                        fractions = ['1/8', '3/8', '5/8', '7/8'];
+                        break;
+                    case '1/16':
+                        fractions = ['1/16', '3/16', '5/16', '7/16', '9/16', '11/16', '13/16', '15/16'];
+                        break;
+                }
+                
+                // Create popup menu
+                const menu = document.createElement('div');
+                menu.className = 'fraction-popup-menu';
+                menu.style.cssText = `
+                    position: absolute;
+                    background: var(--background-color);
+                    border: 2px solid var(--primary-color);
+                    border-radius: 8px;
+                    padding: 8px;
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 4px;
+                    z-index: 10000;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                    max-width: 250px;
+                `;
+                
+                // Position menu above button
+                const btnRect = button.getBoundingClientRect();
+                const keypadRect = this.keypad.getBoundingClientRect();
+                menu.style.left = `${btnRect.left - keypadRect.left}px`;
+                menu.style.bottom = `${keypadRect.bottom - btnRect.top + 10}px`;
+                
+                // Add fraction options
+                fractions.forEach(frac => {
+                    const opt = document.createElement('button');
+                    opt.className = 'keypad-btn fraction';
+                    opt.textContent = frac;
+                    opt.style.cssText = 'min-width: 50px; min-height: 40px; font-size: 14px;';
+                    opt.onclick = (e) => {
+                        e.stopPropagation();
+                        this.handleValue(frac);
+                        menu.remove();
+                    };
+                    menu.appendChild(opt);
+                });
+                
+                // Add to keypad
+                this.keypad.appendChild(menu);
+                
+                // Remove menu on next touch
+                const removeMenu = () => {
+                    menu.remove();
+                    document.removeEventListener('touchstart', removeMenu);
+                };
+                setTimeout(() => {
+                    document.addEventListener('touchstart', removeMenu);
+                }, 100);
+            },
+            
+            // Mark smart inputs for mobile keypad usage (excluding Calculator tab)
+            setupSmartInputs() {
+                // Find all inputs with smart input handlers
+                const smartInputSelectors = [
+                    'input[oninput*="handleSmartInput"]',
+                    'input[oninput*="updateValue"]',
+                    'input[oninput*="calculateValue"]',
+                    '.smart-input',
+                    '.wide-input'
+                ];
+                
+                const allInputs = document.querySelectorAll(smartInputSelectors.join(','));
+                
+                // Filter out Calculator tab inputs - only apply to specialty calculators
+                const inputs = Array.from(allInputs).filter(input => {
+                    // Check if input is inside the Calculator tab
+                    const calculatorTab = input.closest('#calculator');
+                    return !calculatorTab; // Only include inputs NOT in Calculator tab
+                });
+                
+                inputs.forEach(input => {
+                    // Mark for mobile keypad
+                    input.setAttribute('data-mobile-keypad', 'true');
+                    
+                    // Prevent native keyboard
+                    input.setAttribute('inputmode', 'none');
+                    
+                    // Make readonly to prevent native keyboard but allow selection
+                    // We'll handle input through our keypad
+                    input.setAttribute('data-original-readonly', input.readOnly);
+                    
+                    // Add focus handler
+                    input.addEventListener('focus', (e) => {
+                        if ('ontouchstart' in window) {
+                            e.preventDefault();
+                            this.show(input);
+                        }
+                    });
+                });
+                
+                console.log(`MobileKeypad: Set up ${inputs.length} smart inputs (excluding Calculator tab)`);
+            },
+            
+            // Show the keypad for a specific input
+            show(input) {
+                if (!input || this.isVisible) return;
+                
+                console.log('MobileKeypad: Showing for input', input.id || input.className);
+                
+                this.activeInput = input;
+                this.originalValue = input.value;
+                this.cursorPosition = input.selectionStart || input.value.length;
+                
+                // Update display
+                this.updateDisplay();
+                
+                // Position keypad based on input location
+                this.positionKeypad(input);
+                
+                // Show overlay with animation
+                this.overlay.style.display = 'block';
+                requestAnimationFrame(() => {
+                    this.overlay.classList.add('active');
+                });
+                
+                // Prevent body scroll while keypad is open
+                document.body.style.overflow = 'hidden';
+                
+                // Set readonly to prevent native keyboard
+                if (!input.hasAttribute('data-original-readonly')) {
+                    input.readOnly = true;
+                }
+                
+                this.isVisible = true;
+                
+                // Ensure input stays visible
+                this.ensureInputVisible(input);
+            },
+            
+            // Hide the keypad
+            hide() {
+                if (!this.isVisible) return;
+                
+                console.log('MobileKeypad: Hiding');
+                
+                // Remove active class for animation
+                this.overlay.classList.remove('active');
+                
+                // Wait for animation then hide
+                setTimeout(() => {
+                    this.overlay.style.display = 'none';
+                    
+                    // Restore body scroll
+                    document.body.style.overflow = '';
+                    
+                    // Restore readonly state
+                    if (this.activeInput && !this.activeInput.getAttribute('data-original-readonly')) {
+                        this.activeInput.readOnly = false;
+                    }
+                    
+                    // Trigger input event to update any calculations
+                    if (this.activeInput) {
+                        this.activeInput.dispatchEvent(new Event('input', { bubbles: true }));
+                        this.activeInput.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                    
+                    // Clear state
+                    this.activeInput = null;
+                    this.originalValue = '';
+                    this.cursorPosition = 0;
+                    this.isVisible = false;
+                }, this.config.animationDuration);
+            },
+            
+            // Position keypad based on input location
+            positionKeypad(input) {
+                const rect = input.getBoundingClientRect();
+                const viewportHeight = window.innerHeight;
+                const inputMiddle = rect.top + rect.height / 2;
+                
+                // If input is in top half of screen, show keypad at bottom
+                // Otherwise show at top
+                if (inputMiddle < viewportHeight / 2) {
+                    this.keypad.classList.remove('position-top');
+                } else {
+                    this.keypad.classList.add('position-top');
+                }
+            },
+            
+            // Ensure input stays visible when keypad is shown
+            ensureInputVisible(input) {
+                setTimeout(() => {
+                    const rect = input.getBoundingClientRect();
+                    const keypadRect = this.keypad.getBoundingClientRect();
+                    
+                    // Check if input is hidden by keypad
+                    if (this.keypad.classList.contains('position-top')) {
+                        // Keypad at top
+                        if (rect.top < keypadRect.bottom) {
+                            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    } else {
+                        // Keypad at bottom
+                        if (rect.bottom > keypadRect.top) {
+                            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
+                }, this.config.animationDuration);
+            },
+            
+            // Handle action buttons (backspace, clear, done)
+            handleAction(action) {
+                if (!this.activeInput) return;
+                
+                switch (action) {
+                    case 'backspace':
+                        this.backspace();
+                        break;
+                    case 'clear':
+                        this.clear();
+                        break;
+                    case 'done':
+                        this.hide();
+                        break;
+                }
+            },
+            
+            // Handle value buttons (numbers, symbols, etc.)
+            handleValue(value) {
+                if (!this.activeInput) return;
+                
+                const currentValue = this.activeInput.value;
+                const start = this.activeInput.selectionStart || currentValue.length;
+                const end = this.activeInput.selectionEnd || start;
+                
+                // Insert value at cursor position
+                const newValue = currentValue.slice(0, start) + value + currentValue.slice(end);
+                this.activeInput.value = newValue;
+                
+                // Update cursor position
+                const newPosition = start + value.length;
+                this.activeInput.setSelectionRange(newPosition, newPosition);
+                this.cursorPosition = newPosition;
+                
+                // Update display and trigger input event
+                this.updateDisplay();
+                this.triggerInputEvents();
+            },
+            
+            // Backspace function
+            backspace() {
+                const currentValue = this.activeInput.value;
+                const start = this.activeInput.selectionStart || currentValue.length;
+                const end = this.activeInput.selectionEnd || start;
+                
+                if (start !== end) {
+                    // Delete selection
+                    const newValue = currentValue.slice(0, start) + currentValue.slice(end);
+                    this.activeInput.value = newValue;
+                    this.activeInput.setSelectionRange(start, start);
+                    this.cursorPosition = start;
+                } else if (start > 0) {
+                    // Delete character before cursor
+                    const newValue = currentValue.slice(0, start - 1) + currentValue.slice(start);
+                    this.activeInput.value = newValue;
+                    const newPosition = start - 1;
+                    this.activeInput.setSelectionRange(newPosition, newPosition);
+                    this.cursorPosition = newPosition;
+                }
+                
+                this.updateDisplay();
+                this.triggerInputEvents();
+            },
+            
+            // Clear input
+            clear() {
+                this.activeInput.value = '';
+                this.activeInput.setSelectionRange(0, 0);
+                this.cursorPosition = 0;
+                this.updateDisplay();
+                this.triggerInputEvents();
+            },
+            
+            // Update the display to show current input value
+            updateDisplay() {
+                if (this.display && this.activeInput) {
+                    const value = this.activeInput.value || 'Enter measurement...';
+                    this.display.textContent = value;
+                }
+            },
+            
+            // Trigger input events for live validation
+            triggerInputEvents() {
+                if (!this.activeInput) return;
+                
+                // Trigger input event for real-time updates
+                this.activeInput.dispatchEvent(new Event('input', { bubbles: true }));
+                
+                // Some handlers might listen to keyup
+                this.activeInput.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true }));
+            },
+            
+            // Vibrate for haptic feedback
+            vibrate() {
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(this.config.vibrateMs);
+                }
+            },
+            
+            // Re-scan for new smart inputs (call after dynamic content loads)
+            refresh() {
+                console.log('MobileKeypad: Refreshing smart inputs');
+                this.setupSmartInputs();
+            }
+        };
         
         // =====================================================
         // Theme Management Functions
@@ -9575,6 +10441,350 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             updateConversionPreview();
         }
         
+        // Parse and calculate complex expressions with mixed units
+        function calculateExpression() {
+            const input = document.getElementById('smartInput1').value;
+            if (!input || input.trim() === '') return;
+            
+            try {
+                // Split expression by operators while keeping them
+                const parts = input.split(/(\s*[\+\-\×\÷]\s*)/);
+                let totalInches = 0;
+                let currentOperation = '+';
+                
+                for (let i = 0; i < parts.length; i++) {
+                    const part = parts[i].trim();
+                    
+                    // Check if it's an operator
+                    if (['+', '-', '×', '÷'].includes(part)) {
+                        currentOperation = part;
+                        continue;
+                    }
+                    
+                    // Skip empty parts
+                    if (!part) continue;
+                    
+                    // Parse the measurement
+                    const inches = parseMeasurementToInches(part);
+                    if (inches === null || isNaN(inches)) {
+                        console.warn('Could not parse:', part);
+                        continue;
+                    }
+                    
+                    // Apply the operation
+                    switch (currentOperation) {
+                        case '+':
+                            totalInches += inches;
+                            break;
+                        case '-':
+                            totalInches -= inches;
+                            break;
+                        case '×':
+                            totalInches *= inches;
+                            break;
+                        case '÷':
+                            if (inches !== 0) {
+                                totalInches /= inches;
+                            }
+                            break;
+                    }
+                }
+                
+                // Update display with result
+                currentValueInches = totalInches;
+                
+                // Display the equation and result
+                const equation = document.getElementById('calcEquation');
+                const result = document.getElementById('calcResult');
+                const resultHint = document.getElementById('resultHint');
+                
+                equation.textContent = input;
+                result.textContent = formatResult(totalInches);
+                resultHint.style.display = 'block';
+                
+                // Clear the input and show result
+                document.getElementById('smartInput1').value = '';
+                document.getElementById('previewInput1').textContent = '';
+                
+            } catch (error) {
+                console.error('Error calculating expression:', error);
+                showNotification('Error calculating expression', 'error');
+            }
+        }
+        
+        // Parse a measurement string to inches (handles all formats)
+        function parseMeasurementToInches(measurement) {
+            if (!measurement || measurement.trim() === '') return null;
+            
+            let input = measurement.trim();
+            
+            // Handle metric units
+            if (input.includes('mm')) {
+                const value = parseFloat(input.replace('mm', '').trim());
+                if (isNaN(value)) return null;
+                return value / 25.4; // mm to inches
+            }
+            if (input.includes('cm')) {
+                const value = parseFloat(input.replace('cm', '').trim());
+                if (isNaN(value)) return null;
+                return value / 2.54; // cm to inches
+            }
+            if (input.endsWith('m') && !input.includes('mm') && !input.includes('cm')) {
+                const value = parseFloat(input.replace('m', '').trim());
+                if (isNaN(value)) return null;
+                return value * 39.3701; // meters to inches
+            }
+            
+            // Handle explicit feet/inches notation (e.g., 4'6")
+            const feetInchesMatch = input.match(/^(\d+)'(?:\s*(\d+(?:\s+\d+\/\d+)?|\d+\/\d+)?"?)?$/);
+            if (feetInchesMatch) {
+                const feet = parseInt(feetInchesMatch[1]) || 0;
+                const inchPart = feetInchesMatch[2] || '0';
+                const inches = parseInchesWithFraction(inchPart);
+                return feet * 12 + inches;
+            }
+            
+            // Handle inches with quotes (e.g., 12", 12.5", 12 1/2")
+            if (input.endsWith('"')) {
+                input = input.slice(0, -1).trim();
+                return parseInchesWithFraction(input);
+            }
+            
+            // Handle space-separated format (e.g., "4 3 3/32" for 4'3 3/32")
+            const spaceParts = input.split(/\s+/);
+            if (spaceParts.length >= 2) {
+                const firstNum = parseFloat(spaceParts[0]);
+                const secondPart = spaceParts[1];
+                
+                // Check various patterns for feet/inches
+                if (spaceParts.length === 2) {
+                    // Pattern: "4 6" (4 feet 6 inches)
+                    const secondNum = parseFloat(secondPart);
+                    if (!isNaN(secondNum) && secondNum < 12 && !secondPart.includes('/')) {
+                        return firstNum * 12 + secondNum;
+                    }
+                } else if (spaceParts.length === 3) {
+                    // Pattern: "4 2 1/16" (4 feet 2 and 1/16 inches)
+                    const secondNum = parseFloat(secondPart);
+                    const thirdPart = spaceParts[2];
+                    
+                    if (!isNaN(secondNum) && secondNum < 12 && thirdPart.includes('/')) {
+                        const feet = firstNum;
+                        const inches = secondNum + parseFraction(thirdPart);
+                        return feet * 12 + inches;
+                    }
+                    // Pattern: "4 11 15/16" (4 feet 11 and 15/16 inches)
+                    else if (!isNaN(secondNum) && secondNum < 12 && !secondPart.includes('/')) {
+                        const feet = firstNum;
+                        const inches = secondNum + parseFraction(thirdPart);
+                        return feet * 12 + inches;
+                    }
+                }
+            }
+            
+            // Try parsing as inches with fraction (e.g., "12 1/2")
+            const result = parseInchesWithFraction(input);
+            return (isNaN(result) || result === null) ? null : result;
+        }
+        
+        // Parse inches that may include a fraction
+        function parseInchesWithFraction(input) {
+            if (!input || input.trim() === '') return 0;
+            
+            input = input.trim();
+            
+            // Check for mixed number (e.g., "12 1/2")
+            const parts = input.split(/\s+/);
+            if (parts.length === 2 && parts[1].includes('/')) {
+                const whole = parseFloat(parts[0]) || 0;
+                const fraction = parseFraction(parts[1]);
+                return whole + fraction;
+            }
+            
+            // Check for just a fraction
+            if (input.includes('/')) {
+                return parseFraction(input);
+            }
+            
+            // Parse as decimal
+            const result = parseFloat(input);
+            return isNaN(result) ? null : result;
+        }
+        
+        // Parse a fraction string to decimal
+        function parseFraction(fraction) {
+            if (!fraction || !fraction.includes('/')) return 0;
+            
+            const parts = fraction.split('/');
+            if (parts.length !== 2) return 0;
+            
+            const numerator = parseFloat(parts[0]);
+            const denominator = parseFloat(parts[1]);
+            
+            if (denominator === 0) return 0;
+            return numerator / denominator;
+        }
+        
+        // Format result as feet/inches with fraction
+        // Convert decimal inches to fraction string
+        function convertToFraction(decimalInches, precisionStr) {
+            // Handle whole numbers
+            const wholeInches = Math.floor(decimalInches);
+            const fractionDecimal = decimalInches - wholeInches;
+            
+            if (fractionDecimal < 0.001) {
+                // No fraction part
+                return wholeInches > 0 ? wholeInches.toString() : '0';
+            }
+            
+            // Parse precision (e.g., "1/16" -> 16, "1/32" -> 32)
+            let precision = 16; // default
+            if (precisionStr) {
+                const parts = precisionStr.split('/');
+                if (parts.length === 2) {
+                    precision = parseInt(parts[1]);
+                }
+            }
+            
+            // Convert to fraction
+            const numerator = Math.round(fractionDecimal * precision);
+            if (numerator === 0) {
+                return wholeInches > 0 ? wholeInches.toString() : '0';
+            }
+            
+            // Simplify fraction
+            let num = numerator;
+            let denom = precision;
+            
+            // Find GCD and simplify
+            while (num % 2 === 0 && denom % 2 === 0) {
+                num /= 2;
+                denom /= 2;
+            }
+            
+            // Build result string
+            let result = '';
+            if (wholeInches > 0) {
+                result = wholeInches + ' ';
+            }
+            result += num + '/' + denom;
+            
+            return result;
+        }
+        
+        function formatResult(inches) {
+            if (inches === 0) return '0"';
+            
+            const negative = inches < 0;
+            inches = Math.abs(inches);
+            
+            const feet = Math.floor(inches / 12);
+            const remainingInches = inches % 12;
+            
+            // Get precision setting
+            const precisionSelect = document.getElementById('precision');
+            const precision = precisionSelect ? precisionSelect.value : '1/16';
+            
+            // Convert decimal inches to fraction
+            const fractionResult = convertToFraction(remainingInches, precision);
+            
+            let result = '';
+            if (feet > 0) {
+                result = feet + "'";
+                if (fractionResult && fractionResult !== '0') {
+                    result += " " + fractionResult + '"';
+                }
+            } else {
+                result = fractionResult + '"';
+            }
+            
+            return negative ? '-' + result : result;
+        }
+        
+        // Handle backspace button
+        function handleBackspace() {
+            const smartInput1 = document.getElementById('smartInput1');
+            if (smartInput1.value.length > 0) {
+                smartInput1.value = smartInput1.value.slice(0, -1);
+                handleSmartInput(smartInput1, 'previewInput1', updateInput1Value);
+            }
+        }
+        
+        function handleKeypadButton(value, type) {
+            const smartInput1 = document.getElementById('smartInput1');
+            const currentInput = smartInput1.value;
+            
+            switch(type) {
+                case 'number':
+                    // Append number or decimal point to current input
+                    smartInput1.value = currentInput + value;
+                    handleSmartInput(smartInput1, 'previewInput1', updateInput1Value);
+                    break;
+                    
+                case 'space':
+                    // Add a space
+                    smartInput1.value = currentInput + ' ';
+                    handleSmartInput(smartInput1, 'previewInput1', updateInput1Value);
+                    break;
+                    
+                case 'unit':
+                    // Add unit (ft, in, mm, cm, m) - handle smartly
+                    if (value === 'ft') {
+                        smartInput1.value = currentInput + '\'';
+                    } else if (value === 'in') {
+                        smartInput1.value = currentInput + '"';
+                    } else {
+                        // For metric units, add with appropriate spacing
+                        const needsSpace = currentInput && !currentInput.endsWith(' ') && !/[+\-×÷*/]$/.test(currentInput);
+                        smartInput1.value = currentInput + (needsSpace ? ' ' : '') + value;
+                    }
+                    handleSmartInput(smartInput1, 'previewInput1', updateInput1Value);
+                    break;
+                    
+                case 'measurement':
+                    // Legacy - kept for compatibility
+                    smartInput1.value = currentInput + value;
+                    handleSmartInput(smartInput1, 'previewInput1', updateInput1Value);
+                    break;
+                    
+                case 'fraction':
+                    // Add fraction - if there's already content, add a space first
+                    const spacedValue = currentInput && !currentInput.endsWith(' ') ? ' ' + value : value;
+                    smartInput1.value = currentInput + spacedValue;
+                    handleSmartInput(smartInput1, 'previewInput1', updateInput1Value);
+                    break;
+                    
+                case 'clear':
+                    // Clear current input only (not full calculator reset)
+                    smartInput1.value = '';
+                    handleSmartInput(smartInput1, 'previewInput1', updateInput1Value);
+                    break;
+                    
+                case 'operation':
+                    // Insert operation symbol as text
+                    smartInput1.value = currentInput + value;
+                    handleSmartInput(smartInput1, 'previewInput1', updateInput1Value);
+                    break;
+                    
+                case 'unit':
+                    // Append unit to current input
+                    smartInput1.value = currentInput + value;
+                    handleSmartInput(smartInput1, 'previewInput1', updateInput1Value);
+                    break;
+                    
+                case 'equals':
+                    // Calculate the expression in the input
+                    calculateExpression();
+                    break;
+                    
+                default:
+                    console.warn('Unknown keypad button type:', type);
+            }
+            
+            // Focus the input to show cursor position
+            smartInput1.focus();
+        }
+        
         function useResultAsInput1() {
             if (currentValueInches > 0) {
                 const resultValue = currentValueInches;
@@ -10223,9 +11433,6 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 return;
             }
             
-            // Parse the input
-            const result = parseSmartInput(value);
-            
             // Clear previous states
             inputElement.classList.remove('valid', 'invalid', 'warning');
             previewDiv.classList.remove('success', 'warning', 'error');
@@ -10233,8 +11440,61 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
             if (!value || value.trim() === '') {
                 // Empty input - hide preview
                 previewDiv.style.display = 'none';
+                if (callback) callback(0, '');
                 return;
             }
+            
+            // Check if this is an expression with operators
+            // Support both × and *, ÷ and /
+            const normalizedValue = value.replace(/×/g, '*').replace(/÷/g, '/');
+            const hasOperators = /[+\-*/]/.test(normalizedValue);
+            
+            if (hasOperators) {
+                // Parse and calculate the expression
+                const result = parseExpression(value);
+                
+                // Show preview
+                previewDiv.style.display = 'block';
+                
+                if (result.isValid) {
+                    // Show the interpreted expression and result
+                    let displayText = '= ' + formatResult(result.value);
+                    let callbackDisplay = formatResult(result.value);
+                    
+                    // If we have a parsed expression, show it
+                    if (result.parsedExpression) {
+                        displayText = result.parsedExpression + ' = ' + formatResult(result.value);
+                        callbackDisplay = result.parsedExpression + ' = ' + formatResult(result.value);
+                    }
+                    
+                    previewDiv.textContent = displayText;
+                    previewDiv.style.color = 'var(--success-color, #4CAF50)';
+                    inputElement.classList.add('valid');
+                    inputElement.classList.remove('invalid');
+                    
+                    // Call callback with the calculated value and display string
+                    if (callback && typeof callback === 'function') {
+                        callback(result.value, callbackDisplay);
+                    }
+                } else if (result.partial) {
+                    // Partial expression - show what we have so far
+                    previewDiv.textContent = result.message || 'Enter next value...';
+                    previewDiv.style.color = 'var(--text-secondary, #666)';
+                    inputElement.classList.remove('invalid');
+                    
+                    if (callback) callback(0, value);
+                } else {
+                    previewDiv.textContent = result.error || 'Invalid expression';
+                    previewDiv.style.color = 'var(--error-color, #f44336)';
+                    inputElement.classList.add('invalid');
+                    
+                    if (callback) callback(0, value);
+                }
+                return;
+            }
+            
+            // Parse the input as a single measurement
+            const result = parseSmartInput(value);
             
             // Show preview
             previewDiv.style.display = 'block';
@@ -10246,10 +11506,11 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 
                 // Show metric conversion note if applicable
                 if (result.isMetric) {
-                    previewDiv.textContent = `✓ ${result.display} (converted from metric)`;
+                    previewDiv.textContent = `= ${result.display} (from metric)`;
                 } else {
-                    previewDiv.textContent = `✓ ${result.display}`;
+                    previewDiv.textContent = `= ${result.display}`;
                 }
+                previewDiv.style.color = 'var(--success-color, #4CAF50)';
                 
                 // Call callback with parsed value if provided
                 if (callback && typeof callback === 'function') {
@@ -10259,7 +11520,140 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
                 // Invalid input
                 inputElement.classList.add('invalid');
                 previewDiv.classList.add('error');
-                previewDiv.textContent = `⚠ ${result.error}`;
+                previewDiv.textContent = result.error || 'Invalid input';
+                previewDiv.style.color = 'var(--error-color, #f44336)';
+                
+                if (callback) callback(0, value);
+            }
+        }
+        
+        // New function to parse expressions with multiple operations
+        function parseExpression(expression) {
+            try {
+                // Normalize operators
+                let expr = expression.replace(/×/g, '*').replace(/÷/g, '/');
+                
+                // Split by operators while keeping them
+                const tokens = expr.split(/([+\-*/])/);
+                
+                // Clean up tokens - remove empty strings but keep operators
+                const cleanTokens = [];
+                for (let token of tokens) {
+                    const trimmed = token.trim();
+                    if (trimmed) {
+                        cleanTokens.push(trimmed);
+                    }
+                }
+                
+                // Handle cases where expression ends with operator (partial expression)
+                const endsWithOperator = /[+\-*/×÷]\s*$/.test(expression);
+                
+                if (cleanTokens.length === 1) {
+                    // Just a single value, parse it
+                    const inches = parseMeasurementToInches(cleanTokens[0]);
+                    if (inches === null || isNaN(inches)) {
+                        return { isValid: false, error: `Cannot parse: "${cleanTokens[0]}"` };
+                    }
+                    
+                    if (endsWithOperator) {
+                        // Value followed by operator - waiting for next input
+                        return { 
+                            isValid: false, 
+                            partial: true, 
+                            message: formatResult(inches) + ' ' + expression.slice(-1).trim() + ' ...' 
+                        };
+                    }
+                    
+                    return {
+                        isValid: true,
+                        value: inches,
+                        parsedExpression: formatResult(inches)
+                    };
+                }
+                
+                if (cleanTokens.length < 3) {
+                    // Not enough tokens for a complete expression
+                    if (cleanTokens.length === 2 && ['+', '-', '*', '/'].includes(cleanTokens[1])) {
+                        // Value followed by operator
+                        const inches = parseMeasurementToInches(cleanTokens[0]);
+                        if (inches !== null && !isNaN(inches)) {
+                            const op = cleanTokens[1] === '*' ? '×' : cleanTokens[1] === '/' ? '÷' : cleanTokens[1];
+                            return { 
+                                isValid: false, 
+                                partial: true, 
+                                message: formatResult(inches) + ' ' + op + ' ...' 
+                            };
+                        }
+                    }
+                    return { isValid: false, partial: true, message: 'Enter values...' };
+                }
+                
+                let result = null;
+                let currentOp = null;
+                let parsedParts = [];
+                
+                for (let i = 0; i < cleanTokens.length; i++) {
+                    const token = cleanTokens[i];
+                    
+                    // Check if it's an operator
+                    if (['+', '-', '*', '/'].includes(token)) {
+                        currentOp = token;
+                        parsedParts.push(token === '*' ? '×' : token === '/' ? '÷' : token);
+                        continue;
+                    }
+                    
+                    // Parse the measurement
+                    const inches = parseMeasurementToInches(token);
+                    if (inches === null || isNaN(inches)) {
+                        return { isValid: false, error: `Cannot parse: "${token}"` };
+                    }
+                    
+                    // Add formatted version to parsed expression
+                    parsedParts.push(formatResult(inches));
+                    
+                    // Apply the operation
+                    if (result === null) {
+                        result = inches;
+                    } else if (currentOp) {
+                        switch (currentOp) {
+                            case '+':
+                                result += inches;
+                                break;
+                            case '-':
+                                result -= inches;
+                                break;
+                            case '*':
+                                result *= inches;
+                                break;
+                            case '/':
+                                if (inches === 0) {
+                                    return { isValid: false, error: 'Division by zero' };
+                                }
+                                result /= inches;
+                                break;
+                        }
+                        currentOp = null;
+                    }
+                }
+                
+                // Check if we have a hanging operator
+                if (currentOp) {
+                    return { 
+                        isValid: false, 
+                        partial: true, 
+                        message: parsedParts.join(' ') + ' ...' 
+                    };
+                }
+                
+                return {
+                    isValid: true,
+                    value: result,
+                    parsedExpression: parsedParts.join(' ')
+                };
+                
+            } catch (error) {
+                console.error('Expression parsing error:', error);
+                return { isValid: false, error: 'Invalid expression' };
             }
         }
         
@@ -13006,6 +14400,23 @@ linear-gradient(135deg, #5A5A5A 0%, #3D3D3D 50%, #2A2A2A 100%) !important;
 
         function updateInput1Value(inches, display) {
             currentInput1Inches = inches;
+            
+            // If the display contains an equals sign, it's a calculated expression result
+            // Show it directly in the result area instead of treating it as input 1
+            if (display && display.includes('=')) {
+                const resultElement = document.getElementById('calcResult');
+                const equationElement = document.getElementById('calcEquation');
+                if (resultElement && equationElement) {
+                    // Extract the calculation part and result
+                    const parts = display.split('=');
+                    if (parts.length === 2) {
+                        equationElement.textContent = parts[0].trim();
+                        resultElement.textContent = '= ' + parts[1].trim();
+                        return; // Don't call updateCalculation for expression results
+                    }
+                }
+            }
+            
             updateCalculation();
         }
 
@@ -21411,6 +22822,33 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
             // Initialize touch events for mobile
             initializeTouchEvents();
             
+            // Initialize mobile keypad for smart inputs
+            MobileKeypad.init();
+            
+            // Disable native keyboard on mobile for calculator input
+            const smartInput1 = document.getElementById('smartInput1');
+            if (smartInput1) {
+                // Detect if on mobile device
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                                ('ontouchstart' in window) || 
+                                (navigator.maxTouchPoints > 0);
+                
+                if (isMobile) {
+                    // Prevent native keyboard from showing
+                    smartInput1.setAttribute('readonly', 'readonly');
+                    
+                    // Allow custom keypad to still modify the input
+                    smartInput1.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        this.blur(); // Remove focus to ensure keyboard doesn't show
+                    });
+                    
+                    smartInput1.addEventListener('focus', function(e) {
+                        this.blur(); // Immediately blur to prevent keyboard
+                    });
+                }
+            }
+            
             // Initialize screw calculator
             initScrewCalculator();
             
@@ -21454,5 +22892,69 @@ ${cutEstimate.note ? `Note: ${cutEstimate.note}` : ''}`;
         });
     </script>
     </div> <!-- End of main container from line 4106 -->
+    
+    <!-- Mobile Keypad HTML Structure -->
+    <div id="mobileKeypadOverlay" class="keypad-overlay">
+        <div id="mobileKeypad" class="mobile-keypad">
+            <!-- Keypad Header -->
+            <div class="keypad-header">
+                <div class="keypad-input-display" id="keypadInputDisplay"></div>
+                <button class="keypad-close-btn" onclick="MobileKeypad.hide()">×</button>
+            </div>
+            
+            <!-- Number Pad - 3x4 Grid (Phone Style) -->
+            <div class="keypad-numpad">
+                <button class="keypad-btn number" data-value="1">1</button>
+                <button class="keypad-btn number" data-value="2">2</button>
+                <button class="keypad-btn number" data-value="3">3</button>
+                
+                <button class="keypad-btn number" data-value="4">4</button>
+                <button class="keypad-btn number" data-value="5">5</button>
+                <button class="keypad-btn number" data-value="6">6</button>
+                
+                <button class="keypad-btn number" data-value="7">7</button>
+                <button class="keypad-btn number" data-value="8">8</button>
+                <button class="keypad-btn number" data-value="9">9</button>
+                
+                <button class="keypad-btn number zero" data-value="0">0</button>
+                <button class="keypad-btn symbol" data-value=".">.</button>
+                <button class="keypad-btn symbol" data-value="/">/</button>
+            </div>
+            
+            <!-- Common Fractions -->
+            <div class="keypad-fractions">
+                <button class="keypad-btn fraction" data-value="1/2">½</button>
+                <button class="keypad-btn fraction" data-value="1/4">¼</button>
+                <button class="keypad-btn fraction" data-value="1/8">⅛</button>
+                <button class="keypad-btn fraction" data-value="1/16">¹⁄₁₆</button>
+            </div>
+            
+            <!-- Measurement Symbols -->
+            <div class="keypad-operations">
+                <button class="keypad-btn symbol" data-value="'">'</button>
+                <button class="keypad-btn symbol" data-value="&quot;">"</button>
+                <button class="keypad-btn space" data-value=" ">Space</button>
+            </div>
+            
+            <!-- Units -->
+            <div class="keypad-units">
+                <button class="keypad-btn unit" data-value="mm">mm</button>
+                <button class="keypad-btn unit" data-value="cm">cm</button>
+                <button class="keypad-btn unit" data-value="m">m</button>
+                <button class="keypad-btn unit" data-value="in">in</button>
+            </div>
+            
+            <!-- Control Buttons -->
+            <div class="keypad-controls">
+                <button class="keypad-btn control backspace" data-action="backspace">⌫</button>
+                <button class="keypad-btn clear" data-action="clear">Clear</button>
+            </div>
+            
+            <!-- Done Button -->
+            <div style="margin-top: 10px;">
+                <button class="keypad-btn done" style="width: 100%;" data-action="done">Done</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
